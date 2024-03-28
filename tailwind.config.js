@@ -16,7 +16,11 @@ module.exports = {
         'primary': '#DB1471',
         'secondary': '#0F1C35',
         'muted': '#323232',
-        'background': "#D5D6D9"
+        'borders': "#D5D6D9",
+        'background': "#f6f6f9",
+      },
+      fontFamily: {
+        'manrope': ['Manrope', 'sans-serif']
       }
     },
   },
