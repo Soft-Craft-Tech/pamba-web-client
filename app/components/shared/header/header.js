@@ -9,11 +9,11 @@ export default function Header({page}) {
                 </Link>
                 <div className="flex gap-12">
                     <Link className={page === "home" ? "text-primary" : undefined} href="/">Home</Link>
-                    <Link className={page === "about" ? "text-primary" : undefined} href="/">About Us</Link>
+                    <Link className={page === "about" ? "text-primary" : undefined} href="/about">About Us</Link>
                     <Link className={page === "services" ? "text-primary" : undefined} href="/">Services</Link>
                 </div>
                 <div className="h-full items-center flex gap-10 font-semibold">
-                    <Link className="" href="/">Login</Link>
+                    <Link className="" href="/login">Login</Link>
                     <Link className="bg-primary text-white px-5 py-2 rounded-lg" href="/">Sign Up</Link>
                 </div>
             </div>

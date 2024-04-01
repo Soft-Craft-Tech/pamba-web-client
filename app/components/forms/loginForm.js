@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,9 @@ export default function LoginForm() {
                     <Image onClick={() => {setShowPassword(prev => !prev)}} className="w-[20px] cursor-pointer" src="/eye-closed.png" alt="show password" width={24} height={24} />}
                 </div>
                 <input className="h-full w-full px-2 py-1"  type={showPassword ? "text": "password"} required name="password" placeholder="Password" />
+            </div>
+            <div className="flex justify-end">
+                <Link href="/request-password-reset" className="text-xs font-bold text-cyan-600">Forgot Password?</Link>
             </div>
             <button className="text-white bg-primary rounded-md py-2 font-semibold" type="submit">Login</button>
         </form>

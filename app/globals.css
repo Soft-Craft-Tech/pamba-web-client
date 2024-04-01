@@ -3,3 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+input[type="checkbox"].form-checkbox:checked {
+    background-color: #DB1471;
+}
+

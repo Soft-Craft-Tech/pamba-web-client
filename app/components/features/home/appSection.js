@@ -5,7 +5,7 @@ export default function AppSection() {
     return (
         <section className="grid grid-cols-2 grid-rows-1 bg-secondary text-white p-20 gap-20 w-full h-auto">
             <div className="flex flex-col justify-center gap-5">
-                <h3 className="font-extrabold text-3xl">Your clients are using the Pamba application to book with you.</h3>
+                <h3 className="font-extrabold text-4xl">Your clients are using the Pamba application to book with you.</h3>
                 <p className="text-base font-light text-gray-300">
                     Our Pamba app seamlessly manages the client side of your business, leaving you free to focus on what you do best: 
                     providing exceptional service. Let us handle customer scheduling effortlessly, while you elevate your business. 

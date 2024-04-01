@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import GoogleAuthBTN from "../components/core/buttons/googleAuthBtn";
 export const metadata = {
     title: "Login - Pamba App",
     description: "Simplify Your Operations With Effortless Business Management",
@@ -11,12 +13,26 @@ export default function LoginLayout({children}) {
                 <div className="relative w-full h-full">
                     <Image className="object-cover" src="/login-img.svg" alt="pamba login" fill={true} />
                 </div>
-                <div className="p-10 text-secondary flex flex-col gap-5 items-center justify-center">
+                <div className="p-10 text-secondary flex flex-col gap-4 items-center justify-center">
                     <div className="flex flex-col items-center w-full h-auto">
-                        <Image className="w-36 h-auto" src="/logo.svg" alt="pamba logo" width={40} height={20} />
+                        <Link href="/">
+                            <Image className="w-36 h-auto" src="/logo.svg" alt="pamba logo" width={40} height={20} />
+                        </Link>
                         <h3 className="font-medium w-max">Welcome back</h3>
                     </div>
                     {children}
+                    <div className="flex w-full h-6 gap-2 items-center justify-center">
+                        <p className="text-muted text-sm">Don &apos; t have an account? </p>
+                        <Link className="text-secondary font-bold text-sm" href="/signup">Signup</Link>
+                    </div>
+                    {/* <div className="w-full h-auto flex flex-col gap-5">
+                        <div className="flex w-full h-5 gap-3  items-center">
+                            <div className="w-full h-[0.5px] bg-gray-400"></div>
+                            <h3 className="text-center text-gray-400 w-max">or</h3>
+                            <div className="w-full h-[0.5px] bg-gray-400"></div>
+                        </div>
+                        <GoogleAuthBTN />
+                    </div> */}
                 </div>
             </div>
         </main>

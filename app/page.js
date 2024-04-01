@@ -20,7 +20,7 @@ export default function Home() {
 			<Services />
 			<Separator
 				btnText={"Businesses We serve"}
-				header={"Empowering businesses, transforming industries"}
+				header={"Empowering Businesses, Transforming Industries"}
 			/>
 			<CategoriesSection />
 			<AppSection />
