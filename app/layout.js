@@ -1,4 +1,5 @@
 import "./globals.css";
+import Provider from "./context/appQueryProvider/Provider";
 
 export const metadata = {
   title: "Pamba App",
@@ -8,7 +9,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    	<body className="font-manrope bg-background">{children}</body>
+    	<body className="font-manrope bg-background">
+			<Provider>
+				{children}
+			</Provider>
+      	</body>
     </html>
   );
 }

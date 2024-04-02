@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { AuthContextWrapper } from "../context/auth/authContext";
 
 export default function SignupLayout({children}) {
     return (
@@ -16,7 +17,9 @@ export default function SignupLayout({children}) {
                             <Image className="w-36 h-auto" src="/logo.svg" alt="pamba logo" width={40} height={20} />
                         </Link>
                     </div>
-                    {children}
+                    <AuthContextWrapper>
+                        {children}
+                    </AuthContextWrapper>
                     <div className="flex w-full h-6 gap-2 items-center justify-center">
                         <p className="text-muted text-sm">Already have an account? </p>
                         <Link className="text-secondary font-bold text-sm" href="/login">Login</Link>

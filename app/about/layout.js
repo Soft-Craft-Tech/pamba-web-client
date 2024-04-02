@@ -1,6 +1,6 @@
-export default function AboutLayout({}) {
+export default function AboutLayout({children}) {
     return (
-        <main>
+        <main className="relative">
             {children}
         </main>
     )

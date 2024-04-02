@@ -2,26 +2,23 @@
 import useMultipleStepForm from "@/app/hooks/useMultiStepForm";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext } from "react";
+import Toast from "../shared/toasts/authToast";
+import { AuthPageContext } from "@/app/context/auth/authContext";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        location: "",
-        city: "",
-        category: "",
-        phone: "",
-        mapUrl: "",
-        password: ""
-    });
-    const [termsAccepted, setTermsAccepted] = useState(false);
+    const {formData, setFormData, termsAccepted, setTermsAccepted, showPassword, setShowPassword, setShowToast} = useContext(AuthPageContext);
+    const router = useRouter()
 
     // Handle Terms and conditions check box
     const acceptTerms = () => {
         setTermsAccepted(prev => !prev);
     }
+
+    // Handle input changes
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         setFormData((prev) => {
@@ -29,6 +26,7 @@ export default function SignupForm() {
         });
     }
 
+    // Signup Form steps
     const {next, back, step, isFirst, isLast} = useMultipleStepForm(
         [
             <>
@@ -65,17 +63,42 @@ export default function SignupForm() {
             </>
         ]
     );
-        
+    const { mutate, error, isPending, data, isSuccess } = useMutation({
+        mutationFn: async () => {
+            const { data } = await axios.post(
+                "https://pamba-web.onrender.com/API/businesses/signup",
+                formData,
+                {
+                    headers: {
+                    "Content-Type": "application/json",
+                    "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
+                    },
+                }
+            );
+            return data;
+        }
+    });
+
+    // Handle Signup Form Submit.
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!isLast) {
             next();
-        } 
+        } else {
+            mutate();
+            setShowToast(true);
+        }
+    }
+
+    // Redirect upon successful sign up.
+    if (isSuccess) {
+        setTimeout(() => {router.push("/login")}, 2000);
     }
 
     return (
-
         <div className="w-full flex flex-col items-center gap-5">
+            {error && <Toast message={[401, 400, 403, 404, 409].includes(error?.response?.status) ? error?.response?.data?.message : "Something went wrong"} type="error" />}
+            {isSuccess && <Toast message={data?.message} type="success" />}
             <h3 className="font-medium w-full text-lg text-center">{isFirst ? <>Create Account</> : <>Business Information</>}</h3>
             <div className="flex gap-2 w-32 h-3 justify-center items-center text-blue-500 font-semibold">
                 <p>1</p>
@@ -93,8 +116,8 @@ export default function SignupForm() {
                         <Image src="/arrow-left.svg" alt="" width={20} height={20} />
                         <h2 className="text-sm font-semibold">Back</h2>
                     </div>}
-                    <button type="submit" className="bg-primary w-full h-full py-2 rounded-md text-white">
-                        {!isLast ? "Continue" : "Submit"}
+                    <button disabled={isPending} type="submit" className="bg-primary w-full h-full py-2 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                        {!isLast ? "Continue" : isPending ? "Submitting" : "Submit"}
                     </button>
                 </div>
             </form>

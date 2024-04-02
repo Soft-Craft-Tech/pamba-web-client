@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import GoogleAuthBTN from "../components/core/buttons/googleAuthBtn";
+import { AuthContextWrapper } from "../context/auth/authContext";
 export const metadata = {
     title: "Login - Pamba App",
     description: "Simplify Your Operations With Effortless Business Management",
@@ -20,7 +20,9 @@ export default function LoginLayout({children}) {
                         </Link>
                         <h3 className="font-medium w-max">Welcome back</h3>
                     </div>
-                    {children}
+                    <AuthContextWrapper>
+                        {children}
+                    </AuthContextWrapper>
                     <div className="flex w-full h-6 gap-2 items-center justify-center">
                         <p className="text-muted text-sm">Don &apos; t have an account? </p>
                         <Link className="text-secondary font-bold text-sm" href="/signup">Signup</Link>

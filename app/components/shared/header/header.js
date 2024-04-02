@@ -14,7 +14,7 @@ export default function Header({page}) {
                 </div>
                 <div className="h-full items-center flex gap-10 font-semibold">
                     <Link className="" href="/login">Login</Link>
-                    <Link className="bg-primary text-white px-5 py-2 rounded-lg" href="/">Sign Up</Link>
+                    <Link className="bg-primary text-white px-5 py-2 rounded-lg" href="/signup">Sign Up</Link>
                 </div>
             </div>
         </section>
