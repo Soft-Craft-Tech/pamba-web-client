@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import HeroCard from "../../core/cards/heroCard";
 import Carousel from "../../core/cards/heroCarousel";
 import { motion } from "framer-motion";
@@ -42,7 +40,7 @@ export default function Hero() {
                 {/* Borders */}
                 <div className="w-5/6 h-3/4 rounded-2xl overflow-hidden">
                     <Carousel />
-                        <HeroCard />
+                    <HeroCard />
                 </div>
             </div>
         </section>

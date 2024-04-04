@@ -9,11 +9,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    	<body className="font-manrope bg-background">
-			<Provider>
-				{children}
-			</Provider>
-      	</body>
+    	<body className="font-manrope bg-background flex flex-col items-center">
+        <div className="max-w-screen-xl">
+          <Provider>
+            {children}
+          </Provider>
+        </div>
+      </body>
     </html>
   );
 }

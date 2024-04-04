@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AuthContextWrapper } from "../context/auth/authContext";
 
 export default function RequestPasswordLayout({children}) {
     return (
@@ -12,9 +13,11 @@ export default function RequestPasswordLayout({children}) {
                         <Image className="w-36 h-auto" src="/logo.svg" alt="pamba logo" width={40} height={20} />
                     </Link>
                     <h3 className="font-semibold text-secondary text-sm">Forgot Password?</h3>
-                    <p className="text-muted text-xs font-light text-center">We will send you reset instructions to your email</p>
+                    <p className="text-muted text-xs font-light text-center">We will send you your password reset instructions in your email</p>
                 </div>
-                {children}
+                <AuthContextWrapper>
+                    {children}
+                </AuthContextWrapper>
             </div>
         </main>
     )

@@ -23,10 +23,10 @@ export default function Carousel() {
         }
     }, [activeIDX])
     return (
-            <div className="bg-background">
+            <div className="bg-background h-full">
                 {
                     carouselImages.map(image => {
-                        return <Image key={image.idx} className={activeIDX === image.idx ? "w-full h-full z-10 object-cover block": "hidden"} src={image.img} alt="barber" width={60} height={60} priority />
+                        return <Image key={image.idx} className={`${activeIDX === image.idx ? "w-full h-full z-10 object-cover block transition-all duration-1000": "hidden"}`} src={image.img} alt="pamba" width={60} height={60} priority />
                     })
                 }
             </div>

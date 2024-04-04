@@ -7,7 +7,7 @@ import CoreValues from "../components/features/about/coreValues";
 export default function AboutPage() {
     return (
         <div className="w-full">
-            <Header />
+            <Header page="about" />
             <AboutHero />
             <PambaStory />
             <CoreValues />

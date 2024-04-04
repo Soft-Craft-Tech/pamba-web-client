@@ -30,9 +30,9 @@ export default function Services() {
             <ServiceCard
                 bgWhite={false}
                 img={"/pamba-inventory-management.svg"} 
-                title="Inventory Management"
-                text="Simplify inventory tracking and control effortlessly. 
-                Stay well-stocked and prevent disruptions with our intuitive interface designed to manage inventory levels seamlessly."
+                title="Reporting and Analytics"
+                text="Easily track sales, expenses, and other key metrics vital to your business's success. 
+                Gain valuable insights at a glance, empowering informed decision-making for enhanced performance."
                 url="/"
             />
             

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ServiceCard({bgWhite, img, title, text,url}) {
+export default function ServiceCard({bgWhite, img, title, text, url}) {
     return (
         <div className={`w-full h-auto ${bgWhite && "bg-white"} grid grid-cols-2 grid-rows-1 gap-16 py-16 px-20`}>
             <div className={`flex flex-col w-full h-full justify-center gap-5 ${!bgWhite && "order-2"}`}>
