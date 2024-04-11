@@ -11,9 +11,8 @@ export default function BusinessManagement() {
         <div className="overflow-x-hidden">
             <Header page="business" />
             <ServicesHero
-                title=" Business Management the easy way"
-                text="Leave behind manual bookeeping and embrace a more organized business management style with everything online. 
-                See your sales, income, expenses side by side."
+                title=" Business Management"
+                text="Leave behind manual bookeeping and embrace a more organized business management approach with everything online. "
                 image="/pamba-dashboard.svg"
             />
             <div className="w-full h-auto bg-white p-5 flex flex-col items-center gap-16 sm:p-10 lg:p-20">
