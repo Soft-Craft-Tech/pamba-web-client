@@ -2,6 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { AuthContextWrapper } from "../context/auth/authContext";
 
+export const metadata = {
+    title: "Forgot Password - Pamba App",
+    description: "Simplify Your Operations With Effortless Business Management",
+};
 export default function RequestPasswordLayout({children}) {
     return (
         <main className="w-screen h-screen overflow-hidden relative flex justify-center items-center">

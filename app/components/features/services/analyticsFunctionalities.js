@@ -1,7 +1,7 @@
 import ServiceInfoCard from "../../core/cards/serviceInfo"
 export default function AnalyticsService() {
     return (
-        <div className="p-20 flex flex-col items-center gap-16">
+        <div className="p-5 py-10 flex flex-col items-center gap-16 sm:p-10 lg:p-20">
             <ServiceInfoCard
                 reverse={true} 
                 image="/pamba-analytics.svg"

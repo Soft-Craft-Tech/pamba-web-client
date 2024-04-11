@@ -52,9 +52,9 @@ export default function LoginForm() {
         <div className="relative">
             {error && <Toast message={[401, 400, 403, 404, 409].includes(error?.response?.status) ? error?.response?.data?.message : "Something went wrong"} type="error" />}
             {isSuccess && <Toast message={data?.message} type="success" />}
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <input ref={emailRef} className="w-full h-10 rounded-md border border-borders px-2 py-1" type="email" required name="email" placeholder="Email" />
-                <div className="w-full h-10 rounded-md border border-borders relative">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:gap-3">
+                <input ref={emailRef} className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12" type="email" required name="email" placeholder="Email" />
+                <div className="w-full h-14 rounded-md border border-borders relative lg:h-12">
                     <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
                         {!showPassword ? <Image onClick={() => {setShowPassword(prev => !prev)}} className="w-[20px] cursor-pointer" src="/eye-open.png" alt="hide password" width={24} height={24} /> :
                         <Image onClick={() => {setShowPassword(prev => !prev)}} className="w-[20px] cursor-pointer" src="/eye-closed.png" alt="show password" width={24} height={24} />}
@@ -64,7 +64,7 @@ export default function LoginForm() {
                 <div className="flex justify-end">
                     <Link href="/request-password-reset" className="text-xs font-bold text-cyan-600">Forgot Password?</Link>
                 </div>
-                <button disabled={isPending} className="text-white bg-primary rounded-md py-2 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" type="submit">{isPending ? "Loading..." : "Login"}</button>
+                <button disabled={isPending} className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" type="submit">{isPending ? "Loading..." : "Login"}</button>
             </form>
         </div>
         

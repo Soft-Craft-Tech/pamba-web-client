@@ -18,6 +18,7 @@ module.exports = {
         'muted': '#323232',
         'borders': "#D5D6D9",
         'background': "#f6f6f9",
+        'sideLinksBg': '#E3EBFC'
       },
       fontFamily: {
         'manrope': ['Manrope', 'sans-serif']

@@ -7,3 +7,6 @@ input[type="checkbox"].form-checkbox:checked {
     background-color: #DB1471;
 }
 
+.side-nav {
+    position: relative;
+}

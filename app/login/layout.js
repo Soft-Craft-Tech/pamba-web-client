@@ -9,11 +9,11 @@ export const metadata = {
 export default function LoginLayout({children}) {
     return (
         <main className="w-full h-screen overflow-hidden flex justify-center items-center bg-background">
-            <div className="w-2/3 h-5/6 grid grid-cols-2 grid-rows-1 border rounded-xl overflow-hidden gap-5 bg-white">
-                <div className="relative w-full h-full">
+            <div className="w-full h-screen flex justify-center items-center border rounded-xl overflow-hidden bg-white lg:w-2/3 lg:h-5/6 lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-5">
+                <div className="relative w-full h-full hidden lg:flex">
                     <Image className="object-cover" src="/login-img.svg" alt="pamba login" fill={true} />
                 </div>
-                <div className="p-10 text-secondary flex flex-col gap-4 items-center justify-center">
+                <div className="p-5 w-full h-auto text-secondary flex flex-col gap-10 items-center justify-center sm:w-2/3 lg:w-full lg:p-10 lg:gap-4">
                     <div className="flex flex-col items-center w-full h-auto">
                         <Link href="/">
                             <Image className="w-36 h-auto" src="/logo.svg" alt="pamba logo" width={40} height={20} />

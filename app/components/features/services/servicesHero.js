@@ -3,18 +3,18 @@ import Image from "next/image";
 
 export default function ServicesHero({title, text, image}) {
     return (
-        <div className="w-full h-auto text-white">
-            <div className="w-full h-96 bg-secondary px-20 py-16 flex flex-col items-center gap-4 relative">
-                <h1 className="w-max font-extrabold text-3xl">
+        <div className="w-full h-auto text-white mt-20">
+            <div className="w-full h-96 bg-secondary px-5 py-10 flex flex-col items-center gap-4 relative sm:px-10 lg:px-20 lg:py-16">
+                <h1 className="w-auto font-extrabold text-center text-3xl lg:w-max ">
                    {title}
                 </h1>
-                <p className="w-[50ch] text-center text-gray-300">
+                <p className="text-center text-gray-400 lg:w-[50ch]">
                     {text} 
                 </p>
                 <StartTrial />
             </div>
-            <div className="relative w-full h-96 pb-20">
-                <Image className="w-1/2 h-96 rounded-md object-contain absolute -top-20 left-1/2 transform -translate-x-1/2" src={image} alt="pamba" width={300} height={250} />
+            <div className="relative w-full h-48 pb-20 md:h-96">
+                <Image className="shadow-lg w-11/12 h-auto rounded-md object-contain absolute -top-14 left-1/2 transform -translate-x-1/2 lg:-top-20 lg:w-1/2 lg:h-96" src={image} alt="pamba" width={300} height={250} />
             </div>
         </div>
     )

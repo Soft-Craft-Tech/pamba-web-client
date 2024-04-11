@@ -1,8 +1,8 @@
 import Category from "../../core/cards/categoryCard"
 export default function CategoriesSection() {
     return (
-        <section className="px-20 pb-16 flex justify-center">
-            <div className="w-2/3 flex flex-wrap gap-6 justify-center">
+        <section className="px-5 pb-16 flex justify-center lg:px-20 lg:pb-16">
+            <div className="w-full flex flex-wrap gap-6 justify-center lg:w-2/3">
                 <Category img="/salon-icon.svg" text="Hair Salon" />
                 <Category img="/barbershop-icon.svg" text="Barbershop" />
                 <Category img="/spa-icon.svg" text="Spa" />

@@ -30,8 +30,8 @@ export default function SignupForm() {
     const {next, back, step, isFirst, isLast} = useMultipleStepForm(
         [
             <>
-                <input value={formData.email} onChange={handleInputChange}  className="border w-full h-12 py-1 px-2" type="email" name="email" required placeholder="Email" />
-                <div className="border w-full h-12 flex relative">
+                <input value={formData.email} onChange={handleInputChange}  className="border w-full h-14 py-1 px-2  lg:h-12" type="email" name="email" required placeholder="Email" />
+                <div className="border w-full h-14 flex relative  lg:h-12">
                     <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
                         {!showPassword ? <Image onClick={() => {setShowPassword(prev => !prev)}} className="w-[20px] cursor-pointer" src="/eye-open.png" alt="hide password" width={24} height={24} /> :
                         <Image onClick={() => {setShowPassword(prev => !prev)}} className="w-[20px] cursor-pointer" src="/eye-closed.png" alt="show password" width={24} height={24} />}
@@ -49,17 +49,17 @@ export default function SignupForm() {
                 </div>
             </>,
             <>
-                <input value={formData.name} onChange={handleInputChange}  className="border w-full h-12 py-1 px-2" type="text" name="name" required placeholder="Business Name" />
-                <select value={formData.category} onChange={handleInputChange} className="text-gray-400 border w-full h-12 py-1 px-2" name="category" required>
+                <input value={formData.name} onChange={handleInputChange}  className="border w-full h-14 py-1 px-2 lg:h-12" type="text" name="name" required placeholder="Business Name" />
+                <select value={formData.category} onChange={handleInputChange} className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12" name="category" required>
                     <option value="">Business Category</option>
                     <option value="Salon">Salon</option>
                     <option value="SPA">Spa</option>
                     <option value="Barbershop">Barbershop</option>
                 </select>
-                <input value={formData.phone} onChange={handleInputChange} className="border w-full h-12 py-1 px-2" type="text" name="phone" required placeholder="Phone Number" />
-                <input value={formData.city} onChange={handleInputChange} className="border w-full h-12 py-1 px-2" type="text" name="city" required placeholder="City" />
-                <input value={formData.mapUrl} onChange={handleInputChange} className="border w-full h-12 py-1 px-2" type="url" name="mapUrl" required placeholder="Map URL" />
-                <textarea value={formData.location} onChange={handleInputChange} className="border w-full h-12 py-1 px-2 resize-none rows-2"name="location" required placeholder="Describe location" />
+                <input value={formData.phone} onChange={handleInputChange} className="border w-full h-14 py-1 px-2  lg:h-12" type="text" name="phone" required placeholder="Phone Number" />
+                <input value={formData.city} onChange={handleInputChange} className="border w-full h-14 py-1 px-2  lg:h-12" type="text" name="city" required placeholder="City" />
+                <input value={formData.mapUrl} onChange={handleInputChange} className="border w-full h-14 py-1 px-2  lg:h-12" type="url" name="mapUrl" required placeholder="Map URL" />
+                <textarea value={formData.location} onChange={handleInputChange} className="border w-full h-14 py-1 px-2 resize-none rows-2  lg:h-12"name="location" required placeholder="Describe location" />
             </>
         ]
     );
@@ -96,7 +96,7 @@ export default function SignupForm() {
     }
 
     return (
-        <div className="w-full flex flex-col items-center gap-5">
+        <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
             {error && <Toast message={[401, 400, 403, 404, 409].includes(error?.response?.status) ? error?.response?.data?.message : "Something went wrong"} type="error" />}
             {isSuccess && <Toast message={data?.message} type="success" />}
             <h3 className="font-medium w-full text-lg text-center">{isFirst ? <>Create Account</> : <>Business Information</>}</h3>
@@ -108,7 +108,7 @@ export default function SignupForm() {
                 <p>2</p>
             </div>
             <form onSubmit={handleSubmit} className="p-3 w-full flex flex-col gap-4">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-5 lg:gap-4">
                     {step}
                 </div>
                 <div className="flex h-auto w-full">
@@ -116,7 +116,7 @@ export default function SignupForm() {
                         <Image src="/arrow-left.svg" alt="" width={20} height={20} />
                         <h2 className="text-sm font-semibold">Back</h2>
                     </div>}
-                    <button disabled={isPending} type="submit" className="bg-primary w-full h-full py-2 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button disabled={isPending} type="submit" className="bg-primary w-full h-full py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                         {!isLast ? "Continue" : isPending ? "Submitting" : "Submit"}
                     </button>
                 </div>
