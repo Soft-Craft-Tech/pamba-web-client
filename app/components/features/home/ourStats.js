@@ -20,7 +20,7 @@ export default function OurStats() {
                 </div>
                 <div className='w-full flex flex-col items-center gap-2'>
                     <div className="w-10 h-10 rounded-sm bg-[#EFE5ED] flex justify-center items-center">
-                        <Image className="w-6 h-7" src="/user-group.svg" alt="users-icon" width={30} height={24} />
+                        <Image className="w-6 h-7" src="/user-icons/users-icon.svg" alt="users-icon" width={30} height={24} />
                     </div>
                     <h2 className="text-3xl text-primary font-extrabold sm:text-5xl">
                         1000+
