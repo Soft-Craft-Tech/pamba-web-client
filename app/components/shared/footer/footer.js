@@ -40,9 +40,8 @@ export default function Footer() {
                     <div className="flex flex-col gap-3">
                         <h3 className="font-extrabold text-lg lg:text-sm">Legal</h3>
                         <div className="text-sm font-semibold text-gray-300 flex flex-col gap-1 lg:text-xs">
-                            <Link href="#">Privacy Policy</Link>
-                            <Link href="#">Terms of Use</Link>
-                            <Link href="#">Cookies Policy</Link>
+                            <Link href="/privacy-policy">Privacy Policy</Link>
+                            <Link href="/privacy-policy">Terms of Use</Link>
                         </div>
                     </div>
                 </div>

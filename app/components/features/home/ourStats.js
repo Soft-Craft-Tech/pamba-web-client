@@ -9,16 +9,8 @@ export default function OurStats() {
 				header={"We are trusted by"}
 			/>
             <div className="flex ">
-                <div className='w-full border-r border-borders flex flex-col items-center gap-3'>
-                    <div className="w-10 h-10 rounded-sm bg-[#EFE5ED] flex justify-center items-center">
-                        <Image className="w-6 h-7" src="/briefcase.svg" alt="briefcase-icon" width={30} height={24} />
-                    </div>
-                    <h2 className="text-3xl text-primary font-extrabold sm:text-5xl">
-                        300+
-                    </h2>
-                    <p className="text-primary">Businesses</p>
-                </div>
-                <div className='w-full flex flex-col items-center gap-2'>
+                
+                <div className='w-full flex flex-col items-center gap-2  border-r border-borders'>
                     <div className="w-10 h-10 rounded-sm bg-[#EFE5ED] flex justify-center items-center">
                         <Image className="w-6 h-7" src="/user-icons/users-icon.svg" alt="users-icon" width={30} height={24} />
                     </div>
@@ -26,6 +18,15 @@ export default function OurStats() {
                         1000+
                     </h2>
                     <p className="text-primary">App users</p>
+                </div>
+                <div className='w-full flex flex-col items-center gap-3'>
+                    <div className="w-10 h-10 rounded-sm bg-[#EFE5ED] flex justify-center items-center">
+                        <Image className="w-6 h-7" src="/briefcase.svg" alt="briefcase-icon" width={30} height={24} />
+                    </div>
+                    <h2 className="text-3xl text-primary font-extrabold sm:text-5xl">
+                        300+
+                    </h2>
+                    <p className="text-primary">Businesses</p>
                 </div>
             </div>
         </section>
