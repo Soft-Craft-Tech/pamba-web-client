@@ -16,7 +16,7 @@ export default function UploadProfileImg() {
 
     // Mutate Data
     const {mutate, error, isPending, data, isSuccess} = usePutRequest(
-        "http://127.0.0.1:5000/API/businesses/upload-profile-img",
+        "${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/upload-profile-img",
         {imageURL: imgUrl},
         true,
         handleNext
@@ -29,7 +29,7 @@ export default function UploadProfileImg() {
     }
 
     return (
-        <div className="w-full h-auto flex flex-col gap-5 px-20 py-10 ">
+        <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 ">
             {isSuccess && <Toast message={data?.message} type="success" />}
             {error && <Toast message={[401, 400, 403, 404, 409].includes(error?.response?.status) ? error?.response?.data?.message : "Something went wrong"} type="error" />}
             <ProfileProgress />
@@ -40,14 +40,14 @@ export default function UploadProfileImg() {
                         sources: ['local', 'url', 'google_drive', 'dropbox'],
                         multiple: false
                     }}
-                    uploadPreset="pamba_test">
-                        {({ open }) => {
-                        return (
-                            <button className={`font-light text-lg px-5 py-2 rounded-md bg-white w-full h-40 border border-dashed ${imgUrl ? 'text-green-500 border-green-500' : 'text-primary border-primary'}`} onClick={() => open()}>
-                            {imgUrl ? "Upload Successful" : "Upload your profile Image" }
-                            </button>
-                        );
-                        }}
+                    uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}>
+                    {({ open }) => {
+                    return (
+                        <button className={`font-light text-lg px-5 py-2 rounded-md bg-white w-full h-40 border border-dashed ${imgUrl ? 'text-green-500 border-green-500' : 'text-primary border-primary'}`} onClick={() => open()}>
+                        {imgUrl ? "Upload Successful" : "Upload your profile Image" }
+                        </button>
+                    );
+                    }}
                 </CldUploadWidget>
             </div>
             <div className="w-full h-10 flex justify-end">

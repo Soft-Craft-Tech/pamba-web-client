@@ -13,7 +13,7 @@ export default function RequestResetForm() {
     const {mutate, error, isPending, data, isSuccess} = useMutation({
         mutationFn: async () => {
             const { data } = await axios.post(
-                "https://pamba-web.onrender.com/API/businesses/request-password-reset",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/request-password-reset`,
                 {
                     email: emailRef.current.value
                 },

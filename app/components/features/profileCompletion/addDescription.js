@@ -16,7 +16,7 @@ export default function BusinessDescription() {
 
     // Mutate Data
     const {mutate, error, isPending, data, isSuccess} = usePutRequest(
-        "http://127.0.0.1:5000/API/businesses/update-description",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/update-description`,
         businessDescription,
         true,
         handleNext
@@ -33,11 +33,11 @@ export default function BusinessDescription() {
         }
     }
     return (
-        <div className="w-full h-auto flex flex-col gap-5 px-20 py-10">
+        <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 overflow-x-hidden">
             {error && <Toast message={[401, 400, 403, 404, 409].includes(error?.response?.status) ? error?.response?.data?.message : "Something went wrong"} type="error" />}
             <ProfileProgress />
-            <div className="flex flex-col gap-5 w-96 max-h-96 p-10 border bg-white">
-                <h3>Tell us About your Business</h3>
+            <div className="flex flex-col gap-5 w-full max-h-96 p-10 border bg-white lg:w-96">
+                <h3>Tell us about your Business</h3>
                 <form className="flex flex-col gap-3">
                     <TextField
                         required

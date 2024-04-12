@@ -42,9 +42,9 @@ export default function SignupForm() {
                     <input checked={termsAccepted} onChange={acceptTerms}  className="w-6 h-6 form-checkbox" type="checkbox" name="acceptedTerms" required />
                     <span className="text-sm">
                         Accept
-                        <Link className="text-blue-500" href="#"> Terms and Conditions </Link>
+                        <Link className="text-blue-500" href="/privacy-policy"> Terms and Conditions </Link>
                         and 
-                        <Link className="text-blue-500" href="#"> Privacy Policy</Link>
+                        <Link className="text-blue-500" href="/privacy-policy"> Privacy Policy</Link>
                     </span>
                 </div>
             </>,
@@ -66,7 +66,7 @@ export default function SignupForm() {
     const { mutate, error, isPending, data, isSuccess } = useMutation({
         mutationFn: async () => {
             const { data } = await axios.post(
-                "https://pamba-web.onrender.com/API/businesses/signup",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/signup`,
                 formData,
                 {
                     headers: {

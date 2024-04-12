@@ -35,7 +35,7 @@ export default function AddServicesForm({data}) {
         setService({id: "", price: ""});
     }
     return (
-        <div className="flex flex-col gap-5 min-w-96 max-h-96 p-10 border bg-white shadow-sm">
+        <div className="flex flex-col gap-5 w-full max-h-96 p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
                     <h3>What Services do you offer?</h3>
                     <form onSubmit={addServices} className="flex flex-col gap-3">
                         <FormControl fullWidth>
@@ -62,7 +62,7 @@ export default function AddServicesForm({data}) {
                             value={service.price}
                             onChange={handleChange}
                         />
-                        <button className="py-2 px-10 bg-secondary text-white h-max rounded-md">Add</button>
+                        <button className="py-3 px-10 bg-secondary text-white h-max rounded-md">Add</button>
                     </form>
                 </div>
     )

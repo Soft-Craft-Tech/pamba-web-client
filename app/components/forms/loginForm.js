@@ -18,7 +18,7 @@ export default function LoginForm() {
     const {mutate, error, isPending, data, isSuccess} = useMutation({
         mutationFn: async () => {
             const { data } = await axios.post(
-                "https://pamba-web.onrender.com/API/businesses/login",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/login`,
                 {},
                 {
                     headers: {

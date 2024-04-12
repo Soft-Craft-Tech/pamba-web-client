@@ -16,7 +16,7 @@ export default function PasswordResetForm({token}) {
     const {mutate, error, isPending, data, isSuccess} = useMutation({
         mutationFn: async () => {
             const { data } = await axios.put(
-                `http://127.0.0.1:5000/API/businesses/reset-password/${token}`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/reset-password/${token}`,
                 {
                     password: passwordRef.current.value
                 },

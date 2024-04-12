@@ -13,7 +13,7 @@ export default function AddServices() {
     const {setStep, queuedServices, setQueuedServices} = useContext(CompleteProfileContext);
 
     // Load Services
-    const {data, error} = useGetRequest("http://127.0.0.1:5000/API/services/fetch_all");
+    const {data, error} = useGetRequest(`${process.env.NEXT_PUBLIC_BASE_URL}/API/services/fetch_all`);
 
     // Next Step
     const handleNext = () => {
@@ -22,7 +22,7 @@ export default function AddServices() {
 
     //  Post Queued Service
     const {postFn, requestError, requestPending} = usePostRequest(
-        "http://127.0.0.1:5000/API/businesses/assign-services",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/assign-services`,
         {services: queuedServices},
         true,
         handleNext
@@ -41,16 +41,16 @@ export default function AddServices() {
     }
 
     return (
-        <div className="w-full h-auto flex flex-col gap-5 px-20 py-10 ">
+        <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 ">
             {requestError && <Toast message={[401, 400, 403, 404, 409].includes(requestError?.response?.status) ? requestError?.response?.data?.message : "Something went wrong"} type="error" />}
             <ProfileProgress />
-            <div className="flex gap-10 w-full">
+            <div className="flex gap-10 w-full flex-col md:flex-row">
                 <AddServicesForm data={data} />
-                {queuedServices.length > 0 && <div className="w-full h-full p-7 bg-white flex gap-3 flex-wrap">
+                {queuedServices.length > 0 && <div className="w-full h-full p-4 bg-white flex gap-3 flex-wrap lg:p-7">
                     {
                         queuedServices.map((service, index) => {
                         {return <div  key={uniqid()} className="rounded-md bg-secondary px-4 py-2 text-white w-max h-auto flex flex-col gap-1">
-                                <div className="flex gap-5 items-center font-semibold">
+                                <div className="flex gap-3 items-center font-semibold">
                                     {/* Display services */}
                                     {data.services.filter(item => {return item.id === service.id})[0].service}
                                     <AiOutlineClose onClick={() => {removeService(index)}} size={20} className="cursor-pointer hover:text-primary" />

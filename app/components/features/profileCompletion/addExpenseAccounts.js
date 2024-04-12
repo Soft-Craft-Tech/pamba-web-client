@@ -20,7 +20,7 @@ export default function AddExpenseAccounts() {
 
     //  Post Queued Service
     const {postFn, requestError, requestPending} = usePostRequest(
-        "http://127.0.0.1:5000/API/accounts/create-account",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/API/accounts/create-account`,
         {accounts:  queuedExpenses},
         true,
         handleNext
@@ -53,11 +53,11 @@ export default function AddExpenseAccounts() {
     }
 
     return (
-        <div className="w-full h-auto flex flex-col gap-5 px-20 py-10">
+        <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20">
             {requestError && <Toast message={[401, 400, 403, 404, 409].includes(requestError?.response?.status) ? requestError?.response?.data?.message : "Something went wrong"} type="error" />}
             <ProfileProgress />
-            <div className="w-full flex gap-10">
-                <div className="flex flex-col gap-5 min-w-96 max-h-96 p-10 border bg-white">
+            <div className="flex gap-10 w-full flex-col md:flex-row">
+                <div className="flex flex-col gap-5 w-full max-h-96 p-5 border bg-white lg:p-10 lg:min-w-96">
                     <h3>Create your Business&apos;s Expense Accounts</h3>
                     <form onSubmit={submitExpense} className="flex flex-col gap-3">
                         <TextField
@@ -78,10 +78,10 @@ export default function AddExpenseAccounts() {
                             value={addedAccount.description}
                             onChange={handleChange}
                         />
-                        <button className="py-2 px-10 bg-secondary text-white h-max rounded-md">Add</button>
+                        <button className="py-3 px-10 bg-secondary text-white h-max rounded-md">Add</button>
                     </form>
                 </div>
-                {queuedExpenses.length > 0 && <div className="w-full h-full p-7 bg-white flex gap-3 flex-wrap">
+                {queuedExpenses.length > 0 && <div className="w-full h-full p-4 bg-white flex gap-3 flex-wrap lg:p-7">
                     {
                         queuedExpenses.map((item, index) => {
                             {return <div key={uniqid()} className="flex gap-3 items-center w-max h-auto rounded-md bg-secondary px-4 py-2 text-white">
@@ -90,7 +90,6 @@ export default function AddExpenseAccounts() {
                             </div>
                         }})
                     }
-                    
                 </div>}
             </div>
             <div className="w-full h-10 flex justify-end">

@@ -56,7 +56,7 @@ export default function Header({page}) {
                                 <Link className="bg-primary text-white px-5 py-2 rounded-lg" href="/signup">Sign Up</Link>
                             </> : 
                             <>
-                                <button type="button" onClick={logOut}>Logout</button>
+                                <button className="border-[0.1px] border-primary text-primary px-5 py-2 rounded-lg lg:border-none lg:text-secondary" type="button" onClick={logOut}>Logout</button>
                                 <Link className="bg-primary text-white px-5 py-2 rounded-lg" href="#">Dashboard</Link>  
                             </>
                         }
