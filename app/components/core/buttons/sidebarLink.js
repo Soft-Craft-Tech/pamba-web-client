@@ -3,7 +3,7 @@ import Image from "next/image";
 import {useContext} from "react";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
-import { UserContext } from "@/app/context/userAccount/userAccountContext";
+import { UserContext } from "@/app/context/userAccount/userAccountSharedContext";
 
 // All other sidebar nav links
 export default function SideBarLink({link, name, image}) {
