@@ -1,4 +1,4 @@
-import KPI from "../../core/cards/KPICards";
+import KPI from "../cards/KPICards";
 export default function Overview() {
     return (
         <div className="flex w-full h-60 gap-5">

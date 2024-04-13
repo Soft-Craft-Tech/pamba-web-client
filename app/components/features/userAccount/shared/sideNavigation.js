@@ -1,5 +1,5 @@
 "use client";
-import SideBarLink, {Logout} from "../../core/buttons/sidebarLink";
+import SideBarLink, {Logout} from "../../../core/buttons/sidebarLink";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "universal-cookie";
@@ -23,7 +23,7 @@ export default function SideNav() {
                 <SideBarLink link={`/user/${username}/services`} name="Services" image="/user-icons/services.svg" />
                 <SideBarLink link={`/user/${username}/expenses`} name="Expenses" image="/user-icons/expenses.svg" />
                 <SideBarLink link={`/user/${username}/inventory`} name="Inventory" image="/user-icons/inventory.svg" />
-                <SideBarLink link={`/user/${username}/settings`} name="Settings" image="/user-icons/settings.svg" />
+                <SideBarLink link={`/user/${username}/reviews`} name="Reviews" image="/user-icons/settings.svg" />
             </div>
             <div className="">
                 <Logout />

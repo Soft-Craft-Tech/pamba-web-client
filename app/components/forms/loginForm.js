@@ -7,6 +7,7 @@ import { AuthPageContext } from "@/app/context/auth/authContext";
 import Toast from "../shared/toasts/authToast";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { useRouter } from "next/navigation";
 
 
 export default function LoginForm() {
@@ -14,6 +15,7 @@ export default function LoginForm() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const cookies = new Cookies();
+    const router = useRouter();
 
     const {mutate, error, isPending, data, isSuccess} = useMutation({
         mutationFn: async () => {
@@ -39,13 +41,12 @@ export default function LoginForm() {
         e.preventDefault();
         mutate();
         setShowToast(true);
-        
-        // Redirect to dashboard
     }
 
     if (isSuccess) {
         cookies.set("token", data?.authToken, {path: "/", sameSite: "None", secure:true});
         cookies.set("username", data?.client?.slug, {path: "/", sameSite: "None", secure:true});
+        router.push(`/user/${data?.client?.slug}/dashboard`);
     }
     
     return (

@@ -20,7 +20,7 @@ export default function Hero() {
     }
 
     return (
-        <section className="px-5 h-auto flex gap-5 py-10 mt-20 mb-10 sm:h-screen sm:py-10 sm:mb-20 sm:px-10 lg:gap-10 lg:px-20 lg:grid lg:grid-cols-9 ">
+        <section className="px-5 h-auto flex flex-col gap-6 py-10 mt-20 mb-10 sm:py-10 sm:mb-20 sm:px-10 sm:gap-10 lg:h-screen lg:px-20 lg:grid lg:grid-cols-9 ">
             <motion.div initial="hidden" animate="visible" variants={variants} className="flex flex-col justify-center gap-6 sm:gap-4 lg:col-span-5">
                 <h1 className="font-extrabold text-5xl leading-tight text-secondary sm:font-extrabold sm:text-6xl md:text-8xl xl:text-5xl" >
                     <span className="text-primary">Simplify</span> Your Operations With <span className="text-primary">Effortless</span> Business Management
@@ -31,14 +31,14 @@ export default function Hero() {
                 </p>
                 <StartTrial />
             </motion.div>
-            <div className="col-span-4 w-full h-full relative hidden items-center justify-center lg:flex">
+            <div className="col-span-4 w-full h-full relative items-center justify-center flex">
                 {/* Borders */}
-                <div className="w-3/4 h-3/4 border-2 border-primary rounded-3xl absolute top-0 left-0 -z-10">
+                <div className="w-3/4 h-3/4 border-2 border-primary rounded-3xl absolute top-0 left-0 -z-10 hidden lg:block">
                 </div>
-                <div className="w-1/2 h-3/4 border-2 border-primary rounded-3xl absolute right-0 bottom-0 -z-10">
+                <div className="w-1/2 h-3/4 border-2 border-primary rounded-3xl hidden absolute right-0 bottom-0 -z-10 lg:block">
                 </div>
                 {/* Borders */}
-                <div className="w-5/6 h-3/4 rounded-2xl overflow-hidden">
+                <div className="w-full h-72 rounded-2xl overflow-hidden lg:w-11/12 sm:h-3/4">
                     <Carousel />
                     <HeroCard />
                 </div>
