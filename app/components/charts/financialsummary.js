@@ -51,12 +51,12 @@ const options = {
   grid: {
     xaxis: {
       lines: {
-        show: true,
+        show: false,
       },
     },
     yaxis: {
       lines: {
-        show: true,
+        show: false,
       },
     },
   },
@@ -80,7 +80,7 @@ const options = {
       "Dec",
     ],
     axisBorder: {
-      show: false,
+      show: true,
     },
     axisTicks: {
       show: false,
@@ -91,6 +91,9 @@ const options = {
       style: {
         fontSize: "0px",
       },
+    },
+    axisBorder: {
+      show: true,
     },
     min: 0,
     max: 100,
