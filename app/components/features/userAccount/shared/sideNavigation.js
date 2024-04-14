@@ -9,8 +9,8 @@ export default function SideNav() {
     const cookies = new Cookies();
     const username = cookies.get("username");
     return (
-        <div className={`absolute w-full top-full left-0 px-5 gap-5 bg-white ${mobileSidebar ? 'flex flex-col' : 'hidden lg:flex'} lg:flex lg:flex-col lg:relative lg:px-0 lg:left-0 lg:top-0`}>
-            <div className="flex flex-col gap-1">
+        <div className={`absolute w-full top-full left-0 px-5 z-10 gap-5 bg-white ${mobileSidebar ? 'flex flex-col' : 'hidden lg:flex'} lg:flex lg:flex-col lg:relative lg:px-0 lg:left-0 lg:top-0`} >
+            <div className="flex flex-col gap-1" >
                 <SideBarLink link={`/user/${username}/dashboard`} name="Dashboard" image="/user-icons/dashboard.svg" />
                 <SideBarLink link={`/user/${username}/sheduling`} name="Sheduling" image="/user-icons/calendar.svg" />
                 <SideBarLink link={`/user/${username}/revenue`} name="Revenue" image="/user-icons/revenue.svg" />
@@ -21,7 +21,7 @@ export default function SideNav() {
                 <SideBarLink link={`/user/${username}/inventory`} name="Inventory" image="/user-icons/inventory.svg" />
                 <SideBarLink link={`/user/${username}/reviews`} name="Reviews" image="/user-icons/settings.svg" />
             </div>
-            <div className="">
+            <div className="" >
                 <Logout />
             </div>
         </div>
