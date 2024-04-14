@@ -1,5 +1,4 @@
 import Overview from "@/app/components/features/userAccount/dashboard/overview";
-import Overview from "@/app/components/features/dashboard/overview";
 import FinancialSummary from "@/app/components/charts/financialsummary";
 import AppointmentsTable from "@/app/components/charts/appointments";
 import AppointmentsCard from "@/app/components/charts/chartCard";
