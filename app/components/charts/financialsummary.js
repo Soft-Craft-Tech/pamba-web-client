@@ -83,7 +83,7 @@ const options = {
       show: true,
     },
     axisTicks: {
-      show: false,
+      show: true,
     },
   },
   yaxis: {
@@ -93,6 +93,9 @@ const options = {
       },
     },
     axisBorder: {
+      show: true,
+    },
+    axisTicks: {
       show: true,
     },
     min: 0,
