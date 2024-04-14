@@ -7,11 +7,14 @@ export const UserContext = createContext();
 // Provider
 export const UserContextProvider = ({children}) => {
     const [activePage, setActivePage] = useState("Dashboard");
+    const [mobileSidebar, setMobileSidebar] = useState(false);
     return (
         <UserContext.Provider
             value={{
                 activePage,
-                setActivePage
+                setActivePage,
+                mobileSidebar,
+                setMobileSidebar
             }}
         >
             {children}

@@ -1,19 +1,15 @@
 "use client";
-import SideBarLink, {Logout} from "../../../core/buttons/sidebarLink";
-import Image from "next/image";
-import Link from "next/link";
+import SideBarLink, {Logout} from "./sidebarLink";
 import Cookies from "universal-cookie";
+import { UserContext } from "@/app/context/userAccount/userAccountSharedContext";
+import { useContext } from "react";
 
 export default function SideNav() {
+    const {mobileSidebar} = useContext(UserContext);
     const cookies = new Cookies();
     const username = cookies.get("username");
     return (
-        <div className="fixed w-72 h-screen flex flex-col gap-5 top-0 left-0 p-5  bg-white shadow-sm">
-            <div>
-                <Link href="/">
-                    <Image className="w-32 h-auto" src="/logo.svg" alt="pamba logo" width={40} height={20} />
-                </Link>
-            </div>
+        <div className={`absolute w-full top-full left-0 px-5 gap-5 bg-white ${mobileSidebar ? 'flex flex-col' : 'hidden lg:flex'} lg:flex lg:flex-col lg:relative lg:px-0 lg:left-0 lg:top-0`}>
             <div className="flex flex-col gap-1">
                 <SideBarLink link={`/user/${username}/dashboard`} name="Dashboard" image="/user-icons/dashboard.svg" />
                 <SideBarLink link={`/user/${username}/sheduling`} name="Sheduling" image="/user-icons/calendar.svg" />

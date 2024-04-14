@@ -21,13 +21,13 @@ export const Logout = () => {
     const router = useRouter();
 
     const logOut = () => {
-        cookies.remove("token", data?.authToken, {path: "/", sameSite: "None", secure:true});
-        cookies.remove("username", data?.client?.slug, {path: "/", sameSite: "None", secure:true});
+        cookies.remove("token", {path: "/", sameSite: "None", secure:true});
+        cookies.remove("username", {path: "/", sameSite: "None", secure:true});
         router.push("/");
     }
 
     return (
-        <div onClick={logOut} className="w-full h-8 flex  gap-3  items-center rounded-sm py-5 px-3">
+        <div onClick={logOut} className="w-full h-8 flex  gap-3  items-center rounded-sm py-5 px-3 cursor-pointer">
             <Image className="w-[20px] h-[20px]" src="/user-icons/logout.svg" alt="Pamba" width={24} height={24}/>
             <p className="font-medium text-sm text-secondary">Logout</p>
         </div>

@@ -9,8 +9,8 @@ export default function CTA() {
                 Join us Today 
             </h2>
             <StartTrial />
-            <Image className="absolute left-0 top-1/2 transform -translate-y-1/2 h-72"  src="/rectangles-left.svg" alt="" width={200} height={250} />
-            <Image className="absolute right-0 top-1/2 transform -translate-y-1/2 h-72" src="/rectangles-right.svg" alt="" width={200} height={250} />
+            <Image className="absolute left-0 top-1/2 transform -translate-y-1/2 h-72 -z-10"  src="/rectangles-left.svg" alt="" width={200} height={250} />
+            <Image className="absolute right-0 top-1/2 transform -translate-y-1/2 h-72 -z-10" src="/rectangles-right.svg" alt="" width={200} height={250} />
         </section>
     )
 }
