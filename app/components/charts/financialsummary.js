@@ -163,36 +163,27 @@ const FinancialSummary = () => {
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5  sm:px-7.5 xl:col-span-8">
-      <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        <div className="flex w-full flex-wrap gap-3 sm:gap-5">
-          <div className="flex min-w-47.5">
-            <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
+      <div className="flex flex-wrap w-full  items-center pt-10 justify-between gap-3 sm:flex-nowrap">
+        <p>Financial Summary</p>
+        <div className="flex flex-wrap gap-3 sm:gap-5">
+          <div className="flex">
+            <span className="mr-3 mt-1 flex h-4 w-full items-center justify-center rounded-full border border-primary">
+              <span className="block w-full rounded-full bg-primary"></span>
             </span>
-            <p className="font-semibold text-primary">Revenue</p>
+            <div>
+              <p className="font-semibold text-primary">Revenue</p>
+            </div>
           </div>
-          <div className="flex min-w-47.5">
+          <div className="flex">
             <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-secondary">
               <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-secondary"></span>
             </span>
-            <p className="font-semibold text-secondary">Expenses</p>
-          </div>
-        </div>
-        <div className="flex w-full max-w-45 justify-end">
-          <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-              Day
-            </button>
-            <button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Week
-            </button>
-            <button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Month
-            </button>
+            <div>
+              <p className="font-semibold text-secondary">Expenses</p>
+            </div>
           </div>
         </div>
       </div>
-
       <div>
         <div id="chartOne" className="-ml-5">
           <ReactApexChart
