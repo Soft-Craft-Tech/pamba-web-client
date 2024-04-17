@@ -23,7 +23,7 @@ export default function PambaFAQS() {
   return (
     <div className="flex flex-col gap-5 p-5 items-center  bg-white sm:p-10 lg:p-20">
       <h2 className="text-4xl font-extrabold w-max">FAQs</h2>
-      <div className="flex flex-col justify-center items-center gap-5 w-full lg:w-2/3">
+      <div className="flex flex-col justify-center items-ceuninter gap-5 w-full lg:w-2/3">
         {expanders.map((expander) => (
           <div
             key={expander.id}
