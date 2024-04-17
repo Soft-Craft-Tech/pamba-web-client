@@ -28,7 +28,7 @@ export default function Header({ page }: { page: string }) {
     if (token) {
       setIsLoggedIn(true);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, token]);
 
   return (
     <header className="fixed top-0 left-0 w-full h-20 flex items-center justify-center border-b-[0.5px] border-borders z-20">
