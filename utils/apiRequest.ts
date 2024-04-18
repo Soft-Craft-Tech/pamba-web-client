@@ -6,7 +6,7 @@ export const apiCall = (
   method: Method,
   url: string,
   body: any,
-  headers = {}
+  headers: {}
 ) => {
   const accessToken = getUser()?.accessToken || "";
   return axiosInstance({
