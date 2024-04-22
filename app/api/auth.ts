@@ -1,16 +1,16 @@
+import { SignUpFormData } from "@/components/types";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
 import { useMutation } from "react-query";
 
-export const login = async ({
-  username,
-  password,
-}: {
-  username: string;
-  password: string;
-}) => {
-  return apiCall("POST", endpoints.login, {}, { username, password });
+export const useSignUpMutation = () => {
+  return useMutation<void, Error, SignUpFormData>(
+    async (formData: SignUpFormData) => {
+      const response = await apiCall("POST", endpoints.signup, formData, {});
+      return response.data;
+    }
+  );
 };
 
 export const loginRequest = async (email: string, password: string) => {

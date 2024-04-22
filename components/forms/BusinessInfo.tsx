@@ -4,12 +4,43 @@ import { useAppDispatch } from "@/hooks";
 import { prevStep } from "@/store/signUpSlice";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
+import { useSignUpMutation } from "@/app/api/auth";
+import { useRouter } from "next/navigation";
 
 const BusinessInfo = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const {
     signUp: { email, password, acceptedTerms },
   } = useSelector((state: RootState) => state);
+  const { mutateAsync, isLoading, isSuccess } = useSignUpMutation();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const businessData = {
+      email,
+      password,
+      acceptedTerms,
+      name: formData.get("name") as string,
+      category: formData.get("category") as string,
+      phone: formData.get("phone") as string,
+      city: formData.get("city") as string,
+      mapUrl: formData.get("mapUrl") as string,
+      location: formData.get("location") as string,
+    };
+
+    try {
+      await mutateAsync(businessData);
+    } catch (error) {}
+  };
+
+  if (isSuccess) {
+    setTimeout(() => {
+      router.push("/login");
+    }, 1000);
+  }
 
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
@@ -23,17 +54,10 @@ const BusinessInfo = () => {
         </div>
         <p>2</p>
       </div>
-      <form
-        onSubmit={() => {
-          console.log("Here");
-        }}
-        className="p-3 w-full flex flex-col gap-4"
-      >
+      <form onSubmit={handleSubmit} className="p-3 w-full flex flex-col gap-4">
         <div className="flex flex-col gap-5 lg:gap-4">
           <>
             <input
-              // value={formData.name}
-              // onChange={handleInputChange}
               className="border w-full h-14 py-1 px-2 lg:h-12"
               type="text"
               name="name"
@@ -41,8 +65,6 @@ const BusinessInfo = () => {
               placeholder="Business Name"
             />
             <select
-              // value={formData.category}
-              // onChange={handleInputChange}
               className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
               name="category"
               required
@@ -53,8 +75,6 @@ const BusinessInfo = () => {
               <option value="Barbershop">Barbershop</option>
             </select>
             <input
-              // value={formData.phone}
-              // onChange={handleInputChange}
               className="border w-full h-14 py-1 px-2  lg:h-12"
               type="text"
               name="phone"
@@ -62,8 +82,6 @@ const BusinessInfo = () => {
               placeholder="Phone Number"
             />
             <input
-              // value={formData.city}
-              // onChange={handleInputChange}
               className="border w-full h-14 py-1 px-2  lg:h-12"
               type="text"
               name="city"
@@ -71,8 +89,6 @@ const BusinessInfo = () => {
               placeholder="City"
             />
             <input
-              // value={formData.mapUrl}
-              // onChange={handleInputChange}
               className="border w-full h-14 py-1 px-2  lg:h-12"
               type="url"
               name="mapUrl"
@@ -80,8 +96,6 @@ const BusinessInfo = () => {
               placeholder="Map URL"
             />
             <textarea
-              // value={formData.location}
-              // onChange={handleInputChange}
               className="border w-full h-14 py-1 px-2 resize-none rows-2  lg:h-12"
               name="location"
               required
@@ -103,7 +117,7 @@ const BusinessInfo = () => {
             type="submit"
             className="bg-primary w-full h-full py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Continue
+            {isLoading ? "Submitting" : "Submit"}
           </button>
         </div>
       </form>

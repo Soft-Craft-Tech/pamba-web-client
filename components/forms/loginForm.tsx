@@ -1,5 +1,5 @@
 "use client";
-import { loginRequest } from "@/store/api/loginApi";
+import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
 import { useState } from "react";
 
