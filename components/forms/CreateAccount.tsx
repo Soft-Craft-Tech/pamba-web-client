@@ -13,7 +13,7 @@ const CreateAccount = () => {
       <div className="flex gap-2 w-32 h-3 justify-center items-center text-blue-500 font-semibold">
         <p>1</p>
         <div className="w-24 h-[3px] bg-blue-200 flex justify-start items-center text-center">
-          <div className={`h-[3px] bg-blue-600  "w-1/2"}`}></div>
+          <div className={`h-[3px] bg-blue-600 "w-1/2"}`}></div>
         </div>
         <p>2</p>
       </div>
@@ -64,12 +64,10 @@ const CreateAccount = () => {
               <span className="text-sm">
                 Accept
                 <Link className="text-blue-500" href="/privacy-policy">
-                  {" "}
-                  Terms and Conditions{" "}
+                  Terms and Conditions
                 </Link>
                 and
                 <Link className="text-blue-500" href="/privacy-policy">
-                  {" "}
                   Privacy Policy
                 </Link>
               </span>
