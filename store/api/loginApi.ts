@@ -13,22 +13,5 @@ export const login = async ({
 };
 
 export const useLoginMutation = () => {
-  console.log("Here");
   return useMutation(login);
 };
-
-// const [username, setEmail] = useState('');
-// const [password, setPassword] = useState('');
-
-// // Call the useLoginMutation hook to get the mutation function and state
-// const [loginMutation, { isLoading, error, data }] = useLoginMutation();
-
-// const handleLogin = async () => {
-//   try {
-//     // Call the login mutation function with the username and password
-//     await loginMutation({ username, password });
-//     // Handle successful login (redirect, show success message, etc.)
-//   } catch (error) {
-//     // Handle login error
-//   }
-// };

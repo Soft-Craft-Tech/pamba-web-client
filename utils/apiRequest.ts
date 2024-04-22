@@ -13,14 +13,14 @@ export const apiCall = (
     url,
     data: body,
     method,
-    headers: { ...headers, Authorization: `Bearer ${accessToken}` },
+    headers: { ...headers, Authorization: `${accessToken}` },
   })
     .then(({ data }) => data)
     .catch((error) => {
-      if (error.response?.status === 401) {
-        window.location.href = "/login";
-        logoutUser();
-      }
+      // if (error.response?.status === 401) {
+      //   window.location.href = "/login";
+      //   logoutUser();
+      // }
       throw error;
     });
 };
