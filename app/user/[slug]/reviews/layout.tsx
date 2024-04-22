@@ -1,7 +1,5 @@
-export default function ReviewsLayout({children}) {
-    return (
-        <main>
-            {children}
-        </main>
-    )
+import { ReactNode } from "react";
+
+export default function ReviewsLayout({ children }: { children: ReactNode }) {
+  return <main>{children}</main>;
 }

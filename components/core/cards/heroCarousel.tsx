@@ -21,6 +21,7 @@ export default function Carousel() {
     return () => {
       clearInterval(slideInterval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIDX]);
   return (
     <div className="bg-background h-full">
