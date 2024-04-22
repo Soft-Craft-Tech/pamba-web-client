@@ -1,9 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { nextStep } from "@/store/signUpSlice";
+import { useAppDispatch } from "@/hooks";
 
 const CreateAccount = () => {
   const showPassword = true;
+  const dispatch = useAppDispatch();
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
       <h3 className="font-medium w-full text-lg text-center">Create Account</h3>
@@ -76,8 +79,10 @@ const CreateAccount = () => {
         </div>
         <div className="flex h-auto w-full">
           <button
-            type="submit"
             className="bg-primary w-full h-full py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => {
+              dispatch(nextStep());
+            }}
           >
             Create Account
           </button>

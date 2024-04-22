@@ -22,62 +22,64 @@ const BusinessInfo = () => {
         <p>1</p>
         <div className="w-24 h-[3px] bg-blue-200 flex justify-start items-center text-center">
           <div className={`h-[3px] bg-blue-600 "w-full" `}>
-            <input
-              //   value={formData.name}
-              //   onChange={handleInputChange}
-              className="border w-full h-14 py-1 px-2 lg:h-12"
-              type="text"
-              name="name"
-              required
-              placeholder="Business Name"
-            />
-            <select
-              //   value={formData.category}
-              //   onChange={handleInputChange}
-              className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
-              name="category"
-              required
-            >
-              <option value="">Business Category</option>
-              <option value="Salon">Salon</option>
-              <option value="SPA">Spa</option>
-              <option value="Barbershop">Barbershop</option>
-            </select>
-            <input
-              //   value={formData.phone}
-              //   onChange={handleInputChange}
-              className="border w-full h-14 py-1 px-2  lg:h-12"
-              type="text"
-              name="phone"
-              required
-              placeholder="Phone Number"
-            />
-            <input
-              //   value={formData.city}
-              //   onChange={handleInputChange}
-              className="border w-full h-14 py-1 px-2  lg:h-12"
-              type="text"
-              name="city"
-              required
-              placeholder="City"
-            />
-            <input
-              //   value={formData.mapUrl}
-              //   onChange={handleInputChange}
-              className="border w-full h-14 py-1 px-2  lg:h-12"
-              type="url"
-              name="mapUrl"
-              required
-              placeholder="Map URL"
-            />
-            <textarea
-              //   value={formData.location}
-              //   onChange={handleInputChange}
-              className="border w-full h-14 py-1 px-2 resize-none rows-2  lg:h-12"
-              name="location"
-              required
-              placeholder="Describe location"
-            />
+            <>
+              <input
+                //   value={formData.name}
+                //   onChange={handleInputChange}
+                className="border w-full h-14 py-1 px-2 lg:h-12"
+                type="text"
+                name="name"
+                required
+                placeholder="Business Name"
+              />
+              <select
+                //   value={formData.category}
+                //   onChange={handleInputChange}
+                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                name="category"
+                required
+              >
+                <option value="">Business Category</option>
+                <option value="Salon">Salon</option>
+                <option value="SPA">Spa</option>
+                <option value="Barbershop">Barbershop</option>
+              </select>
+              <input
+                //   value={formData.phone}
+                //   onChange={handleInputChange}
+                className="border w-full h-14 py-1 px-2  lg:h-12"
+                type="text"
+                name="phone"
+                required
+                placeholder="Phone Number"
+              />
+              <input
+                //   value={formData.city}
+                //   onChange={handleInputChange}
+                className="border w-full h-14 py-1 px-2  lg:h-12"
+                type="text"
+                name="city"
+                required
+                placeholder="City"
+              />
+              <input
+                //   value={formData.mapUrl}
+                //   onChange={handleInputChange}
+                className="border w-full h-14 py-1 px-2  lg:h-12"
+                type="url"
+                name="mapUrl"
+                required
+                placeholder="Map URL"
+              />
+              <textarea
+                //   value={formData.location}
+                //   onChange={handleInputChange}
+                className="border w-full h-14 py-1 px-2 resize-none rows-2  lg:h-12"
+                name="location"
+                required
+                placeholder="Describe location"
+              />
+            </>
           </div>
         </div>
         <p>2</p>

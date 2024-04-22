@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "./QueryProvider";
+import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: "Pamba App",
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-manrope bg-background flex flex-col items-center">
         <div className="mx-auto max-w-screen-xl w-full relative">
-          <QueryProvider>{children}</QueryProvider>
+          <StoreProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </StoreProvider>
         </div>
       </body>
     </html>
