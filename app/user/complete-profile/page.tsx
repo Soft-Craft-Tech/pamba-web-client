@@ -1,5 +1,3 @@
-"use client";
-
 import BusinessDescription from "@/components/features/profileCompletion/addDescription";
 import AddExpenseAccounts from "@/components/features/profileCompletion/addExpenseAccounts";
 import AddServices from "@/components/features/profileCompletion/addServices";
@@ -9,7 +7,14 @@ import { CompleteProfileContext } from "@/context/completeProfile/completeProfil
 import { useContext } from "react";
 
 export default function CompleteProfile() {
-  const { step } = useContext(CompleteProfileContext);
+  const ctx = useContext(CompleteProfileContext);
+
+  if (!ctx) {
+    return null; // or render a loading state
+  }
+
+  const { step } = ctx;
+
   return (
     <div className="w-full h-full">
       {step === 1 && <BusinessDescription />}

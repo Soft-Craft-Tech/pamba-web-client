@@ -1,26 +1,44 @@
 "use client";
-import {useState, createContext} from "react";
+import { useState, createContext, ReactNode } from "react";
 
-export const SettingsContext = createContext();
-
-export const SettingsContextProvider = ({children}) => {
-    const [activeTab, setActiveTab] = useState("edit");
-    return (
-        <SettingsContext.Provider
-            value={{
-                activeTab,
-                setActiveTab
-            }}
-        >
-            {children}
-        </SettingsContext.Provider>
-    )
+interface SettingsContextValue {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
-export const SettingsContextWrapper = ({children}) => {
-    return (
-        <SettingsContextProvider>
-            {children}
-        </SettingsContextProvider>
-    )
+const SettingsContext = createContext<SettingsContextValue | undefined>(
+  undefined
+);
+
+interface SettingsContextProviderProps {
+  children: ReactNode;
 }
+
+export const SettingsContextProvider = ({
+  children,
+}: SettingsContextProviderProps) => {
+  const [activeTab, setActiveTab] = useState<string>("edit");
+
+  const value: SettingsContextValue = {
+    activeTab,
+    setActiveTab,
+  };
+
+  return (
+    <SettingsContext.Provider value={value}>
+      {children}
+    </SettingsContext.Provider>
+  );
+};
+
+interface SettingsContextWrapperProps {
+  children: ReactNode;
+}
+
+export const SettingsContextWrapper = ({
+  children,
+}: SettingsContextWrapperProps) => {
+  return <SettingsContextProvider>{children}</SettingsContextProvider>;
+};
+
+export default SettingsContext;
