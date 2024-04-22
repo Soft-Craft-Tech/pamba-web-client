@@ -14,9 +14,12 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<LoginFormInputs> = async ({
+    username,
+    password,
+  }) => {
     try {
-      await loginRequest(data.username, data.password);
+      await loginRequest(username, password);
     } catch (error) {
       console.log(error);
     }
