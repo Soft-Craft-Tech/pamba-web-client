@@ -17,7 +17,6 @@ const BusinessInfo = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
     const businessData = {
       email,
@@ -30,7 +29,6 @@ const BusinessInfo = () => {
       mapUrl: formData.get("mapUrl") as string,
       location: formData.get("location") as string,
     };
-
     try {
       await mutateAsync(businessData);
     } catch (error) {}
