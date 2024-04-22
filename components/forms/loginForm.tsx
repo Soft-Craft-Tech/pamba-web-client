@@ -1,18 +1,16 @@
 "use client";
-import { useLoginMutation } from "@/store/api/loginApi";
+import { loginRequest } from "@/store/api/loginApi";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function LoginForm() {
-  const { mutate: login, isLoading } = useLoginMutation();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await login({ username, password });
+      await loginRequest(username, password);
     } catch (error) {
       console.log(error);
     }
@@ -53,9 +51,9 @@ export default function LoginForm() {
         <button
           className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           type="submit"
-          disabled={isLoading}
+          // disabled={isLoading}
         >
-          {isLoading ? "Loading..." : "Login"}
+          Login
         </button>
       </form>
     </div>
