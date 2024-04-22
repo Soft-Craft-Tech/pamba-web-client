@@ -1,16 +1,22 @@
-"use client";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
-import { useState } from "react";
+
+type LoginFormInputs = {
+  username: string;
+  password: string;
+};
 
 export default function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>();
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      await loginRequest(username, password);
+      await loginRequest(data.username, data.password);
     } catch (error) {
       console.log(error);
     }
@@ -18,28 +24,38 @@ export default function LoginForm() {
 
   return (
     <div className="relative">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:gap-3">
-        <input
-          className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12"
-          type="text"
-          required
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 lg:gap-3"
+      >
+        <Controller
           name="username"
-          placeholder="Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          control={control}
+          render={({ field }) => (
+            <input
+              className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12"
+              type="text"
+              {...field}
+              placeholder="Email"
+            />
+          )}
+          rules={{ required: true }}
         />
-        <div className="w-full h-14 rounded-md border border-borders relative lg:h-12">
-          <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300"></div>
-          <input
-            className="h-full w-full px-2 py-1"
-            required
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        {errors.username && <span>This field is required</span>}
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => (
+            <input
+              className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12"
+              type="password"
+              {...field}
+              placeholder="Password"
+            />
+          )}
+          rules={{ required: true }}
+        />
+        {errors.password && <span>This field is required</span>}
         <div className="flex justify-end">
           <Link
             href="/request-password-reset"
@@ -51,7 +67,6 @@ export default function LoginForm() {
         <button
           className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           type="submit"
-          // disabled={isLoading}
         >
           Login
         </button>
