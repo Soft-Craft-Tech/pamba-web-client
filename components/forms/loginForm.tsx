@@ -1,3 +1,4 @@
+"use client";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
@@ -21,7 +22,7 @@ export default function LoginForm() {
     try {
       await loginRequest(username, password);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

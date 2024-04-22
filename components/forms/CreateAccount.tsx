@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { nextStep } from "@/store/signUpSlice";
 import { useAppDispatch } from "@/hooks";
 import { RootState } from "@/store/store";
@@ -12,7 +12,8 @@ import {
 } from "@/store/createAccountSlice";
 
 const CreateAccount = () => {
-  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
   const {
     signUp: { email, password, acceptedTerms },
   } = useSelector((state: RootState) => state);
@@ -53,12 +54,13 @@ const CreateAccount = () => {
             />
             <div className="border w-full h-14 flex relative  lg:h-12">
               <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
-                {/* Your eye icon */}
+                  {!showPassword ? <Image onClick={() => {setShowPassword(!showPassword)}} className="w-[20px] cursor-pointer" src="/eye-open.png" alt="hide password" width={24} height={24} /> :
+                  <Image onClick={() => {setShowPassword(!showPassword)}} className="w-[20px] cursor-pointer" src="/eye-closed.png" alt="show password" width={24} height={24} />}
               </div>
               <input
                 className="h-full w-full  py-1 px-2"
                 name="password"
-                type="password"
+                type={showPassword ? "text": "password"}
                 value={password}
                 onChange={handlePasswordChange}
                 required

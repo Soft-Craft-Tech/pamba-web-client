@@ -1,12 +1,16 @@
 "use client";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useContext } from 'react';
-import { AuthPageContext } from '@/app/context/auth/authContext';
+import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import { setShowToast } from '@/store/toastSlice';
 
-export default function Toast({message, type}) {
-    const {showToast, setShowToast} = useContext(AuthPageContext);
-    const handleClose = (event, reason) => {
+
+export default function Toast({message, type}: {message: string, type: any}) {
+    const {
+        toast: { showToast },
+      } = useSelector((state: RootState) => state);
+    const handleClose = (event:React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }

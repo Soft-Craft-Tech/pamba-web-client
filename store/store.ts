@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import stepsReducer from "./signUpSlice";
 import signUpSlice from "./createAccountSlice";
+import toastSlice from "./toastSlice";
 
 // Combine your reducers
 const rootReducer = combineReducers({
   steps: stepsReducer,
   signUp: signUpSlice,
+  toast: toastSlice
 });
 
 export const makeStore = () => {

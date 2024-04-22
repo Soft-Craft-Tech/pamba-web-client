@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 import { useSignUpMutation } from "@/app/api/auth";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import Toast from "../shared/toasts/authToast";
+import { setMessage, setShowToast } from "@/store/toastSlice";
+
 
 const BusinessInfo = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +17,7 @@ const BusinessInfo = () => {
   const { control, handleSubmit } = useForm();
   const {
     signUp: { email, password, acceptedTerms },
+    toast: {toastMessage}
   } = useSelector((state: RootState) => state);
   const { mutateAsync, isLoading, isSuccess } = useSignUpMutation();
 
@@ -26,19 +30,21 @@ const BusinessInfo = () => {
     };
     try {
       await mutateAsync(businessData);
+      dispatch(setShowToast(true));
     } catch (error) {}
   };
 
   useEffect(() => {
     if (isSuccess) {
+      setMessage("Sign up Success");
       setTimeout(() => {
         router.push("/login");
       }, 1000);
     }
   }, [isSuccess, router]);
-
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
+      {isSuccess && <Toast message={toastMessage} type="success" />}
       <h3 className="font-medium w-full text-lg text-center">
         Business Information
       </h3>
