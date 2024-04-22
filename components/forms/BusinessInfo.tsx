@@ -2,9 +2,15 @@ import React from "react";
 import Image from "next/image";
 import { useAppDispatch } from "@/hooks";
 import { prevStep } from "@/store/signUpSlice";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
 const BusinessInfo = () => {
   const dispatch = useAppDispatch();
+  const {
+    signUp: { email, password, acceptedTerms },
+  } = useSelector((state: RootState) => state);
+
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
       <h3 className="font-medium w-full text-lg text-center">
