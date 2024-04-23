@@ -1,9 +1,7 @@
 "use client";
 import ProfileProgress from "../../core/cards/progress";
 import { useState } from "react";
-import Toast from "../../shared/toasts/genToast";
 import TextField from "@mui/material/TextField";
-import { usePutRequest } from "@/context/completeProfile/fake";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { RootState } from "@/store/store";

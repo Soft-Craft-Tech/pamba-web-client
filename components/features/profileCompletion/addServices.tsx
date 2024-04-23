@@ -1,4 +1,3 @@
-"use client";
 // import ProfileProgress from "../../core/cards/progress";
 // import { CompleteProfileContext } from "@/app/context/completeProfile/completeProfileContext";
 // import { useContext } from "react";

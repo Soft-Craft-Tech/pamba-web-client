@@ -1,5 +1,3 @@
-"use client";
-
 export default function AddExpenseAccounts() {
   // const {setStep} = useContext(CompleteProfileContext);
   // const [addedAccount, setAddedAccount] = useState({accountName: "", description: ""});
