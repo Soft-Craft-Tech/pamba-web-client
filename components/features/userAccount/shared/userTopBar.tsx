@@ -1,21 +1,32 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "universal-cookie";
-import { UserContext } from "@/context/userAccount/userAccountSharedContext";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import { setActivePage } from "@/store/sideHamburgerSlice";
+import { usePathname } from "next/navigation";
 
 export default function UserTopBar() {
-  const userContext = useContext(UserContext);
-  if (!userContext) {
-    return null;
-  }
-  const { activePage } = userContext;
+  const {
+    hamburger: { activePage },
+  } = useAppSelector((state: RootState) => state);
+
+  const pathname = usePathname();
+  const lastIndex = pathname.lastIndexOf("/");
+  const currentPage = pathname.slice(lastIndex + 1);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(setActivePage(currentPage));
+  }, []);
+
   const cookies = new Cookies();
   const username = cookies.get("username");
   return (
     <div className="w-full h-10 bg-background flex justify-between items-center">
-      <h2 className="capitalize text-lg font-semibold">{activePage}</h2>
+      <h2 className="capitalize text-lg font-semibold">{currentPage}</h2>
       <div className="flex h-full items-center gap-10">
         <Image
           src="/user-icons/notifications-icon.svg"

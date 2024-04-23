@@ -1,13 +1,12 @@
 "use client";
-import { useContext, useEffect } from "react";
-import { UserContext } from "@/app/context/userAccount/userAccountSharedContext";
+import { useAppDispatch } from "@/hooks";
+import { setActivePage } from "@/store/sideHamburgerSlice";
+import { useEffect } from "react";
 
 export default function InitialExpenseStates() {
-    const {setActivePage} = useContext(UserContext);
-    useEffect(() => {
-        setActivePage("Expenses")
-    }, []);
-    return (
-        <></>
-    )
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(setActivePage("Expenses"));
+  }, []);
+  return <></>;
 }
