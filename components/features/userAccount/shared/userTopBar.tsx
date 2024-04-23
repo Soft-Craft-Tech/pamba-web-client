@@ -8,7 +8,6 @@ export default function UserTopBar() {
   const pathname = usePathname();
   const lastIndex = pathname.lastIndexOf("/");
   const currentPage = pathname.slice(lastIndex + 1);
-
   const cookies = new Cookies();
   const username = cookies.get("username");
   return (
