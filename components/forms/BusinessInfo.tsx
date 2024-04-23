@@ -10,6 +10,14 @@ import { useForm, Controller } from "react-hook-form";
 import Toast from "../shared/toasts/authToast";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 
+interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 const BusinessInfo = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -18,9 +26,7 @@ const BusinessInfo = () => {
     signUp: { email, password, acceptedTerms },
     toast: { toastMessage },
   } = useSelector((state: RootState) => state);
-  const { mutateAsync, isLoading, isSuccess, data } = useSignUpMutation();
-
-  // console.log("Here", data);
+  const { mutateAsync, isLoading, isSuccess, isError } = useSignUpMutation();
 
   const onSubmit = async (formData: any) => {
     const businessData = {
@@ -32,7 +38,11 @@ const BusinessInfo = () => {
     try {
       await mutateAsync(businessData);
       dispatch(setShowToast(true));
-    } catch (error) {}
+    } catch (error) {
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+      dispatch(setShowToast(true));
+    }
   };
 
   useEffect(() => {
@@ -41,9 +51,10 @@ const BusinessInfo = () => {
         router.push("/login");
       }, 1000);
     }
-  }, [isSuccess, router]);
+  }, [dispatch, isSuccess, router]);
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
+      {isError && <Toast message={toastMessage} type="error" />}
       {isSuccess && <Toast message={toastMessage} type="success" />}
       <h3 className="font-medium w-full text-lg text-center">
         Business Information

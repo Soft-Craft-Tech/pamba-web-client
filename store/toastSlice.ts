@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ToastState {
-  showToast: boolean,
-  toastMessage: string
+  showToast: boolean;
+  toastMessage: string | undefined;
 }
 
 const initialState: ToastState = {
   showToast: false,
-  toastMessage: ""
+  toastMessage: "",
 };
 
 const toastSlice = createSlice({
   name: "toast",
   initialState,
   reducers: {
-    setMessage: (state, action: PayloadAction<string>) => {
+    setMessage: (state, action: PayloadAction<string | undefined>) => {
       state.toastMessage = action.payload;
     },
     setShowToast: (state, action: PayloadAction<boolean>) => {
@@ -27,7 +27,6 @@ const toastSlice = createSlice({
   },
 });
 
-export const { setMessage, setShowToast, resetToast } =
-  toastSlice.actions;
+export const { setMessage, setShowToast, resetToast } = toastSlice.actions;
 
 export default toastSlice.reducer;
