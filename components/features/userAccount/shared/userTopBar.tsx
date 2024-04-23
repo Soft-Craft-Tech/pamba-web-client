@@ -1,22 +1,13 @@
 "use client";
-import { useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "universal-cookie";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { RootState } from "@/store/store";
-import { setActivePage } from "@/store/sideHamburgerSlice";
 import { usePathname } from "next/navigation";
 
 export default function UserTopBar() {
   const pathname = usePathname();
   const lastIndex = pathname.lastIndexOf("/");
   const currentPage = pathname.slice(lastIndex + 1);
-
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(setActivePage(currentPage));
-  }, []);
 
   const cookies = new Cookies();
   const username = cookies.get("username");
