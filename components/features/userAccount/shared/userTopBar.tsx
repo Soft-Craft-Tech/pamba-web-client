@@ -9,10 +9,6 @@ import { setActivePage } from "@/store/sideHamburgerSlice";
 import { usePathname } from "next/navigation";
 
 export default function UserTopBar() {
-  const {
-    hamburger: { activePage },
-  } = useAppSelector((state: RootState) => state);
-
   const pathname = usePathname();
   const lastIndex = pathname.lastIndexOf("/");
   const currentPage = pathname.slice(lastIndex + 1);
