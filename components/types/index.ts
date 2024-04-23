@@ -8,3 +8,6 @@ export interface SignUpFormData {
   mapUrl: string;
   location: string;
 }
+export type DynamicObject = {
+  [x: string]: any;
+};
