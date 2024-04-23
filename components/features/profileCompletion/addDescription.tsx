@@ -22,26 +22,26 @@ export default function BusinessDescription() {
   };
 
   // Mutate Data
-  const { mutate, error, isLoading, data, isSuccess } = usePutRequest(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/update-description`,
-    businessDescription,
-    handleNext()
-  );
+  // const { mutate, error, isLoading, data, isSuccess } = usePutRequest(
+  //   `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/update-description`,
+  //   businessDescription,
+  //   handleNext()
+  // );
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setBusinessDescription({ [name]: value });
-  };
+  // const handleChange = (e: { target: { name: any; value: any } }) => {
+  //   const { name, value } = e.target;
+  //   setBusinessDescription({ [name]: value });
+  // };
 
-  const submitDescription = () => {
-    if (businessDescription.description) {
-      mutate();
-    }
-  };
+  // const submitDescription = () => {
+  //   if (businessDescription.description) {
+  //     mutate();
+  //   }
+  // };
   return (
     <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 overflow-x-hidden">
       Hello
-      {error && (
+      {/* {error && (
         <Toast
           message={
             [401, 400, 403, 404, 409].includes(error?.response?.status)
@@ -50,7 +50,7 @@ export default function BusinessDescription() {
           }
           type="error"
         />
-      )}
+      )} */}
       <ProfileProgress />
       <div className="flex flex-col gap-5 w-full max-h-96 p-10 border bg-white lg:w-96">
         <h3>Tell us about your Business</h3>
@@ -62,7 +62,7 @@ export default function BusinessDescription() {
             type="text"
             name="description"
             value={businessDescription.description}
-            onChange={handleChange}
+            // onChange={handleChange}
             multiline
             rows={3}
           />
@@ -70,12 +70,13 @@ export default function BusinessDescription() {
       </div>
       <div className="w-full h-10 flex justify-end">
         <button
-          disabled={isPending || !businessDescription.description}
+          // disabled={isPending || !businessDescription.description}
           type="button"
-          onClick={submitDescription}
+          // onClick={submitDescription}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? <>Loading</> : <>Next</>}
+          Next
+          {/* {isPending ? <>Loading</> : <>Next</>} */}
         </button>
       </div>
     </div>
