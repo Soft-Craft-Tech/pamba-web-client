@@ -15,43 +15,43 @@ export default function PasswordResetForm({ token }: { token: string }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // Mutate data
-  const { mutate, error, isPending, data, isSuccess } = useMutation({
-    mutationFn: async () => {
-      const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/reset-password/${token}`,
-        {
-          password: passwordRef?.current?.value,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-          },
-        }
-      );
-      return data;
-    },
-  });
+  // // Mutate data
+  // const { mutate, error, isPending, data, isSuccess } = useMutation({
+  //   mutationFn: async () => {
+  //     const { data } = await axios.put(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/reset-password/${token}`,
+  //       {
+  //         password: passwordRef?.current?.value,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
+  //         },
+  //       }
+  //     );
+  //     return data;
+  //   },
+  // });
 
   // Handle submit
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    mutate();
-    dispatch(setShowToast(true));
-  };
+  // const handleSubmit = (e: { preventDefault: () => void }) => {
+  //   e.preventDefault();
+  //   mutate();
+  //   dispatch(setShowToast(true));
+  // };
 
-  if (isSuccess) {
-    setTimeout(() => {
-      router.push("/login");
-    }, 3000);
-  }
+  // if (isSuccess) {
+  //   setTimeout(() => {
+  //     router.push("/login");
+  //   }, 3000);
+  // }
 
   return (
     <>
-      {error && <Toast message={"Something went wrong"} type="error" />}
-      {isSuccess && <Toast message={data?.message} type="success" />}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* {error && <Toast message={"Something went wrong"} type="error" />}
+      {isSuccess && <Toast message={data?.message} type="success" />} */}
+      <form className="flex flex-col gap-4">
         <div className="w-full h-10 rounded-md border border-borders relative">
           <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
             {!showPassword ? (
@@ -88,10 +88,11 @@ export default function PasswordResetForm({ token }: { token: string }) {
           />
         </div>
         <button
-          disabled={isPending}
+          // disabled={isPending}
           className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? "Loading..." : "Submit"}
+          Submit
+          {/* {isPending ? "Loading..." : "Submit"} */}
         </button>
       </form>
     </>

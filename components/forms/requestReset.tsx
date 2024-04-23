@@ -11,35 +11,35 @@ export default function RequestResetForm() {
   const dispatch = useAppDispatch();
 
   // Mutate data
-  const { mutate, error, isPending, data, isSuccess } = useMutation({
-    mutationFn: async () => {
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/request-password-reset`,
-        {
-          email: emailRef?.current?.value,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-          },
-        }
-      );
-      return data;
-    },
-  });
+  // const { mutate, error, isPending, data, isSuccess } = useMutation({
+  //   mutationFn: async () => {
+  //     const { data } = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/request-password-reset`,
+  //       {
+  //         email: emailRef?.current?.value,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
+  //         },
+  //       }
+  //     );
+  //     return data;
+  //   },
+  // });
 
   // Submit form
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    mutate();
+    // mutate();
     dispatch(setShowToast(true));
   };
 
   return (
     <>
-      {error && <Toast message={"Something went wrong"} type="error" />}
-      {isSuccess && <Toast message={data?.message} type="success" />}
+      {/* {error && <Toast message={"Something went wrong"} type="error" />}
+      {isSuccess && <Toast message={data?.message} type="success" />} */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           ref={emailRef}
@@ -50,7 +50,7 @@ export default function RequestResetForm() {
           className="w-full h-10 border rounded-md py-1 px-2"
         />
         <button
-          disabled={isPending}
+          // disabled={isPending}
           className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Submit
