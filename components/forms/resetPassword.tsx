@@ -13,7 +13,7 @@ export default function PasswordResetForm({ token }: { token: string }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const dispacth = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   // Mutate data
   const { mutate, error, isPending, data, isSuccess } = useMutation({
@@ -38,7 +38,7 @@ export default function PasswordResetForm({ token }: { token: string }) {
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     mutate();
-    dispacth(setShowToast(true));
+    dispatch(setShowToast(true));
   };
 
   if (isSuccess) {
