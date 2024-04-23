@@ -3,18 +3,13 @@ import AddExpenseAccounts from "@/components/features/profileCompletion/addExpen
 import AddServices from "@/components/features/profileCompletion/addServices";
 import ProfileComplete from "@/components/features/profileCompletion/completed";
 import UploadProfileImg from "@/components/features/profileCompletion/profileImageUpload";
-import { CompleteProfileContext } from "@/context/completeProfile/completeProfileContext";
-import { useContext } from "react";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
 
 export default function CompleteProfile() {
-  const ctx = useContext(CompleteProfileContext);
-
-  if (!ctx) {
-    return null; // or render a loading state
-  }
-
-  const { step } = ctx;
-
+  const {
+    completeProfile: { step },
+  } = useAppSelector((state: RootState) => state);
   return (
     <div className="w-full h-full">
       {step === 1 && <BusinessDescription />}

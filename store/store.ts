@@ -3,13 +3,14 @@ import stepsReducer from "./signUpSlice";
 import signUpSlice from "./createAccountSlice";
 import toastSlice from "./toastSlice";
 import hamburgerSlice from "./sideHamburgerSlice";
+import completeProfileSlice from "./completeProfileSlice";
 
-// Combine your reducers
 const rootReducer = combineReducers({
   steps: stepsReducer,
   signUp: signUpSlice,
   toast: toastSlice,
   hamburger: hamburgerSlice,
+  completeProfile: completeProfileSlice,
 });
 
 export const makeStore = () => {

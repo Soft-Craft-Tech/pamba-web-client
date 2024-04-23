@@ -1,44 +1,47 @@
 "use client";
 import ProfileProgress from "../../core/cards/progress";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Toast from "../../shared/toasts/genToast";
-// import { usePutRequest } from "@/app/hooks/useRequests";
 import TextField from "@mui/material/TextField";
-import { CompleteProfileContext } from "@/context/completeProfile/completeProfileContext";
 import { usePutRequest } from "@/context/completeProfile/fake";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
 
 export default function BusinessDescription() {
-  //   const { setStep } = useContext(CompleteProfileContext);
-  //   const [businessDescription, setBusinessDescription] = useState({
-  //     description: "",
-  //   });
+  const [businessDescription, setBusinessDescription] = useState({
+    description: "",
+  });
+  const {
+    completeProfile: { step },
+  } = useAppSelector((state: RootState) => state);
+  const dispatch = useAppDispatch();
 
-  //   const handleNext = () => {
-  //     setStep((prev) => prev + 1);
-  //   };
+  const handleNext = () => {
+    dispatch(setStep(step + 1));
+  };
 
-  //   // Mutate Data
-  //   const { mutate, error, isLoading, data, isSuccess } = usePutRequest(
-  //     `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/update-description`,
-  //     businessDescription,
-  //     true,
-  //     handleNext
-  //   );
+  // Mutate Data
+  const { mutate, error, isLoading, data, isSuccess } = usePutRequest(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/update-description`,
+    businessDescription,
+    handleNext()
+  );
 
-  //   const handleChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setBusinessDescription({ [name]: value });
-  //   };
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+    setBusinessDescription({ [name]: value });
+  };
 
-  //   const submitDescription = () => {
-  //     if (businessDescription.description) {
-  //       mutate();
-  //     }
-  //   };
+  const submitDescription = () => {
+    if (businessDescription.description) {
+      mutate();
+    }
+  };
   return (
     <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 overflow-x-hidden">
       Hello
-      {/* {error && (
+      {error && (
         <Toast
           message={
             [401, 400, 403, 404, 409].includes(error?.response?.status)
@@ -74,7 +77,7 @@ export default function BusinessDescription() {
         >
           {isPending ? <>Loading</> : <>Next</>}
         </button>
-      </div> */}
+      </div>
     </div>
   );
 }

@@ -7,8 +7,6 @@ export default function CompleteProfileLayout({
   children: ReactNode;
 }) {
   return (
-    <main className="flex w-full min-h-screen bg-background">
-      <CompleteProfileWrapper>{children}</CompleteProfileWrapper>
-    </main>
+    <main className="flex w-full min-h-screen bg-background">{children}</main>
   );
 }
