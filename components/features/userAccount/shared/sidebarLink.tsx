@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { UserContext } from "@/context/userAccount/userAccountSharedContext";
 import Cookies from "universal-cookie";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
 
 interface SideBarLinkProps {
   link: string;
@@ -13,17 +14,12 @@ interface SideBarLinkProps {
 
 // All other sidebar nav links
 const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
-  const userContext = useContext(UserContext);
-
-  if (!userContext) {
-    // Handle the case where UserContext is undefined
-    return null; // Or return a loading indicator, error message, etc.
-  }
-
-  const { activePage } = userContext;
+  const {
+    hamburger: { activePage },
+  } = useAppSelector((state: RootState) => state);
 
   return (
-    <Link href={link}>
+    <Link href={link} legacyBehavior>
       <a
         className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 ${
           activePage === name ? "bg-sideLinksBg" : ""

@@ -1,30 +1,31 @@
-import React, { useContext } from "react";
+"use client";
+import React from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { AiOutlineClose } from "react-icons/ai";
-import { UserContext } from "@/context/userAccount/userAccountSharedContext";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import { setMobileSidebar } from "@/store/sideHamburgerSlice";
 
 export default function SideBarHamburger() {
-  const userContext = useContext(UserContext);
-
-  if (!userContext) {
-    return null;
-  }
-  const { mobileSidebar, setMobileSidebar } = userContext;
+  const {
+    hamburger: { showMenu },
+  } = useAppSelector((state: RootState) => state);
+  const dispacth = useAppDispatch();
 
   return (
     <div className="w-auto flex h-auto items-center lg:hidden">
-      {!mobileSidebar ? (
+      {!showMenu ? (
         <RxHamburgerMenu
           size={30}
           onClick={() => {
-            setMobileSidebar(true);
+            dispacth(setMobileSidebar(true));
           }}
         />
       ) : (
         <AiOutlineClose
           size={30}
           onClick={() => {
-            setMobileSidebar(false);
+            dispacth(setMobileSidebar(false));
           }}
         />
       )}
