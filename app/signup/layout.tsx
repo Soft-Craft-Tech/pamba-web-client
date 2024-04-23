@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ReactNode } from "react";
-import { AuthContextWrapper } from "@/context/auth/authContext";
 
 export const metadata = {
   title: "Sign Up - Pamba App",
@@ -33,7 +32,7 @@ export default function SignupLayout({ children }: { children: ReactNode }) {
               />
             </Link>
           </div>
-          <AuthContextWrapper>{children}</AuthContextWrapper>
+          {children}
           <div className="flex w-full h-6 gap-2 items-center justify-center">
             <p className="text-muted text-sm">Already have an account? </p>
             <Link className="text-secondary font-bold text-sm" href="/login">
