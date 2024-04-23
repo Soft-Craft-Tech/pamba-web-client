@@ -5,6 +5,10 @@ export const metadata = {
   description: "Simplify Your Operations With Effortless Business Management",
 };
 
-export default function UserLayout({ children }: { children: ReactNode }) {
+export default function AllServicesLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return <>{children}</>;
 }
