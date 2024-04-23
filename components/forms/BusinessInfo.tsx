@@ -10,16 +10,17 @@ import { useForm, Controller } from "react-hook-form";
 import Toast from "../shared/toasts/authToast";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 
-
 const BusinessInfo = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { control, handleSubmit } = useForm();
   const {
     signUp: { email, password, acceptedTerms },
-    toast: {toastMessage}
+    toast: { toastMessage },
   } = useSelector((state: RootState) => state);
-  const { mutateAsync, isLoading, isSuccess } = useSignUpMutation();
+  const { mutateAsync, isLoading, isSuccess, data } = useSignUpMutation();
+
+  // console.log("Here", data);
 
   const onSubmit = async (formData: any) => {
     const businessData = {
@@ -36,7 +37,6 @@ const BusinessInfo = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      setMessage("Sign up Success");
       setTimeout(() => {
         router.push("/login");
       }, 1000);

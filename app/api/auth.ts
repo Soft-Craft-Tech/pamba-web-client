@@ -1,14 +1,18 @@
 import { SignUpFormData } from "@/components/types";
+import { useAppDispatch } from "@/hooks";
+import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
 import { useMutation } from "react-query";
 
 export const useSignUpMutation = () => {
+  const dispatch = useAppDispatch();
   return useMutation<void, Error, SignUpFormData>(
     async (formData: SignUpFormData) => {
       const response = await apiCall("POST", endpoints.signup, formData, {});
-      return response.data;
+      dispatch(setMessage(response.message));
+      return response;
     }
   );
 };
