@@ -1,18 +1,19 @@
 "use client";
 
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setActiveTab } from "@/store/settingsTabSlice";
+import { RootState } from "@/store/store";
 import React from "react";
 
 export default function SettingsNav() {
-  const [activeTab, setActiveTab] = React.useState("");
-  const [, setActivePage] = React.useState("");
+  const {
+    settingsTab: { activeTab },
+  } = useAppSelector((state: RootState) => state);
+  const dispatch = useAppDispatch();
 
   const changeTab = (e: string) => {
-    setActiveTab(e);
+    dispatch(setActiveTab(e));
   };
-
-  React.useEffect(() => {
-    setActivePage("Settings");
-  }, []);
 
   return (
     <div className="flex gap-20 w-full h-auto items-center shadow-sm pb-5">

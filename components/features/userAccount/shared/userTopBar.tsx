@@ -8,8 +8,6 @@ export default function UserTopBar() {
   const pathname = usePathname();
   const lastIndex = pathname.lastIndexOf("/");
   const currentPage = pathname.slice(lastIndex + 1);
-  const cookies = new Cookies();
-  const username = cookies.get("username");
   return (
     <div className="w-full h-10 bg-background flex justify-between items-center">
       <h2 className="capitalize text-lg font-semibold">{currentPage}</h2>
@@ -20,7 +18,7 @@ export default function UserTopBar() {
           width={20}
           height={20}
         />
-        <Link href={`/user/${username}/settings`}>
+        <Link href={`/user/settings`}>
           <Image
             className=""
             src="/user-icons/profile-icon.svg"
