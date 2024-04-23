@@ -4,6 +4,7 @@ import Alert from "@mui/material/Alert";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { setShowToast } from "@/store/toastSlice";
+import { useAppDispatch } from "@/hooks";
 
 export default function Toast({
   message,
@@ -15,6 +16,7 @@ export default function Toast({
   const {
     toast: { showToast },
   } = useSelector((state: RootState) => state);
+  const dispath = useAppDispatch();
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
@@ -22,7 +24,7 @@ export default function Toast({
     if (reason === "clickaway") {
       return;
     }
-    setShowToast(false);
+    dispath(setShowToast(false));
   };
   return (
     <Snackbar
