@@ -17,7 +17,11 @@ export const useSignUpMutation = () => {
   );
 };
 
-export const loginRequest = async (email: string, password: string) => {
+export const loginRequest = async (
+  email: string,
+  password: string,
+  router: any
+) => {
   try {
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/businesses/login`,
@@ -33,6 +37,7 @@ export const loginRequest = async (email: string, password: string) => {
         },
       }
     );
+    setTimeout(() => router.push(`/user/${data?.client?.slug}/dashboard`), 500);
     return data;
   } catch (error) {
     throw error;

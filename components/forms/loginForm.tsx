@@ -2,6 +2,7 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type LoginFormInputs = {
   username: string;
@@ -14,13 +15,14 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async ({
     username,
     password,
   }) => {
     try {
-      await loginRequest(username, password);
+      await loginRequest(username, password, router);
     } catch (error) {
       // console.log(error);
     }
