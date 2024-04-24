@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
-import BusinessDescription from "./features/profileCompletion/addDescription";
-import AddExpenseAccounts from "./features/profileCompletion/addExpenseAccounts";
-import AddServices from "./features/profileCompletion/addServices";
-import ProfileComplete from "./features/profileCompletion/completed";
-import UploadProfileImg from "./features/profileCompletion/profileImageUpload";
+import BusinessDescription from "./addDescription";
+import AddExpenseAccounts from "./addExpenseAccounts";
+import AddServices from "./addServices";
+import ProfileComplete from "./completed";
+import UploadProfileImg from "./profileImageUpload";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 
-const CompleteProfile = () => {
+const CompleteProfileComponent = () => {
   const {
     completeProfile: { step },
   } = useAppSelector((state: RootState) => state);
@@ -23,4 +23,4 @@ const CompleteProfile = () => {
   );
 };
 
-export default CompleteProfile;
+export default CompleteProfileComponent;

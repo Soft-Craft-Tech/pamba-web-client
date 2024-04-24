@@ -1,4 +1,3 @@
-import { CompleteProfileWrapper } from "@/context/completeProfile/completeProfileContext";
 import { ReactNode } from "react";
 
 export default function CompleteProfileLayout({
