@@ -3,6 +3,9 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import { toggleLoading } from "@/store/loadingSlice";
 
 type LoginFormInputs = {
   username: string;
@@ -16,15 +19,20 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
   const router = useRouter();
-
+  const {
+    loading: { loginLoading },
+  } = useAppSelector((state: RootState) => state);
+  const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<LoginFormInputs> = async ({
     username,
     password,
   }) => {
+    dispatch(toggleLoading("loginLoading"));
     try {
       await loginRequest(username, password, router);
     } catch (error) {
-      // console.log(error);
+      dispatch(toggleLoading("loginLoading"));
+      console.log(error);
     }
   };
 
@@ -71,10 +79,11 @@ export default function LoginForm() {
           </Link>
         </div>
         <button
+          disabled={loginLoading}
           className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           type="submit"
         >
-          Login
+          {loginLoading ? "Loading" : "Login"}
         </button>
       </form>
     </div>

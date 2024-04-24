@@ -5,6 +5,7 @@ import toastSlice from "./toastSlice";
 import hamburgerSlice from "./sideHamburgerSlice";
 import completeProfileSlice from "./completeProfileSlice";
 import tabSlice from "./settingsTabSlice";
+import loadingSlice from "./loadingSlice";
 
 const rootReducer = combineReducers({
   steps: stepsReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   hamburger: hamburgerSlice,
   completeProfile: completeProfileSlice,
   settingsTab: tabSlice,
+  loading: loadingSlice,
 });
 
 export const makeStore = () => {
