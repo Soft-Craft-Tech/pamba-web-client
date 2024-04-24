@@ -3,9 +3,16 @@ import { useState } from "react";
 import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import Toast from "../../shared/toasts/genToast";
 import { useChangeImageMutation } from "@/app/api/requests";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
 
 export default function UploadProfileImg() {
   const [imgUrl, setImgUrl] = useState<any>("");
+  const {
+    completeProfile: { step },
+  } = useAppSelector((state: RootState) => state);
+  const dispatch = useAppDispatch();
 
   const { mutate, isLoading, isSuccess, error } = useChangeImageMutation();
 
@@ -24,6 +31,7 @@ export default function UploadProfileImg() {
         <CldUploadWidget
           onSuccess={() => {
             setImgUrl("");
+            dispatch(setStep(step + 1));
           }}
           options={{
             sources: ["local", "url", "google_drive", "dropbox"],
