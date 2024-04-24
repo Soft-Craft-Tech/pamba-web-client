@@ -8,6 +8,13 @@ export interface SignUpFormData {
   mapUrl: string;
   location: string;
 }
+export interface BusinessDescriptionData {
+  description: string;
+}
+
+export interface CloudinaryData {
+  imgUrl: string;
+}
 export type DynamicObject = {
   [x: string]: any;
 };

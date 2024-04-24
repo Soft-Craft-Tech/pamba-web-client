@@ -1,5 +1,6 @@
-import { SignUpFormData } from "@/components/types";
+import { BusinessDescriptionData, SignUpFormData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
@@ -15,6 +16,33 @@ export const useSignUpMutation = () => {
       return response;
     }
   );
+};
+
+export const useVerifyAccountMutation = (token: string) => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error>(async () => {
+    const response = await apiCall(
+      "POST",
+      `${endpoints.verifyAccount}${token}`,
+      {},
+      {}
+    );
+    dispatch(setMessage(response.message));
+    return response.data;
+  });
+};
+export const useUpdateDescription = (step: number) => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, string>(async (description: string) => {
+    const response = await apiCall(
+      "PUT",
+      endpoints.updateDescription,
+      { description },
+      {}
+    );
+    dispatch(setStep(step));
+    return response.data;
+  });
 };
 
 export const loginRequest = async (
