@@ -41,7 +41,7 @@ export default function Footer() {
                         <h3 className="font-extrabold text-lg lg:text-sm">Legal</h3>
                         <div className="text-sm font-semibold text-gray-300 flex flex-col gap-1 lg:text-xs">
                             <Link href="/privacy-policy">Privacy Policy</Link>
-                            <Link href="/privacy-policy">Terms of Use</Link>
+                            <Link href="/terms-and-conditions">Terms of Use</Link>
                         </div>
                     </div>
                 </div>
