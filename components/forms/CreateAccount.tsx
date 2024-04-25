@@ -76,9 +76,9 @@ const CreateAccount = () => {
                 onChange={handleAcceptedTermsChange}
                 required
               />
-              <span className="text-sm">
+              <span className="text-sm flex gap-2">
                 Accept
-                <Link className="text-blue-500" href="/privacy-policy">
+                <Link className="text-blue-500" href="/terms-and-conditions">
                   Terms and Conditions
                 </Link>
                 and

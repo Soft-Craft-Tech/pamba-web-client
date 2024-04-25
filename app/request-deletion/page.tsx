@@ -26,7 +26,7 @@ export default function RequestDeletion() {
         </div>
         <RequestDeletionForm />
         <p className="text-xs font-light text-primary">
-          * Your personal Data will be permanently deleted 30days after
+          * Your personal Data will be permanently deleted 30 days after
           submission of this request.
         </p>
       </div>
