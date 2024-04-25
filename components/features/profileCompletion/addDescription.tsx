@@ -29,8 +29,7 @@ export default function BusinessDescription() {
     }
   };
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 overflow-x-hidden">
-      Hello
+    <div className="w-full h-auto flex flex-col gap-5 overflow-x-hidden">
       {error && <Toast message={"Something went wrong"} type="error" />}
       <ProfileProgress />
       <div className="flex flex-col gap-5 w-full max-h-96 p-10 border bg-white lg:w-96">
