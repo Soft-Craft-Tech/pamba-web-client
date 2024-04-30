@@ -13,7 +13,7 @@ export const apiCall = (
     url,
     data: body,
     method,
-    headers: { ...headers, Authorization: `${authToken}` },
+    headers: { ...headers, "x-access-token": `${authToken}` },
   })
     .then(({ data }) => data)
     .catch((error) => {
