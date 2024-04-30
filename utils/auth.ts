@@ -31,9 +31,10 @@ export const logoutUser = () =>
   typeof window !== "undefined" && window.localStorage.removeItem("authToken");
 
 export const isAuthenticated = () => {
-  const authToken =
-    (typeof window !== "undefined" &&
-      window.localStorage.getItem("authToken")) ||
-    null;
-  return authToken ? true : false;
+  let isAuthenticated = true;
+  if (typeof window !== "undefined") {
+    const authToken = window.localStorage.getItem("authToken");
+    isAuthenticated = authToken ? true : false;
+  }
+  return isAuthenticated;
 };
