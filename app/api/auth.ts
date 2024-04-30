@@ -122,6 +122,7 @@ export const loginRequest = async (
       }
     );
     setTimeout(() => router.push(`/user/dashboard`), 500);
+    console.log(data);
     setUser(data);
     return data;
   } catch (error) {

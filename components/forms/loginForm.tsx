@@ -2,10 +2,11 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { toggleLoading } from "@/store/loadingSlice";
+import { isAuthenticated } from "@/utils/auth";
 
 type LoginFormInputs = {
   username: string;
@@ -23,6 +24,7 @@ export default function LoginForm() {
     loading: { loginLoading },
   } = useAppSelector((state: RootState) => state);
   const dispatch = useAppDispatch();
+
   const onSubmit: SubmitHandler<LoginFormInputs> = async ({
     username,
     password,
