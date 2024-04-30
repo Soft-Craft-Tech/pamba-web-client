@@ -3,6 +3,7 @@ import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
+import { setUser } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
 import { useMutation } from "react-query";
@@ -66,7 +67,7 @@ export const loginRequest = async (
       }
     );
     setTimeout(() => router.push(`/user/dashboard`), 500);
-    console.log(data);
+    setUser(data);
     return data;
   } catch (error) {
     throw error;
