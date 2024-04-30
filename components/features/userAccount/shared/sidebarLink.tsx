@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
+import { logoutUser } from "@/utils/auth";
 
 interface SideBarLinkProps {
   link: string;
@@ -44,9 +45,7 @@ export const Logout: React.FC = () => {
   const router = useRouter();
 
   const logOut = () => {
-    const cookies = new Cookies();
-    cookies.remove("token", { path: "/", sameSite: "none", secure: true });
-    cookies.remove("username", { path: "/", sameSite: "none", secure: true });
+    logoutUser();
     router.push("/");
   };
 

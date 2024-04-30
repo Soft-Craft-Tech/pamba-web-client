@@ -55,26 +55,54 @@ export default function AddServicesForm({ data }: { data: any }) {
   };
 
   return (
-    <div className="flex flex-col gap-5 w-full max-h-96 p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+    <div className="flex flex-col gap-5 w-full  p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
       <h3>What Services do you offer?</h3>
       <form onSubmit={addServices} className="flex flex-col gap-3">
         <FormControl fullWidth>
-          <InputLabel id="service">Service</InputLabel>
+          <InputLabel id="service">Service Category</InputLabel>
           <Select
             labelId="service"
             id="service"
             value={service.id}
             name="id"
-            label="Service"
+            label="Service Category"
             onChange={handleChange}
           >
-            {data?.services?.map((item: { id: number; service: string }) => (
+            {data?.categories?.map((item: { id: number; category: string }) => (
               <MenuItem key={item.id} value={item.id}>
-                {item.service}
+                {item.category}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
+        <TextField
+          required
+          id="price"
+          label="Service"
+          type="text"
+          name="service"
+          value={service.price}
+          onChange={handleChange}
+        />
+        <TextField
+          required
+          id="price"
+          label="Description"
+          type="text"
+          name="service"
+          value={service.price}
+          onChange={handleChange}
+        />
+
+        <TextField
+          required
+          id="price"
+          label="Estimated Service Duration"
+          type="text"
+          name="service"
+          value={service.price}
+          onChange={handleChange}
+        />
         <TextField
           required
           id="price"

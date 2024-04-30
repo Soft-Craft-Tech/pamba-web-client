@@ -34,7 +34,7 @@ export const useAssignService = () => {
 };
 
 export const useGetServices = () => {
-  return useQuery("services", async () => {
+  return useQuery("categories", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchAllServices, {}, {});
       return response;

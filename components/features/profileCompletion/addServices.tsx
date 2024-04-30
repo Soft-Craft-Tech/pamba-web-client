@@ -18,7 +18,6 @@ export default function AddServices() {
     step: state.completeProfile.step,
     toastMessage: state.toast.toastMessage,
   }));
-  console.log(queuedServices);
 
   const { data } = useGetServices();
 
@@ -63,7 +62,7 @@ export default function AddServices() {
                 >
                   <div className="flex gap-3 items-center font-semibold">
                     {
-                      data?.services?.filter((item: { id: string }) => {
+                      data?.categories?.filter((item: { id: string }) => {
                         return item.id === service.id;
                       })[0]?.service
                     }
@@ -91,7 +90,6 @@ export default function AddServices() {
           onClick={handleSubmitServices}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Next
           {postingServices ? <>Loading</> : <>Next</>}
         </button>
       </div>
