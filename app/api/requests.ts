@@ -43,3 +43,19 @@ export const useGetServices = () => {
     }
   });
 };
+
+export const useGetProfileCompletionStatus = () => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        endpoints.profileCompletion,
+        {},
+        {}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching Statuses");
+    }
+  });
+};

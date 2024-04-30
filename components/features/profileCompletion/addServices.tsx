@@ -65,7 +65,7 @@ export default function AddServices() {
                     {
                       data?.services?.filter((item: { id: string }) => {
                         return item.id === service.id;
-                      })[0].service
+                      })[0]?.service
                     }
                     <AiOutlineClose
                       onClick={() => {

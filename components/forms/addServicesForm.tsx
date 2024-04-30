@@ -3,58 +3,61 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import {
-  AwaitedReactNode,
-  JSXElementConstructor,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-  useContext,
-} from "react";
-import { CompleteProfileContext } from "@/context/completeProfile/completeProfileContext";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useDispatch, useSelector } from "react-redux";
+import { setQueuedServices, setService } from "@/store/completeProfileSlice";
+import { ChangeEvent } from "react";
 
 export default function AddServicesForm({ data }: { data: any }) {
-  const context = useContext(CompleteProfileContext);
+  const dispatch = useDispatch();
+  const service = useSelector((state: any) => state.completeProfile.service);
+  const queuedServices = useSelector(
+    (state: any) => state.completeProfile.queuedServices
+  );
 
-  if (!context) {
-    return null;
-  }
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent
+  ) => {
+    if (isChangeEvent(e)) {
+      const { name, value } = e.target as
+        | HTMLInputElement
+        | HTMLTextAreaElement;
+      dispatch(setService({ ...service, [name]: value }));
+    } else if (isSelectChangeEvent(e)) {
+      const { name, value } = e.target;
+      dispatch(setService({ ...service, [name]: value }));
+    }
+  };
 
-  const { service, setService, setQueuedServices, queuedServices } = context;
+  const isChangeEvent = (
+    event: any
+  ): event is ChangeEvent<HTMLInputElement | HTMLTextAreaElement> => {
+    return (
+      "target" in event &&
+      (event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement)
+    );
+  };
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<{ name: string; value: unknown }>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   if (service.id) {
-  //     data;
-  //   }
-  //   setService((prev) => {
-  //     return { ...prev, [name]: value } as typeof prev;
-  //   });
-  // };
+  const isSelectChangeEvent = (event: any): event is SelectChangeEvent => {
+    return "target" in event && event.target instanceof HTMLInputElement;
+  };
 
-  // // Queue service
-  // const addServices = (e: { preventDefault: () => void }) => {
-  //   e.preventDefault();
-  //   // Check if the service has already been queued
-  //   const exists = queuedServices.some((item: { id: any }) => {
-  //     return item.id === service.id;
-  //   });
+  const addServices = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const exists = queuedServices.some(
+      (item: { id: any }) => item.id === service.id
+    );
+    if (!exists) {
+      dispatch(setQueuedServices([...queuedServices, service]));
+    }
+    dispatch(setService({ id: "", price: "" }));
+  };
 
-  //   //
-  //   if (!exists) {
-  //     setQueuedServices((prev: any) => {
-  //       return [...prev, service];
-  //     });
-  //   }
-  //   setService({ id: "", price: "" });
-  // };
   return (
     <div className="flex flex-col gap-5 w-full max-h-96 p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
       <h3>What Services do you offer?</h3>
-      {/* <form onSubmit={addServices} className="flex flex-col gap-3">
+      <form onSubmit={addServices} className="flex flex-col gap-3">
         <FormControl fullWidth>
           <InputLabel id="service">Service</InputLabel>
           <Select
@@ -65,13 +68,11 @@ export default function AddServicesForm({ data }: { data: any }) {
             label="Service"
             onChange={handleChange}
           >
-            {data?.services?.map((item: { id: number; service: string }) => {
-              return (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.service}
-                </MenuItem>
-              );
-            })}
+            {data?.services?.map((item: { id: number; service: string }) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.service}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <TextField
@@ -83,10 +84,13 @@ export default function AddServicesForm({ data }: { data: any }) {
           value={service.price}
           onChange={handleChange}
         />
-        <button className="py-3 px-10 bg-secondary text-white h-max rounded-md">
+        <button
+          className="py-3 px-10 bg-secondary text-white h-max rounded-md"
+          type="submit"
+        >
           Add
         </button>
-      </form> */}
+      </form>
     </div>
   );
 }

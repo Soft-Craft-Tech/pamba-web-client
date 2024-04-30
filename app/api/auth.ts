@@ -97,13 +97,6 @@ export const useUpdateDescription = (step: number) => {
   });
 };
 
-export const useProfileCompleionStatus = () => {
-  return useMutation<void, Error, any>(async () => {
-    const response = await apiCall("GET", endpoints.profileCompletion, {}, {});
-    return response;
-  });
-};
-
 export const loginRequest = async (
   email: string,
   password: string,

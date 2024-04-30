@@ -6,7 +6,7 @@ const authEndpoints: { [key: string]: string } = {
   resetPassword: "/businesses/reset-password/",
   requestPasswordReset: "businesses/request-password-reset",
   deleteAccount: "/clients/delete-account",
-  profileCompletion: "/business/profile-completion-status",
+  profileCompletion: "/businesses/profile-completion-status",
   uploadImage: "/businesses/upload-profile-img",
   assignServices: "/businesses/assign-services",
   fetchAllServices: "/services/fetch_all",
