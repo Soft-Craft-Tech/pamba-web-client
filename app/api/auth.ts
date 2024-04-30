@@ -96,7 +96,7 @@ export const useUpdateDescription = (step: number) => {
       { description },
       {}
     );
-    dispatch(setStep(step));
+    dispatch(setStep(step + 1));
     return response.data;
   });
 };

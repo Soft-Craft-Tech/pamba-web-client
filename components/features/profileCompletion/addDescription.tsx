@@ -14,7 +14,6 @@ export default function BusinessDescription() {
   const {
     completeProfile: { step },
   } = useAppSelector((state: RootState) => state);
-  const dispatch = useAppDispatch();
 
   const { mutateAsync, isLoading, error } = useUpdateDescription(step);
 
