@@ -53,7 +53,7 @@ export const useGetProfileCompletionStatus = () => {
         {},
         {}
       );
-      return response;
+      return response || {};
     } catch (error) {
       throw new Error("Error fetching Statuses");
     }
