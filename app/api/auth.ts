@@ -1,8 +1,4 @@
-import {
-  BusinessDescriptionData,
-  DeleteFormData,
-  SignUpFormData,
-} from "@/components/types";
+import { DeleteFormData, SignUpFormData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";
@@ -98,6 +94,13 @@ export const useUpdateDescription = (step: number) => {
     );
     dispatch(setStep(step + 1));
     return response.data;
+  });
+};
+
+export const useProfileCompleionStatus = () => {
+  return useMutation<void, Error, any>(async () => {
+    const response = await apiCall("GET", endpoints.profileCompletion, {}, {});
+    return response;
   });
 };
 

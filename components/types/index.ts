@@ -18,7 +18,7 @@ export interface BusinessDescriptionData {
 }
 
 export interface CloudinaryData {
-  imgUrl: string;
+  imageURL: string;
 }
 export type DynamicObject = {
   [x: string]: any;

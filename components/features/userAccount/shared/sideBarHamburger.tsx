@@ -7,9 +7,9 @@ import { RootState } from "@/store/store";
 import { setMobileSidebar } from "@/store/sideHamburgerSlice";
 
 export default function SideBarHamburger() {
-  const {
-    hamburger: { showMenu },
-  } = useAppSelector((state: RootState) => state);
+  const showMenu = useAppSelector(
+    (state: RootState) => state.hamburger.showMenu
+  );
   const dispacth = useAppDispatch();
 
   return (

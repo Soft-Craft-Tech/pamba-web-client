@@ -14,9 +14,9 @@ interface SideBarLinkProps {
 
 // All other sidebar nav links
 const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
-  const {
-    hamburger: { activePage },
-  } = useAppSelector((state: RootState) => state);
+  const activePage = useAppSelector(
+    (state: RootState) => state.hamburger.activePage
+  );
 
   return (
     <Link href={link} legacyBehavior>

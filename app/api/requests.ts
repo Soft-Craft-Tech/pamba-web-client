@@ -1,4 +1,6 @@
 import { CloudinaryData } from "@/components/types";
+import { useAppDispatch } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
 import { apiCall } from "@/utils/apiRequest";
 import { useMutation } from "react-query";
 
@@ -7,11 +9,10 @@ export const useChangeImageMutation = () => {
     async (imageURL: CloudinaryData) => {
       const response = await apiCall(
         "PUT",
-        `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/upload-profile-img`,
-        imageURL,
+        `${process.env.NEXT_PUBLIC_API_URL}/businesses/upload-profile-img`,
+        { imageURL },
         {}
       );
-
       return response;
     }
   );

@@ -7,11 +7,10 @@ import ProfileComplete from "./completed";
 import UploadProfileImg from "./profileImageUpload";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
+import { useProfileCompleionStatus } from "@/app/api/auth";
 
 const CompleteProfileComponent = () => {
-  const {
-    completeProfile: { step },
-  } = useAppSelector((state: RootState) => state);
+  const step = useAppSelector((state: RootState) => state.completeProfile.step);
   return (
     <div className="w-full h-full">
       {step === 1 && <BusinessDescription />}

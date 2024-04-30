@@ -5,9 +5,9 @@ import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 
 export default function SideNav() {
-  const {
-    hamburger: { showMenu },
-  } = useAppSelector((state: RootState) => state);
+  const showMenu = useAppSelector(
+    (state: RootState) => state.hamburger.showMenu
+  );
 
   return (
     <div

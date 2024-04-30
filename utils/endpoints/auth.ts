@@ -6,6 +6,7 @@ const authEndpoints: { [key: string]: string } = {
   resetPassword: "/businesses/reset-password/",
   requestPasswordReset: "businesses/request-password-reset",
   deleteAccount: "/clients/delete-account",
+  profileCompletion: "/business/profile-completion-status",
 };
 
 export default authEndpoints;
