@@ -1,8 +1,13 @@
-import { BusinessDescriptionData, SignUpFormData } from "@/components/types";
+import {
+  BusinessDescriptionData,
+  DeleteFormData,
+  SignUpFormData,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
-import { setMessage } from "@/store/toastSlice";
+import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
+import { setUser } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
 import { useMutation } from "react-query";
@@ -12,6 +17,57 @@ export const useSignUpMutation = () => {
   return useMutation<void, Error, SignUpFormData>(
     async (formData: SignUpFormData) => {
       const response = await apiCall("POST", endpoints.signup, formData, {});
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
+export const useDeleteAccountMutation = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DeleteFormData>(
+    async (formData: DeleteFormData) => {
+      const response = await apiCall(
+        "POST",
+        endpoints.deleteAccount,
+        formData,
+        {}
+      );
+      dispatch(setShowToast(true));
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
+export const useResetPasswordMutation = (token: string) => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, string | undefined>(
+    async (password: string | undefined) => {
+      const response = await apiCall(
+        "PUT",
+        `${endpoints.resetPassword}${token}`,
+        { password },
+        {}
+      );
+      dispatch(setShowToast(true));
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
+export const useRequestPasswordReset = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, string | undefined>(
+    async (email: string | undefined) => {
+      const response = await apiCall(
+        "POST",
+        `${endpoints.requestPasswordReset}`,
+        { email },
+        {}
+      );
+      dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
       return response;
     }
@@ -66,7 +122,7 @@ export const loginRequest = async (
       }
     );
     setTimeout(() => router.push(`/user/dashboard`), 500);
-    console.log(data);
+    setUser(data);
     return data;
   } catch (error) {
     throw error;

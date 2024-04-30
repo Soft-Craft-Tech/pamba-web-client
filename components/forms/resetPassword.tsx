@@ -1,57 +1,45 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
-import { useRef, useContext } from "react";
+import { useRef } from "react";
 import Toast from "../shared/toasts/authToast";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import * as React from "react";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setShowToast } from "@/store/toastSlice";
+import { useResetPasswordMutation } from "@/app/api/auth";
+import { RootState } from "@/store/store";
 
 export default function PasswordResetForm({ token }: { token: string }) {
+  const {
+    toast: { toastMessage },
+  } = useAppSelector((state: RootState) => state);
   const [showPassword, setShowPassword] = React.useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const {
+    mutate: resetPassword,
+    isLoading,
+    error,
+    isSuccess,
+  } = useResetPasswordMutation(token);
 
-  // // Mutate data
-  // const { mutate, error, isPending, data, isSuccess } = useMutation({
-  //   mutationFn: async () => {
-  //     const { data } = await axios.put(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/reset-password/${token}`,
-  //       {
-  //         password: passwordRef?.current?.value,
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-  //         },
-  //       }
-  //     );
-  //     return data;
-  //   },
-  // });
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    resetPassword(passwordRef?.current?.value);
+  };
 
-  // Handle submit
-  // const handleSubmit = (e: { preventDefault: () => void }) => {
-  //   e.preventDefault();
-  //   mutate();
-  //   dispatch(setShowToast(true));
-  // };
-
-  // if (isSuccess) {
-  //   setTimeout(() => {
-  //     router.push("/login");
-  //   }, 3000);
-  // }
+  if (isSuccess) {
+    setTimeout(() => {
+      router.push("/login");
+    }, 3000);
+  }
 
   return (
     <>
-      {/* {error && <Toast message={"Something went wrong"} type="error" />}
-      {isSuccess && <Toast message={data?.message} type="success" />} */}
-      <form className="flex flex-col gap-4">
+      {error && <Toast message={toastMessage} type="error" />}
+      {isSuccess && <Toast message={toastMessage} type="success" />}
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="w-full h-10 rounded-md border border-borders relative">
           <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
             {!showPassword ? (
@@ -88,11 +76,11 @@ export default function PasswordResetForm({ token }: { token: string }) {
           />
         </div>
         <button
-          // disabled={isPending}
+          disabled={isLoading}
+          type="submit"
           className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit
-          {/* {isPending ? "Loading..." : "Submit"} */}
+          {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
     </>

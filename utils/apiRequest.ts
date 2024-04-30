@@ -8,12 +8,12 @@ export const apiCall = (
   body: any,
   headers: {}
 ) => {
-  const accessToken = getUser()?.accessToken || "";
+  const { authToken } = getUser();
   return axiosInstance({
     url,
     data: body,
     method,
-    headers: { ...headers, Authorization: `${accessToken}` },
+    headers: { ...headers, Authorization: `${authToken}` },
   })
     .then(({ data }) => data)
     .catch((error) => {
