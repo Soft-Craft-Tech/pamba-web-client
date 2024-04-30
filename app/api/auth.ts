@@ -19,6 +19,22 @@ export const useSignUpMutation = () => {
   );
 };
 
+export const useResetPasswordMutation = (token: string) => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, string | undefined>(
+    async (password: string | undefined) => {
+      const response = await apiCall(
+        "PUT",
+        `${endpoints.resetPassword}${token}`,
+        { password },
+        {}
+      );
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
 export const useVerifyAccountMutation = (token: string) => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error>(async () => {

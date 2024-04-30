@@ -3,6 +3,7 @@ const authEndpoints: { [key: string]: string } = {
   signup: "/businesses/signup",
   verifyAccount: "/businesses/activate-account/",
   updateDescription: "/businesses/update-description",
+  resetPassword: "/businesses/reset-password/",
 };
 
 export default authEndpoints;

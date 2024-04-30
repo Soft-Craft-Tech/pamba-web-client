@@ -30,6 +30,7 @@ export default function LoginForm() {
     dispatch(toggleLoading("loginLoading"));
     try {
       await loginRequest(username, password, router);
+      dispatch(toggleLoading("loginLoading"));
     } catch (error) {
       dispatch(toggleLoading("loginLoading"));
       console.log(error);
