@@ -1,4 +1,8 @@
-import { BusinessDescriptionData, SignUpFormData } from "@/components/types";
+import {
+  BusinessDescriptionData,
+  DeleteFormData,
+  SignUpFormData,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";
@@ -13,6 +17,23 @@ export const useSignUpMutation = () => {
   return useMutation<void, Error, SignUpFormData>(
     async (formData: SignUpFormData) => {
       const response = await apiCall("POST", endpoints.signup, formData, {});
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
+export const useDeleteAccountMutation = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DeleteFormData>(
+    async (formData: DeleteFormData) => {
+      const response = await apiCall(
+        "POST",
+        endpoints.deleteAccount,
+        formData,
+        {}
+      );
+      dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
       return response;
     }

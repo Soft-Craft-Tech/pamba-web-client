@@ -8,6 +8,11 @@ export interface SignUpFormData {
   mapUrl: string;
   location: string;
 }
+
+export interface DeleteFormData {
+  email: string;
+  reason: string;
+}
 export interface BusinessDescriptionData {
   description: string;
 }

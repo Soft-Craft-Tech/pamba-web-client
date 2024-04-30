@@ -5,6 +5,7 @@ const authEndpoints: { [key: string]: string } = {
   updateDescription: "/businesses/update-description",
   resetPassword: "/businesses/reset-password/",
   requestPasswordReset: "businesses/request-password-reset",
+  deleteAccount: "/clients/delete-account",
 };
 
 export default authEndpoints;
