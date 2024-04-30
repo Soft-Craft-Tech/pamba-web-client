@@ -13,9 +13,9 @@ const CompleteProfileComponent = () => {
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
   return (
     <div className="w-full h-full">
-      {step === 1 && <BusinessDescription />}
+      {step === 3 && <BusinessDescription />}
       {step === 2 && <UploadProfileImg />}
-      {step === 3 && <AddServices />}
+      {step === 1 && <AddServices />}
       {step === 4 && <AddExpenseAccounts />}
       {step === 5 && <ProfileComplete />}
     </div>

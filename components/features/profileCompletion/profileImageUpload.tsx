@@ -10,6 +10,7 @@ import { setStep } from "@/store/completeProfileSlice";
 export default function UploadProfileImg() {
   const [imgUrl, setImgUrl] = useState<any>("");
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
+  console.log("Profile Upload", step);
   const dispatch = useAppDispatch();
   const { mutate, isLoading, isSuccess, error } = useChangeImageMutation();
   const submitImg = () => {
