@@ -1,7 +1,7 @@
 import { BusinessDescriptionData, SignUpFormData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
-import { setMessage } from "@/store/toastSlice";
+import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import { setUser } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
@@ -29,6 +29,24 @@ export const useResetPasswordMutation = (token: string) => {
         { password },
         {}
       );
+      dispatch(setShowToast(true));
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
+export const useRequestPasswordReset = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, string | undefined>(
+    async (email: string | undefined) => {
+      const response = await apiCall(
+        "POST",
+        `${endpoints.requestPasswordReset}`,
+        { email },
+        {}
+      );
+      dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
       return response;
     }

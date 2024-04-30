@@ -4,42 +4,31 @@ import { useRef } from "react";
 import Toast from "../shared/toasts/authToast";
 import axios from "axios";
 import { setShowToast } from "@/store/toastSlice";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useRequestPasswordReset } from "@/app/api/auth";
+import { RootState } from "@/store/store";
 
 export default function RequestResetForm() {
   const emailRef = useRef<HTMLInputElement>(null);
-  const dispatch = useAppDispatch();
+  const {
+    toast: { toastMessage },
+  } = useAppSelector((state: RootState) => state);
+  const {
+    mutate: passwordReset,
+    isLoading,
+    error,
+    isSuccess,
+  } = useRequestPasswordReset();
 
-  // Mutate data
-  // const { mutate, error, isPending, data, isSuccess } = useMutation({
-  //   mutationFn: async () => {
-  //     const { data } = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/API/businesses/request-password-reset`,
-  //       {
-  //         email: emailRef?.current?.value,
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-  //         },
-  //       }
-  //     );
-  //     return data;
-  //   },
-  // });
-
-  // Submit form
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // mutate();
-    dispatch(setShowToast(true));
+    passwordReset(emailRef?.current?.value);
   };
 
   return (
     <>
-      {/* {error && <Toast message={"Something went wrong"} type="error" />}
-      {isSuccess && <Toast message={data?.message} type="success" />} */}
+      {error && <Toast message={toastMessage} type="error" />}
+      {isSuccess && <Toast message={toastMessage} type="success" />}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           ref={emailRef}
@@ -50,10 +39,10 @@ export default function RequestResetForm() {
           className="w-full h-10 border rounded-md py-1 px-2"
         />
         <button
-          // disabled={isPending}
+          disabled={isLoading}
           className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit
+          {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
     </>

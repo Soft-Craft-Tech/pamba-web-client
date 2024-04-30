@@ -30,13 +30,9 @@ export default function PasswordResetForm({ token }: { token: string }) {
   };
 
   if (isSuccess) {
-    dispatch(setShowToast(true));
     setTimeout(() => {
       router.push("/login");
     }, 3000);
-  }
-  if (error) {
-    dispatch(setShowToast(true));
   }
 
   return (
