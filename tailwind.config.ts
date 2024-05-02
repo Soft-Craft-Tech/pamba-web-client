@@ -20,6 +20,7 @@ const config: Config = {
         borders: "#D5D6D9",
         background: "#f6f6f9",
         sideLinksBg: "#E3EBFC",
+        grayArea: "#667085",
       },
       fontFamily: {
         manrope: ["Manrope", "sans-serif"],
