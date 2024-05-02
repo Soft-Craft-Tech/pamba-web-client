@@ -1,24 +1,32 @@
+"use client";
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "./QueryProvider";
 import StoreProvider from "./StoreProvider";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Pamba App",
-  description: "Simplify Your Operations With Effortless Business Management",
-};
+// export const metadata: Metadata = {
+//   title: "Pamba App",
+//   description: "Simplify Your Operations With Effortless Business Management",
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <html lang="en">
       <body className="font-manrope bg-background flex flex-col items-center">
-        <div className="mx-auto max-w-screen-xl w-full relative">
+        <div
+          className={`mx-auto ${
+            pathname === "/find-services" ? "" : "max-w-screen-xl"
+          } w-full relative`}
+        >
           <StoreProvider>
             <QueryProvider>{children}</QueryProvider>
           </StoreProvider>
@@ -28,7 +36,7 @@ export default function RootLayout({
             Book your next Salon, Spa, Haircut, Makeup appointment with ease
           </p>
           <Link
-            href="/signup"
+            href="/find-services"
             className="bg-primary flex items-center w-max py-2 px-4 mt-5 text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
           >
             Book Appointment
