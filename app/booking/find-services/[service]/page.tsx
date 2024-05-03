@@ -97,7 +97,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
         <ShopSepartor header="You might also like" />
       </div>
       <section className="mx-auto max-w-screen-2xl w-full mt-10 relative">
-        <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
+        <div className="w-full flex flex-wrap justify-center gap-12">
           {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
             <Explorer
               key={index}
