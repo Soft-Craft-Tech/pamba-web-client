@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
+import { sliderDataTwo } from "@/components/types";
+import Explorer from "@/components/Explorer";
+import { sliderDatThree } from "@/components/types/fakeData";
 
 interface PageProps {
   params: {
@@ -60,7 +64,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-y-2 md:gap-y-4">
+      <div className="flex flex-col mb-10 gap-y-2 md:gap-y-4">
         <h1 className="text-3xl font-bold">Stylish hair cut</h1>
         <p className="text-lg text-[#323232]">
           1 hour 15 mins - 1 hour 40 mins
@@ -89,6 +93,23 @@ const Page: React.FC<PageProps> = ({ params }) => {
           />
         </Link>
       </div>
+      <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
+        <ShopSepartor header="You might also like" />
+      </div>
+      <section className="mx-auto max-w-screen-2xl w-full mt-10 relative">
+        <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
+          {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
+            <Explorer
+              key={index}
+              imageUrl={imageUrl}
+              shopName={shopName}
+              btnText="Book Appointment"
+              booking={true}
+              href="/booking/find-services/massage"
+            />
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
