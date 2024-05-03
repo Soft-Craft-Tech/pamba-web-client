@@ -1,11 +1,5 @@
 // Page Section Separators
-export default function Separator({
-  btnText,
-  header,
-}: {
-  btnText: string;
-  header: string;
-}) {
+export default function ShopSepartor({ header }: { header: string }) {
   return (
     <div className="w-full h-auto p-5 flex flex-col justify-center items-center   gap-5 lg:gap-10 lg:p-10">
       <div className=" 3xl:max-w-[80%] lg:px-20  w-full">
