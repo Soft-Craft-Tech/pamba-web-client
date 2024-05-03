@@ -75,15 +75,17 @@ const FindShopsCards = () => {
                 </div>
                 <p className="text-xl">104 reviews</p>
               </div>
-              <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium md:px-7 md:py-3">
-                Explore
-              </button>
+              <Link href="/all-shops/dnjdnjnd">
+                <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium md:px-7 md:py-3">
+                  Explore
+                </button>
+              </Link>
             </div>
           </div>
         ))}
       </div>
       <Link
-        href="booking/find-services"
+        href="/all-shops"
         className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
       >
         View All Shops
