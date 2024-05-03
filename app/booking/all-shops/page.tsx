@@ -8,16 +8,20 @@ const AllShops = () => {
   return (
     <div>
       <AllShopsHero />
-      <ShopSepartor header="Popular Shops" />
-      <section className="pb-16 flex justify-center lg:px-20 lg:pb-16 w-full ">
+      <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+        <ShopSepartor header="Popular Shops" />
+      </div>
+      <section className="mx-auto max-w-screen-xl w-full mt-10 relative">
         <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
           {sliderDataTwo?.map(({ imageUrl, shopName }, index) => (
             <Explorer key={index} imageUrl={imageUrl} shopName={shopName} />
           ))}
         </div>
       </section>
-      <ShopSepartor header="Recomended Services" />
-      <section className="pb-16 flex justify-center lg:px-20 lg:pb-16 w-full ">
+      <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+        <ShopSepartor header="Recomended Services" />
+      </div>
+      <section className="mx-auto max-w-screen-xl w-full mt-10 relative">
         <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
           {sliderDataTwo?.map(({ imageUrl, shopName }, index) => (
             <Explorer

@@ -89,6 +89,7 @@ const sliderDataTwo = [
   { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
   { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
   { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
 ];
 
 export { sidebarData, sliderData, sliderDataTwo };
