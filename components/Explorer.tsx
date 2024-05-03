@@ -9,7 +9,14 @@ const Explorer: React.FC<{
   shopName: string;
   btnText?: string;
   booking?: boolean;
-}> = ({ imageUrl, shopName, btnText = "Explorer", booking = false }) => {
+  href?: string;
+}> = ({
+  imageUrl,
+  shopName,
+  btnText = "Explorer",
+  booking = false,
+  href = "/booking/all-shops/dnjdnjnd",
+}) => {
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow ">
       <Image
@@ -67,7 +74,7 @@ const Explorer: React.FC<{
             </div>
           </div>
         )}
-        <Link href="/booking/all-shops/dnjdnjnd">
+        <Link href={href}>
           <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium md:px-7 md:py-3">
             {btnText}
           </button>
