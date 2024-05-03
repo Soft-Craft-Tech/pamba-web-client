@@ -1,8 +1,33 @@
 import LocationIcon from "@/ui/icons/location";
 import SearchIcon from "@/ui/icons/search";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 
-const ServiceHero = () => {
+interface Service {
+  name: string;
+  location: string;
+}
+
+interface ServiceHeroProps {
+  onSearch?: (service: string, shop: string) => void;
+}
+
+const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
+  const [service, setService] = useState("");
+  const [shop, setShop] = useState("");
+
+  const handleServiceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setService(event.target.value);
+  };
+
+  const handleShopChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setShop(event.target.value);
+  };
+
+  const handleClick = () => {
+    if (onSearch) {
+      onSearch(service, shop);
+    }
+  };
   return (
     <section className="h-auto">
       <div className="grid bg-gradient-to-r from-secondary via-secondary to-transparent  h-[90vh]  mx-auto lg:gap-8 xl:gap-0  lg:grid-cols-2">
@@ -24,6 +49,8 @@ const ServiceHero = () => {
                 type="text"
                 placeholder="Service"
                 className="py-2 px-4 text-black focus:outline-none"
+                value={service}
+                onChange={handleServiceChange}
               />
             </div>
             <div className="flex flex-row items-center gap-1">
@@ -32,9 +59,14 @@ const ServiceHero = () => {
                 type="text"
                 placeholder="Shop"
                 className="py-2 px-4  text-black focus:outline-none"
+                value={shop}
+                onChange={handleShopChange}
               />
             </div>
-            <button className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-r-md">
+            <button
+              onClick={handleClick}
+              className="bg-primary hover:bg-primary  text-white font-bold py-2 px-4 rounded-r-md"
+            >
               Search
             </button>
           </div>

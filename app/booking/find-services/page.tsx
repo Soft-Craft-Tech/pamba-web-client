@@ -1,13 +1,61 @@
+"use client";
 import * as React from "react";
 import ServiceHero from "@/components/service-hero";
 import { CategoryCard } from "@/components/core/cards/categoryCard";
 import Separator from "@/components/shared/sectionSeparators/separator";
 import FindShopsCards from "@/components/FindShopsCards";
+import ArrowBack from "@/ui/icons/arrow-back";
+import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
+import { sliderData } from "@/components/types";
+import Explorer from "@/components/Explorer";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const FindServices: React.FC = () => {
+  const router = useRouter();
+  const services = [
+    { name: "Hair Salon", location: "New York" },
+    { name: "Barber shop", location: "Los Angeles" },
+    { name: "Spa", location: "Chicago" },
+    { name: "Makeup", location: "San Francisco" },
+  ];
+  const [filteredServices, setFilteredServices] = React.useState(services);
+  const [search, setSearch] = React.useState(true);
+
+  const handleSearch = (service: string, shop: string) => {
+    const filtered = services.filter(
+      (item) =>
+        item.name.toLowerCase().includes(service.toLowerCase()) &&
+        item.location.toLowerCase().includes(shop.toLowerCase())
+    );
+    setFilteredServices(filtered);
+    setSearch(true);
+  };
+  if (search)
+    return (
+      <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
+        <div
+          className="flex flex-row gap-x-3 cursor-pointer mb-4 px-4"
+          onClick={() => setSearch(false)}
+        >
+          <div>
+            <ArrowBack />
+          </div>
+          <p>Back</p>
+        </div>
+        <div className="flex flex-row gap-x-3 my-10 px-4">
+          <ShopSepartor header="Search Results for Barbershop" />
+        </div>
+        <div className="w-full flex flex-wrap justify-evenly gap-12">
+          {sliderData?.map(({ imageUrl, shopName }, index) => (
+            <Explorer key={index} imageUrl={imageUrl} shopName={shopName} />
+          ))}
+        </div>
+      </div>
+    );
   return (
     <div>
-      <ServiceHero />
+      <ServiceHero onSearch={handleSearch} />
       <div
         className="mx-auto flex flex-col items-center justify-center py-16 max-w-screen-xl
          w-full"
