@@ -33,7 +33,7 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
       <div className="grid h-[90vh] w-full mx-auto lg:gap-8 xl:gap-0  lg:grid-cols-2">
         <div className="mr-auto px-16 place-self-center w-full">
           <p className="text-lg uppercase text-white">
-            Hair Salon,  Barber shop,  spa,  makeup
+            Hair Salon, Barber shop, spa, makeup
           </p>
           <h1 className="max-w-lg mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-primary ">
             Find a service close to you
