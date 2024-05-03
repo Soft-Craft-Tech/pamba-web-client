@@ -18,10 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-manrope bg-background flex flex-col items-center">
-        <StoreProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </StoreProvider>
-        <FloaterAppoitment />
+        <div className="mx-auto max-w-screen-xl w-full relative">
+          <StoreProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </StoreProvider>
+        </div>
       </body>
     </html>
   );
