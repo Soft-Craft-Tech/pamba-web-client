@@ -4,11 +4,17 @@ import ArrowBack from "@/ui/icons/arrow-back";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { sliderDataTwo } from "@/components/types";
 import Explorer from "@/components/Explorer";
 import { sliderDatThree } from "@/components/types/fakeData";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import CalendarIcon from "@/ui/icons/calendar-con";
+import TimeIcon from "@/ui/icons/time-icon";
+import Button from "@/ui/button";
 
 interface PageProps {
   params: {
@@ -18,6 +24,15 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ params }) => {
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
       <div
@@ -79,9 +94,11 @@ const Page: React.FC<PageProps> = ({ params }) => {
           goodbye to the ordinary and hello to the extraordinary – step into our
           salon and let's make magic happen together!
         </p>
-        <Link
-          href="/booking/find-services"
-          className="bg-primary flex items-center w-max py-2 px-4 mt-5 text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
+        <button
+          onClick={() => {
+            handleClickOpen();
+          }}
+          className="bg-primary flex items-center w-max py-2 px-4 mt-5 text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
         >
           Book Appointment
           <Image
@@ -91,13 +108,13 @@ const Page: React.FC<PageProps> = ({ params }) => {
             width={20}
             height={20}
           />
-        </Link>
+        </button>
       </div>
       <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
         <ShopSepartor header="You might also like" />
       </div>
       <section className="mx-auto max-w-screen-2xl w-full mt-10 relative">
-        <div className="w-full flex flex-wrap justify-center gap-12">
+        <div className="w-full flex flex-wrap justify-between gap-12">
           {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
             <Explorer
               key={index}
@@ -110,6 +127,100 @@ const Page: React.FC<PageProps> = ({ params }) => {
           ))}
         </div>
       </section>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          component: "form",
+          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            const formData = new FormData(event.currentTarget);
+            const formJson = Object.fromEntries((formData as any).entries());
+            const email = formJson.email;
+            console.log(email);
+            handleClose();
+          },
+        }}
+      >
+        <DialogContent style={{ padding: "20px" }}>
+          <div className="flex flex-col gap-y-6">
+            <h1 className="text-2xl font-semibold">Additional information</h1>
+            <p>Haircut appointment </p>
+            <div className="flex flex-row gap-x-2">
+              <div className="flex flex-row gap-x-1">
+                <CalendarIcon />
+                <p>Fri, 3 March</p>
+              </div>
+              <div className="flex flex-row gap-x-1">
+                <TimeIcon />
+                <p>2:00PM EAT</p>
+              </div>
+            </div>
+            <input
+              type="text"
+              id="first_name"
+              className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+              placeholder="John"
+              required
+            />
+            <input
+              type="text"
+              id="first_name"
+              className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
+              placeholder="John"
+              required
+            />
+            <input
+              type="text"
+              id="first_name"
+              className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px]  block w-full p-2.5 "
+              placeholder="John"
+              required
+            />
+            <p>How do you want to be notified?</p>
+            <div className="flex flex-row items-center gap-x-3">
+              <div className="flex items-center">
+                <input
+                  id="default-radio-1"
+                  type="radio"
+                  value=""
+                  name="default-radio"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                />
+                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  Default radio
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  checked
+                  id="default-radio-2"
+                  type="radio"
+                  value=""
+                  name="default-radio"
+                  className="w-4 h-4 text-[#7F56D9] bg-[#7F56D9] border-[#7F56D9]"
+                />
+                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  Checked state
+                </label>
+              </div>
+            </div>
+            <div className="flex flex-row gap-x-4 justify-between">
+              <Button label="Cancel" variant="outline" />
+              <Button label="Book Appointment" variant="primary">
+                <p>Confirm Appointment</p>
+                <Image
+                  className="border bg-white ml-3 rounded-full"
+                  src="/arrow-right.svg"
+                  alt="arrow-icon"
+                  width={20}
+                  height={20}
+                />
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
