@@ -10,7 +10,6 @@ import { setStep } from "@/store/completeProfileSlice";
 export default function UploadProfileImg() {
   const [imgUrl, setImgUrl] = useState<any>("");
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  console.log("Profile Upload", step);
   const dispatch = useAppDispatch();
   const { mutate, isLoading, isSuccess, error } = useChangeImageMutation();
   const submitImg = () => {
@@ -30,9 +29,17 @@ export default function UploadProfileImg() {
             setImgUrl(results?.info?.secure_url);
           }}
           options={{
-            sources: ["local", "url", "google_drive", "dropbox"],
-            multiple: true,
+            sources: ["local", "url", "google_drive", "dropbox", "unsplash"],
+            multiple: false,
             folder: "pamba-web",
+            maxImageHeight: 800,
+            maxImageWidth: 1200,
+            minImageWidth: 900,
+            minImageHeight: 500,
+            cropping: true,
+            croppingValidateDimensions: true,
+            validateMaxWidthHeight: true,
+            clientAllowedFormats: ["png", "jpeg","jpg", "svg"]
           }}
           uploadPreset="pamba-africa-images"
         >
