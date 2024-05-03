@@ -46,12 +46,19 @@ export default function AddServicesForm({ data }: { data: any }) {
   const addServices = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const exists = queuedServices.some(
-      (item: { id: any }) => item.id === service.id
+      (item: { name: any }) => item.name === service.name
     );
     if (!exists) {
       dispatch(setQueuedServices([...queuedServices, service]));
     }
-    dispatch(setService({ id: "", price: "" }));
+    dispatch(setService({ 
+      category: "", 
+      price: "",
+      description: "",
+      estimatedTime: "",
+      name: ""
+    }
+    ));
   };
 
   return (
@@ -62,9 +69,9 @@ export default function AddServicesForm({ data }: { data: any }) {
           <InputLabel id="service">Service Category</InputLabel>
           <Select
             labelId="service"
-            id="service"
+            id="category"
             value={service.id}
-            name="id"
+            name="category"
             label="Service Category"
             onChange={handleChange}
           >
@@ -77,30 +84,30 @@ export default function AddServicesForm({ data }: { data: any }) {
         </FormControl>
         <TextField
           required
-          id="price"
-          label="Service"
+          id="service"
+          label="Service Name"
           type="text"
-          name="service"
-          value={service.price}
+          name="name"
+          value={service.name}
           onChange={handleChange}
         />
         <TextField
           required
-          id="price"
+          id="description"
           label="Description"
           type="text"
-          name="service"
-          value={service.price}
+          name="description"
+          value={service.description}
           onChange={handleChange}
         />
 
         <TextField
           required
-          id="price"
-          label="Estimated Service Duration"
-          type="text"
-          name="service"
-          value={service.price}
+          id="time"
+          label="Estimated Service Duration (in hrs)"
+          type="number"
+          name="estimatedTime"
+          value={service.estimatedTime}
           onChange={handleChange}
         />
         <TextField

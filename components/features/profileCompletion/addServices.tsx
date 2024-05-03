@@ -57,15 +57,11 @@ export default function AddServices() {
             {queuedServices.map((service, index) => {
               return (
                 <div
-                  key={service.id}
+                  key={service.name} // Use UUID
                   className="rounded-md bg-secondary px-4 py-2 text-white w-max h-auto flex flex-col gap-1"
                 >
                   <div className="flex gap-3 items-center font-semibold">
-                    {
-                      data?.categories?.filter((item: { id: string }) => {
-                        return item.id === service.id;
-                      })[0]?.service
-                    }
+                    {service.name}
                     <AiOutlineClose
                       onClick={() => {
                         removeService(index);
