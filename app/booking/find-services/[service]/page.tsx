@@ -60,7 +60,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-y-2 md:gap-y-6">
+      <div className="flex flex-col gap-y-2 md:gap-y-4">
         <h1 className="text-3xl font-bold">Stylish hair cut</h1>
         <p className="text-lg text-[#323232]">
           1 hour 15 mins - 1 hour 40 mins
