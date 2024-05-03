@@ -51,17 +51,19 @@ const RevampedHeader = () => {
             <ul className="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
               <Link
                 className={`py-3 flex h-full items-center ${
-                  pathname === "/find-services" ? "text-primary" : undefined
+                  pathname === "/booking/find-services"
+                    ? "text-primary"
+                    : undefined
                 }`}
-                href="/find-services"
+                href="/booking/find-services"
               >
                 Home
               </Link>
               <Link
                 className={`py-3 flex h-full items-center ${
-                  pathname === "/all-shops" ? "text-primary" : undefined
+                  pathname === "/booking/all-shops" ? "text-primary" : undefined
                 }`}
-                href="/all-shops"
+                href="/booking/all-shops"
               >
                 Services
               </Link>

@@ -18,10 +18,9 @@ export default function StoreProvider({
     <Provider store={storeRef.current}>
       <div
         className={`mx-auto ${
-          pathname === "/find-services" ? "" : "max-w-screen-xl"
+          pathname.includes("booking") ? "" : "max-w-screen-xl"
         } w-full relative`}
       >
-        {" "}
         {children}
       </div>
     </Provider>
