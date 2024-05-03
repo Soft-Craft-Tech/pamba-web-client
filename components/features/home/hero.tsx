@@ -20,7 +20,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="px-5 h-auto flex flex-col gap-6 py-10 mt-20 mb-10 sm:py-10 sm:mb-20 sm:px-10 sm:gap-10 lg:h-screen lg:px-20 lg:grid lg:grid-cols-9 xl:h-auto xl:py-32 xl:mt-24">
+    <section className="px-5 h-auto flex flex-col gap-6 py-10 mt-20 mb-10 sm:mb-20 sm:px-10 sm:gap-10 lg:h-screen lg:px-20 lg:grid lg:grid-cols-9 xl:h-auto xl:py-20 xl:mt-24">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -34,7 +34,7 @@ export default function Hero() {
         <p className="text-secondary font-light text-base sm:text-xl md:text-2xl lg:text-xl xl:text-2xl">
           Elevate your barbershop, salon, or spa with our premier beauty and
           wellness software. Streamline your operations by effortlessly managing
-          bookings, inventory, and cash flow – all in one powerful solution.
+          bookings, inventory, and cash flow - all in one powerful solution.
         </p>
         <StartTrial />
       </motion.div>
