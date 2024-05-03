@@ -2,6 +2,8 @@
 import Button from "@/ui/button";
 import React from "react";
 import AboutShop from "./AboutShop";
+import ReviewShop from "./ReviewShop";
+import GalleryShop from "./GalleryShop";
 
 const ShopTabs = () => {
   const [activeTab, setActiveTab] = React.useState("about");
@@ -28,8 +30,8 @@ const ShopTabs = () => {
         />
       </div>
       {activeTab === "about" && <AboutShop />}
-      {activeTab === "review" && <div>Review</div>}
-      {activeTab === "gallery" && <div>Gallery</div>}
+      {activeTab === "review" && <ReviewShop />}
+      {activeTab === "gallery" && <GalleryShop />}
     </div>
   );
 };

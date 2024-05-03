@@ -10,7 +10,7 @@ const AboutShop = () => {
     <div className="flex flex-col gap-y-4 mt-4">
       <div className="flex flex-row items-center gap-x-3">
         <p>4.5</p>
-        <RatingIcon />
+        <RatingIcon fill="#FF9F0A" />
       </div>
       <p>Beauty Square Salon</p>
       <div className="flex flex-row gap-x-3">
