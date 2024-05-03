@@ -15,7 +15,7 @@ const FloaterAppoitment = () => {
         Book your next Salon, Spa, Haircut, Makeup appointment with ease
       </p>
       <Link
-        href="/find-services"
+        href="/booking/find-services"
         className="bg-primary flex items-center w-max py-2 px-4 mt-5 text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
       >
         Book Appointment

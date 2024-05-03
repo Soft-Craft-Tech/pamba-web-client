@@ -46,11 +46,11 @@ const AllShopsHero = () => {
               />
             </div>
           </div>
-          <button className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-r-md">
+          <button className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md">
             Search
           </button>
         </div>
-        <div className="flex flex-row mt-10 w-full max-w-[800px] justify-between">
+        <div className="lg:flex flex-row hidden mt-10 w-full max-w-[800px] justify-between">
           <button className="flex items-center justify-center bg-[#00000040] p-4 rounded-full">
             <FilterIcon />
           </button>

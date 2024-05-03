@@ -73,4 +73,22 @@ const sidebarData: ISidebarData[] = [
   },
 ];
 
-export default sidebarData;
+const sliderData = [
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+];
+
+const sliderDataTwo = [
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+];
+
+export { sidebarData, sliderData, sliderDataTwo };
