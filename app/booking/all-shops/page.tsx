@@ -30,6 +30,7 @@ const AllShops = () => {
               shopName={shopName}
               btnText="Book Appointment"
               booking={true}
+              href="/find-services/massage"
             />
           ))}
         </div>

@@ -32,6 +32,7 @@ const AboutShop = () => {
             shopName={shopName}
             btnText="Book Appointment"
             booking={true}
+            href="/booking/find-services/massage"
           />
         ))}
       </div>

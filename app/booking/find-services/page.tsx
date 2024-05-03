@@ -8,7 +8,6 @@ import ArrowBack from "@/ui/icons/arrow-back";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { sliderData } from "@/components/types";
 import Explorer from "@/components/Explorer";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const FindServices: React.FC = () => {
