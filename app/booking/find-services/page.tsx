@@ -19,7 +19,7 @@ const FindServices: React.FC = () => {
     { name: "Makeup", location: "San Francisco" },
   ];
   const [filteredServices, setFilteredServices] = React.useState(services);
-  const [search, setSearch] = React.useState(true);
+  const [search, setSearch] = React.useState(false);
 
   const handleSearch = (service: string, shop: string) => {
     const filtered = services.filter(
