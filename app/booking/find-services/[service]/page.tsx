@@ -16,6 +16,19 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
+const daysData = [
+  { day: "Fri", date: "03 Feb", slots: 16 },
+  { day: "Sun", date: "03 Feb", slots: 2 },
+  { day: "Mon", date: "03 Feb", slots: 2 },
+  { day: "Tue", date: "03 Feb", slots: 5 },
+  { day: "Wed", date: "03 Feb", slots: 4 },
+  { day: "Thur", date: "03 Feb", slots: 8 },
+  { day: "Sat", date: "03 Feb", slots: 7 },
+];
 
 interface PageProps {
   params: {
@@ -27,6 +40,10 @@ const Page: React.FC<PageProps> = ({ params }) => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
+
+  const [activeSelect, setActiveSelect] = React.useState(0);
+
+  const [bookingFrame, setBookingFrame] = React.useState("start");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -133,6 +150,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
         </div>
       </section>
       <Dialog
+        maxWidth="lg"
         open={open}
         onClose={handleClose}
         PaperProps={{
@@ -148,100 +166,173 @@ const Page: React.FC<PageProps> = ({ params }) => {
         }}
       >
         <DialogContent style={{ padding: "20px" }}>
-          <div>
-            <h1>Book Appointment</h1>
-            <p>Select service provider </p>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
-                label="Age"
-                onChange={handleChange}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          {/* <div className="flex flex-col gap-y-6">
-            <h1 className="text-2xl font-semibold">Additional information</h1>
-            <p>Haircut appointment </p>
-            <div className="flex flex-row gap-x-2">
-              <div className="flex flex-row gap-x-1">
-                <CalendarIcon />
-                <p>Fri, 3 March</p>
-              </div>
-              <div className="flex flex-row gap-x-1">
-                <TimeIcon />
-                <p>2:00PM EAT</p>
+          {bookingFrame === "start" && (
+            <div className="w-full flex flex-col gap-y-10">
+              <h1 className="text-xl font-semibold">Book Appointment</h1>
+              <div className="gap-y-10 flex flex-col">
+                <div className="flex-col flex max-w-[336px]  gap-y-3">
+                  <InputLabel
+                    className="text-[#0F1C35] tetx-lg font-bold"
+                    id="demo-simple-select-label"
+                  >
+                    Select Service Provider
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={age}
+                    label="Olivia Rahy"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </div>
+                <div className="flex flex-row gap-x-5">
+                  {daysData.map(({ day, date, slots }, index) => (
+                    <div
+                      key={index}
+                      className={`px-4 py-2 flex flex-col gap-y-4 items-center justify-center cursor-pointer border-2 rounded-lg ${
+                        activeSelect === index
+                          ? "border-[#DB1471]"
+                          : "border-[#F2F2F2]"
+                      }`}
+                      onClick={() => {
+                        setActiveSelect(index);
+                      }}
+                    >
+                      <p className="text-[14px] text-[#1C1C1C] font-normal">
+                        {day}
+                      </p>
+                      <p className="text-[14px] text-[#1C1C1C] font-normal">
+                        {date}
+                      </p>
+                      <p
+                        className={`text-[11px] ${
+                          slots > 10
+                            ? "text-[#14B339]"
+                            : slots >= 5
+                            ? "text-[#FF9F0A]"
+                            : "text-[#E5352B]"
+                        } font-medium`}
+                      >
+                        {slots} available slots
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex-col flex max-w-[336px]  gap-y-3">
+                  <InputLabel
+                    className="text-[#0F1C35] tetx-lg font-bold"
+                    id="demo-simple-select-label"
+                  >
+                    Select Time
+                  </InputLabel>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker label="8:00 AM" name="startTime" />
+                  </LocalizationProvider>
+                </div>
+                <div className="flex flex-row justify-end gap-x-4">
+                  <Button label="Cancel" variant="outline" />
+                  <Button
+                    label="Book Appointment"
+                    onClick={() => {
+                      setBookingFrame("finish");
+                    }}
+                    variant="primary"
+                  >
+                    <p>Confirm Appointment</p>
+                    <Image
+                      className="border bg-white ml-3 rounded-full"
+                      src="/arrow-right.svg"
+                      alt="arrow-icon"
+                      width={20}
+                      height={20}
+                    />
+                  </Button>
+                </div>
               </div>
             </div>
-            <input
-              type="text"
-              id="first_name"
-              className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5 "
-              placeholder="John"
-              required
-            />
-            <input
-              type="text"
-              id="first_name"
-              className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-              placeholder="John"
-              required
-            />
-            <input
-              type="text"
-              id="first_name"
-              className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px]  block w-full p-2.5 "
-              placeholder="John"
-              required
-            />
-            <p>How do you want to be notified?</p>
-            <div className="flex flex-row items-center gap-x-3">
-              <div className="flex items-center">
-                <input
-                  id="default-radio-1"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                />
-                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Default radio
-                </label>
+          )}
+          {bookingFrame === "finish" && (
+            <div className="flex flex-col gap-y-6">
+              <h1 className="text-2xl font-semibold">Additional information</h1>
+              <p>Haircut appointment </p>
+              <div className="flex flex-row gap-x-2">
+                <div className="flex flex-row gap-x-1">
+                  <CalendarIcon />
+                  <p>Fri, 3 March</p>
+                </div>
+                <div className="flex flex-row gap-x-1">
+                  <TimeIcon />
+                  <p>2:00PM EAT</p>
+                </div>
               </div>
-              <div className="flex items-center">
-                <input
-                  checked
-                  id="default-radio-2"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="w-4 h-4 text-[#7F56D9] bg-[#7F56D9] border-[#7F56D9]"
-                />
-                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Checked state
-                </label>
+              <input
+                type="text"
+                id="first_name"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+                placeholder="John"
+                required
+              />
+              <input
+                type="text"
+                id="first_name"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
+                placeholder="John"
+                required
+              />
+              <input
+                type="text"
+                id="first_name"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px]  block w-full p-2.5 "
+                placeholder="John"
+                required
+              />
+              <p>How do you want to be notified?</p>
+              <div className="flex flex-row items-center gap-x-3">
+                <div className="flex items-center">
+                  <input
+                    id="default-radio-1"
+                    type="radio"
+                    value=""
+                    name="default-radio"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                  />
+                  <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    Default radio
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    checked
+                    id="default-radio-2"
+                    type="radio"
+                    value=""
+                    name="default-radio"
+                    className="w-4 h-4 text-[#7F56D9] bg-[#7F56D9] border-[#7F56D9]"
+                  />
+                  <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    Checked state
+                  </label>
+                </div>
+              </div>
+              <div className="flex flex-row gap-x-4 justify-between">
+                <Button label="Cancel" variant="outline" />
+                <Button label="Book Appointment" variant="primary">
+                  <p>Confirm Appointment</p>
+                  <Image
+                    className="border bg-white ml-3 rounded-full"
+                    src="/arrow-right.svg"
+                    alt="arrow-icon"
+                    width={20}
+                    height={20}
+                  />
+                </Button>
               </div>
             </div>
-            <div className="flex flex-row gap-x-4 justify-between">
-              <Button label="Cancel" variant="outline" />
-              <Button label="Book Appointment" variant="primary">
-                <p>Confirm Appointment</p>
-                <Image
-                  className="border bg-white ml-3 rounded-full"
-                  src="/arrow-right.svg"
-                  alt="arrow-icon"
-                  width={20}
-                  height={20}
-                />
-              </Button>
-            </div>
-          </div> */}
+          )}
         </DialogContent>
       </Dialog>
     </div>
