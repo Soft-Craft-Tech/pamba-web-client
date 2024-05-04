@@ -135,7 +135,7 @@ export const loginRequest = async (
   router: any
 ) => {
   try {
-    const { data } = await axios.post(
+    const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/businesses/login`,
       {},
       {
@@ -149,11 +149,11 @@ export const loginRequest = async (
         },
       }
     );
+    const data = response.data;
     setTimeout(() => router.push(`/user/dashboard`), 500);
-    console.log(data);
     setUser(data);
-    return data;
+    return { response, data };
   } catch (error) {
-    throw error;
+    return { error };
   }
 };
