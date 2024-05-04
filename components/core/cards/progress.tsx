@@ -1,12 +1,11 @@
 "use client";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
 import { AiOutlineCheckCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { LuCircleDot } from "react-icons/lu";
-import { useContext } from "react";
-import { CompleteProfileContext } from "@/context/completeProfile/completeProfileContext";
 
 export default function ProfileProgress() {
-  const context = useContext(CompleteProfileContext);
-  const step = context ? context.step : 0;
+  const step = useAppSelector((state: RootState) => state.completeProfile.step);
 
   const stepDescriptions = [
     "Business Description",

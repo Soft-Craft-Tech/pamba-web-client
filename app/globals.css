@@ -10,3 +10,11 @@ input[type="checkbox"].form-checkbox:checked {
 .side-nav {
   position: relative;
 }
+:root {
+  --gradient-start: #0f1c35;
+  --gradient-end-1: rgba(15, 28, 53, 0.85);
+  --gradient-end-2: rgba(15, 28, 53, 0.7);
+  --gradient-end-3: rgba(15, 28, 53, 0.3);
+  --gradient-end-4: rgba(15, 28, 53, 0);
+  --gradient-angle: 89.61deg;
+}

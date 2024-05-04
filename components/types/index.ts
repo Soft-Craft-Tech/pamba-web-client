@@ -1,13 +1,4 @@
-export interface SignUpFormData {
-  email: string;
-  password: string;
-  name: string;
-  category: string;
-  phone: string;
-  city: string;
-  mapUrl: string;
-  location: string;
-}
+export interface SignUpFormData {}
 
 export interface DeleteFormData {
   email: string;
@@ -18,7 +9,7 @@ export interface BusinessDescriptionData {
 }
 
 export interface CloudinaryData {
-  imgUrl: string;
+  imageURL: string;
 }
 export type DynamicObject = {
   [x: string]: any;
@@ -73,4 +64,23 @@ const sidebarData: ISidebarData[] = [
   },
 ];
 
-export default sidebarData;
+const sliderData = [
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+];
+
+const sliderDataTwo = [
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
+];
+
+export { sidebarData, sliderData, sliderDataTwo };

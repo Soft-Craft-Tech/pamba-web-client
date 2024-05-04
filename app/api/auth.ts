@@ -1,6 +1,6 @@
 import {
-  BusinessDescriptionData,
   DeleteFormData,
+  DynamicObject,
   SignUpFormData,
 } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
@@ -14,8 +14,8 @@ import { useMutation } from "react-query";
 
 export const useSignUpMutation = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, SignUpFormData>(
-    async (formData: SignUpFormData) => {
+  return useMutation<void, Error, DynamicObject>(
+    async (formData: DynamicObject) => {
       const response = await apiCall("POST", endpoints.signup, formData, {});
       dispatch(setMessage(response.message));
       return response;
@@ -96,7 +96,7 @@ export const useUpdateDescription = (step: number) => {
       { description },
       {}
     );
-    dispatch(setStep(step));
+    dispatch(setStep(step + 1));
     return response.data;
   });
 };
@@ -122,6 +122,7 @@ export const loginRequest = async (
       }
     );
     setTimeout(() => router.push(`/user/dashboard`), 500);
+    console.log(data);
     setUser(data);
     return data;
   } catch (error) {

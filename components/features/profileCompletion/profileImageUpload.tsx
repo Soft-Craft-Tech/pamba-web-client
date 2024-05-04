@@ -1,27 +1,23 @@
 import ProfileProgress from "../../core/cards/progress";
 import { useState } from "react";
-import { CldUploadWidget, CloudinaryUploadWidgetInfo } from "next-cloudinary";
+import { CldUploadWidget } from "next-cloudinary";
 import Toast from "../../shared/toasts/genToast";
 import { useChangeImageMutation } from "@/app/api/requests";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setStep } from "@/store/completeProfileSlice";
 import { RootState } from "@/store/store";
+import { setStep } from "@/store/completeProfileSlice";
 
 export default function UploadProfileImg() {
   const [imgUrl, setImgUrl] = useState<any>("");
-  const {
-    completeProfile: { step },
-  } = useAppSelector((state: RootState) => state);
+  const step = useAppSelector((state: RootState) => state.completeProfile.step);
   const dispatch = useAppDispatch();
-
   const { mutate, isLoading, isSuccess, error } = useChangeImageMutation();
-
   const submitImg = () => {
     if (imgUrl) {
       mutate(imgUrl);
     }
+    dispatch(setStep(step + 1));
   };
-
   return (
     <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 ">
       {isSuccess && <Toast message="Request Succesfull" type="success" />}
@@ -29,15 +25,23 @@ export default function UploadProfileImg() {
       <ProfileProgress />
       <div className="w-full">
         <CldUploadWidget
-          onSuccess={() => {
-            setImgUrl("");
-            dispatch(setStep(step + 1));
+          onSuccess={(results: any) => {
+            setImgUrl(results?.info?.secure_url);
           }}
           options={{
-            sources: ["local", "url", "google_drive", "dropbox"],
+            sources: ["local", "url", "google_drive", "dropbox", "unsplash"],
             multiple: false,
+            folder: "pamba-web",
+            maxImageHeight: 800,
+            maxImageWidth: 1200,
+            minImageWidth: 900,
+            minImageHeight: 500,
+            cropping: true,
+            croppingValidateDimensions: true,
+            validateMaxWidthHeight: true,
+            clientAllowedFormats: ["png", "jpeg","jpg", "svg"]
           }}
-          uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}
+          uploadPreset="pamba-africa-images"
         >
           {({ open }) => {
             return (

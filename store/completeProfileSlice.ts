@@ -2,14 +2,20 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CompleteProfileState {
   step: number;
-  queuedServices: { id: string; price: string }[];
-  service: { id: string; price: string };
+  queuedServices: { name: string, category: string; price: string, description: string, estimatedTime: string }[];
+  service: { name: string, category: string; price: string, description: string, estimatedTime: string };
 }
 
 const initialState: CompleteProfileState = {
   step: 1,
   queuedServices: [],
-  service: { id: "", price: "" },
+  service: { 
+    category: "", 
+    price: "",
+    description: "",
+    estimatedTime: "",
+    name: ""
+  },
 };
 
 const completeProfileSlice = createSlice({
@@ -21,11 +27,11 @@ const completeProfileSlice = createSlice({
     },
     setQueuedServices(
       state,
-      action: PayloadAction<{ id: string; price: string }[]>
+      action: PayloadAction<{ name: string, category: string; price: string, description: string, estimatedTime: string }[]>
     ) {
       state.queuedServices = action.payload;
     },
-    setService(state, action: PayloadAction<{ id: string; price: string }>) {
+    setService(state, action: PayloadAction<{ name: string, category: string; price: string, description: string, estimatedTime: string }>) {
       state.service = action.payload;
     },
   },

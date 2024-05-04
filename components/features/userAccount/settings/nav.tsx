@@ -42,10 +42,10 @@ export default function SettingsNav() {
         Password and Security
       </h2>
       <h2
-        onClick={() => {
-          changeTab("support");
-        }}
-        className={`cursor-pointer font-semibold p-1 ${
+        // onClick={() => {
+        //   changeTab("support");
+        // }}
+        className={`font-semibold p-1 cursor-not-allowed ${
           activeTab === "support"
             ? "text-primary border-b-[2px] border-primary"
             : "text-gray-500"

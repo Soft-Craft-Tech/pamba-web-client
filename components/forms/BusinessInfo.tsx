@@ -29,12 +29,22 @@ const BusinessInfo = () => {
   const { mutateAsync, isLoading, isSuccess, isError } = useSignUpMutation();
 
   const onSubmit = async (formData: any) => {
+    const { name, category, phone, city, mapUrl, location } = formData;
+
+    const categories = Array.isArray(category) ? category : [category];
+
     const businessData = {
       email,
       password,
       acceptedTerms,
-      ...formData,
+      name,
+      category: categories,
+      phone,
+      city,
+      mapUrl,
+      location,
     };
+
     try {
       await mutateAsync(businessData);
       dispatch(setShowToast(true));
@@ -97,10 +107,10 @@ const BusinessInfo = () => {
                   className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
                   name="Business Category"
                 >
-                  <option value="">Business Category</option>
-                  <option value="Salon">Salon</option>
-                  <option value="SPA">Spa</option>
-                  <option value="Barbershop">Barbershop</option>
+                  <option value={1}>Salon</option>
+                  <option value={2}>Spa</option>
+                  <option value={3}>Gymn</option>
+                  <option value={4}>Massage</option>
                 </select>
               )}
               rules={{ required: true }}
