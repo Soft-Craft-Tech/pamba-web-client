@@ -118,6 +118,7 @@ export default function AddServicesForm({ data }: { data: any }) {
               >
                 {({ open }) => (
                   <button
+                    type="button"
                     className={`font-light text-lg px-5 py-2 rounded-md bg-white w-full h-40 border border-dashed ${
                       newImage
                         ? "text-green-500 border-green-500"
