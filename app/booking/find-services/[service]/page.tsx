@@ -12,6 +12,10 @@ import DialogContent from "@mui/material/DialogContent";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import TimeIcon from "@/ui/icons/time-icon";
 import Button from "@/ui/button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 interface PageProps {
   params: {
@@ -22,6 +26,7 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({ params }) => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [age, setAge] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,6 +34,9 @@ const Page: React.FC<PageProps> = ({ params }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string);
   };
   return (
     <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
@@ -140,7 +148,25 @@ const Page: React.FC<PageProps> = ({ params }) => {
         }}
       >
         <DialogContent style={{ padding: "20px" }}>
-          <div className="flex flex-col gap-y-6">
+          <div>
+            <h1>Book Appointment</h1>
+            <p>Select service provider </p>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={age}
+                label="Age"
+                onChange={handleChange}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          {/* <div className="flex flex-col gap-y-6">
             <h1 className="text-2xl font-semibold">Additional information</h1>
             <p>Haircut appointment </p>
             <div className="flex flex-row gap-x-2">
@@ -215,7 +241,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 />
               </Button>
             </div>
-          </div>
+          </div> */}
         </DialogContent>
       </Dialog>
     </div>
