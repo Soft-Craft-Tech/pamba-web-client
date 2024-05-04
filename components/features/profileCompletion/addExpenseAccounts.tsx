@@ -38,17 +38,17 @@ export default function AddExpenseAccounts() {
   };
 
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20">
+    <form
+      className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       {isError && <Toast message={toastMessage} type="error" />}
       {isSuccess && <Toast message={toastMessage} type="success" />}
       <ProfileProgress />
       <div className="flex gap-10 w-full flex-col md:flex-row">
         <div className="flex flex-col gap-5 w-full max-h-96 p-5 border bg-white lg:p-10 lg:min-w-96">
           <h3>Create your Business&apos;s Expense Accounts</h3>
-          <form
-            className="flex flex-col gap-3"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <div className="flex flex-col gap-3">
             <TextField
               required
               id="outlined-required"
@@ -63,10 +63,13 @@ export default function AddExpenseAccounts() {
               type="text"
               {...register("description", { required: true })}
             />
-            <button className="py-3 px-10 bg-secondary text-white h-max rounded-md">
+            <button
+              onClick={() => {}}
+              className="py-3 px-10 bg-secondary text-white h-max rounded-md"
+            >
               Add
             </button>
-          </form>
+          </div>
         </div>
         {queuedExpenses.length > 0 && (
           <div className="w-full h-full p-4 bg-white flex gap-3 flex-wrap lg:p-7">
@@ -101,6 +104,6 @@ export default function AddExpenseAccounts() {
           {isLoading ? "Loading" : "Finish"}
         </button>
       </div>
-    </div>
+    </form>
   );
 }

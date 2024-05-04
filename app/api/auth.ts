@@ -25,7 +25,7 @@ export const useRequestPasswordReset = () => {
     async (email: string | undefined) => {
       const response = await apiCall(
         "POST",
-        `${endpoints.createAccount}`,
+        `${endpoints.requestPasswordReset}`,
         { email },
         {}
       );
@@ -108,7 +108,7 @@ export const useCreateAccount = (step: number) => {
     async (formData: DynamicObject) => {
       const response = await apiCall(
         "POST",
-        `${endpoints.requestPasswordReset}`,
+        `${endpoints.createAccount}`,
         { formData },
         {}
       );
