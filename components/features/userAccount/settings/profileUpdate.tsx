@@ -19,7 +19,7 @@ export default function EditProfile() {
         </div>
         <button className="text-sm text-blue-400 w-auto h-auto flex items-center gap-2">
           <AiFillEdit size={20} />
-          Change Image
+          Change image
         </button>
       </div>
       <ProfileUpdateForm />
