@@ -122,6 +122,7 @@ export default function ProfileUpdateForm() {
           type="password"
           {...register("password", { required: true })}
         />
+        <p>Enter password to confirm you are the one updating details here</p>
         <button
           type="submit"
           className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
