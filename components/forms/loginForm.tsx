@@ -6,7 +6,6 @@ import { redirect, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { toggleLoading } from "@/store/loadingSlice";
-import { isAuthenticated } from "@/utils/auth";
 import Toast from "../shared/toasts/authToast";
 import React from "react";
 import { setShowToast } from "@/store/toastSlice";
