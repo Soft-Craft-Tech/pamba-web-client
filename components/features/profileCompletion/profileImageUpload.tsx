@@ -32,14 +32,6 @@ export default function UploadProfileImg() {
             sources: ["local", "url", "google_drive", "dropbox", "unsplash"],
             multiple: false,
             folder: "pamba-web",
-            maxImageHeight: 800,
-            maxImageWidth: 1200,
-            minImageWidth: 900,
-            minImageHeight: 500,
-            cropping: true,
-            croppingValidateDimensions: true,
-            validateMaxWidthHeight: true,
-            clientAllowedFormats: ["png", "jpeg","jpg", "svg"]
           }}
           uploadPreset="pamba-africa-images"
         >
