@@ -21,15 +21,6 @@ export default function ProfileUpdateForm() {
   const {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
-  const {
-    business_name,
-    email,
-    phone,
-    city,
-    location,
-    google_map,
-    description,
-  } = client;
 
   const { mutateAsync, isLoading, isSuccess, isError } = useUpdateProfile();
 
@@ -59,7 +50,7 @@ export default function ProfileUpdateForm() {
           label="Business Name"
           type="text"
           {...register("name", { required: true })}
-          defaultValue={business_name}
+          defaultValue={client?.business_name}
         />
         <TextField
           required
@@ -67,7 +58,7 @@ export default function ProfileUpdateForm() {
           label="Email"
           type="text"
           {...register("email", { required: true })}
-          defaultValue={email}
+          defaultValue={client?.email}
         />
         <TextField
           required
@@ -75,7 +66,7 @@ export default function ProfileUpdateForm() {
           label="Phone Number"
           type="text"
           {...register("phone", { required: true })}
-          defaultValue={phone}
+          defaultValue={client?.phone}
         />
         <TextField
           required
@@ -83,7 +74,7 @@ export default function ProfileUpdateForm() {
           label="City"
           type="text"
           {...register("city", { required: true })}
-          defaultValue={city}
+          defaultValue={client?.city}
         />
         <TextField
           required
@@ -91,7 +82,7 @@ export default function ProfileUpdateForm() {
           label="Location"
           type="text"
           {...register("location", { required: true })}
-          defaultValue={location}
+          defaultValue={client?.location}
         />
         <TextField
           required
@@ -99,7 +90,7 @@ export default function ProfileUpdateForm() {
           label="Map Url"
           type="text"
           {...register("mapUrl", { required: true })}
-          defaultValue={google_map}
+          defaultValue={client?.google_map}
         />
         <TextField
           required
@@ -107,7 +98,7 @@ export default function ProfileUpdateForm() {
           label="Business Description"
           type="text"
           {...register("description", { required: true })}
-          defaultValue={description}
+          defaultValue={client?.description}
           multiline
           rows={3}
         />
