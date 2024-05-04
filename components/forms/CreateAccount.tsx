@@ -23,6 +23,8 @@ const CreateAccount = () => {
     (state: RootState) => state.signUp
   );
 
+  const [showPassword, setShowPassword] = React.useState(false);
+
   const onSubmit = (data: any) => {
     dispatch(setEmail(data.email));
     dispatch(setAcceptedTerms(data.acceptedTerms));
@@ -54,7 +56,7 @@ const CreateAccount = () => {
           <div className="border w-full h-14 flex relative  lg:h-12">
             <input
               className="h-full w-full  py-1 px-2"
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: "Password is required",
                 minLength: 6,
@@ -62,13 +64,27 @@ const CreateAccount = () => {
               defaultValue={password}
               placeholder="Password"
             />
-            <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
-              <Image
-                src="/eye-open.png"
-                alt="Toggle password visibility"
-                width={24}
-                height={24}
-              />
+            <div
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+              className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300"
+            >
+              {showPassword ? (
+                <Image
+                  src="/eye-open.png"
+                  alt="Toggle password visibility"
+                  width={24}
+                  height={24}
+                />
+              ) : (
+                <Image
+                  src="/eye-closed.png"
+                  alt="Toggle password visibility"
+                  width={24}
+                  height={24}
+                />
+              )}
             </div>
           </div>
           {errors.password && (
