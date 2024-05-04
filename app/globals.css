@@ -1,12 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 input[type="checkbox"].form-checkbox:checked {
-    background-color: #DB1471;
+  background-color: #db1471;
 }
 
 .side-nav {
-    position: relative;
+  position: relative;
+}
+:root {
+  --gradient-start: #0f1c35;
+  --gradient-end-1: rgba(15, 28, 53, 0.85);
+  --gradient-end-2: rgba(15, 28, 53, 0.7);
+  --gradient-end-3: rgba(15, 28, 53, 0.3);
+  --gradient-end-4: rgba(15, 28, 53, 0);
+  --gradient-angle: 89.61deg;
 }
