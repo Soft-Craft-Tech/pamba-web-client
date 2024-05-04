@@ -3,32 +3,29 @@ import Link from "next/link";
 import Image from "next/image";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { RxCaretDown, RxHamburgerMenu } from "react-icons/rx";
 import { AiOutlineClose } from "react-icons/ai";
+import { isAuthenticated, logoutUser } from "@/utils/auth";
 
 export default function Header({ page }: { page: string }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [toggleServices, setToggleServices] = useState(false);
   const [navExpanded, setNavExpanded] = useState(false);
   const router = useRouter();
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-  const username = cookies.get("username");
 
   // LogOut User
   const logOut = () => {
-    setIsLoggedIn(false);
-    cookies.remove("token", { path: "/", sameSite: "none", secure: true });
-    cookies.remove("username", { path: "/", sameSite: "none", secure: true });
+    logoutUser();
     router.push("/");
   };
 
-  useEffect(() => {
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, [isLoggedIn, token]);
+  // const pathname = usePathname();
+
+  // useEffect(() => {
+  //   if (isAuthenticated()) {
+  //     router.push("/user/dashboard");
+  //   }
+  // }, [pathname, router]);
 
   return (
     <header className="fixed top-0 left-0 w-full h-20 flex items-center justify-center border-b-[0.5px] border-borders z-20">
@@ -110,7 +107,7 @@ export default function Header({ page }: { page: string }) {
             </div>
           </div>
           <div className="h-full items-center justify-between flex font-semibold sm:px-0 lg:gap-10 lg:justify-normal">
-            {!isLoggedIn ? (
+            {!isAuthenticated() ? (
               <>
                 <Link
                   className="border-[0.1px] border-primary text-primary px-5 py-2 rounded-lg lg:border-none lg:text-secondary"
@@ -136,7 +133,7 @@ export default function Header({ page }: { page: string }) {
                 </button>
                 <Link
                   className="bg-primary text-white px-5 py-2 rounded-lg"
-                  href={`/user/${username}/dashboard`}
+                  href={`/user/dashboard`}
                 >
                   Dashboard
                 </Link>
