@@ -68,8 +68,8 @@ const CompleteProfileComponent = () => {
     <div className="w-full h-full">
       {step === 1 && <BusinessDescription />}
       {step === 2 && <UploadProfileImg />}
-      {step === 4 && <AddServices />}
-      {step === 3 && <AddExpenseAccounts />}
+      {step === 3 && <AddServices />}
+      {step === 4 && <AddExpenseAccounts />}
       {step === 5 && <ProfileComplete />}
     </div>
   );
