@@ -1,4 +1,8 @@
-import { DeleteFormData, SignUpFormData } from "@/components/types";
+import {
+  DeleteFormData,
+  DynamicObject,
+  SignUpFormData,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";
@@ -10,8 +14,8 @@ import { useMutation } from "react-query";
 
 export const useSignUpMutation = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, SignUpFormData>(
-    async (formData: SignUpFormData) => {
+  return useMutation<void, Error, DynamicObject>(
+    async (formData: DynamicObject) => {
       const response = await apiCall("POST", endpoints.signup, formData, {});
       dispatch(setMessage(response.message));
       return response;
