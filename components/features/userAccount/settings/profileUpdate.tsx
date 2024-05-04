@@ -2,10 +2,7 @@
 import Image from "next/image";
 import { AiFillEdit } from "react-icons/ai";
 import ProfileUpdateForm from "./updateForm";
-import { getUser } from "@/utils/auth";
 export default function EditProfile() {
-  const { client } = getUser();
-  console.log(client);
   return (
     <div className="flex gap-10">
       <div className="flex flex-col gap-3">
@@ -19,7 +16,7 @@ export default function EditProfile() {
         </div>
         <button className="text-sm text-blue-400 w-auto h-auto flex items-center gap-2">
           <AiFillEdit size={20} />
-          Change image
+          Change Image
         </button>
       </div>
       <ProfileUpdateForm />
