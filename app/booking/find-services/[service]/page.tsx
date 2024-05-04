@@ -209,7 +209,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                         {date}
                       </p>
                       <p
-                        className={`text-[11px] ${
+                        className={`text-[11px] text-center max-w-[80px] ${
                           slots > 10
                             ? "text-[#14B339]"
                             : slots >= 5
@@ -234,7 +234,13 @@ const Page: React.FC<PageProps> = ({ params }) => {
                   </LocalizationProvider>
                 </div>
                 <div className="flex flex-row justify-end gap-x-4">
-                  <Button label="Cancel" variant="outline" />
+                  <Button
+                    label="Cancel"
+                    variant="outline"
+                    onClick={() => {
+                      handleClose();
+                    }}
+                  />
                   <Button
                     label="Book Appointment"
                     onClick={() => {
@@ -301,7 +307,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                   />
                   <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Default radio
+                    SMS
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -313,13 +319,20 @@ const Page: React.FC<PageProps> = ({ params }) => {
                     name="default-radio"
                     className="w-4 h-4 text-[#7F56D9] bg-[#7F56D9] border-[#7F56D9]"
                   />
-                  <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Checked state
+                  <label className="ms-2 text-sm font-medium text-gray-900">
+                    Whatsapp
                   </label>
                 </div>
               </div>
               <div className="flex flex-row gap-x-4 justify-between">
-                <Button label="Cancel" variant="outline" />
+                <Button
+                  label="Cancel"
+                  onClick={() => {
+                    handleClose();
+                    setBookingFrame("start");
+                  }}
+                  variant="outline"
+                />
                 <Button label="Book Appointment" variant="primary">
                   <p>Confirm Appointment</p>
                   <Image
