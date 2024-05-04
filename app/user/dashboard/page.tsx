@@ -11,7 +11,7 @@ export default function DashboardPage() {
 
   return (
     <div className="w-full flex flex-col gap-5">
-      {!data?.description && (
+      {!data?.expenseAccounts && (
         <div className="flex flex-row justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
           <p>Your profile is incomplete</p>
           <Link
