@@ -31,13 +31,18 @@ export default function ChangePassword() {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data: any) => {
-    try {
-      await mutateAsync(data);
+    if (data?.newPassword !== data?.confirmPassword) {
+      dispatch(setMessage("Passwords do not match"));
       dispatch(setShowToast(true));
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-      dispatch(setShowToast(true));
+    } else {
+      try {
+        await mutateAsync(data);
+        dispatch(setShowToast(true));
+      } catch (error) {
+        const customError = error as CustomError;
+        dispatch(setMessage(customError?.response?.data?.message));
+        dispatch(setShowToast(true));
+      }
     }
   };
 
