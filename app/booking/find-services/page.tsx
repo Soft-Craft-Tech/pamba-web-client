@@ -9,6 +9,7 @@ import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { sliderData } from "@/components/types";
 import Explorer from "@/components/Explorer";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const FindServices: React.FC = () => {
   const router = useRouter();
@@ -74,6 +75,19 @@ const FindServices: React.FC = () => {
           </div>
         </section>
         <FindShopsCards />
+        <Separator
+          btnText={"WHY US"}
+          header={"We are experienced in making you very beautiful"}
+        />
+        <div>
+          <Image
+            className="w-full"
+            src="/whyUs.svg"
+            alt="pamba app"
+            width={50}
+            height={20}
+          />
+        </div>
       </div>
     </div>
   );
