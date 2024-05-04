@@ -104,8 +104,8 @@ export const useResetPasswordMutation = (token: string) => {
 
 export const useCreateAccount = (step: number) => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
+  return useMutation<void, Error, DynamicObject[]>(
+    async (formData: DynamicObject[]) => {
       const response = await apiCall(
         "POST",
         `${endpoints.createAccount}`,
