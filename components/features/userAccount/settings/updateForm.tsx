@@ -35,11 +35,7 @@ export default function ProfileUpdateForm() {
 
   const dispatch = useAppDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data: any) => {
     try {
@@ -125,6 +121,7 @@ export default function ProfileUpdateForm() {
         <p>Enter password to confirm you are the one updating details here</p>
         <button
           type="submit"
+          disabled={isLoading}
           className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
         >
           {isLoading ? "Saving" : "Save Changes"}

@@ -35,6 +35,22 @@ export const useUpdateProfile = () => {
   );
 };
 
+export const useChangePassword = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DynamicObject>(
+    async (formData: DynamicObject) => {
+      const response = await apiCall(
+        "PUT",
+        endpoints.changePassword,
+        formData,
+        {}
+      );
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
 export const useDeleteAccountMutation = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, DeleteFormData>(
