@@ -19,6 +19,23 @@ export const useSignUpMutation = () => {
   );
 };
 
+export const useRequestPasswordReset = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, string | undefined>(
+    async (email: string | undefined) => {
+      const response = await apiCall(
+        "POST",
+        `${endpoints.createAccount}`,
+        { email },
+        {}
+      );
+      dispatch(setShowToast(true));
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
 export const useUpdateProfile = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, DynamicObject>(
@@ -85,18 +102,19 @@ export const useResetPasswordMutation = (token: string) => {
   );
 };
 
-export const useRequestPasswordReset = () => {
+export const useCreateAccount = (step: number) => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, string | undefined>(
-    async (email: string | undefined) => {
+  return useMutation<void, Error, DynamicObject>(
+    async (formData: DynamicObject) => {
       const response = await apiCall(
         "POST",
         `${endpoints.requestPasswordReset}`,
-        { email },
+        { formData },
         {}
       );
       dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
+      dispatch(setStep(step + 1));
       return response;
     }
   );
@@ -115,6 +133,7 @@ export const useVerifyAccountMutation = (token: string) => {
     return response.data;
   });
 };
+
 export const useUpdateDescription = (step: number) => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, string>(async (description: string) => {

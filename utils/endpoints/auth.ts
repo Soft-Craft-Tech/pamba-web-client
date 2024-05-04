@@ -14,6 +14,7 @@ const authEndpoints: { [key: string]: string } = {
   fetchAllServices: "/services/fetch_all",
   fetchCategories: "/businesses/fetch-business-categories",
   getSingleBusiness: "/businesses",
+  createAccount: "/accounts/create-account",
 };
 
 export default authEndpoints;

@@ -6,11 +6,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useDispatch, useSelector } from "react-redux";
 import { setQueuedServices, setService } from "@/store/completeProfileSlice";
+import { useAppSelector } from "@/hooks";
 
 export default function AddServicesForm({ data }: { data: any }) {
   const { register, handleSubmit, reset } = useForm();
   const dispatch = useDispatch();
-  const service = useSelector((state: any) => state.completeProfile.service);
+  const service = useAppSelector((state: any) => state.completeProfile.service);
   const queuedServices = useSelector(
     (state: any) => state.completeProfile.queuedServices
   );
