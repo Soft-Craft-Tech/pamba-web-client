@@ -18,7 +18,7 @@ export default function UserAccountLayout({
         <div className="w-full relative lg:w-72 lg:h-screen">
           <div className="fixed w-full  flex flex-col gap-5 p-5  bg-white shadow-sm lg:w-72 lg:fixed lg:top-0 lg:left-0 lg:h-screen">
             <div className="w-full flex justify-between h-auto items-center">
-              <Link href="/">
+              <Link href="/user/dashboard">
                 <Image
                   className="w-32 h-auto"
                   src="/logo.svg"

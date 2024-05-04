@@ -19,6 +19,22 @@ export const useSignUpMutation = () => {
   );
 };
 
+export const useUpdateProfile = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DynamicObject>(
+    async (formData: DynamicObject) => {
+      const response = await apiCall(
+        "PUT",
+        endpoints.updateProfile,
+        formData,
+        {}
+      );
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
+};
+
 export const useDeleteAccountMutation = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, DeleteFormData>(

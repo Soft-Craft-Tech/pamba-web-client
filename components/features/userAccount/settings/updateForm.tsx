@@ -1,92 +1,117 @@
-"use client";
+import { getUser } from "@/utils/auth";
+import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useUpdateProfile } from "@/app/api/auth";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setMessage, setShowToast } from "@/store/toastSlice";
+import Toast from "@/components/shared/toasts/authToast";
+import { RootState } from "@/store/store";
+
+interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
 
 export default function ProfileUpdateForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    city: "",
-    location: "",
-    mapUrl: "",
-    description: "",
-    password: "",
-  });
+  const { client } = getUser();
 
-  // Input Changes
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setFormData((prev) => {
-      return { ...prev, [name]: value };
-    });
+  const {
+    toast: { toastMessage },
+  } = useAppSelector((state: RootState) => state);
+  const {
+    business_name,
+    email,
+    phone,
+    city,
+    location,
+    google_map,
+    description,
+  } = client;
+
+  const { mutateAsync, isLoading, isSuccess, isError } = useUpdateProfile();
+
+  const dispatch = useAppDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data: any) => {
+    try {
+      await mutateAsync(data);
+      dispatch(setShowToast(true));
+    } catch (error) {
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+      dispatch(setShowToast(true));
+    }
   };
 
   return (
     <div className="w-full h-auto">
-      <form className="flex flex-col gap-3">
+      {isError && <Toast message={toastMessage} type="error" />}
+      {isSuccess && <Toast message={toastMessage} type="success" />}
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           required
           id="business_name"
           label="Business Name"
           type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
+          {...register("name", { required: true })}
+          defaultValue={business_name}
         />
         <TextField
           required
           id="email"
           label="Email"
           type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
+          {...register("email", { required: true })}
+          defaultValue={email}
         />
         <TextField
           required
           id="phone"
           label="Phone Number"
           type="text"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
+          {...register("phone", { required: true })}
+          defaultValue={phone}
         />
         <TextField
           required
           id="city"
           label="City"
           type="text"
-          name="city"
-          value={formData.city}
-          onChange={handleChange}
+          {...register("city", { required: true })}
+          defaultValue={city}
         />
         <TextField
           required
           id="location"
           label="Location"
           type="text"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
+          {...register("location", { required: true })}
+          defaultValue={location}
         />
         <TextField
           required
           id="mapUrl"
           label="Map Url"
           type="text"
-          name="mapUrl"
-          value={formData.mapUrl}
-          onChange={handleChange}
+          {...register("mapUrl", { required: true })}
+          defaultValue={google_map}
         />
         <TextField
           required
           id="description"
           label="Business Description"
           type="text"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
+          {...register("description", { required: true })}
+          defaultValue={description}
           multiline
           rows={3}
         />
@@ -95,12 +120,13 @@ export default function ProfileUpdateForm() {
           id="password"
           label="Enter your Password"
           type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
+          {...register("password", { required: true })}
         />
-        <button className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md">
-          Submit
+        <button
+          type="submit"
+          className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
+        >
+          {isLoading ? "Saving" : "Save Changes"}
         </button>
       </form>
     </div>
