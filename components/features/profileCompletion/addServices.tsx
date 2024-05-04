@@ -6,6 +6,7 @@ import { useAssignService, useGetServices } from "@/app/api/requests";
 import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";
+import { useState } from "react";
 
 export default function AddServices() {
   const dispatch = useDispatch();

@@ -9,16 +9,16 @@ import { setQueuedServices, setService } from "@/store/completeProfileSlice";
 import { useAppSelector } from "@/hooks";
 import { CldUploadWidget } from "next-cloudinary";
 import React from "react";
+import { RootState } from "@/store/store";
 
 export default function AddServicesForm({ data }: { data: any }) {
   const { register, handleSubmit, reset, control } = useForm();
   const dispatch = useDispatch();
-  const service = useAppSelector((state: any) => state.completeProfile.service);
-  const queuedServices = useSelector(
-    (state: any) => state.completeProfile.queuedServices
+  const { service, queuedServices } = useSelector(
+    (state: RootState) => state.completeProfile
   );
 
-  const [newImage, setImage] = React.useState("");
+  const [newImage, setImage] = React.useState(null);
 
   const onSubmit = (formData: any) => {
     const exists = queuedServices.some(
@@ -45,20 +45,28 @@ export default function AddServicesForm({ data }: { data: any }) {
       <h3>What Services do you offer?</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <FormControl fullWidth>
-          <InputLabel id="service">Service Category</InputLabel>
-          <Select
-            {...register("category")}
-            labelId="service"
-            id="category"
-            value={service.id}
-            label="Service Category"
-          >
-            {data?.categories?.map((item: { id: number; category: string }) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.category}
-              </MenuItem>
-            ))}
-          </Select>
+          <Controller
+            name="category"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <select
+                {...field}
+                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                name=""
+              >
+                <option value="">Select Category</option>
+                {data?.categories?.map(
+                  ({ category, id }: { category: string; id: number }) => (
+                    <option key={id} value={id}>
+                      {category}
+                    </option>
+                  )
+                )}
+              </select>
+            )}
+            rules={{ required: true }}
+          />
         </FormControl>
         <TextField
           {...register("name", { required: true })}
@@ -89,12 +97,11 @@ export default function AddServicesForm({ data }: { data: any }) {
           <Controller
             name="imageURL"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <CldUploadWidget
                 onSuccess={(results: any) => {
                   setImage(results?.info?.secure_url);
-                  field.onChange(newImage);
+                  field.onChange(results?.info?.secure_url);
                 }}
                 options={{
                   sources: [
