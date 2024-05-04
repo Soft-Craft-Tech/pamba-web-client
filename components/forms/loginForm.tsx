@@ -7,6 +7,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { toggleLoading } from "@/store/loadingSlice";
 import { isAuthenticated } from "@/utils/auth";
+import Toast from "../shared/toasts/authToast";
+import React from "react";
+import { setShowToast } from "@/store/toastSlice";
 
 type LoginFormInputs = {
   username: string;
@@ -25,22 +28,28 @@ export default function LoginForm() {
   } = useAppSelector((state: RootState) => state);
   const dispatch = useAppDispatch();
 
+  const [message, setMessage] = React.useState("");
+
   const onSubmit: SubmitHandler<LoginFormInputs> = async ({
     username,
     password,
   }) => {
     dispatch(toggleLoading("loginLoading"));
     try {
-      await loginRequest(username, password, router);
+      const { data, error } = await loginRequest(username, password, router);
+      setMessage(data?.message);
       dispatch(toggleLoading("loginLoading"));
+      if (!error) {
+        dispatch(setShowToast(true));
+      }
     } catch (error) {
       dispatch(toggleLoading("loginLoading"));
-      console.log(error);
     }
   };
 
   return (
     <div className="relative">
+      {message !== " " && <Toast message={message} type="success" />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 lg:gap-3"
