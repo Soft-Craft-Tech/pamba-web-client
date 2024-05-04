@@ -59,3 +59,14 @@ export const useGetProfileCompletionStatus = () => {
     }
   });
 };
+
+export const useGetCategories = () => {
+  return useQuery("categories", async () => {
+    try {
+      const response = await apiCall("GET", endpoints.fetchCategories, {}, {});
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};

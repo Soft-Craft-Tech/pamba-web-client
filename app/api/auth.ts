@@ -1,8 +1,4 @@
-import {
-  DeleteFormData,
-  DynamicObject,
-  SignUpFormData,
-} from "@/components/types";
+import { DeleteFormData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";

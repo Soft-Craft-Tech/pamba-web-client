@@ -10,6 +10,7 @@ const authEndpoints: { [key: string]: string } = {
   uploadImage: "/businesses/upload-profile-img",
   assignServices: "/businesses/assign-services",
   fetchAllServices: "/services/fetch_all",
+  fetchCategories: "/businesses/fetch-business-categories",
 };
 
 export default authEndpoints;

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import Toast from "../shared/toasts/authToast";
 import { setMessage, setShowToast } from "@/store/toastSlice";
+import { useGetCategories } from "@/app/api/requests";
 
 interface CustomError extends Error {
   response?: {
@@ -27,6 +28,10 @@ const BusinessInfo = () => {
     toast: { toastMessage },
   } = useSelector((state: RootState) => state);
   const { mutateAsync, isLoading, isSuccess, isError } = useSignUpMutation();
+
+  const { data } = useGetCategories();
+
+  console.log(data);
 
   const onSubmit = async (formData: any) => {
     const { name, category, phone, city, mapUrl, location } = formData;
@@ -107,10 +112,20 @@ const BusinessInfo = () => {
                   className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
                   name="Business Category"
                 >
-                  <option value={1}>Salon</option>
-                  <option value={2}>Spa</option>
-                  <option value={3}>Gymn</option>
-                  <option value={4}>Massage</option>
+                  <option value="">Select Category</option>
+                  {data?.categories?.map(
+                    ({
+                      category_name,
+                      id,
+                    }: {
+                      category_name: string;
+                      id: number;
+                    }) => (
+                      <option key={id} value={id}>
+                        {category_name}
+                      </option>
+                    )
+                  )}
                 </select>
               )}
               rules={{ required: true }}
