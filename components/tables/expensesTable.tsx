@@ -14,9 +14,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import { useMutation, useQueryClient } from "react-query";
 import { useGetExpenses } from "@/app/api/requests";
+import moment from "moment";
 
 type Expense = {
-  date: Date;
+  created_at: Date;
   category: string;
   expense: string;
   amount: string;
@@ -41,10 +42,10 @@ const Table = () => {
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
       {
-        accessorFn: (row) => new Date(row.date),
-        id: "date",
+        accessorFn: (row) => new Date(row.created_at),
+        id: "created_at",
         header: "Date",
-        Cell: ({ cell }) => new Date(cell.getValue<Date>()).toLocaleString(),
+        Cell: ({ cell }) => moment(cell.getValue<Date>()).format("YYYY-MM-DD"),
         filterFn: "greaterThan",
         filterVariant: "date",
         enableGlobalFilter: false,
@@ -71,7 +72,7 @@ const Table = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : data,
+    data: isLoading ? [] : data.expenses,
     initialState: { showColumnFilters: false, showGlobalFilter: true },
     manualFiltering: true,
     manualPagination: true,
