@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { logoutUser } from "@/utils/auth";
@@ -16,12 +17,23 @@ const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
   const activePage = useAppSelector(
     (state: RootState) => state.hamburger.activePage
   );
+  const matchStrings = (): boolean => {
+    const pathnameWords: string[] = link.split("/");
+
+    for (const word of pathnameWords) {
+      if (word.toLowerCase() === activePage.toLowerCase()) {
+        return true;
+      }
+    }
+    return false;
+  };
+  const isMatch = matchStrings();
 
   return (
     <Link href={link} legacyBehavior>
       <a
         className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 ${
-          activePage === name ? "bg-sideLinksBg" : ""
+          isMatch ? "bg-sideLinksBg" : ""
         }`}
       >
         <Image
