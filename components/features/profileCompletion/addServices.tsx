@@ -12,7 +12,6 @@ import { usePathname } from "next/navigation";
 export default function AddServices() {
   const dispatch = useDispatch();
   const pathname = usePathname();
-  console.log(pathname);
   const {
     queuedServices,
     step: currentStep,
@@ -90,7 +89,11 @@ export default function AddServices() {
           onClick={handleSubmitServices}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {postingServices ? <>Loading</> : <>Next</>}
+          {postingServices
+            ? "Loading"
+            : pathname === "/user/services"
+            ? "Save"
+            : "Next"}
         </button>
       </div>
     </div>

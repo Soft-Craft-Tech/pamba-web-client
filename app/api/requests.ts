@@ -60,6 +60,17 @@ export const useGetProfileCompletionStatus = () => {
   });
 };
 
+export const useGetAllServices = () => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall("GET", endpoints.fetchServices, {}, {});
+      return response || {};
+    } catch (error) {
+      throw new Error("Error fetching Statuses");
+    }
+  });
+};
+
 export const useGetCategories = () => {
   return useQuery("categories", async () => {
     try {
