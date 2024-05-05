@@ -21,7 +21,6 @@ type Expense = {
   category: string;
   expense: string;
   amount: string;
-  status: string;
 };
 
 const Table = () => {
@@ -62,10 +61,6 @@ const Table = () => {
         accessorKey: "amount",
         header: "Amount",
       },
-      {
-        accessorKey: "status",
-        header: "Status",
-      },
     ],
     []
   );
@@ -88,6 +83,27 @@ const Table = () => {
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
+    enableRowActions: true,
+    renderRowActions: ({ table, row }) => (
+      <div className="flex flex-row gap-x-3 items-center">
+        <p
+          onClick={() => {
+            table.setEditingRow(row);
+          }}
+          className="cursor-pointer font-bold"
+        >
+          Edit
+        </p>
+        <p
+          onClick={() => {
+            data.expenses.splice(row.index, 1);
+          }}
+          className="cursor-pointer text-[#007B99] font-bold"
+        >
+          Delete
+        </p>
+      </div>
+    ),
     renderToolbarInternalActions: ({ table }) => (
       <Button
         variant="primary"
