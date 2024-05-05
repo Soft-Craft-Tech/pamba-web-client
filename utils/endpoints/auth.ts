@@ -17,6 +17,7 @@ const authEndpoints: { [key: string]: string } = {
   createAccount: "/accounts/create-account",
   fetchServices: "/businesses/business-services",
   fetchExpenses: "/expenses/my-expenses",
+  addExpense: "/expenses/record-expense"
 };
 
 export default authEndpoints;

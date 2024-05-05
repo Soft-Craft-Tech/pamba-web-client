@@ -55,6 +55,25 @@ export const useGetExpenses = () => {
   });
 };
 
+// Create New Expense
+export const useAddExpense = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any> (async (payload) => {
+    try {
+      const response = await apiCall(
+        "POST",
+        endpoints.addExpense,
+        {payload},
+        {}
+      );
+      dispatch(setMessage(response.message));
+      return response;
+    } catch (error) {
+
+    }
+  });
+}
+
 export const useGetProfileCompletionStatus = () => {
   return useQuery("", async () => {
     try {
