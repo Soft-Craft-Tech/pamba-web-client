@@ -44,6 +44,17 @@ export const useGetServices = () => {
   });
 };
 
+export const useGetExpenses = () => {
+  return useQuery("categories", async () => {
+    try {
+      const response = await apiCall("GET", endpoints.fetchExpenses, {}, {});
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};
+
 export const useGetProfileCompletionStatus = () => {
   return useQuery("", async () => {
     try {

@@ -102,7 +102,7 @@ export const useResetPasswordMutation = (token: string) => {
   );
 };
 
-export const useCreateAccount = (step: number) => {
+export const useCreateAccount = (step?: number) => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, DynamicObject[]>(
     async (formData: DynamicObject[]) => {
@@ -114,7 +114,9 @@ export const useCreateAccount = (step: number) => {
       );
       dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
-      dispatch(setStep(step + 1));
+      if (step !== undefined) {
+        dispatch(setStep(step + 1));
+      }
       return response;
     }
   );

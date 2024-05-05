@@ -8,18 +8,13 @@ import {
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import { IconButton, Tooltip } from "@mui/material";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import {
-  QueryClient,
-  QueryClientProvider,
-  keepPreviousData,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import { useMutation, useQueryClient } from "react-query";
+import { useGetExpenses } from "@/app/api/requests";
+import { useCreateAccount } from "@/app/api/auth";
 
 type UserApiResponse = {
   data: Array<User>;
@@ -48,44 +43,9 @@ const Table = () => {
     pageSize: 10,
   });
 
-  const {
-    data: { data = [], meta } = {},
-    isError,
-    isRefetching,
-    isLoading,
-    refetch,
-  } = useQuery<UserApiResponse>({
-    queryKey: [
-      "table-data",
-      columnFilters,
-      globalFilter,
-      pagination.pageIndex,
-      pagination.pageSize,
-      sorting,
-    ],
-    queryFn: async () => {
-      const fetchURL = new URL(
-        "/api/data",
-        process.env.NODE_ENV !== "production"
-          ? "https://www.material-react-table.com"
-          : "http://localhost:3000"
-      );
+  const { data, isLoading, isError, isRefetching } = useGetExpenses();
 
-      fetchURL.searchParams.set(
-        "start",
-        `${pagination.pageIndex * pagination.pageSize}`
-      );
-      fetchURL.searchParams.set("size", `${pagination.pageSize}`);
-      fetchURL.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
-      fetchURL.searchParams.set("globalFilter", globalFilter ?? "");
-      fetchURL.searchParams.set("sorting", JSON.stringify(sorting ?? []));
-
-      const response = await fetch(fetchURL.href);
-      const json = (await response.json()) as UserApiResponse;
-      return json;
-    },
-    placeholderData: keepPreviousData,
-  });
+  // const { mutateAsync } = useCreateAccount();
 
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
@@ -120,7 +80,7 @@ const Table = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data,
+    data: isLoading ? [] : data,
     initialState: { showColumnFilters: false, showGlobalFilter: true },
     manualFiltering: true,
     manualPagination: true,
@@ -132,12 +92,6 @@ const Table = () => {
     enableFilters: false,
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    muiToolbarAlertBannerProps: isError
-      ? {
-          color: "error",
-          children: "Error loading data",
-        }
-      : undefined,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
@@ -146,27 +100,12 @@ const Table = () => {
       <Button
         variant="primary"
         onClick={() => {
-          table.setCreatingRow(true); //simplest way to open the create row modal with no default values
-          //or you can pass in a row object to set default values with the `createRow` helper function
-          // table.setCreatingRow(
-          //   createRow(table, {
-          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
-          //   }),
-          // );
+          table.setCreatingRow(true);
         }}
       >
         Create Expense
       </Button>
     ),
-
-    // renderTopToolbarCustomActions: () => (
-    //   <Tooltip arrow title="Refresh Data">
-    //     <IconButton onClick={() => refetch()}>
-    //       <RefreshIcon />
-    //     </IconButton>
-    //   </Tooltip>
-    // ),
-    rowCount: meta?.totalRowCount ?? 0,
     state: {
       columnFilters,
       globalFilter,
