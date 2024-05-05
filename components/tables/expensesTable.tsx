@@ -14,22 +14,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import { useMutation, useQueryClient } from "react-query";
 import { useGetExpenses } from "@/app/api/requests";
-import { useCreateAccount } from "@/app/api/auth";
 
-type UserApiResponse = {
-  data: Array<User>;
-  meta: {
-    totalRowCount: number;
-  };
-};
-
-type User = {
-  firstName: string;
-  lastName: string;
-  address: string;
-  state: string;
-  phoneNumber: string;
-  lastLogin: Date;
+type Expense = {
+  date: Date;
+  category: string;
+  expense: string;
+  amount: string;
+  status: string;
 };
 
 const Table = () => {
@@ -47,11 +38,11 @@ const Table = () => {
 
   // const { mutateAsync } = useCreateAccount();
 
-  const columns = useMemo<MRT_ColumnDef<User>[]>(
+  const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
       {
-        accessorFn: (row) => new Date(row.lastLogin),
-        id: "lastLogin",
+        accessorFn: (row) => new Date(row.date),
+        id: "date",
         header: "Date",
         Cell: ({ cell }) => new Date(cell.getValue<Date>()).toLocaleString(),
         filterFn: "greaterThan",
@@ -59,19 +50,19 @@ const Table = () => {
         enableGlobalFilter: false,
       },
       {
-        accessorKey: "lastName",
+        accessorKey: "category",
         header: "Category",
       },
       {
-        accessorKey: "address",
+        accessorKey: "expense",
         header: "Expense",
       },
       {
-        accessorKey: "state",
+        accessorKey: "amount",
         header: "Amount",
       },
       {
-        accessorKey: "phoneNumber",
+        accessorKey: "status",
         header: "Status",
       },
     ],
@@ -135,13 +126,11 @@ export default ExpensesTable;
 function useCreateUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (user: User) => {
-      //send api update request here
-      await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
+    mutationFn: async (user: Expense) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return Promise.resolve();
     },
-    //client side optimistic update
-    onMutate: (newUserInfo: User) => {
+    onMutate: (newUserInfo: Expense) => {
       queryClient.setQueryData(
         ["users"],
         (prevUsers: any) =>
@@ -151,7 +140,7 @@ function useCreateUser() {
               ...newUserInfo,
               id: (Math.random() + 1).toString(36).substring(7),
             },
-          ] as User[]
+          ] as Expense[]
       );
     },
     // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
