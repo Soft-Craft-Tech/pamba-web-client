@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
@@ -13,7 +12,6 @@ interface SideBarLinkProps {
   image: string;
 }
 
-// All other sidebar nav links
 const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
   const activePage = useAppSelector(
     (state: RootState) => state.hamburger.activePage

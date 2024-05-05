@@ -23,6 +23,7 @@ export default function UserAccountLayout({
                   className="w-32 h-auto"
                   src="/logo.svg"
                   alt="pamba logo"
+                  priority={true}
                   width={40}
                   height={20}
                 />

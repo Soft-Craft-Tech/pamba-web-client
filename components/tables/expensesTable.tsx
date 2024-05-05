@@ -18,6 +18,8 @@ import {
 } from "@tanstack/react-query";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Button from "@/ui/button";
+import { useMutation, useQueryClient } from "react-query";
 
 type UserApiResponse = {
   data: Array<User>;
@@ -119,11 +121,17 @@ const Table = () => {
   const table = useMaterialReactTable({
     columns,
     data,
-    initialState: { showColumnFilters: false },
+    initialState: { showColumnFilters: false, showGlobalFilter: true },
     manualFiltering: true,
     manualPagination: true,
     manualSorting: true,
+    enableHiding: false,
+    // enableGlobalFilter: false,
     enableFullScreenToggle: false,
+    enableDensityToggle: false,
+    enableFilters: false,
+    positionGlobalFilter: "left",
+    positionActionsColumn: "last",
     muiToolbarAlertBannerProps: isError
       ? {
           color: "error",
@@ -134,13 +142,30 @@ const Table = () => {
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    renderTopToolbarCustomActions: () => (
-      <Tooltip arrow title="Refresh Data">
-        <IconButton onClick={() => refetch()}>
-          <RefreshIcon />
-        </IconButton>
-      </Tooltip>
+    renderToolbarInternalActions: ({ table }) => (
+      <Button
+        variant="primary"
+        onClick={() => {
+          table.setCreatingRow(true); //simplest way to open the create row modal with no default values
+          //or you can pass in a row object to set default values with the `createRow` helper function
+          // table.setCreatingRow(
+          //   createRow(table, {
+          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
+          //   }),
+          // );
+        }}
+      >
+        Create Expense
+      </Button>
     ),
+
+    // renderTopToolbarCustomActions: () => (
+    //   <Tooltip arrow title="Refresh Data">
+    //     <IconButton onClick={() => refetch()}>
+    //       <RefreshIcon />
+    //     </IconButton>
+    //   </Tooltip>
+    // ),
     rowCount: meta?.totalRowCount ?? 0,
     state: {
       columnFilters,
@@ -167,3 +192,29 @@ const ExpensesTable = () => (
 );
 
 export default ExpensesTable;
+
+function useCreateUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (user: User) => {
+      //send api update request here
+      await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
+      return Promise.resolve();
+    },
+    //client side optimistic update
+    onMutate: (newUserInfo: User) => {
+      queryClient.setQueryData(
+        ["users"],
+        (prevUsers: any) =>
+          [
+            ...prevUsers,
+            {
+              ...newUserInfo,
+              id: (Math.random() + 1).toString(36).substring(7),
+            },
+          ] as User[]
+      );
+    },
+    // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
+  });
+}

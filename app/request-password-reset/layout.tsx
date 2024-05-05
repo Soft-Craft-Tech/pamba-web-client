@@ -28,6 +28,7 @@ export default function RequestPasswordLayout({
               src="/logo.svg"
               alt="pamba logo"
               width={40}
+              priority={true}
               height={20}
             />
           </Link>

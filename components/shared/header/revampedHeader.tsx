@@ -17,7 +17,7 @@ const RevampedHeader = () => {
               alt="pamba-logo"
               width={64}
               height={32}
-              priority
+              priority={true}
             />
           </Link>
           <button

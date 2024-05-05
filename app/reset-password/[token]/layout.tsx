@@ -24,6 +24,7 @@ export default function PasswordReset({ children }: { children: ReactNode }) {
               className="w-36 h-auto"
               src="/logo.svg"
               alt="pamba logo"
+              priority={true}
               width={40}
               height={20}
             />
