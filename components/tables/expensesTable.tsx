@@ -14,10 +14,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import { useMutation, useQueryClient } from "react-query";
-import { useGetExpenseAccounts, useGetExpenses } from "@/app/api/requests";
+import { useCreateExpense, useGetExpenseAccounts, useGetExpenses } from "@/app/api/requests";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
+import { useAppDispatch } from "@/hooks";
+import { setMessage, setShowToast } from "@/store/toastSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 type Expense = {
   created_at: Date;
@@ -26,10 +30,26 @@ type Expense = {
   amount: string;
 };
 
+interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 const Table = () => {
+  const dispatch = useAppDispatch();
+  const {toastMessage} = useSelector((state: RootState) => ({
+    toastMessage: state.toast.toastMessage,
+  }));
+  const {showToast} = useSelector((state: RootState) => ({
+    showToast: state.toast.showToast,
+  }));
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<DynamicObject>();
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -44,7 +64,24 @@ const Table = () => {
 
   const { data, isLoading, isError, isRefetching } = useGetExpenses();
   const {data: expenseAccountsData, isLoading: isLoadingAccounts} = useGetExpenseAccounts();
-  // const { mutateAsync } = useCreateAccount();
+  const { mutateAsync, isSuccess, isError: addExpenseError} = useCreateExpense();
+
+  const submitExpense = async (formData:any) => {
+    try {
+      await mutateAsync(formData);
+      reset({
+        formData: {},
+      });
+    } catch(error) {
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+    }
+  }
+
+  if (isSuccess || addExpenseError) {
+    dispatch(setShowToast(true));
+    setTimeout(() => {dispatch(setShowToast(false))}, 3000);
+  }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
@@ -114,72 +151,79 @@ const Table = () => {
       </div>
     ),
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
-      <div className="p-10 flex flex-col gap-2">
+      <div className="p-10">
+        {showToast && <p className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${addExpenseError ? 'bg-red-100 text-red-700' : isSuccess ? 'bg-green-100 text-green-700' : ''}`}>{toastMessage}</p>}
         <p className="mb-2">Create New Expense</p>
-        <Controller
-          name="expenseTitle"
-          control={control}
-          render={({ field }) => (
-            <input
-              className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-              type="text"
-              {...field}
-              placeholder="Expense"
-            />
-          )}
-          rules={{ required: true }}
-        />
-        <Controller
-          name="expenseAmount"
-          control={control}
-          render={({ field }) => (
-            <input
-              className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-              type="number"
-              {...field}
-              placeholder="Amount"
-            />
-          )}
-          rules={{ required: true }}
-        />
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <input
-              className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-              type="text"
-              {...field}
-              placeholder="Description"
-            />
-          )}
-          rules={{ required: true }}
-        />
-        <Controller
-            name="accountID"
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit(submitExpense)}>
+          <Controller
+            name="expenseTitle"
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <select
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                type="text"
                 {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
-                name=""
-              >
-                <option value="">--Add Expense Account--</option>
-                {!isLoadingAccounts && expenseAccountsData?.account?.map(
-                  (account: { id: string, account_name: string}) => (
-                  <option key={account?.id} value={account?.id}>
-                    {account?.account_name}
-                  </option>
-                ))}
-              </select>
+                placeholder="Expense"
+              />
             )}
             rules={{ required: true }}
           />
-        <div className="flex h-auto w-full gap-5 justify-end mt-4">
-          <button className="px-12 py-2 border border-gray-400 rounded-md" type="button">Cancel</button>
-          <Button label="Save Expense" variant="primary" />
-        </div>
+          <Controller
+            name="expenseAmount"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                type="number"
+                {...field}
+                placeholder="Amount"
+              />
+            )}
+            rules={{ required: true }}
+          />
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                defaultValue=""
+                type="text"
+                {...field}
+                placeholder="Description"
+              />
+            )}
+            rules={{ required: true }}
+          />
+          <Controller
+              name="accountID"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                  name=""
+                >
+                  <option value="">--Add Expense Account--</option>
+                  {!isLoadingAccounts && expenseAccountsData?.account?.map(
+                    (account: { id: string, account_name: string}) => (
+                    <option key={account?.id} value={account?.id}>
+                      {account?.account_name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              rules={{ required: true }}
+          />
+          <div className="flex h-auto w-full gap-5 justify-end mt-4">
+            <button className="px-12 py-2 border border-gray-400 rounded-md" type="button">Cancel</button>
+            <Button label="Save Expense" variant="primary" />
+          </div>
+        </form>
       </div>
     ),
     renderToolbarInternalActions: ({ table }) => (

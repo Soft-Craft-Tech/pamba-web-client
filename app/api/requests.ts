@@ -1,6 +1,6 @@
-import { CloudinaryData } from "@/components/types";
+import { CloudinaryData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
-import { setMessage } from "@/store/toastSlice";
+import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery } from "react-query";
@@ -68,23 +68,22 @@ export const useGetExpenses = () => {
 };
 
 // Create New Expense
-export const useAddExpense = () => {
+export const useCreateExpense = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any> (async (payload) => {
-    try {
+  return useMutation<void, Error, any>(
+    async ({expenseTitle, expenseAmount, description, accountID}) => {
       const response = await apiCall(
         "POST",
-        endpoints.addExpense,
-        {payload},
+        `${endpoints.addExpense}`,
+        {expenseTitle, expenseAmount, description, accountID},
         {}
       );
       dispatch(setMessage(response.message));
+      setTimeout(() => {dispatch(setMessage(""));}, 3000)
       return response;
-    } catch (error) {
-
     }
-  });
-}
+  );
+};
 
 export const useGetProfileCompletionStatus = () => {
   return useQuery("", async () => {
