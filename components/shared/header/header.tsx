@@ -37,7 +37,7 @@ export default function Header({ page }: { page: string }) {
             alt="pamba-logo"
             width={64}
             height={32}
-            priority
+            priority={true}
           />
         </Link>
         <div

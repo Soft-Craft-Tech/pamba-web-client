@@ -1,148 +1,287 @@
 "use client";
-import { useMemo } from "react";
+import { Key, useMemo, useState } from "react";
 import {
+  MRT_EditActionButtons,
   MaterialReactTable,
   useMaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_ColumnFiltersState,
+  type MRT_PaginationState,
+  type MRT_SortingState,
 } from "material-react-table";
-import Image from "next/image";
-const data = [
-  {
-    name: {
-      firstName: "John",
-      lastName: "Doe",
-    },
-    address: "261 Erdman Ford",
-    city: "East Daphne",
-    state: "Kentucky",
-  },
-  {
-    name: {
-      firstName: "Jane",
-      lastName: "Doe",
-    },
-    address: "769 Dominic Grove",
-    city: "Columbus",
-    state: "Ohio",
-  },
-  {
-    name: {
-      firstName: "Joe",
-      lastName: "Doe",
-    },
-    address: "566 Brakus Inlet",
-    city: "South Linda",
-    state: "West Virginia",
-  },
-  {
-    name: {
-      firstName: "Kevin",
-      lastName: "Vandy",
-    },
-    address: "722 Emie Stream",
-    city: "Lincoln",
-    state: "Nebraska",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Charleston",
-    state: "South Carolina",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Charleston",
-    state: "South Carolina",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Charleston",
-    state: "South Carolina",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Charleston",
-    state: "South Carolina",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Charleston",
-    state: "South Carolina",
-  },
-];
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Button from "@/ui/button";
+import { useMutation, useQueryClient } from "react-query";
+import { useCreateExpense, useGetExpenseAccounts, useGetExpenses } from "@/app/api/requests";
+import moment from "moment";
+import { Controller, useForm } from "react-hook-form";
+import { DynamicObject } from "../types";
+import { useAppDispatch } from "@/hooks";
+import { setMessage, setShowToast } from "@/store/toastSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
-export default function ExpensesTable() {
-  const columns = useMemo(
+type Expense = {
+  created_at: Date;
+  category: string;
+  expense: string;
+  amount: string;
+};
+
+interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
+
+const Table = () => {
+  const dispatch = useAppDispatch();
+  const {toastMessage} = useSelector((state: RootState) => ({
+    toastMessage: state.toast.toastMessage,
+  }));
+  const {showToast} = useSelector((state: RootState) => ({
+    showToast: state.toast.showToast,
+  }));
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<DynamicObject>();
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+    []
+  );
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [sorting, setSorting] = useState<MRT_SortingState>([]);
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { data, isLoading, isError, isRefetching } = useGetExpenses();
+  const {data: expenseAccountsData, isLoading: isLoadingAccounts} = useGetExpenseAccounts();
+  const { mutateAsync, isSuccess, isError: addExpenseError} = useCreateExpense();
+
+  const submitExpense = async (formData:any) => {
+    try {
+      await mutateAsync(formData);
+      reset({
+        formData: {},
+      });
+    } catch(error) {
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+    }
+  }
+
+  if (isSuccess || addExpenseError) {
+    dispatch(setShowToast(true));
+    setTimeout(() => {dispatch(setShowToast(false))}, 3000);
+  }
+
+  const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
       {
-        accessorKey: "name.firstName", //access nested data with dot notation
-        header: "First Name",
-        size: 150,
+        accessorFn: (row) => new Date(row.created_at),
+        id: "created_at",
+        header: "Date",
+        Cell: ({ cell }) => moment(cell.getValue<Date>()).format("YYYY-MM-DD"),
+        filterFn: "greaterThan",
+        filterVariant: "date",
+        enableGlobalFilter: false,
       },
       {
-        accessorKey: "name.lastName",
-        header: "Last Name",
-        size: 150,
+        accessorKey: "category",
+        header: "Category",
       },
       {
-        accessorKey: "address", //normal accessorKey
-        header: "Address",
-        size: 200,
+        accessorKey: "expense",
+        header: "Expense",
       },
       {
-        accessorKey: "city",
-        header: "City",
-        size: 150,
-      },
-      {
-        accessorKey: "state",
-        header: "State",
-        size: 150,
+        accessorKey: "amount",
+        header: "Amount",
       },
     ],
     []
   );
+
   const table = useMaterialReactTable({
     columns,
-    data,
-  });
-  return (
-    <div className="w-auto h-auto bg-white border rounded-md flex flex-col">
-      <div className="w-full h-max flex justify-end p-5">
-        <button
-          className="flex gap-2 items-center h-full w-max py-2 px-6 rounded-md text-white bg-primary text-sm"
+    data: isLoading ? [] : data.expenses,
+    initialState: { showColumnFilters: false, showGlobalFilter: true },
+    manualFiltering: true,
+    manualPagination: true,
+    manualSorting: true,
+    enableHiding: false,
+    // enableGlobalFilter: false,
+    enableFullScreenToggle: false,
+    enableDensityToggle: false,
+    enableFilters: false,
+    positionGlobalFilter: "left",
+    positionActionsColumn: "last",
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
+    onSortingChange: setSorting,
+    enableRowActions: true,
+    renderRowActions: ({ table, row }) => (
+      <div className="flex flex-row gap-x-3 items-center">
+        <p
           onClick={() => {
-            console.log("Here");
+            table.setEditingRow(row);
           }}
+          className="cursor-pointer font-bold"
         >
-          <Image
-            src="/user-icons/add-icon.svg"
-            alt="Add"
-            width={20}
-            height={20}
-          />
-          Add Expense
-        </button>
+          Edit
+        </p>
+
+        <p
+          onClick={() => {
+            data.expenses.splice(row.index, 1);
+          }}
+          className="cursor-pointer text-[#007B99] font-bold"
+        >
+          Delete
+        </p>
       </div>
-      <MaterialReactTable table={table} />
-    </div>
-  );
+    ),
+    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <div className="p-10">
+        {showToast && <p className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${addExpenseError ? 'bg-red-100 text-red-700' : isSuccess ? 'bg-green-100 text-green-700' : ''}`}>{toastMessage}</p>}
+        <p className="mb-2">Create New Expense</p>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit(submitExpense)}>
+          <Controller
+            name="expenseTitle"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                type="text"
+                {...field}
+                placeholder="Expense"
+              />
+            )}
+            rules={{ required: true }}
+          />
+          <Controller
+            name="expenseAmount"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                type="number"
+                {...field}
+                placeholder="Amount"
+              />
+            )}
+            rules={{ required: true }}
+          />
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                defaultValue=""
+                type="text"
+                {...field}
+                placeholder="Description"
+              />
+            )}
+            rules={{ required: true }}
+          />
+          <Controller
+              name="accountID"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                  name=""
+                >
+                  <option value="">--Add Expense Account--</option>
+                  {!isLoadingAccounts && expenseAccountsData?.account?.map(
+                    (account: { id: string, account_name: string}) => (
+                    <option key={account?.id} value={account?.id}>
+                      {account?.account_name}
+                    </option>
+                  ))}
+                </select>
+              )}
+              rules={{ required: true }}
+          />
+          <div className="flex h-auto w-full gap-5 justify-end mt-4">
+            <button className="px-12 py-2 border border-gray-400 rounded-md" type="button">Cancel</button>
+            <Button label="Save Expense" variant="primary" />
+          </div>
+        </form>
+      </div>
+    ),
+    renderToolbarInternalActions: ({ table }) => (
+      <Button
+        variant="primary"
+        onClick={() => {
+          table.setCreatingRow(true);
+        }}
+      >
+        Create Expense
+      </Button>
+    ),
+    state: {
+      columnFilters,
+      globalFilter,
+      isLoading,
+      pagination,
+      showAlertBanner: isError,
+      showProgressBars: isRefetching,
+      sorting,
+    },
+  });
+
+  return <MaterialReactTable table={table} />;
+};
+
+const queryClient = new QueryClient();
+
+const ExpensesTable = () => (
+  <QueryClientProvider client={queryClient}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Table />
+    </LocalizationProvider>
+  </QueryClientProvider>
+);
+
+export default ExpensesTable;
+
+function useCreateUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (user: Expense) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return Promise.resolve();
+    },
+    onMutate: (newUserInfo: Expense) => {
+      queryClient.setQueryData(
+        ["users"],
+        (prevUsers: any) =>
+          [
+            ...prevUsers,
+            {
+              ...newUserInfo,
+              id: (Math.random() + 1).toString(36).substring(7),
+            },
+          ] as Expense[]
+      );
+    },
+    // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
+  });
 }

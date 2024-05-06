@@ -35,7 +35,6 @@ export default function AddExpenseAccounts() {
 
   const [queuedExpenses, setQueuedExpenses] = useState<Expense[]>([]);
   const onSubmit = async (data: any) => {
-    console.log(data);
     setQueuedExpenses((prevState) => [...prevState, data]);
   };
 

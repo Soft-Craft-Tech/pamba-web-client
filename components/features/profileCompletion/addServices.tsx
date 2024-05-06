@@ -1,3 +1,4 @@
+"use client";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import AddServicesForm from "../../forms/addServicesForm";
@@ -6,10 +7,11 @@ import { useAssignService, useGetServices } from "@/app/api/requests";
 import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function AddServices() {
   const dispatch = useDispatch();
+  const pathname = usePathname();
   const {
     queuedServices,
     step: currentStep,
@@ -48,9 +50,9 @@ export default function AddServices() {
   };
 
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20 ">
+    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20">
       {errorPosting && <Toast message={toastMessage} type="error" />}
-      <ProfileProgress />
+      {pathname !== "/user/services" && <ProfileProgress />}
       <div className="flex gap-10 w-full flex-col md:flex-row">
         <AddServicesForm data={data} />
         {queuedServices.length > 0 && (
@@ -87,7 +89,11 @@ export default function AddServices() {
           onClick={handleSubmitServices}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {postingServices ? <>Loading</> : <>Next</>}
+          {postingServices
+            ? "Loading"
+            : pathname === "/user/services"
+            ? "Save"
+            : "Next"}
         </button>
       </div>
     </div>

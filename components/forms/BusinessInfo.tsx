@@ -31,8 +31,6 @@ const BusinessInfo = () => {
 
   const { data } = useGetCategories();
 
-  console.log(data);
-
   const onSubmit = async (formData: any) => {
     const { name, category, phone, city, mapUrl, location } = formData;
 

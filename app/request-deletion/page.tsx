@@ -12,7 +12,7 @@ export default function RequestDeletion() {
           alt="pamba logo"
           width={40}
           height={20}
-          priority
+          priority={true}
         />
       </Link>
       <div className="w-11/12 h-auto border flex flex-col gap-5 px-5 py-10 rounded-md lg:w-1/2">
