@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { Key, useMemo, useState } from "react";
 import {
   MRT_EditActionButtons,
   MaterialReactTable,
@@ -14,7 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import { useMutation, useQueryClient } from "react-query";
-import { useGetExpenses } from "@/app/api/requests";
+import { useGetExpenseAccounts, useGetExpenses } from "@/app/api/requests";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
@@ -43,7 +43,7 @@ const Table = () => {
   });
 
   const { data, isLoading, isError, isRefetching } = useGetExpenses();
-
+  const {data: expenseAccountsData, isLoading: isLoadingAccounts} = useGetExpenseAccounts();
   // const { mutateAsync } = useCreateAccount();
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
@@ -114,23 +114,71 @@ const Table = () => {
       </div>
     ),
     renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
-      <div className="p-10">
-        <p>Create New Expense</p>
+      <div className="p-10 flex flex-col gap-2">
+        <p className="mb-2">Create New Expense</p>
         <Controller
-          name="username"
+          name="expenseTitle"
           control={control}
           render={({ field }) => (
             <input
-              className="w-full h-14 rounded-md border border-red-300 px-2 py-1 lg:h-12"
+              className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
               type="text"
               {...field}
-              placeholder="Email"
+              placeholder="Expense"
             />
           )}
           rules={{ required: true }}
         />
-        <div>
-          <Button label="Create" variant="primary" />
+        <Controller
+          name="expenseAmount"
+          control={control}
+          render={({ field }) => (
+            <input
+              className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+              type="number"
+              {...field}
+              placeholder="Amount"
+            />
+          )}
+          rules={{ required: true }}
+        />
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <input
+              className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+              type="text"
+              {...field}
+              placeholder="Description"
+            />
+          )}
+          rules={{ required: true }}
+        />
+        <Controller
+            name="accountID"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <select
+                {...field}
+                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                name=""
+              >
+                <option value="">--Add Expense Account--</option>
+                {!isLoadingAccounts && expenseAccountsData?.account?.map(
+                  (account: { id: string, account_name: string}) => (
+                  <option key={account?.id} value={account?.id}>
+                    {account?.account_name}
+                  </option>
+                ))}
+              </select>
+            )}
+            rules={{ required: true }}
+          />
+        <div className="flex h-auto w-full gap-5 justify-end mt-4">
+          <button className="px-12 py-2 border border-gray-400 rounded-md" type="button">Cancel</button>
+          <Button label="Save Expense" variant="primary" />
         </div>
       </div>
     ),

@@ -44,13 +44,25 @@ export const useGetServices = () => {
   });
 };
 
+// Fetch Expense Accounts
+export const useGetExpenseAccounts = () => {
+  return useQuery("expenseaccounts", async() => {
+    try {
+      const response = await apiCall("GET", endpoints.fetchExpenseAccounts, {}, {});
+      return response
+    } catch (error) {
+      throw new Error("Unable to fetch Accounts");
+    }
+  });
+}
+
 export const useGetExpenses = () => {
-  return useQuery("categories", async () => {
+  return useQuery("expenses", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchExpenses, {}, {});
       return response;
     } catch (error) {
-      throw new Error("Error fetching all services");
+      throw new Error("Error fetching Expenses");
     }
   });
 };
