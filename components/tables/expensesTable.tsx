@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import {
+  MRT_EditActionButtons,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
@@ -15,6 +16,8 @@ import Button from "@/ui/button";
 import { useMutation, useQueryClient } from "react-query";
 import { useGetExpenses } from "@/app/api/requests";
 import moment from "moment";
+import { Controller, useForm } from "react-hook-form";
+import { DynamicObject } from "../types";
 
 type Expense = {
   created_at: Date;
@@ -24,6 +27,11 @@ type Expense = {
 };
 
 const Table = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<DynamicObject>();
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
   );
@@ -94,6 +102,7 @@ const Table = () => {
         >
           Edit
         </p>
+
         <p
           onClick={() => {
             data.expenses.splice(row.index, 1);
@@ -102,6 +111,27 @@ const Table = () => {
         >
           Delete
         </p>
+      </div>
+    ),
+    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <div className="p-10">
+        <p>Create New Expense</p>
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => (
+            <input
+              className="w-full h-14 rounded-md border border-red-300 px-2 py-1 lg:h-12"
+              type="text"
+              {...field}
+              placeholder="Email"
+            />
+          )}
+          rules={{ required: true }}
+        />
+        <div>
+          <Button label="Create" variant="primary" />
+        </div>
       </div>
     ),
     renderToolbarInternalActions: ({ table }) => (
