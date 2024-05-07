@@ -2,13 +2,14 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { loginRequest } from "@/app/api/auth";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { toggleLoading } from "@/store/loadingSlice";
 import Toast from "../shared/toasts/authToast";
 import React from "react";
 import { setShowToast } from "@/store/toastSlice";
+import { AxiosError } from "axios";
 
 type LoginFormInputs = {
   username: string;
@@ -28,6 +29,8 @@ export default function LoginForm() {
   const dispatch = useAppDispatch();
 
   const [message, setMessage] = React.useState("");
+  const [error, setError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async ({
     username,
@@ -41,6 +44,11 @@ export default function LoginForm() {
       if (!error) {
         dispatch(setShowToast(true));
       }
+      if (error instanceof AxiosError) {
+        setErrorMessage(error?.response?.data.message);
+        setError(true);
+        dispatch(setShowToast(true));
+      }
     } catch (error) {
       dispatch(toggleLoading("loginLoading"));
     }
@@ -49,6 +57,7 @@ export default function LoginForm() {
   return (
     <div className="relative">
       {message !== " " && <Toast message={message} type="success" />}
+      {error && <Toast message={errorMessage} type="error" />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 lg:gap-3"
