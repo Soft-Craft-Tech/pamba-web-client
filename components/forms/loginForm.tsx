@@ -73,7 +73,7 @@ export default function LoginForm() {
           control={control}
           render={({ field }) => (
             <input
-              className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12"
+              className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12 xl:h-14"
               type="text"
               {...field}
               placeholder="Email"
@@ -87,7 +87,7 @@ export default function LoginForm() {
           control={control}
           render={({ field }) => (
             <input
-              className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12"
+              className="w-full h-14 rounded-md border border-borders px-2 py-1 lg:h-12 xl:h-14"
               type="password"
               {...field}
               placeholder="Password"
