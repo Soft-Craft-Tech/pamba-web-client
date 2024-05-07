@@ -35,6 +35,13 @@ const CreateAccount = () => {
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
       <h3 className="font-medium w-full text-lg text-center">Create Account</h3>
+      <div className="flex gap-2 w-32 h-3 justify-center items-center text-blue-500 font-semibold">
+        <p>1</p>
+        <div className="w-24 h-[3px] bg-blue-200 flex justify-start items-center text-center">
+          <div className={`h-[3px] bg-blue-600 w-1/2`}></div>
+        </div>
+        <p>2</p>
+      </div>
       <form
         className="p-3 w-full flex flex-col gap-4"
         onSubmit={handleSubmit(onSubmit)}
