@@ -15,8 +15,8 @@ interface CustomError extends Error {
   };
 }
 
-export default function ProfileUpdateForm() {
-  const { client } = getUser();
+export default function ProfileUpdateForm({client}: any) {
+  // const { client } = getUser();
 
   const {
     toast: { toastMessage },

@@ -113,15 +113,7 @@ const Table = () => {
   const table = useMaterialReactTable({
     columns,
     data: isLoading ? [] : data.expenses,
-    initialState: { showColumnFilters: false, showGlobalFilter: true },
-    manualFiltering: true,
-    manualPagination: true,
-    manualSorting: true,
-    enableHiding: false,
-    // enableGlobalFilter: false,
-    enableFullScreenToggle: false,
-    enableDensityToggle: false,
-    enableFilters: false,
+    initialState: { showColumnFilters: true, showGlobalFilter: true },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
     onColumnFiltersChange: setColumnFilters,
@@ -150,7 +142,7 @@ const Table = () => {
         </p>
       </div>
     ),
-    renderCreateRowDialogContent: ({ table, row, internalEditComponents }) => (
+    renderCreateRowDialogContent: () => (
       <div className="p-10">
         {showToast && <p className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${addExpenseError ? 'bg-red-100 text-red-700' : isSuccess ? 'bg-green-100 text-green-700' : ''}`}>{toastMessage}</p>}
         <p className="mb-2">Create New Expense</p>
