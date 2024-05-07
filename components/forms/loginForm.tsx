@@ -41,13 +41,19 @@ export default function LoginForm() {
       const { data, error } = await loginRequest(username, password, router);
       setMessage(data?.message);
       dispatch(toggleLoading("loginLoading"));
+
       if (!error) {
         dispatch(setShowToast(true));
       }
+
       if (error instanceof AxiosError) {
         setErrorMessage(error?.response?.data.message);
         setError(true);
         dispatch(setShowToast(true));
+        setTimeout(()=> {
+          setErrorMessage("");
+          setError(false);
+        }, 7000);
       }
     } catch (error) {
       dispatch(toggleLoading("loginLoading"));
