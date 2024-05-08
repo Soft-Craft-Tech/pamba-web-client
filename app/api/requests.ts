@@ -85,6 +85,27 @@ export const useCreateExpense = () => {
   );
 };
 
+// Create Expense Accounts
+export const useCreateExpenseAccounts = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(
+    async (accounts) => {
+      try {
+        const response = await apiCall(
+          "POST",
+          endpoints.createAccount,
+          accounts,
+          {}
+        )
+        dispatch(setMessage(response.message));
+        return response
+      } catch (error) {
+        throw new Error("Error");
+      }
+    }
+  )
+}
+
 export const useGetProfileCompletionStatus = () => {
   return useQuery("", async () => {
     try {
