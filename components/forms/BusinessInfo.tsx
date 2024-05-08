@@ -189,7 +189,7 @@ const BusinessInfo = () => {
             />
           </>
         </div>
-        <div className="flex h-auto w-full">
+        <div className="flex h-auto w-full items-center">
           <div
             onClick={() => {
               dispatch(prevStep());

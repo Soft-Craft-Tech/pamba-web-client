@@ -1,6 +1,6 @@
-import { CloudinaryData } from "@/components/types";
+import { CloudinaryData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
-import { setMessage } from "@/store/toastSlice";
+import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery } from "react-query";
@@ -44,35 +44,46 @@ export const useGetServices = () => {
   });
 };
 
+// Fetch Expense Accounts
+export const useGetExpenseAccounts = () => {
+  return useQuery("expenseaccounts", async() => {
+    try {
+      const response = await apiCall("GET", endpoints.fetchExpenseAccounts, {}, {});
+      return response
+    } catch (error) {
+      throw new Error("Unable to fetch Accounts");
+    }
+  });
+}
+
 export const useGetExpenses = () => {
-  return useQuery("categories", async () => {
+  return useQuery("expenses", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchExpenses, {}, {});
       return response;
     } catch (error) {
-      throw new Error("Error fetching all services");
+      throw new Error("Error fetching Expenses");
     }
   });
 };
 
 // Create New Expense
-export const useAddExpense = () => {
+export const useCreateExpense = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any> (async (payload) => {
-    try {
+  return useMutation<void, Error, any>(
+    async ({expenseTitle, expenseAmount, description, accountID}) => {
       const response = await apiCall(
         "POST",
-        endpoints.addExpense,
-        {payload},
+        `${endpoints.addExpense}`,
+        {expenseTitle, expenseAmount, description, accountID},
         {}
       );
       dispatch(setMessage(response.message));
+      setTimeout(() => {dispatch(setMessage(""));}, 3000)
       return response;
-    } catch (error) {
-
     }
-  });
-}
+  );
+};
 
 export const useGetProfileCompletionStatus = () => {
   return useQuery("", async () => {

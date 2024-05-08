@@ -1,8 +1,9 @@
 "use client";
 import HeroCard from "../../core/cards/heroCard";
-import Carousel from "../../core/cards/heroCarousel";
+import Carousel from "../../core/cards/imageCarousel";
 import { motion } from "framer-motion";
 import StartTrial from "../../core/buttons/startTrial";
+import { carouselImages } from "@/ui/carouselImages";
 export default function Hero() {
   const variants = {
     hidden: {
@@ -44,7 +45,7 @@ export default function Hero() {
         <div className="w-1/2 h-3/4 border-2 border-primary rounded-3xl hidden absolute right-0 bottom-0 -z-10 lg:block"></div>
         {/* Borders */}
         <div className="w-full h-72 rounded-2xl overflow-hidden lg:w-11/12 sm:h-3/4 ">
-          <Carousel />
+          <Carousel images={carouselImages} />
           <HeroCard />
         </div>
       </div>
