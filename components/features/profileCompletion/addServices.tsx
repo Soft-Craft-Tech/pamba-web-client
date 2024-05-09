@@ -50,7 +50,7 @@ export default function AddServices() {
   };
 
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20">
+    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10">
       {errorPosting && <Toast message={toastMessage} type="error" />}
       {pathname !== "/user/services" && <ProfileProgress />}
       <div className="flex gap-10 w-full flex-col md:flex-row">

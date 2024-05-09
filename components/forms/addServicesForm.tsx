@@ -93,7 +93,11 @@ export default function AddServicesForm({ data }: { data: any }) {
           label="Price"
           type="number"
         />
-        <div className="w-full">
+        <div className={`w-full h-16 flex items-center overflow-hidden p-1 rounded-md border border-dashed ${
+          newImage
+            ? "text-green-500 border-green-500"
+            : "text-primary border-primary"
+          }`}>
           <Controller
             name="imageURL"
             control={control}
@@ -119,11 +123,7 @@ export default function AddServicesForm({ data }: { data: any }) {
                 {({ open }) => (
                   <button
                     type="button"
-                    className={`font-light text-lg px-5 py-2 rounded-md bg-white w-full h-16 border border-dashed ${
-                      newImage
-                        ? "text-green-500 border-green-500"
-                        : "text-primary border-primary"
-                    }`}
+                    className={`font-light text-lg px-5 py-2 bg-white w-full h-full `}
                     onClick={() => open()}
                   >
                     {newImage ? "Upload Successful" : "Upload service Image"}
