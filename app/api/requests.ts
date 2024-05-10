@@ -44,17 +44,33 @@ export const useGetServices = () => {
   });
 };
 
+export const useGetEvents = () => {
+  return useQuery("appointments", async () => {
+    try {
+      const response = await apiCall("GET", endpoints.fetchEvents, {}, {});
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};
+
 // Fetch Expense Accounts
 export const useGetExpenseAccounts = () => {
-  return useQuery("expenseaccounts", async() => {
+  return useQuery("expenseaccounts", async () => {
     try {
-      const response = await apiCall("GET", endpoints.fetchExpenseAccounts, {}, {});
-      return response
+      const response = await apiCall(
+        "GET",
+        endpoints.fetchExpenseAccounts,
+        {},
+        {}
+      );
+      return response;
     } catch (error) {
       throw new Error("Unable to fetch Accounts");
     }
   });
-}
+};
 
 export const useGetExpenses = () => {
   return useQuery("expenses", async () => {
@@ -71,15 +87,17 @@ export const useGetExpenses = () => {
 export const useCreateExpense = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(
-    async ({expenseTitle, expenseAmount, description, accountID}) => {
+    async ({ expenseTitle, expenseAmount, description, accountID }) => {
       const response = await apiCall(
         "POST",
         `${endpoints.addExpense}`,
-        {expenseTitle, expenseAmount, description, accountID},
+        { expenseTitle, expenseAmount, description, accountID },
         {}
       );
       dispatch(setMessage(response.message));
-      setTimeout(() => {dispatch(setMessage(""));}, 3000)
+      setTimeout(() => {
+        dispatch(setMessage(""));
+      }, 3000);
       return response;
     }
   );

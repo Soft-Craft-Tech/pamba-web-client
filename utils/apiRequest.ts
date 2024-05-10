@@ -1,6 +1,6 @@
 import { Method } from "axios";
 import axiosInstance from "./axios";
-import { getUser, logoutUser } from "./auth";
+import { getUser } from "./auth";
 
 export const apiCall = (
   method: Method,

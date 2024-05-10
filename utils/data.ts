@@ -1,140 +1,168 @@
 export const EVENTS = [
   {
-    event_id: 1,
-    title: "Event 1",
-    start: new Date(new Date(new Date().setHours(9)).setMinutes(30)),
-    end: new Date(new Date(new Date().setHours(10)).setMinutes(30)),
-    admin_id: 1,
+    cancelled: true,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-05-06T09:40:44.452795",
+    date: "2024-05-09",
+    end: new Date("2024-05-09T10:30:00.000Z"),
+    event_id: 50,
+    id: 50,
+    staff: "Muthomi Nkanata",
+    start: new Date("2024-05-09T09:30:00.000Z"),
+    time: "12:30:00",
+    title: "Kids Hair Cut",
   },
   {
-    event_id: 2,
-    title: "Event 2",
-    start: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
-    end: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
-    admin_id: 2,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-05-08T18:30:21.372159",
+    date: "2024-05-09",
+    end: new Date("2024-05-09T10:30:00.000Z"),
+    event_id: 51,
+    id: 51,
+    staff: "Muthomi Nkanata",
+    start: new Date("2024-05-09T09:30:00.000Z"),
+    time: "12:30:00",
+    title: "Kids Hair Cut",
   },
   {
-    event_id: 3,
-    title: "Event 3",
-    start: new Date(
-      new Date(new Date(new Date().setHours(9)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    end: new Date(new Date(new Date().setHours(10)).setMinutes(0)),
-    admin_id: 1,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-05-06T07:37:01.844019",
+    date: "2024-05-08",
+    end: new Date("2024-05-08T10:30:00.000Z"),
+    event_id: 49,
+    id: 49,
+    staff: "Muthomi Nkanata",
+    start: new Date("2024-05-08T09:30:00.000Z"),
+    time: "12:30:00",
+    title: "Kids Hair Cut",
   },
   {
-    event_id: 4,
-    title: "Event 4",
-    start: new Date(
-      new Date(new Date(new Date().setHours(9)).setMinutes(0)).setDate(
-        new Date().getDate() - 2
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(10)).setMinutes(0)).setDate(
-        new Date().getDate() - 2
-      )
-    ),
-    admin_id: 2,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-05-03T11:49:37.969534",
+    date: "2024-05-08",
+    end: new Date("2024-05-08T10:30:00.000Z"),
+    event_id: 48,
+    id: 48,
+    staff: "John Doe",
+    start: new Date("2024-05-08T09:30:00.000Z"),
+    time: "12:30:00",
+    title: "Teeneagers Hair Cut",
   },
   {
-    event_id: 5,
-    title: "Event 5",
-    start: new Date(
-      new Date(new Date(new Date().setHours(10)).setMinutes(0)).setDate(
-        new Date().getDate() - 2
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(11)).setMinutes(0)).setDate(
-        new Date().getDate() + 10
-      )
-    ),
-    admin_id: 4,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: true,
+    create_at: "2024-05-01T06:31:43.412979",
+    date: "2024-05-02",
+    end: new Date("2024-05-02T08:30:00.000Z"),
+    event_id: 44,
+    id: 44,
+    staff: "John Doe",
+    start: new Date("2024-05-02T07:30:00.000Z"),
+    time: "10:30:00",
+    title: "Kids Hair Cut",
   },
   {
-    event_id: 6,
-    title: "Event 6",
-    start: new Date(new Date(new Date().setHours(11)).setMinutes(0)),
-    end: new Date(new Date(new Date().setHours(12)).setMinutes(0)),
-    admin_id: 2,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-04-15T11:29:33.966575",
+    date: "2024-04-16",
+    end: new Date("2024-04-16T15:30:00.000Z"),
+    event_id: 32,
+    id: 32,
+    staff: "",
+    start: new Date("2024-04-16T14:30:00.000Z"),
+    time: "17:30:00",
+    title: "Kids Hair Cut",
   },
   {
-    event_id: 7,
-    title: "Event 7",
-    start: new Date(
-      new Date(new Date(new Date().setHours(11)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(12)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    admin_id: 3,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-04-15T11:29:25.676455",
+    date: "2024-04-15",
+    end: new Date("2024-04-15T15:30:00.000Z"),
+    event_id: 31,
+    id: 31,
+    staff: "",
+    start: new Date("2024-04-15T14:30:00.000Z"),
+    time: "17:30:00",
+    title: "Teeneagers Hair Cut",
   },
   {
-    event_id: 8,
-    title: "Event 8",
-    start: new Date(
-      new Date(new Date(new Date().setHours(13)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(14)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    admin_id: 4,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-04-15T11:29:18.326429",
+    date: "2024-04-15",
+    end: new Date("2024-04-15T14:30:00.000Z"),
+    event_id: 30,
+    id: 30,
+    staff: "",
+    start: new Date("2024-04-15T13:30:00.000Z"),
+    time: "16:30:00",
+    title: "Kids Hair Cut",
   },
   {
-    event_id: 9,
-    title: "Event 11",
-    start: new Date(
-      new Date(new Date(new Date().setHours(13)).setMinutes(0)).setDate(
-        new Date().getDate() + 1
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(15)).setMinutes(30)).setDate(
-        new Date().getDate() + 1
-      )
-    ),
-    admin_id: 1,
+    cancelled: true,
+    color: "#DB1471",
+    comment: "Write a commentbb",
+    completed: false,
+    create_at: "2024-04-15T15:20:46.235041",
+    date: "2024-04-15",
+    end: new Date("2024-04-15T15:30:00.000Z"),
+    event_id: 35,
+    id: 35,
+    staff: "",
+    start: new Date("2024-04-15T13:30:00.000Z"),
+    time: "16:30:00",
+    title: "Deep Tissue Massage",
   },
   {
-    event_id: 10,
-    title: "Event 9",
-    start: new Date(
-      new Date(new Date(new Date().setHours(15)).setMinutes(0)).setDate(
-        new Date().getDate() + 1
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(16)).setMinutes(30)).setDate(
-        new Date().getDate() + 1
-      )
-    ),
-    admin_id: 2,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-04-15T11:29:10.292733",
+    date: "2024-04-15",
+    end: new Date("2024-04-15T13:30:00.000Z"),
+    event_id: 29,
+    id: 29,
+    staff: "",
+    start: new Date("2024-04-15T12:30:00.000Z"),
+    time: "15:30:00",
+    title: "Teeneagers Hair Cut",
   },
   {
-    event_id: 11,
-    title: "Event 10",
-    start: new Date(
-      new Date(new Date(new Date().setHours(11)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    end: new Date(
-      new Date(new Date(new Date().setHours(15)).setMinutes(0)).setDate(
-        new Date().getDate() - 1
-      )
-    ),
-    admin_id: 1,
+    cancelled: false,
+    color: "#DB1471",
+    comment: "I",
+    completed: false,
+    create_at: "2024-04-15T11:29:02.333994",
+    date: "2024-04-15",
+    end: new Date("2024-04-15T13:30:00.000Z"),
+    event_id: 28,
+    id: 28,
+    staff: "",
+    start: new Date("2024-04-15T11:30:00.000Z"),
+    time: "14:30:00",
+    title: "Deep Tissue Massage",
   },
 ];
 

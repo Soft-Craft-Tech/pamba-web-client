@@ -1,71 +1,47 @@
 "use client";
 import { Fragment, useRef } from "react";
-import { Typography } from "@mui/material";
 import { Scheduler } from "@aldabil/react-scheduler";
-import { SchedulerRef } from "@aldabil/react-scheduler/types";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import { EVENTS, RESOURCES } from "@/utils/data";
+import { useGetEvents } from "@/app/api/requests";
+import { SchedulerRef, ProcessedEvent } from "@aldabil/react-scheduler/types";
+import React from "react";
+import { EVENTS } from "@/utils/data";
 
-function Calendar() {
+interface Appointment {
+  cancelled: boolean;
+  comment: string;
+  completed: boolean;
+  create_at: string;
+  date: string;
+  end: string; // Assuming end is a string in the format "YYYY-MM-DDTHH:mm:ss"
+  event_id: number;
+  id: number;
+  staff: string;
+  start: string; // Assuming start is a string in the format "YYYY-MM-DDTHH:mm:ss"
+  time: string;
+  title: string;
+}
+
+const TimeSlots: React.FC = () => {
   const calendarRef = useRef<SchedulerRef>(null);
+  const { data, isSuccess } = useGetEvents();
+
+  const convertedAppointments: any = isSuccess
+    ? data.appointments.map((appointment: any) => ({
+        ...appointment,
+        start: new Date(appointment.start),
+        end: new Date(appointment.end),
+      }))
+    : [];
 
   return (
     <Fragment>
       <Scheduler
         ref={calendarRef}
-        events={EVENTS}
-        resources={RESOURCES}
-        resourceFields={{
-          idField: "admin_id",
-          textField: "title",
-          subTextField: "mobile",
-          avatarField: "title",
-          colorField: "color",
-        }}
-        // fields={[
-        //   {
-        //     name: "admin_id",
-        //     type: "select",
-        //     default: RESOURCES[0].admin_id,
-        //     options: RESOURCES.map((res) => {
-        //       return {
-        //         id: res.admin_id,
-        //         text: `${res.title} (${res.mobile})`,
-        //         value: res.admin_id,
-        //       };
-        //     }),
-        //     config: { label: "Assignee", required: true },
-        //   },
-        // ]}
-        // viewerExtraComponent={(fields, event) => {
-        //   return (
-        //     <div>
-        //       {fields.map((field, i) => {
-        //         if (field.name === "admin_id") {
-        //           const admin = field?.options?.find(
-        //             (fe) => fe.id === event.admin_id
-        //           );
-        //           return (
-        //             <Typography
-        //               key={i}
-        //               style={{ display: "flex", alignItems: "center" }}
-        //               color="textSecondary"
-        //               variant="caption"
-        //               noWrap
-        //             >
-        //               <PersonRoundedIcon /> {admin?.text}
-        //             </Typography>
-        //           );
-        //         } else {
-        //           return "";
-        //         }
-        //       })}
-        //     </div>
-        //   );
-        // }}
+        getRemoteEvents={convertedAppointments}
+        deletable={false}
       />
     </Fragment>
   );
-}
+};
 
-export default Calendar;
+export default TimeSlots;

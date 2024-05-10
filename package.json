@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aldabil/react-scheduler": "^2.7.8",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fullcalendar/core": "^6.1.11",
@@ -20,6 +21,7 @@
     "@fullcalendar/resource-timeline": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
     "@mui/material": "^5.15.15",
+    "@mui/x-date-pickers": "^6.0.3",
     "@reduxjs/toolkit": "^2.2.3",
     "@tanstack/react-query": "^5.32.0",
     "apexcharts": "^3.48.0",
