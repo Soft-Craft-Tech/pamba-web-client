@@ -2,9 +2,13 @@
 import { Fragment, useRef } from "react";
 import { Scheduler } from "@aldabil/react-scheduler";
 import { useGetEvents } from "@/app/api/requests";
-import { SchedulerRef, ProcessedEvent } from "@aldabil/react-scheduler/types";
+import {
+  SchedulerRef,
+  ProcessedEvent,
+  ViewEvent,
+} from "@aldabil/react-scheduler/types";
 import React from "react";
-import { EVENTS } from "@/utils/data";
+// import { EVENTS } from "@/utils/data";
 
 interface Appointment {
   cancelled: boolean;
@@ -12,11 +16,11 @@ interface Appointment {
   completed: boolean;
   create_at: string;
   date: string;
-  end: string; // Assuming end is a string in the format "YYYY-MM-DDTHH:mm:ss"
+  end: string;
   event_id: number;
   id: number;
   staff: string;
-  start: string; // Assuming start is a string in the format "YYYY-MM-DDTHH:mm:ss"
+  start: string;
   time: string;
   title: string;
 }
@@ -33,11 +37,20 @@ const TimeSlots: React.FC = () => {
       }))
     : [];
 
+  const fetchRemote = async (query: ViewEvent): Promise<ProcessedEvent[]> => {
+    console.log({ query });
+    return new Promise((res) => {
+      setTimeout(() => {
+        res(convertedAppointments);
+      }, 3000);
+    });
+  };
+
   return (
     <Fragment>
       <Scheduler
         ref={calendarRef}
-        getRemoteEvents={convertedAppointments}
+        getRemoteEvents={fetchRemote}
         deletable={false}
       />
     </Fragment>
