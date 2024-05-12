@@ -16,6 +16,7 @@ import Button from "@/ui/button";
 import {
   useCreateExpense,
   useDeleteExpense,
+  useEditExpense,
   useGetExpenseAccounts,
   useGetExpenses,
 } from "@/app/api/requests";
@@ -26,6 +27,7 @@ import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import Toast from "../shared/toasts/authToast";
 
 type Expense = {
   created_at: Date;
@@ -55,6 +57,7 @@ const Table = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
   );
+
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -71,7 +74,26 @@ const Table = () => {
     isError: addExpenseError,
   } = useCreateExpense();
 
-  const { mutateAsync: deleteUser } = useDeleteExpense(12);
+  const {
+    mutateAsync: deleteUser,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useDeleteExpense();
+
+  const { mutateAsync: editExpense } = useEditExpense();
+
+  const editExpenseRow = async (formData: any) => {
+    let password = "password";
+    try {
+      await editExpense(...formData, (password = formData?.password));
+      reset({
+        formData: {},
+      });
+    } catch (error) {
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+    }
+  };
 
   const submitExpense = async (formData: any) => {
     try {
@@ -173,7 +195,7 @@ const Table = () => {
         <p className="mb-2">Create New Expense</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(submitExpense)}
+          onSubmit={handleSubmit(editExpenseRow)}
         >
           <Controller
             name="expenseTitle"
@@ -244,11 +266,11 @@ const Table = () => {
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
               className="px-12 py-2 border border-gray-400 rounded-md"
-              type="button"
+              onClick={() => console.log("Here")}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button label="Save Expense" type="submit" variant="primary" />
           </div>
         </form>
       </div>
@@ -372,7 +394,13 @@ const Table = () => {
     },
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <>
+      {isDeleteError && <Toast message={toastMessage} type="error" />}
+      {isDeleteSuccess && <Toast message={toastMessage} type="success" />}
+      <MaterialReactTable table={table} />
+    </>
+  );
 };
 
 const queryClient = new QueryClient();

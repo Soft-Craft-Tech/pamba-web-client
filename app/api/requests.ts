@@ -103,16 +103,35 @@ export const useCreateExpense = () => {
   );
 };
 
-export const useDeleteExpense = (expense_id: number) => {
+export const useDeleteExpense = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async () => {
+  return useMutation<void, Error, any>(async (expense_id: number) => {
     const response = await apiCall(
       "DELETE",
       `${endpoints.deleteExpenses}${expense_id}`,
-      {},
+      { password: "password" },
       {}
     );
     dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
+    setTimeout(() => {
+      dispatch(setMessage(""));
+    }, 3000);
+    return response;
+  });
+};
+
+export const useEditExpense = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error>(async (formData: any) => {
+    const response = await apiCall(
+      "PUT",
+      `${endpoints.editExpenses}${formData?.expense_id}`,
+      { formData },
+      {}
+    );
+    dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
     setTimeout(() => {
       dispatch(setMessage(""));
     }, 3000);
