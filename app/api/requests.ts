@@ -103,7 +103,7 @@ export const useCreateExpense = () => {
   );
 };
 
-export const useDeleteExpense = (expense_id: string) => {
+export const useDeleteExpense = (expense_id: number) => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(async () => {
     const response = await apiCall(

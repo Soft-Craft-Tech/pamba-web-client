@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import {
+  MRT_Row,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
@@ -14,6 +15,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import {
   useCreateExpense,
+  useDeleteExpense,
   useGetExpenseAccounts,
   useGetExpenses,
 } from "@/app/api/requests";
@@ -30,6 +32,7 @@ type Expense = {
   category: string;
   expense: string;
   amount: string;
+  id: number;
 };
 
 interface CustomError extends Error {
@@ -48,7 +51,7 @@ const Table = () => {
   const { showToast } = useSelector((state: RootState) => ({
     showToast: state.toast.showToast,
   }));
-  const { control, handleSubmit, reset, formState } = useForm<DynamicObject>();
+  const { control, handleSubmit, reset } = useForm<DynamicObject>();
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
   );
@@ -68,7 +71,7 @@ const Table = () => {
     isError: addExpenseError,
   } = useCreateExpense();
 
-  // const { mutateAsync: deleteUser } = useDeleteExpense(row.ori);
+  const { mutateAsync: deleteUser } = useDeleteExpense(12);
 
   const submitExpense = async (formData: any) => {
     try {
@@ -116,6 +119,10 @@ const Table = () => {
     []
   );
 
+  const openDeleteConfirmModal = (row: MRT_Row<Expense>) => {
+    deleteUser(row.original.id);
+  };
+
   const table = useMaterialReactTable({
     columns,
     data: isLoading ? [] : data.expenses,
@@ -140,7 +147,7 @@ const Table = () => {
 
         <p
           onClick={() => {
-            data.expenses.splice(row.index, 1);
+            openDeleteConfirmModal(row);
           }}
           className="cursor-pointer text-[#007B99] font-bold"
         >
