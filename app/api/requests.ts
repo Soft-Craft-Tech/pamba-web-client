@@ -103,6 +103,23 @@ export const useCreateExpense = () => {
   );
 };
 
+export const useDeleteExpense = (expense_id: string) => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async () => {
+    const response = await apiCall(
+      "DELETE",
+      `${endpoints.deleteExpenses}${expense_id}`,
+      {},
+      {}
+    );
+    dispatch(setMessage(response.message));
+    setTimeout(() => {
+      dispatch(setMessage(""));
+    }, 3000);
+    return response;
+  });
+};
+
 export const useGetProfileCompletionStatus = () => {
   return useQuery("", async () => {
     try {
