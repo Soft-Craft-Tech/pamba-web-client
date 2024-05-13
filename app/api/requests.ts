@@ -72,6 +72,22 @@ export const useGetExpenseAccounts = () => {
   });
 };
 
+export const useGetAllStaff = (slug: string) => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        `${endpoints.getStaff}${slug}`,
+        {},
+        {}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Unable to fetch Staff");
+    }
+  });
+};
+
 export const useGetExpenses = () => {
   return useQuery("expenses", async () => {
     try {
@@ -83,7 +99,6 @@ export const useGetExpenses = () => {
   });
 };
 
-// Create New Expense
 export const useCreateExpense = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(
@@ -100,13 +115,42 @@ export const useCreateExpense = () => {
   );
 };
 
+export const useCreateStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async ({ f_name, phone, role }) => {
+    const response = await apiCall(
+      "POST",
+      `${endpoints.createStaff}`,
+      { f_name, phone, role },
+      {}
+    );
+    dispatch(setMessage(response.message));
+    return response;
+  });
+};
+
 export const useDeleteExpense = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(async (expense_id: number) => {
     const response = await apiCall(
       "DELETE",
       `${endpoints.deleteExpenses}${expense_id}`,
-      { password: "password" },
+      {},
+      {}
+    );
+    dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
+    return response;
+  });
+};
+
+export const useDeleteStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async (staff_id: number) => {
+    const response = await apiCall(
+      "DELETE",
+      `${endpoints.deleteStaff}${staff_id}`,
+      {},
       {}
     );
     dispatch(setMessage(response.message));
