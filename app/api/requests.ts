@@ -95,9 +95,6 @@ export const useCreateExpense = () => {
         {}
       );
       dispatch(setMessage(response.message));
-      setTimeout(() => {
-        dispatch(setMessage(""));
-      }, 3000);
       return response;
     }
   );
@@ -114,9 +111,6 @@ export const useDeleteExpense = () => {
     );
     dispatch(setMessage(response.message));
     dispatch(setShowToast(true));
-    setTimeout(() => {
-      dispatch(setMessage(""));
-    }, 3000);
     return response;
   });
 };
