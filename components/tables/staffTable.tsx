@@ -9,7 +9,6 @@ import {
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
@@ -350,14 +349,10 @@ const Table = () => {
   );
 };
 
-const queryClient = new QueryClient();
-
 const StaffManagementTable = () => (
-  <QueryClientProvider client={queryClient}>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Table />
-    </LocalizationProvider>
-  </QueryClientProvider>
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Table />
+  </LocalizationProvider>
 );
 
 export default StaffManagementTable;
