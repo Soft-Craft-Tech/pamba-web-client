@@ -16,6 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import {
   useCreateStaff,
+  useDeleteStaff,
   useEditExpense,
   useGetAllStaff,
   useGetExpenses,
@@ -77,6 +78,12 @@ const Table = () => {
 
   const { mutateAsync: editExpense } = useEditExpense();
 
+  const {
+    mutateAsync: deleteUser,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useDeleteStaff();
+
   const editExpenseRow = async (formData: any) => {
     try {
       await editExpense(formData?.id, formData);
@@ -128,6 +135,10 @@ const Table = () => {
     []
   );
 
+  const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
+    deleteUser(row.original.id);
+  };
+
   const table = useMaterialReactTable({
     columns,
     data: isLoading ? [] : allStaffData?.staff,
@@ -148,6 +159,14 @@ const Table = () => {
           className="cursor-pointer font-bold"
         >
           Edit
+        </p>
+        <p
+          onClick={() => {
+            openDeleteConfirmModal(row);
+          }}
+          className="cursor-pointer text-[#007B99] font-bold"
+        >
+          Delete
         </p>
       </div>
     ),

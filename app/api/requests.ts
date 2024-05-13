@@ -144,6 +144,21 @@ export const useDeleteExpense = () => {
   });
 };
 
+export const useDeleteStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async (staff_id: number) => {
+    const response = await apiCall(
+      "DELETE",
+      `${endpoints.deleteStaff}${staff_id}`,
+      {},
+      {}
+    );
+    dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
+    return response;
+  });
+};
+
 export const useEditExpense = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(async ([expenxeId, formData]) => {
