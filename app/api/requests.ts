@@ -81,7 +81,7 @@ export const useGetAllStaff = (slug: string) => {
         {},
         {}
       );
-      return response;
+      return response || {};
     } catch (error) {
       throw new Error("Unable to fetch Staff");
     }
@@ -218,7 +218,7 @@ export const useGetAllServices = () => {
   return useQuery("", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchServices, {}, {});
-      return response || {};
+      return response;
     } catch (error) {
       throw new Error("Error fetching Statuses");
     }

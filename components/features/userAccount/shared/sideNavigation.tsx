@@ -16,9 +16,9 @@ export default function SideNav() {
       } lg:flex lg:flex-col lg:relative lg:px-0 lg:left-0 lg:top-0`}
     >
       <div className="flex flex-col gap-1">
-        {sidebarData?.map(({ link, name, imageUrl }: DynamicObject) => {
+        {sidebarData?.map(({ link, name, imageUrl }: DynamicObject, index) => {
           return (
-            <SideBarLink key={link} link={link} name={name} image={imageUrl} />
+            <SideBarLink key={index} link={link} name={name} image={imageUrl} />
           );
         })}
       </div>
