@@ -106,7 +106,7 @@ export const useDeleteExpense = () => {
     const response = await apiCall(
       "DELETE",
       `${endpoints.deleteExpenses}${expense_id}`,
-      { password: "password" },
+      {},
       {}
     );
     dispatch(setMessage(response.message));
