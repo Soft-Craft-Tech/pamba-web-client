@@ -2,6 +2,7 @@
 import { useMemo, useState } from "react";
 import {
   MRT_Row,
+  MRT_TableOptions,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
@@ -83,9 +84,8 @@ const Table = () => {
   const { mutateAsync: editExpense } = useEditExpense();
 
   const editExpenseRow = async (formData: any) => {
-    let password = "password";
     try {
-      await editExpense(...formData, (password = formData?.password));
+      await editExpense(formData?.id, formData);
       reset({
         formData: {},
       });
@@ -101,6 +101,7 @@ const Table = () => {
       reset({
         formData: {},
       });
+      table.setCreatingRow(null);
     } catch (error) {
       const customError = error as CustomError;
       dispatch(setMessage(customError?.response?.data?.message));
@@ -111,6 +112,7 @@ const Table = () => {
     dispatch(setShowToast(true));
     setTimeout(() => {
       dispatch(setShowToast(false));
+      // table.setEditingRow(null);
     }, 3000);
   }
 
@@ -192,7 +194,7 @@ const Table = () => {
             {toastMessage}
           </p>
         )}
-        <p className="mb-2">Create New Expense</p>
+        <p className="mb-2">Update Expense</p>
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(editExpenseRow)}
@@ -266,11 +268,11 @@ const Table = () => {
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
               className="px-12 py-2 border border-gray-400 rounded-md"
-              onClick={() => console.log("Here")}
+              onClick={() => table.setEditingRow(null)}
             >
               Cancel
             </button>
-            <Button label="Save Expense" type="submit" variant="primary" />
+            <Button label="Save Expense" variant="primary" />
           </div>
         </form>
       </div>
@@ -364,7 +366,9 @@ const Table = () => {
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
               className="px-12 py-2 border border-gray-400 rounded-md"
-              type="button"
+              onClick={() => {
+                table.setCreatingRow(null);
+              }}
             >
               Cancel
             </button>

@@ -123,10 +123,10 @@ export const useDeleteExpense = () => {
 
 export const useEditExpense = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error>(async (formData: any) => {
+  return useMutation<void, Error, any>(async ([expenxeId, formData]) => {
     const response = await apiCall(
       "PUT",
-      `${endpoints.editExpenses}${formData?.expense_id}`,
+      `${endpoints.editExpenses}${expenxeId}`,
       { formData },
       {}
     );
