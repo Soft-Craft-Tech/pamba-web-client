@@ -10,7 +10,7 @@ import { DynamicObject } from "./types";
 const AddServicesBox = () => {
   const [services, setServices] = React.useState(false);
   const { data } = useGetAllServices();
-  console.log(data?.services);
+
   return (
     <div>
       <div className="flex justify-end w-full mt-6">
@@ -26,7 +26,7 @@ const AddServicesBox = () => {
       </div>
       {services && <AddServices />}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
-        {data?.services.map(
+        {data?.services?.map(
           (
             { service, price, service_image }: DynamicObject,
             index: React.Key | null | undefined
