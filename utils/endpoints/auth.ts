@@ -22,6 +22,8 @@ const authEndpoints: { [key: string]: string } = {
   fetchEvents: "/appointments/business-appointments",
   deleteExpenses: "/expenses/delete-expense/",
   editExpenses: "/expenses/update-expense/",
+  createStaff: "/staff/create_staff",
+  getStaff: "/staff/all/",
 };
 
 export default authEndpoints;

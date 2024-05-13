@@ -1,4 +1,3 @@
-import { getUser } from "@/utils/auth";
 import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { useUpdateProfile } from "@/app/api/auth";
@@ -15,9 +14,7 @@ interface CustomError extends Error {
   };
 }
 
-export default function ProfileUpdateForm({client}: any) {
-  // const { client } = getUser();
-
+export default function ProfileUpdateForm({ client }: any) {
   const {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
