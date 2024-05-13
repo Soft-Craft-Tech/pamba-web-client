@@ -149,7 +149,7 @@ const Table = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : data.expenses,
+    data: isLoading ? [] : data?.expenses,
     initialState: { showColumnFilters: true, showGlobalFilter: true },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",

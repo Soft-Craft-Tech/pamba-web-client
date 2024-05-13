@@ -14,26 +14,13 @@ interface SideBarLinkProps {
 }
 
 const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
-  const activePage = useAppSelector(
-    (state: RootState) => state.hamburger.activePage
-  );
-  const matchStrings = (): boolean => {
-    const pathnameWords: string[] = link.split("/");
-
-    for (const word of pathnameWords) {
-      if (word.toLowerCase() === activePage.toLowerCase()) {
-        return true;
-      }
-    }
-    return false;
-  };
-  const isMatch = matchStrings();
+  const pathname = usePathname();
 
   return (
     <Link href={link} legacyBehavior>
       <a
         className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 ${
-          isMatch ? "bg-sideLinksBg" : ""
+          pathname === link ? "bg-sideLinksBg" : ""
         }`}
       >
         <Image

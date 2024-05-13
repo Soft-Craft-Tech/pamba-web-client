@@ -7,7 +7,7 @@ import React from "react";
 
 const TimeSlots: React.FC = () => {
   const calendarRef = useRef<SchedulerRef>(null);
-  const { data, isSuccess, isLoading } = useGetEvents();
+  const { data, isSuccess, isLoading, isError } = useGetEvents();
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
@@ -45,6 +45,21 @@ const TimeSlots: React.FC = () => {
           </svg>
           <span className="sr-only text-black">Loading...</span>
         </div>
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div>
+        <p className="text-xl mb-2 text-red-500">
+          Error Fetching Appointment Data
+        </p>
+        <Scheduler
+          ref={calendarRef}
+          deletable={false}
+          view="month"
+          events={[]}
+        />
       </div>
     );
 

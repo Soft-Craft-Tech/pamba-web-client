@@ -2,7 +2,6 @@
 import { useMemo, useState } from "react";
 import {
   MRT_Row,
-  MRT_TableOptions,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
@@ -19,7 +18,6 @@ import {
   useDeleteStaff,
   useEditExpense,
   useGetAllStaff,
-  useGetExpenses,
 } from "@/app/api/requests";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
@@ -345,8 +343,8 @@ const Table = () => {
 
   return (
     <>
-      {/* {isDeleteError && <Toast message={toastMessage} type="error" />}
-      {isDeleteSuccess && <Toast message={toastMessage} type="success" />} */}
+      {isDeleteError && <Toast message={toastMessage} type="error" />}
+      {isDeleteSuccess && <Toast message={toastMessage} type="success" />}
       <MaterialReactTable table={table} />
     </>
   );
