@@ -9,8 +9,6 @@ import {
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Button from "@/ui/button";
 import {
   useCreateStaff,
@@ -28,8 +26,7 @@ import Toast from "../shared/toasts/authToast";
 import { getUser } from "@/utils/auth";
 
 type Staff = {
-  f_name: Date;
-  l_name: string;
+  f_name: string;
   phone: string;
   role: string;
   id?: number;
@@ -43,7 +40,7 @@ interface CustomError extends Error {
   };
 }
 
-const Table = () => {
+const StaffManagementTable = () => {
   const dispatch = useAppDispatch();
   const { toastMessage } = useSelector((state: RootState) => ({
     toastMessage: state.toast.toastMessage,
@@ -348,11 +345,5 @@ const Table = () => {
     </>
   );
 };
-
-const StaffManagementTable = () => (
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Table />
-  </LocalizationProvider>
-);
 
 export default StaffManagementTable;

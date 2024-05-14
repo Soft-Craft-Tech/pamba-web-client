@@ -2,7 +2,6 @@
 import { useMemo, useState } from "react";
 import {
   MRT_Row,
-  MRT_TableOptions,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,

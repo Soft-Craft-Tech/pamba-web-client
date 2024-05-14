@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useContext } from "react";
+import { useMemo } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
