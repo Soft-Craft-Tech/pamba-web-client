@@ -65,7 +65,13 @@ const Table = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading, isError, isRefetching } = useGetExpenses();
+  const {
+    data,
+    isLoading,
+    isError,
+    isRefetching,
+    refetch: refetchExpenses,
+  } = useGetExpenses();
   const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
     useGetExpenseAccounts();
   const {
@@ -97,6 +103,7 @@ const Table = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
+      refetchExpenses();
       reset({
         formData: {},
       });
@@ -144,6 +151,7 @@ const Table = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Expense>) => {
     deleteUser(row.original.id);
+    refetchExpenses();
   };
 
   const table = useMaterialReactTable({

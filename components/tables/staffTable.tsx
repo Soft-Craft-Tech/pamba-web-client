@@ -67,6 +67,7 @@ const StaffManagementTable = () => {
     isLoading,
     isError,
     isRefetching,
+    refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
   const { mutateAsync, isSuccess, isError: addExpenseError } = useCreateStaff();
 
@@ -93,6 +94,7 @@ const StaffManagementTable = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
+      refetchAllStaff();
       reset({
         formData: {},
       });
@@ -131,11 +133,12 @@ const StaffManagementTable = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
     deleteUser(row.original.id);
+    refetchAllStaff();
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : allStaffData?.staff,
+    data: isLoading ? [] : allStaffData?.staff ?? [],
     initialState: { showColumnFilters: true, showGlobalFilter: true },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
