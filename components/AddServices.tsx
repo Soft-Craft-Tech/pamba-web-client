@@ -6,11 +6,13 @@ import * as React from "react";
 import AddServices from "./features/profileCompletion/addServices";
 import { useGetAllServices } from "@/app/api/requests";
 import { DynamicObject } from "./types";
-import Toast from "./shared/toasts/authToast";
+import Loader from "./loader";
 
 const AddServicesBox = () => {
   const [services, setServices] = React.useState(false);
-  const { data } = useGetAllServices();
+  const { data, isLoading } = useGetAllServices();
+
+  if (isLoading) return <Loader />;
   return (
     <div className="flex flex-col gap-5 w-full h-auto">
       <div className="flex justify-end w-full mt-6">
