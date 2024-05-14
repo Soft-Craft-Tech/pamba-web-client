@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import AddServicesForm from "../../forms/addServicesForm";
 import ProfileProgress from "@/components/core/cards/progress";
-import { useAssignService, useGetServices } from "@/app/api/requests";
+import {
+  useAssignService,
+  useGetAllServices,
+  useGetServices,
+} from "@/app/api/requests";
 import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";
@@ -23,6 +27,7 @@ export default function AddServices() {
   }));
 
   const { data } = useGetServices();
+  const { refetch } = useGetAllServices();
 
   const {
     mutate: assignServices,
@@ -45,6 +50,7 @@ export default function AddServices() {
   const handleSubmitServices = () => {
     if (queuedServices.length !== 0) {
       assignServices(queuedServices);
+      refetch();
     }
     handleNext();
   };
