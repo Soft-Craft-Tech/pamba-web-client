@@ -10,6 +10,7 @@ import { sliderData } from "@/components/types";
 import Explorer from "@/components/Explorer";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useGetAllServices } from "@/app/api/requests";
 
 const FindServices: React.FC = () => {
   const router = useRouter();
@@ -21,6 +22,10 @@ const FindServices: React.FC = () => {
   ];
   const [filteredServices, setFilteredServices] = React.useState(services);
   const [search, setSearch] = React.useState(false);
+
+  const { data, isLoading } = useGetAllServices();
+
+  console.log(data);
 
   const handleSearch = (service: string, shop: string) => {
     const filtered = services.filter(

@@ -1,12 +1,27 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const FloaterAppoitment = () => {
+  const [showFloater, setShowFloater] = useState(false);
   const pathname = usePathname();
-  if (pathname !== "/") {
+  React.useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowFloater(true);
+      } else {
+        setShowFloater(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  if (pathname !== "/" || !showFloater) {
     return null;
   }
   return (
