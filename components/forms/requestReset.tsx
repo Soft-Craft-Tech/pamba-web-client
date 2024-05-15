@@ -1,10 +1,7 @@
 "use client";
-import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import Toast from "../shared/toasts/authToast";
-import axios from "axios";
-import { setShowToast } from "@/store/toastSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks";
 import { useRequestPasswordReset } from "@/app/api/auth";
 import { RootState } from "@/store/store";
 
