@@ -6,39 +6,43 @@ import Separator from "@/components/shared/sectionSeparators/separator";
 import FindShopsCards from "@/components/FindShopsCards";
 import ArrowBack from "@/ui/icons/arrow-back";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { sliderData } from "@/components/types";
+import { DynamicObject } from "@/components/types";
 import Explorer from "@/components/Explorer";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetAllServices } from "@/app/api/requests";
+import { useGetAllBusinesses } from "@/app/api/requests";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
 
 const FindServices: React.FC = () => {
   const router = useRouter();
-  const services = [
-    { name: "Hair Salon", location: "New York" },
-    { name: "Barber shop", location: "Los Angeles" },
-    { name: "Spa", location: "Chicago" },
-    { name: "Makeup", location: "San Francisco" },
-  ];
-  const [filteredServices, setFilteredServices] = React.useState(services);
+  const { data, isLoading } = useGetAllBusinesses();
+  const [filteredServices, setFilteredServices] = React.useState(
+    data?.businesses
+  );
+  const {
+    search: { searchQuery },
+  } = useAppSelector((state: RootState) => state);
   const [search, setSearch] = React.useState(false);
 
-  const { data, isLoading } = useGetAllServices();
-
-  console.log(data);
-
   const handleSearch = (service: string, shop: string) => {
-    const filtered = services.filter(
-      (item) =>
-        item.name.toLowerCase().includes(service.toLowerCase()) &&
-        item.location.toLowerCase().includes(shop.toLowerCase())
+    const filtered = data?.businesses?.filter(
+      ({
+        business_name,
+        location,
+      }: {
+        business_name: string;
+        location: string;
+      }) =>
+        business_name.toLowerCase().includes(service.toLowerCase()) &&
+        location.toLowerCase().includes(shop.toLowerCase())
     );
     setFilteredServices(filtered);
     setSearch(true);
   };
   if (search)
     return (
-      <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
+      <div className="mx-auto max-w-screen-2xl px-4 w-full my-10 relative">
         <div
           className="flex flex-row gap-x-3 cursor-pointer mb-4 px-4"
           onClick={() => setSearch(false)}
@@ -49,12 +53,19 @@ const FindServices: React.FC = () => {
           <p>Back</p>
         </div>
         <div className="flex flex-row gap-x-3 my-10 px-4">
-          <ShopSepartor header="Search Results for Barbershop" />
+          <ShopSepartor header={` Search Results for ${searchQuery}`} />
         </div>
         <div className="w-full flex flex-wrap justify-evenly gap-12">
-          {sliderData?.map(({ imageUrl, shopName }, index) => (
-            <Explorer key={index} imageUrl={imageUrl} shopName={shopName} />
-          ))}
+          {filteredServices?.map(
+            ({ profile_img, business_name, location, id }: DynamicObject) => (
+              <Explorer
+                key={id}
+                imageUrl={profile_img}
+                shopName={business_name}
+                location={location}
+              />
+            )
+          )}
         </div>
       </div>
     );
@@ -79,7 +90,7 @@ const FindServices: React.FC = () => {
             <CategoryCard img="/makestar.svg" text="Barbersalon" />
           </div>
         </section>
-        <FindShopsCards />
+        <FindShopsCards sliderData={data?.businesses ?? []} />
         <Separator
           btnText={"WHY US"}
           header={"We are experienced in making you very beautiful"}

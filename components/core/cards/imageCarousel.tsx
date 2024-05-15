@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-export default function Carousel({images}: {images: {idx: number, img: string}[]}) {
+export default function Carousel({
+  images,
+}: {
+  images: { idx: number; img: string }[];
+}) {
   const [activeIDX, setActiveIDX] = useState(1);
-  // Handle the slide
   const handleSlide = () => {
-    console.log(activeIDX)
     if (activeIDX === images.length) {
       setActiveIDX(1);
     } else {
@@ -13,11 +15,9 @@ export default function Carousel({images}: {images: {idx: number, img: string}[]
     }
   };
 
-  // Set Initial slider Image
   useEffect(() => {
     const slideInterval = setInterval(handleSlide, 5000);
 
-    // Clean up
     return () => {
       clearInterval(slideInterval);
     };

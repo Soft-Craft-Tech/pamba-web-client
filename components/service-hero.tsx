@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setSearchQuery } from "@/store/searchSlice";
 import LocationIcon from "@/ui/icons/location";
 import SearchIcon from "@/ui/icons/search";
 import React, { ChangeEvent, useState } from "react";
@@ -12,15 +14,19 @@ interface ServiceHeroProps {
 }
 
 const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
+  const dispatch = useAppDispatch();
+
   const [service, setService] = useState("");
   const [shop, setShop] = useState("");
 
   const handleServiceChange = (event: ChangeEvent<HTMLInputElement>) => {
     setService(event.target.value);
+    dispatch(setSearchQuery(service));
   };
 
   const handleShopChange = (event: ChangeEvent<HTMLInputElement>) => {
     setShop(event.target.value);
+    dispatch(setSearchQuery(shop));
   };
 
   const handleClick = () => {

@@ -1,4 +1,4 @@
-import { CloudinaryData, DynamicObject } from "@/components/types";
+import { CloudinaryData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
@@ -37,6 +37,17 @@ export const useGetServices = () => {
   return useQuery("categories", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchAllServices, {}, {});
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};
+
+export const useGetAllBusinesses = () => {
+  return useQuery("categories", async () => {
+    try {
+      const response = await apiCall("GET", endpoints.getAllBusinesses, {}, {});
       return response;
     } catch (error) {
       throw new Error("Error fetching all services");
@@ -118,23 +129,21 @@ export const useCreateExpense = () => {
 // Create Expense Accounts
 export const useCreateExpenseAccounts = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(
-    async (accounts) => {
-      try {
-        const response = await apiCall(
-          "POST",
-          endpoints.createAccount,
-          accounts,
-          {}
-        )
-        dispatch(setMessage(response.message));
-        return response
-      } catch (error) {
-        throw new Error("Error");
-      }
+  return useMutation<void, Error, any>(async (accounts) => {
+    try {
+      const response = await apiCall(
+        "POST",
+        endpoints.createAccount,
+        accounts,
+        {}
+      );
+      dispatch(setMessage(response.message));
+      return response;
+    } catch (error) {
+      throw new Error("Error");
     }
-  )
-}
+  });
+};
 
 export const useCreateStaff = () => {
   const dispatch = useAppDispatch();

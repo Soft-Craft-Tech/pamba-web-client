@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import Cookies from "universal-cookie";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { RxCaretDown, RxHamburgerMenu } from "react-icons/rx";
 import { AiOutlineClose } from "react-icons/ai";
 import { isAuthenticated, logoutUser } from "@/utils/auth";
@@ -13,19 +12,10 @@ export default function Header({ page }: { page: string }) {
   const [navExpanded, setNavExpanded] = useState(false);
   const router = useRouter();
 
-  // LogOut User
   const logOut = () => {
     logoutUser();
     router.push("/");
   };
-
-  // const pathname = usePathname();
-
-  // useEffect(() => {
-  //   if (isAuthenticated()) {
-  //     router.push("/user/dashboard");
-  //   }
-  // }, [pathname, router]);
 
   return (
     <header className="fixed top-0 left-0 w-full h-20 flex items-center justify-center border-b-[0.5px] border-borders z-20">

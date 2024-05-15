@@ -52,7 +52,7 @@ export default function LoginForm() {
         setErrorMessage(error?.response?.data.message);
         setError(true);
         dispatch(setShowToast(true));
-        setTimeout(()=> {
+        setTimeout(() => {
           setErrorMessage("");
           setError(false);
         }, 7000);
@@ -75,7 +75,9 @@ export default function LoginForm() {
           control={control}
           render={({ field }) => (
             <input
-              className={`w-full h-14 rounded-md  border px-2 py-1 outline-none lg:h-12 xl:h-14 ${errors.username ? 'border-red-500': 'border-borders'}`}
+              className={`w-full h-14 rounded-md  border px-2 py-1 outline-none lg:h-12 xl:h-14 ${
+                errors.username ? "border-red-500" : "border-borders"
+              }`}
               type="text"
               {...field}
               placeholder="Email"
@@ -83,8 +85,16 @@ export default function LoginForm() {
           )}
           rules={{ required: true }}
         />
-        {errors.username && <span className="text-red-500 font-light text-xs">This field is required</span>}
-        <div className={`w-full h-14 relative rounded-md border lg:h-12 xl:h-14 ${errors.username ? 'border-red-500' : 'border-borders'}`}>
+        {errors.username && (
+          <span className="text-red-500 font-light text-xs">
+            This field is required
+          </span>
+        )}
+        <div
+          className={`w-full h-14 relative rounded-md border lg:h-12 xl:h-14 ${
+            errors.username ? "border-red-500" : "border-borders"
+          }`}
+        >
           <Controller
             name="password"
             control={control}
@@ -98,28 +108,32 @@ export default function LoginForm() {
             )}
             rules={{ required: true }}
           />
-          {errors.password && <span className="text-red-500 font-light text-xs">This field is required</span>}
+          {errors.password && (
+            <span className="text-red-500 font-light text-xs">
+              This field is required
+            </span>
+          )}
           <div
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-              className="absolute flex items-center h-full w-max top-0 right-1 px-2 hover:text-gray-300"
-            >
-              {showPassword ? (
-                <Image
-                  src="/eye-open.png"
-                  alt="Toggle password visibility"
-                  width={24}
-                  height={24}
-                />
-              ) : (
-                <Image
-                  src="/eye-closed.png"
-                  alt="Toggle password visibility"
-                  width={24}
-                  height={24}
-                />
-              )}
+            onClick={() => {
+              setShowPassword(!showPassword);
+            }}
+            className="absolute flex items-center h-full w-max top-0 right-1 px-2 hover:text-gray-300"
+          >
+            {showPassword ? (
+              <Image
+                src="/eye-open.png"
+                alt="Toggle password visibility"
+                width={24}
+                height={24}
+              />
+            ) : (
+              <Image
+                src="/eye-closed.png"
+                alt="Toggle password visibility"
+                width={24}
+                height={24}
+              />
+            )}
           </div>
         </div>
         <div className="flex justify-end">
