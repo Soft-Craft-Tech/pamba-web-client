@@ -2,9 +2,8 @@
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
 import { setShowToast } from "@/store/toastSlice";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 
 export default function Toast({
   message,
@@ -13,9 +12,7 @@ export default function Toast({
   message: string | undefined;
   type: any;
 }) {
-  const {
-    toast: { showToast },
-  } = useSelector((state: RootState) => state);
+  const { showToast } = useAppSelector((state: RootState) => state.toast);
   const dispath = useAppDispatch();
   const handleClose = (
     event: React.SyntheticEvent | Event,
