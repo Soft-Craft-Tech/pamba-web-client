@@ -24,9 +24,7 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
   const router = useRouter();
-  const {
-    loading: { loginLoading },
-  } = useAppSelector((state: RootState) => state);
+  const { loginLoading } = useAppSelector((state: RootState) => state.loading);
   const dispatch = useAppDispatch();
 
   const [message, setMessage] = React.useState("");

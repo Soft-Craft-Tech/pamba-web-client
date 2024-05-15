@@ -14,7 +14,7 @@ export default function Header({ page }: { page: string }) {
 
   const logOut = () => {
     logoutUser();
-    router.push("/");
+    router.refresh();
   };
 
   return (
