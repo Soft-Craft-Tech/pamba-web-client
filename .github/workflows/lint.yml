@@ -4,7 +4,7 @@ name: Lint # name of the action (displayed in the github interface)
 
 on: # event list
   pull_request: # on a pull request to each of these branches
-    branches: ["develop","pre-dev","release","production"]
+    branches: ["develop", "pre-dev", "release", "production"]
 
 env: # environment variables (available in any part of the action)
   NODE_VERSION: 16
@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Dependencies
-        run: yarn
+        run: npm install
 
       - name: Code Linting
-        run: yarn lint
+        run: npm run lint
