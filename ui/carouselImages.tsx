@@ -20,3 +20,14 @@ export const carouselImages = [
         img: "/pamba-manicure.svg"
     },
 ]
+
+export const signupImages = [
+    {
+        idx: 1,
+        img: "/signup-img.svg"
+    },
+    {
+        idx: 2,
+        img: "/signup-img-2.svg"
+    }
+]

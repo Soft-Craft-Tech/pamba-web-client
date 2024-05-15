@@ -3,9 +3,9 @@ import Separator from "./shared/sectionSeparators/separator";
 import Image from "next/image";
 import Link from "next/link";
 import Explorer from "./Explorer";
-import { sliderData } from "./types";
+import { DynamicObject } from "./types";
 
-const FindShopsCards = () => {
+const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
   return (
     <>
       <Separator
@@ -13,9 +13,17 @@ const FindShopsCards = () => {
         header={"Find premier shops and beauty centers close to you"}
       />
       <div className="flex flex-col lg:flex-row lg:w-full  justify-evenly mb-12 gap-x-4 gap-y-4">
-        {sliderData?.map(({ imageUrl, shopName }, index) => (
-          <Explorer key={index} imageUrl={imageUrl} shopName={shopName} />
-        ))}
+        {sliderData?.map(
+          ({ profile_img, business_name, id, location, slug }) => (
+            <Explorer
+              key={id}
+              imageUrl={profile_img}
+              shopName={business_name}
+              location={location}
+              href={slug}
+            />
+          )
+        )}
       </div>
       <Link
         href="/booking/all-shops"

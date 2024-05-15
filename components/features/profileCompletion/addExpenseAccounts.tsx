@@ -1,8 +1,8 @@
-import { useCreateAccount } from "@/app/api/auth";
+import { useCreateExpenseAccounts } from "@/app/api/requests";
 import ProfileProgress from "@/components/core/cards/progress";
 import Toast from "@/components/shared/toasts/authToast";
-import { DynamicObject } from "@/components/types";
 import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
 import { RootState } from "@/store/store";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { TextField } from "@mui/material";
@@ -25,17 +25,23 @@ interface CustomError extends Error {
 
 export default function AddExpenseAccounts() {
   const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { mutateAsync, isLoading, isError, isSuccess } = useCreateAccount(step);
+  const { mutateAsync, isLoading, isError, isSuccess } = useCreateExpenseAccounts();
 
   const [queuedExpenses, setQueuedExpenses] = useState<Expense[]>([]);
+
   const onSubmit = async (data: any) => {
     setQueuedExpenses((prevState) => [...prevState, data]);
+    reset();
+  };
+
+  const handleNext = () => {
+    dispatch(setStep(step + 1));
   };
 
   const onDeleteClick = (indexToDelete: number) => {
@@ -46,7 +52,7 @@ export default function AddExpenseAccounts() {
 
   const handleSubmitData = () => {
     try {
-      mutateAsync(queuedExpenses);
+      mutateAsync({accounts: queuedExpenses});
       dispatch(setShowToast(true));
     } catch (error) {
       const customError = error as CustomError;
@@ -117,9 +123,7 @@ export default function AddExpenseAccounts() {
         <button
           disabled={isLoading || queuedExpenses.length === 0}
           type="button"
-          onClick={() => {
-            handleSubmitData;
-          }}
+          onClick={handleSubmitData}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? "Loading" : "Finish"}
