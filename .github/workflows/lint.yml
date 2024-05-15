@@ -7,7 +7,7 @@ on: # event list
     branches: ["develop", "pre-dev", "release", "production"]
 
 env: # environment variables (available in any part of the action)
-  NODE_VERSION: 16
+  NODE_VERSION: 20
 
 jobs:
   linting:
