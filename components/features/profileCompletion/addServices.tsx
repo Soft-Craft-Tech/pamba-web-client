@@ -6,8 +6,8 @@ import ProfileProgress from "@/components/core/cards/progress";
 import {
   useAssignService,
   useGetAllServices,
-  useGetServices,
-} from "@/app/api/requests";
+} from "@/app/api/businesses";
+import { useGetServices } from "@/app/api/services";
 import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";

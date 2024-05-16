@@ -10,7 +10,7 @@ import { DynamicObject } from "@/components/types";
 import Explorer from "@/components/Explorer";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetAllBusinesses } from "@/app/api/requests";
+import { useGetAllBusinesses } from "@/app/api/businesses";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 
