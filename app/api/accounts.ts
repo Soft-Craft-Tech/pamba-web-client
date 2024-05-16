@@ -1,3 +1,4 @@
+import { DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
@@ -7,20 +8,25 @@ import { useMutation, useQuery } from "react-query";
 // Create Expense Accounts
 export const useCreateExpenseAccounts = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async (accounts) => {
-    try {
-      const response = await apiCall(
-        "POST",
-        endpoints.createAccount,
-        accounts,
-        {}
-      );
-      dispatch(setMessage(response.message));
-      return response;
-    } catch (error) {
-      throw new Error("Error");
+  return useMutation<void, Error, DynamicObject | undefined>(
+    async (accounts) => {
+      if (accounts === undefined) {
+        throw new Error("Accounts data is undefined");
+      }
+      try {
+        const response = await apiCall(
+          "POST",
+          endpoints.createAccount,
+          accounts,
+          {}
+        );
+        dispatch(setMessage(response.message));
+        return response;
+      } catch (error) {
+        throw new Error("Error");
+      }
     }
-  });
+  );
 };
 
 // Fetch Expense Accounts

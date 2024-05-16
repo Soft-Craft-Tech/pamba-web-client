@@ -1,4 +1,4 @@
-import { CloudinaryData } from "@/components/types";
+import { CloudinaryData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "react-query";
 
 export const useAssignService = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async (services: any) => {
+  return useMutation<void, Error, DynamicObject>(async (services: any) => {
     const response = await apiCall(
       "POST",
       endpoints.assignServices,
@@ -61,7 +61,7 @@ export const useGetProfileCompletionStatus = () => {
 };
 
 export const useGetAllServices = () => {
-  return useQuery("", async () => {
+  return useQuery("all-services", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchServices, {}, {});
       return response;

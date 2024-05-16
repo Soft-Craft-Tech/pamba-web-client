@@ -1,3 +1,4 @@
+import { DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
@@ -17,7 +18,7 @@ export const useGetExpenses = () => {
 
 export const useCreateExpense = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(
+  return useMutation<void, Error, DynamicObject>(
     async ({ expenseTitle, expenseAmount, description, accountID }) => {
       const response = await apiCall(
         "POST",
