@@ -1,3 +1,4 @@
+import authEndpoints from "./authEndpoints";
 import accountEndpoints from "./accountsEndpoints";
 import appointmentsEndpoints from "./appointmentsEndpoints";
 import businessesEndpoints from "./businessesEndpoints";
@@ -6,6 +7,7 @@ import servicesEndpoints from "./servicesEndpoints";
 import staffEndpoints from "./staffEndpoints";
 
 const endpoints: { [key: string]: string } = {
+  ...authEndpoints,
   ...accountEndpoints,
   ...appointmentsEndpoints,
   ...businessesEndpoints,
