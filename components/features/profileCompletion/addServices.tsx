@@ -6,7 +6,7 @@ import ProfileProgress from "@/components/core/cards/progress";
 import {
   useAssignService,
   useGetAllServices,
-  useGetServices,
+  useGetServiceCategories,
 } from "@/app/api/requests";
 import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
@@ -26,13 +26,14 @@ export default function AddServices() {
     toastMessage: state.toast.toastMessage,
   }));
 
-  const { data } = useGetServices();
+  const { data } = useGetServiceCategories();
   const { refetch } = useGetAllServices();
 
   const {
     mutate: assignServices,
     isLoading: postingServices,
     error: errorPosting,
+    isSuccess: successPosting,
   } = useAssignService();
 
   const handleNext = () => {
@@ -50,13 +51,17 @@ export default function AddServices() {
   const handleSubmitServices = () => {
     if (queuedServices.length !== 0) {
       assignServices(queuedServices);
-      refetch();
     }
     handleNext();
   };
 
+  if (successPosting) {
+    refetch();
+  }
+
   return (
     <div className="w-full h-auto flex flex-col gap-5 px-5 py-10">
+      {successPosting && <Toast message={toastMessage} type="success" />}
       {errorPosting && <Toast message={toastMessage} type="error" />}
       {pathname !== "/user/services" && <ProfileProgress />}
       <div className="flex gap-10 w-full flex-col md:flex-row">
