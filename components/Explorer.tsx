@@ -22,7 +22,7 @@ const Explorer: React.FC<{
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow ">
       <Image
-        className=" w-full min-h-[11rem]"
+        className=" w-full  min-h-[11rem]"
         src={imageUrl}
         alt="pamba login"
         width={100}

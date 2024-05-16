@@ -1,20 +1,16 @@
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { useDispatch, useSelector } from "react-redux";
 import { setQueuedServices, setService } from "@/store/completeProfileSlice";
-import { useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { CldUploadWidget } from "next-cloudinary";
 import React from "react";
 import { RootState } from "@/store/store";
 
 export default function AddServicesForm({ data }: { data: any }) {
   const { register, handleSubmit, reset, control } = useForm();
-  const dispatch = useDispatch();
-  const { service, queuedServices } = useSelector(
+  const dispatch = useAppDispatch();
+  const { queuedServices } = useAppSelector(
     (state: RootState) => state.completeProfile
   );
 
@@ -43,7 +39,10 @@ export default function AddServicesForm({ data }: { data: any }) {
   return (
     <div className="flex flex-col gap-5 w-full  p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
       <h3>What Services do you offer?</h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 p-1">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-3 p-1"
+      >
         <FormControl fullWidth>
           <Controller
             name="category"
@@ -93,11 +92,13 @@ export default function AddServicesForm({ data }: { data: any }) {
           label="Price"
           type="number"
         />
-        <div className={`w-full h-16 flex items-center overflow-hidden p-1 rounded-md border border-dashed ${
-          newImage
-            ? "text-green-500 border-green-500"
-            : "text-primary border-primary"
-          }`}>
+        <div
+          className={`w-full h-16 flex items-center overflow-hidden p-1 rounded-md border border-dashed ${
+            newImage
+              ? "text-green-500 border-green-500"
+              : "text-primary border-primary"
+          }`}
+        >
           <Controller
             name="imageURL"
             control={control}

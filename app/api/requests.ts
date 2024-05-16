@@ -1,5 +1,6 @@
 import { CloudinaryData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
+import { setShowComponent } from "@/store/displaySlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
@@ -29,14 +30,23 @@ export const useAssignService = () => {
       {}
     );
     dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
+    setTimeout(() => {
+      dispatch(setShowComponent(false));
+    }, 3000);
     return response;
   });
 };
 
-export const useGetServices = () => {
+export const useGetServiceCategories = () => {
   return useQuery("categories", async () => {
     try {
-      const response = await apiCall("GET", endpoints.fetchAllServices, {}, {});
+      const response = await apiCall(
+        "GET",
+        endpoints.getServiceCategories,
+        {},
+        {}
+      );
       return response;
     } catch (error) {
       throw new Error("Error fetching all services");
@@ -238,6 +248,22 @@ export const useGetCategories = () => {
   return useQuery("categories", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchCategories, {}, {});
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};
+
+export const useGetClientServices = () => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        endpoints.getClientServices,
+        {},
+        {}
+      );
       return response;
     } catch (error) {
       throw new Error("Error fetching all services");

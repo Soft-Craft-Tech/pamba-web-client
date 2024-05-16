@@ -7,6 +7,7 @@ import completeProfileSlice from "./completeProfileSlice";
 import tabSlice from "./settingsTabSlice";
 import loadingSlice from "./loadingSlice";
 import searchSlice from "./searchSlice";
+import displaySlice from "./displaySlice";
 
 const rootReducer = combineReducers({
   steps: stepsReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   settingsTab: tabSlice,
   loading: loadingSlice,
   search: searchSlice,
+  display: displaySlice,
 });
 
 export const makeStore = () => {

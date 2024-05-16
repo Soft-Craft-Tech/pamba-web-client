@@ -26,6 +26,8 @@ const authEndpoints: { [key: string]: string } = {
   getStaff: "/staff/all/",
   deleteStaff: "/staff/delete-staff/",
   getAllBusinesses: "/businesses/all-businesses",
+  getClientServices: "/services/all",
+  getServiceCategories: "/services/categories",
 };
 
 export default authEndpoints;
