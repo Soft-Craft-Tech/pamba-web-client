@@ -16,9 +16,9 @@ import { RootState } from "@/store/store";
 
 const FindServices: React.FC = () => {
   const router = useRouter();
-  const { data, isLoading } = useGetAllBusinesses();
+  const { data, isLoading } = useGetClientServices();
   const [filteredServices, setFilteredServices] = React.useState(
-    data?.businesses
+    data?.services
   );
   const {
     search: { searchQuery },
@@ -26,7 +26,7 @@ const FindServices: React.FC = () => {
   const [search, setSearch] = React.useState(false);
 
   const handleSearch = (service: string, shop: string) => {
-    const filtered = data?.businesses?.filter(
+    const filtered = data?.services?.filter(
       ({
         business_name,
         location,
@@ -90,7 +90,7 @@ const FindServices: React.FC = () => {
             <CategoryCard img="/makestar.svg" text="Barbersalon" />
           </div>
         </section>
-        <FindShopsCards sliderData={data?.businesses ?? []} />
+        <FindShopsCards sliderData={data?.services ?? []} />
         <Separator
           btnText={"WHY US"}
           header={"We are experienced in making you very beautiful"}

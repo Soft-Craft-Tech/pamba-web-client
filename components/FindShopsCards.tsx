@@ -13,8 +13,9 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
         header={"Find premier shops and beauty centers close to you"}
       />
       <div className="flex flex-col lg:flex-row lg:w-full  justify-evenly mb-12 gap-x-4 gap-y-4">
-        {sliderData?.map(
-          ({ profile_img, business_name, id, location, slug }) => (
+        {sliderData
+          ?.slice(0, 4)
+          .map(({ profile_img, business_name, id, location, slug }) => (
             <Explorer
               key={id}
               imageUrl={profile_img}
@@ -22,8 +23,7 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
               location={location}
               href={slug}
             />
-          )
-        )}
+          ))}
       </div>
       <Link
         href="/booking/all-shops"

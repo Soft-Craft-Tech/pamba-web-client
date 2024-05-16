@@ -7,26 +7,29 @@ import AddServices from "./features/profileCompletion/addServices";
 import { useGetAllServices } from "@/app/api/businesses";
 import { DynamicObject } from "./types";
 import Loader from "./loader";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import { setShowComponent } from "@/store/displaySlice";
 
 const AddServicesBox = () => {
-  const [services, setServices] = React.useState(false);
   const { data, isLoading } = useGetAllServices();
-
+  const { showComponent } = useAppSelector((state: RootState) => state.display);
+  const dispatch = useAppDispatch();
   if (isLoading) return <Loader />;
   return (
     <div className="flex flex-col gap-5 w-full h-auto">
       <div className="flex justify-end w-full mt-6">
         <Button
           onClick={() => {
-            setServices(!services);
+            dispatch(setShowComponent(!showComponent));
           }}
           variant="primary"
         >
-          {!services && <PlusIcon />}
-          <p className="ml-3S">{services ? "Close" : "Add Services"}</p>
+          {!showComponent && <PlusIcon />}
+          <p className="ml-3S">{showComponent ? "Close" : "Add Services"}</p>
         </Button>
       </div>
-      {services && <AddServices />}
+      {showComponent && <AddServices />}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 w-full h-auto">
         {data?.services?.map(
           (

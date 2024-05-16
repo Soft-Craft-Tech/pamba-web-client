@@ -103,7 +103,6 @@ const Table = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
-      refetchExpenses();
       reset({
         formData: {},
       });
@@ -120,6 +119,9 @@ const Table = () => {
       dispatch(setShowToast(false));
       // table.setEditingRow(null);
     }, 3000);
+  }
+  if (isDeleteSuccess || isSuccess) {
+    refetchExpenses();
   }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
@@ -151,7 +153,6 @@ const Table = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Expense>) => {
     deleteUser(row.original.id);
-    refetchExpenses();
   };
 
   const table = useMaterialReactTable({
