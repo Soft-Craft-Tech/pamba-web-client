@@ -1,4 +1,4 @@
-const authEndpoints: { [key: string]: string } = {
+const businessesEndpoints: { [key: string]: string } = {
   login: "/businesses/login",
   signup: "/businesses/signup",
   verifyAccount: "/businesses/activate-account/",
@@ -11,21 +11,10 @@ const authEndpoints: { [key: string]: string } = {
   profileCompletion: "/businesses/profile-completion-status",
   uploadImage: "/businesses/upload-profile-img",
   assignServices: "/businesses/assign-services",
-  fetchAllServices: "/services/fetch_all",
   fetchCategories: "/businesses/fetch-business-categories",
   getSingleBusiness: "/businesses",
-  createAccount: "/accounts/create-account",
-  fetchServices: "/businesses/business-services",
-  fetchExpenses: "/expenses/my-expenses",
-  addExpense: "/expenses/record-expense",
-  fetchExpenseAccounts: "/accounts/all",
-  fetchEvents: "/appointments/business-appointments",
-  deleteExpenses: "/expenses/delete-expense/",
-  editExpenses: "/expenses/update-expense/",
-  createStaff: "/staff/create_staff",
-  getStaff: "/staff/all/",
-  deleteStaff: "/staff/delete-staff/",
   getAllBusinesses: "/businesses/all-businesses",
+  fetchServices: "/businesses/business-services",
 };
 
-export default authEndpoints;
+export default businessesEndpoints;
