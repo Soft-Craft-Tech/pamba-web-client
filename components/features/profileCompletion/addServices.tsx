@@ -110,3 +110,7 @@ export default function AddServices() {
     </div>
   );
 }
+function useGetServiceCategories(): { data: any; } {
+  throw new Error("Function not implemented.");
+}
+

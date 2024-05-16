@@ -110,3 +110,7 @@ const FindServices: React.FC = () => {
 };
 
 export default FindServices;
+function useGetClientServices(): { data: any; isLoading: any; } {
+  throw new Error("Function not implemented.");
+}
+
