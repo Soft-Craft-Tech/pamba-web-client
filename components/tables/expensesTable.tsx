@@ -16,9 +16,9 @@ import {
   useCreateExpense,
   useDeleteExpense,
   useEditExpense,
-  useGetExpenseAccounts,
   useGetExpenses,
-} from "@/app/api/requests";
+} from "@/app/api/expenses";
+import { useGetExpenseAccounts } from "@/app/api/accounts";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";

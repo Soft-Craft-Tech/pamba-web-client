@@ -13,9 +13,9 @@ import Button from "@/ui/button";
 import {
   useCreateStaff,
   useDeleteStaff,
-  useEditExpense,
   useGetAllStaff,
-} from "@/app/api/requests";
+} from "@/app/api/staff";
+import { useEditExpense } from "@/app/api/expenses";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
 import { useAppDispatch } from "@/hooks";

@@ -7,7 +7,7 @@ import ProfileComplete from "./completed";
 import UploadProfileImg from "./profileImageUpload";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
-import { useGetProfileCompletionStatus } from "@/app/api/requests";
+import { useGetProfileCompletionStatus } from "@/app/api/businesses";
 import { setStep } from "@/store/completeProfileSlice";
 
 const CompleteProfileComponent = () => {
