@@ -1,5 +1,6 @@
 import { CloudinaryData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
 import { setShowComponent } from "@/store/displaySlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
@@ -137,7 +138,7 @@ export const useCreateExpense = () => {
 };
 
 // Create Expense Accounts
-export const useCreateExpenseAccounts = () => {
+export const useCreateExpenseAccounts = (step: number) => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(async (accounts) => {
     try {
@@ -148,6 +149,7 @@ export const useCreateExpenseAccounts = () => {
         {}
       );
       dispatch(setMessage(response.message));
+      dispatch(setStep(step + 1));
       return response;
     } catch (error) {
       throw new Error("Error");

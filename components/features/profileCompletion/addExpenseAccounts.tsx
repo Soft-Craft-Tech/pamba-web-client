@@ -31,7 +31,8 @@ export default function AddExpenseAccounts() {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { mutateAsync, isLoading, isError, isSuccess } = useCreateExpenseAccounts();
+  const { mutateAsync, isLoading, isError, isSuccess } =
+    useCreateExpenseAccounts(step);
 
   const [queuedExpenses, setQueuedExpenses] = useState<Expense[]>([]);
 
@@ -52,7 +53,7 @@ export default function AddExpenseAccounts() {
 
   const handleSubmitData = () => {
     try {
-      mutateAsync({accounts: queuedExpenses});
+      mutateAsync({ accounts: queuedExpenses });
       dispatch(setShowToast(true));
     } catch (error) {
       const customError = error as CustomError;
