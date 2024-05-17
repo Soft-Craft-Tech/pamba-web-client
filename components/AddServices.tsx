@@ -4,7 +4,7 @@ import Button from "@/ui/button";
 import PlusIcon from "@/ui/icons/plus-icon";
 import * as React from "react";
 import AddServices from "./features/profileCompletion/addServices";
-import { useGetAllServices } from "@/app/api/requests";
+import { useGetAllServices } from "@/app/api/businesses";
 import { DynamicObject } from "./types";
 import Loader from "./loader";
 import { useAppDispatch, useAppSelector } from "@/hooks";

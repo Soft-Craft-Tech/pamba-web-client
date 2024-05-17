@@ -2,7 +2,7 @@ import ProfileProgress from "../../core/cards/progress";
 import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import Toast from "../../shared/toasts/genToast";
-import { useChangeImageMutation } from "@/app/api/requests";
+import { useChangeImageMutation } from "@/app/api/businesses";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { setStep } from "@/store/completeProfileSlice";
