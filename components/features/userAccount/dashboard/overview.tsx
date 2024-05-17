@@ -1,5 +1,20 @@
 import KPI from "../cards/KPICards";
-export default function Overview() {
+
+type OverviewProps = {
+  all_appointments?: Array<any>;
+  current_month_expenses?: number;
+  current_month_revenue?: number;
+  today_appointments?: Array<any>;
+  today_revenue?: number;
+};
+
+export default function Overview({
+  all_appointments = [],
+  current_month_expenses = 0,
+  current_month_revenue = 0,
+  today_appointments = [],
+  today_revenue = 0,
+}: OverviewProps) {
   return (
     <div className="flex w-full h-60 gap-5">
       <div className="bg-white rounded-md h-full w-full p-5 text-secondary shadow-md flex items-center gap-5">
@@ -14,14 +29,14 @@ export default function Overview() {
           </div>
           <div>
             <h4 className="font-semibold">
-              Ksh <span className="text-xl font-bold">50, 000</span>
+              Ksh <span className="text-xl font-bold">{today_revenue}</span>
             </h4>
             <p className="font-light text-sm text-muted">
               Today&apos;s Revenue
             </p>
           </div>
           <div>
-            <h4 className="font-bold text-xl">200</h4>
+            <h4 className="font-bold text-xl">{today_appointments.length}</h4>
             <p className="font-light text-sm text-muted">
               Scheduled appointments
             </p>
@@ -31,21 +46,21 @@ export default function Overview() {
       <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-3">
         <KPI
           title="This month Revenue"
-          value={50000}
+          value={current_month_revenue}
           change={10}
           positiveChange={false}
           financial={true}
         />
         <KPI
           title="This month Appointments"
-          value={500}
+          value={all_appointments.length}
           change={10}
           positiveChange={true}
           financial={false}
         />
         <KPI
           title="This month Expenses"
-          value={20000}
+          value={current_month_expenses}
           change={10}
           positiveChange={true}
           financial={true}

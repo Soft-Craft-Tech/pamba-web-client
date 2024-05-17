@@ -30,6 +30,22 @@ export const useGetAllBusinesses = () => {
   });
 };
 
+export const useGetBusinessesAnalysis = () => {
+  return useQuery("analysis", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        endpoints.getBusinessesAnalysis,
+        {},
+        {}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all analysis");
+    }
+  });
+};
+
 export const useChangeImageMutation = () => {
   return useMutation<void, Error, CloudinaryData>(
     async (imageURL: CloudinaryData) => {
