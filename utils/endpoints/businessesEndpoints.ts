@@ -6,6 +6,7 @@ const businessesEndpoints: { [key: string]: string } = {
   getSingleBusiness: "/businesses",
   fetchServices: "/businesses/business-services",
   getAllBusinesses: "/businesses/all-businesses",
+  getBusinessesAnalysis: "/businesses/analysis",
 };
 
 export default businessesEndpoints;

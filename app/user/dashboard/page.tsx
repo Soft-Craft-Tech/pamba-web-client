@@ -1,5 +1,8 @@
 "use client";
-import { useGetProfileCompletionStatus } from "@/app/api/businesses";
+import {
+  useGetProfileCompletionStatus,
+  useGetBusinessesAnalysis,
+} from "@/app/api/businesses";
 import AppointmentsTable from "@/components/charts/appointments";
 import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
@@ -8,6 +11,7 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   const { data } = useGetProfileCompletionStatus();
+  const { data: businessAnalysis, isLoading } = useGetBusinessesAnalysis();
 
   return (
     <div className="w-full flex flex-col gap-5">
@@ -22,7 +26,7 @@ export default function DashboardPage() {
           </Link>
         </div>
       )}
-      <Overview />
+      <Overview {...businessAnalysis} />
       <FinancialSummary />
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <div className="col-span-12 xl:col-span-8">
