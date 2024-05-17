@@ -1,12 +1,13 @@
 import { DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery } from "react-query";
 
 // Create Expense Accounts
-export const useCreateExpenseAccounts = () => {
+export const useCreateExpenseAccounts = (step: number) => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, DynamicObject | undefined>(
     async (accounts) => {
@@ -21,6 +22,7 @@ export const useCreateExpenseAccounts = () => {
           {}
         );
         dispatch(setMessage(response.message));
+        dispatch(setStep(step + 1));
         return response;
       } catch (error) {
         throw new Error("Error");
