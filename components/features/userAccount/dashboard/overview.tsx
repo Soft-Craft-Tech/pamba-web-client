@@ -1,10 +1,11 @@
 import KPI from "../cards/KPICards";
+import { DynamicObject } from "@/components/types";
 
-type OverviewProps = {
-  all_appointments?: Array<any>;
+interface OverviewProps {
+  all_appointments?: Array<DynamicObject>;
   current_month_expenses?: number;
   current_month_revenue?: number;
-  today_appointments?: Array<any>;
+  today_appointments?: Array<DynamicObject>;
   today_revenue?: number;
 };
 
@@ -36,7 +37,9 @@ export default function Overview({
             </p>
           </div>
           <div>
-            <h4 className="font-bold text-xl">{today_appointments.length}</h4>
+            <h4 className="font-bold text-xl">
+              {today_appointments ? today_appointments.length : 0}
+            </h4>
             <p className="font-light text-sm text-muted">
               Scheduled appointments
             </p>
@@ -53,7 +56,7 @@ export default function Overview({
         />
         <KPI
           title="This month Appointments"
-          value={all_appointments.length}
+          value={all_appointments ? all_appointments.length : 0}
           change={10}
           positiveChange={true}
           financial={false}
