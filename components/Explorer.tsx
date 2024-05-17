@@ -23,7 +23,7 @@ const Explorer: React.FC<{
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[17rem]">
       <img
-        className="object-cover w-full max-h-[10rem]"
+        className="object-cover w-full h-[10rem]"
         src={
           imageUrl === null
             ? "https://res.cloudinary.com/dnfrxficl/image/upload/v1715585716/pamba-web/iejtagfjemtmqr2k2f0n.svg"
@@ -46,7 +46,7 @@ const Explorer: React.FC<{
                 className="w-10 h-10 rounded-full"
                 width={20}
                 height={20}
-                src="/user-icons/profile-icon.svg"
+                src={imageUrl}
                 alt="Rounded avatar"
               />
               <p className="text-lg">{shopName}</p>
