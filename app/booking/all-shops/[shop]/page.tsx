@@ -1,6 +1,5 @@
 import SingleShopHero from "@/components/SingleShopHero";
 import ShopTabs from "@/components/features/shop/shop-tabs";
-import Button from "@/ui/button";
 import * as React from "react";
 
 interface PageProps {
@@ -12,7 +11,7 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({ params }) => {
   return (
     <div>
-      <SingleShopHero shopName={params.shop} />
+      <SingleShopHero shopName={params.shop} slug={params.shop} />
       <ShopTabs />
     </div>
   );

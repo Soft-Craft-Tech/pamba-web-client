@@ -81,3 +81,19 @@ export const useGetCategories = () => {
     }
   });
 };
+
+export const useGetSingleBusiness = (business_id: string) => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        `${endpoints.getSingleBusiness}${business_id}`,
+        {},
+        {}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};

@@ -1,9 +1,14 @@
-import FilterIcon from "@/ui/icons/filter";
-import LocationIcon from "@/ui/icons/location";
+"use client";
+import { useGetSingleBusiness } from "@/app/api/businesses";
 import SearchIcon from "@/ui/icons/search";
 import React from "react";
 
-const SingleShopHero: React.FC<{ shopName: string }> = ({ shopName }) => {
+const SingleShopHero: React.FC<{ shopName: string; slug: string }> = ({
+  shopName,
+  slug,
+}) => {
+  const { data } = useGetSingleBusiness(slug);
+  console.log(data);
   return (
     <section className="h-auto">
       <div
@@ -16,7 +21,7 @@ const SingleShopHero: React.FC<{ shopName: string }> = ({ shopName }) => {
         }}
       >
         <p className="text-white text-[50px] font-bold max-w-[900px] text-center">
-          {shopName}
+          {data?.business?.name}
         </p>
         <div className="flex bg-white w-full mt-4 justify-between max-w-[940px] rounded-md px-4 py-2">
           <div className="flex flex-row w-3/4">

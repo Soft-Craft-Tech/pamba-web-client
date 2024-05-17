@@ -17,7 +17,6 @@ import { useGetAllBusinesses } from "@/app/api/businesses";
 const FindServices: React.FC = () => {
   const { data } = useGetClientServices();
   const { data: allBusinessesData } = useGetAllBusinesses();
-  console.log(allBusinessesData?.businesses);
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
   );

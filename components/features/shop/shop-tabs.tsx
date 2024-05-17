@@ -11,7 +11,7 @@ const ShopTabs = () => {
     setActiveTab(tabName);
   };
   return (
-    <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+    <div className="mx-auto max-w-screen-xl px-10 w-full mt-10 relative">
       <div className="w-full flex gap-x-10 ">
         <Button
           label="About"
