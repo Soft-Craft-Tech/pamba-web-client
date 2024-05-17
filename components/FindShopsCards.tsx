@@ -14,16 +14,24 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
       />
       <div className="flex flex-col lg:flex-row lg:w-full  justify-evenly mb-12 gap-x-4 gap-y-4">
         {sliderData
-          ?.slice(0, 4)
-          .map(({ profile_img, business_name, id, location, slug }) => (
-            <Explorer
-              key={id}
-              imageUrl={profile_img}
-              shopName={business_name}
-              location={location}
-              href={slug}
-            />
-          ))}
+          ?.slice(1, 5)
+          .map(
+            ({
+              business_profile_image,
+              business_name,
+              id,
+              business_location,
+              business_slug,
+            }) => (
+              <Explorer
+                key={id}
+                imageUrl={business_profile_image}
+                shopName={business_name}
+                location={business_location}
+                href={business_slug}
+              />
+            )
+          )}
       </div>
       <Link
         href="/booking/all-shops"
