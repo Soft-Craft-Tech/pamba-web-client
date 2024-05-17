@@ -3,6 +3,7 @@ import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
+import { DynamicObject } from "@/components/types";
 
 export const useGetAllStaff = (slug: string) => {
   return useQuery("", async () => {
@@ -47,4 +48,24 @@ export const useDeleteStaff = () => {
     dispatch(setShowToast(true));
     return response;
   });
+};
+
+export const useEditStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DynamicObject>(
+    async ({ f_name, phone, role, staff_id }) => {
+      const response = await apiCall(
+        "PUT",
+        `${endpoints.editStaff}${staff_id}`,
+        { f_name, phone, role },
+        {}
+      );
+      dispatch(setMessage(response.message));
+      dispatch(setShowToast(true));
+      setTimeout(() => {
+        dispatch(setMessage(""));
+      }, 3000);
+      return response;
+    }
+  );
 };
