@@ -1,3 +1,4 @@
+import { useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { sliderDataTwo } from "@/components/types";
@@ -5,24 +6,20 @@ import LocationIcon from "@/ui/icons/location";
 import RatingIcon from "@/ui/icons/rating";
 import React from "react";
 
-const AboutShop = () => {
+const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
+  const { data } = useGetSingleBusiness(slug);
   return (
     <div className="flex flex-col gap-y-4 mt-4">
       <div className="flex flex-row items-center gap-x-3">
-        <p>4.5</p>
+        <p>{data?.business?.rating}</p>
         <RatingIcon fill="#FF9F0A" />
       </div>
-      <p>Beauty Square Salon</p>
+      <p> {data?.business?.name}</p>
       <div className="flex flex-row gap-x-3">
         <LocationIcon />
-        <p>Lavington area, Nairobi. Kenya</p>
+        <p> {data?.business?.location}</p>
       </div>
-      <p className="max-w-[800px]">
-        We believe that beauty is not just about how you look, but also how you
-        feel. Our salon is more than just a place to get your hair done or your
-        nails painted – it's a sanctuary where you can escape the stresses of
-        daily life and indulge in a moment of pampering and self-care.
-      </p>
+      <p className="max-w-[800px]">{data?.business?.description}</p>
       <ShopSepartor header="Popular Shops" />
       <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
         {sliderDataTwo?.map(({ imageUrl, shopName }, index) => (

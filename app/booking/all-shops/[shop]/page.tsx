@@ -11,8 +11,8 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({ params }) => {
   return (
     <div>
-      <SingleShopHero shopName={params.shop} slug={params.shop} />
-      <ShopTabs />
+      <SingleShopHero slug={params.shop} />
+      <ShopTabs slug={params?.shop} />
     </div>
   );
 };

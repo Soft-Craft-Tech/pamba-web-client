@@ -3,12 +3,8 @@ import { useGetSingleBusiness } from "@/app/api/businesses";
 import SearchIcon from "@/ui/icons/search";
 import React from "react";
 
-const SingleShopHero: React.FC<{ shopName: string; slug: string }> = ({
-  shopName,
-  slug,
-}) => {
+const SingleShopHero: React.FC<{ slug: string }> = ({ slug }) => {
   const { data } = useGetSingleBusiness(slug);
-  console.log(data);
   return (
     <section className="h-auto">
       <div

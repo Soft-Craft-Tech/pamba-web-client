@@ -5,7 +5,7 @@ import AboutShop from "./AboutShop";
 import ReviewShop from "./ReviewShop";
 import GalleryShop from "./GalleryShop";
 
-const ShopTabs = () => {
+const ShopTabs: React.FC<{ slug: string }> = ({ slug }) => {
   const [activeTab, setActiveTab] = React.useState("about");
   const handleTabChange = (tabName: string) => {
     setActiveTab(tabName);
@@ -29,7 +29,7 @@ const ShopTabs = () => {
           onClick={() => handleTabChange("gallery")}
         />
       </div>
-      {activeTab === "about" && <AboutShop />}
+      {activeTab === "about" && <AboutShop slug={slug} />}
       {activeTab === "review" && <ReviewShop />}
       {activeTab === "gallery" && <GalleryShop />}
     </div>
