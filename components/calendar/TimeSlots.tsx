@@ -1,7 +1,7 @@
 "use client";
 import { Fragment, useRef, useState, useEffect } from "react";
 import { Scheduler } from "@aldabil/react-scheduler";
-import { useGetEvents } from "@/app/api/requests";
+import { useGetEvents } from "@/app/api/appointment";
 import { SchedulerRef } from "@aldabil/react-scheduler/types";
 import React from "react";
 

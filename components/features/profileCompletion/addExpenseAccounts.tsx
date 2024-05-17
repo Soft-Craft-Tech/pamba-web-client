@@ -1,4 +1,4 @@
-import { useCreateExpenseAccounts } from "@/app/api/requests";
+import { useCreateExpenseAccounts } from "@/app/api/accounts";
 import ProfileProgress from "@/components/core/cards/progress";
 import Toast from "@/components/shared/toasts/authToast";
 import { useAppDispatch, useAppSelector } from "@/hooks";

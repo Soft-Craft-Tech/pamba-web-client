@@ -1,5 +1,5 @@
 "use client";
-import { useGetProfileCompletionStatus } from "@/app/api/requests";
+import { useGetProfileCompletionStatus } from "@/app/api/businesses";
 import AppointmentsTable from "@/components/charts/appointments";
 import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
