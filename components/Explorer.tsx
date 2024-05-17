@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,17 +17,19 @@ const Explorer: React.FC<{
   shopName,
   btnText = "Explorer",
   booking = false,
-  href = "dnjdnjnd",
+  href = "not-found",
   location = "Not Provided",
 }) => {
   return (
-    <div className=" bg-white border  border-gray-200 rounded-lg shadow ">
-      <Image
-        className=" w-full  min-h-[11rem]"
-        src={imageUrl}
-        alt="pamba login"
-        width={100}
-        height={100}
+    <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[17rem]">
+      <img
+        className="object-cover w-full h-[10rem]"
+        src={
+          imageUrl === null
+            ? "https://res.cloudinary.com/dnfrxficl/image/upload/v1715585716/pamba-web/iejtagfjemtmqr2k2f0n.svg"
+            : imageUrl
+        }
+        alt=""
       />
       <div className="p-5  w-full">
         {booking ? (
@@ -43,7 +46,7 @@ const Explorer: React.FC<{
                 className="w-10 h-10 rounded-full"
                 width={20}
                 height={20}
-                src="/user-icons/profile-icon.svg"
+                src={imageUrl}
                 alt="Rounded avatar"
               />
               <p className="text-lg">{shopName}</p>

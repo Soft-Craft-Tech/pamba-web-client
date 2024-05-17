@@ -3,7 +3,7 @@ const businessesEndpoints: { [key: string]: string } = {
   uploadImage: "/businesses/upload-profile-img",
   assignServices: "/businesses/assign-services",
   fetchCategories: "/businesses/fetch-business-categories",
-  getSingleBusiness: "/businesses",
+  getSingleBusiness: "/businesses/",
   fetchServices: "/businesses/business-services",
   getAllBusinesses: "/businesses/all-businesses",
   getBusinessesAnalysis: "/businesses/analysis",

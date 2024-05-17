@@ -20,7 +20,7 @@ export const useAssignService = () => {
 };
 
 export const useGetAllBusinesses = () => {
-  return useQuery("categories", async () => {
+  return useQuery("businesses", async () => {
     try {
       const response = await apiCall("GET", endpoints.getAllBusinesses, {}, {});
       return response;
@@ -91,6 +91,22 @@ export const useGetCategories = () => {
   return useQuery("categories", async () => {
     try {
       const response = await apiCall("GET", endpoints.fetchCategories, {}, {});
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching all services");
+    }
+  });
+};
+
+export const useGetSingleBusiness = (business_id: string) => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        `${endpoints.getSingleBusiness}${business_id}`,
+        {},
+        {}
+      );
       return response;
     } catch (error) {
       throw new Error("Error fetching all services");

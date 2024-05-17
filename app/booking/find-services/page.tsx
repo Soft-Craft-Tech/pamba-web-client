@@ -8,15 +8,15 @@ import ArrowBack from "@/ui/icons/arrow-back";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject } from "@/components/types";
 import Explorer from "@/components/Explorer";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useGetClientServices } from "@/app/api/services";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
+import { useGetAllBusinesses } from "@/app/api/businesses";
 
 const FindServices: React.FC = () => {
-  const router = useRouter();
-  const { data, isLoading } = useGetClientServices();
+  const { data } = useGetClientServices();
+  const { data: allBusinessesData } = useGetAllBusinesses();
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
   );
@@ -29,13 +29,13 @@ const FindServices: React.FC = () => {
     const filtered = data?.services?.filter(
       ({
         business_name,
-        location,
+        business_location,
       }: {
         business_name: string;
-        location: string;
+        business_location: string;
       }) =>
         business_name.toLowerCase().includes(service.toLowerCase()) &&
-        location.toLowerCase().includes(shop.toLowerCase())
+        business_location.toLowerCase().includes(shop.toLowerCase())
     );
     setFilteredServices(filtered);
     setSearch(true);
@@ -57,12 +57,17 @@ const FindServices: React.FC = () => {
         </div>
         <div className="w-full flex flex-wrap justify-evenly gap-12">
           {filteredServices?.map(
-            ({ profile_img, business_name, location, id }: DynamicObject) => (
+            ({
+              business_profile_image,
+              business_name,
+              business_location,
+              id,
+            }: DynamicObject) => (
               <Explorer
                 key={id}
-                imageUrl={profile_img}
+                imageUrl={business_profile_image}
                 shopName={business_name}
-                location={location}
+                location={business_location}
               />
             )
           )}
@@ -90,7 +95,7 @@ const FindServices: React.FC = () => {
             <CategoryCard img="/makestar.svg" text="Barbersalon" />
           </div>
         </section>
-        <FindShopsCards sliderData={data?.services ?? []} />
+        <FindShopsCards sliderData={allBusinessesData?.businesses} />
         <Separator
           btnText={"WHY US"}
           header={"We are experienced in making you very beautiful"}
