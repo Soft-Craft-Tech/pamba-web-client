@@ -10,7 +10,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ params }) => {
   return (
-    <div>
+    <div className="mb-10 w-full">
       <SingleShopHero slug={params.shop} />
       <ShopTabs slug={params?.shop} />
     </div>
