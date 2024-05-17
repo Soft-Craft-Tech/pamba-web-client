@@ -20,7 +20,7 @@ export const useAssignService = () => {
 };
 
 export const useGetAllBusinesses = () => {
-  return useQuery("categories", async () => {
+  return useQuery("businesses", async () => {
     try {
       const response = await apiCall("GET", endpoints.getAllBusinesses, {}, {});
       return response;
