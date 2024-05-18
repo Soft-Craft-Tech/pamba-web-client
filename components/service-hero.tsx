@@ -4,11 +4,6 @@ import LocationIcon from "@/ui/icons/location";
 import SearchIcon from "@/ui/icons/search";
 import React, { ChangeEvent, useState } from "react";
 
-interface Service {
-  name: string;
-  location: string;
-}
-
 interface ServiceHeroProps {
   onSearch?: (service: string, shop: string) => void;
 }
