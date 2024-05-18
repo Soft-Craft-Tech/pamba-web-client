@@ -2,6 +2,13 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
+import { DynamicObject } from "../types";
+
+interface FinancialSummaryProps {
+  lifetime_expenses?: Array<DynamicObject>;
+  lifetime_sales?: Array<DynamicObject>;
+}
+
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -107,7 +114,10 @@ const options: ApexOptions = {
   },
 };
 
-const FinancialSummary = () => {
+const FinancialSummary = ({
+  lifetime_expenses = [],
+  lifetime_sales = [],
+}: FinancialSummaryProps) => {
   const [state, setState] = useState({
     series: [
       {
