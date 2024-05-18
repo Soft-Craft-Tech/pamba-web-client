@@ -241,7 +241,7 @@ const StaffManagementTable = () => {
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button label="Save Staff" variant="primary" />
           </div>
         </form>
       </div>
