@@ -44,3 +44,19 @@ export const useGetServiceCategories = () => {
     }
   });
 };
+
+export const useGetSingleService = (slug: string) => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        `${endpoints.getSingleServiceDetails}${slug}`,
+        {},
+        {}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error");
+    }
+  });
+};
