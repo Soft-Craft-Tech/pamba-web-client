@@ -6,13 +6,13 @@ import Separator from "@/components/shared/sectionSeparators/separator";
 import FindShopsCards from "@/components/FindShopsCards";
 import ArrowBack from "@/ui/icons/arrow-back";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject } from "@/components/types";
 import Explorer from "@/components/Explorer";
 import Image from "next/image";
 import { useGetClientServices } from "@/app/api/services";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { useGetAllBusinesses } from "@/app/api/businesses";
+import { DynamicObject } from "@/components/types";
 
 const FindServices: React.FC = () => {
   const { data } = useGetClientServices();
@@ -68,6 +68,8 @@ const FindServices: React.FC = () => {
                 imageUrl={business_profile_image}
                 shopName={business_name}
                 location={business_location}
+                href={id}
+                booking={true}
               />
             )
           )}

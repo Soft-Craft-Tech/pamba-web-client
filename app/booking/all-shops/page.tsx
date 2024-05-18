@@ -110,7 +110,7 @@ const AllShops: React.FC = () => {
             ({
               business_profile_image,
               business_name,
-              business_slug,
+
               id,
             }: DynamicObject) => (
               <Explorer
@@ -119,7 +119,7 @@ const AllShops: React.FC = () => {
                 shopName={business_name}
                 btnText="Book Appointment"
                 booking={true}
-                href={business_slug}
+                href={id}
               />
             )
           )}

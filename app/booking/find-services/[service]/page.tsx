@@ -69,8 +69,6 @@ const Page: React.FC<PageProps> = ({ params }) => {
         </div>
         <p>Back</p>
       </div>
-      {params.service}
-
       <div className="parent max-h-[630px] grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-1">
         <div className="div1 col-span-1 row-span-1">
           <img
@@ -105,20 +103,12 @@ const Page: React.FC<PageProps> = ({ params }) => {
         </div>
       </div>
       <div className="flex flex-col mb-10 gap-y-2 md:gap-y-4">
-        <h1 className="text-3xl font-bold">Stylish hair cut</h1>
+        <h1 className="text-3xl font-bold">{data?.service?.business_name}</h1>
         <p className="text-lg text-[#323232]">
           1 hour 15 mins - 1 hour 40 mins
         </p>
-        <p className="text-[30px] text-[#323232]">Ksh 1000</p>
-        <p>
-          Feel the thrill of a fresh start as our talented stylists bring your
-          vision to life with our signature stylish haircut. We're not just
-          cutting hair; we're sculpting confidence, one snip at a time. Whether
-          you're after a daring makeover or a subtle refinement, our team is
-          here to listen, advise, and create a look that's uniquely you. Say
-          goodbye to the ordinary and hello to the extraordinary – step into our
-          salon and let's make magic happen together!
-        </p>
+        <p className="text-[30px] text-[#323232]">Ksh {data?.service?.price}</p>
+        <p>{data?.service?.description}</p>
         <button
           onClick={() => {
             handleClickOpen();
