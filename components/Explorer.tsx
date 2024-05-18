@@ -12,6 +12,7 @@ const Explorer: React.FC<{
   booking?: boolean;
   href?: string;
   location?: string;
+  price?: number;
 }> = ({
   imageUrl,
   shopName,
@@ -19,6 +20,7 @@ const Explorer: React.FC<{
   booking = false,
   href = "not-found",
   location = "Not Provided",
+  price = "Massage Ksh 1000",
 }) => {
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[17rem]">
@@ -35,7 +37,7 @@ const Explorer: React.FC<{
         {booking ? (
           <div>
             <div className="w-full flex mt-3 justify-between items-center">
-              <p className="text-lg">Massage Ksh 1000</p>
+              <p className="text-lg">Ksh{price}</p>
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
                 <p>4.9</p>

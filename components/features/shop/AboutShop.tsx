@@ -1,17 +1,16 @@
-import {
-  useGetAllBusinesses,
-  useGetSingleBusiness,
-} from "@/app/api/businesses";
+import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject, sliderDataTwo } from "@/components/types";
 import LocationIcon from "@/ui/icons/location";
 import RatingIcon from "@/ui/icons/rating";
+import { getUser } from "@/utils/auth";
 import React from "react";
 
 const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
   const { data } = useGetSingleBusiness(slug);
-  const { data: allBusinessesData } = useGetAllBusinesses();
+  const { data: shopServices } = useGetAllServices(slug);
+
   return (
     <div className="flex flex-col w-full gap-y-4 mt-4">
       <div className="flex flex-row items-center gap-x-3">
@@ -24,22 +23,26 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
         <p> {data?.business?.location}</p>
       </div>
       <p className="max-w-[800px]">{data?.business?.description}</p>
-      <ShopSepartor header="Popular Shops" />
+      <ShopSepartor header="Shop Services" />
       <div className="w-full flex flex-wrap gap-12 3xl:max-w-[80%] ">
-        {allBusinessesData?.businesses?.map(
+        {shopServices?.services?.map(
           ({
-            profile_img,
-            business_name,
+            service_image,
+            service,
             id,
             location,
             slug,
+            price,
           }: DynamicObject) => (
             <Explorer
               key={id}
-              imageUrl={profile_img}
-              shopName={business_name}
+              imageUrl={service_image}
+              shopName={service}
               location={location}
               href={slug}
+              booking={true}
+              btnText="Book Appointment"
+              price={price}
             />
           )
         )}
