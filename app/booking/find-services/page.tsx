@@ -20,6 +20,7 @@ const FindServices: React.FC = () => {
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
   );
+  console.log("Here", filteredServices);
   const {
     search: { searchQuery },
   } = useAppSelector((state: RootState) => state);
@@ -69,7 +70,6 @@ const FindServices: React.FC = () => {
                 shopName={business_name}
                 location={business_location}
                 href={id}
-                booking={true}
               />
             )
           )}

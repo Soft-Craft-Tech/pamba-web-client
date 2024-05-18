@@ -20,6 +20,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useGetSingleService } from "@/app/api/services";
+import { useGetAllStaff } from "@/app/api/staff";
 
 const daysData = [
   { day: "Fri", date: "03 Feb", slots: 16 },
@@ -38,8 +39,11 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
-  const { data } = useGetSingleService(params?.service);
-  console.log(data);
+  const { data, isSuccess } = useGetSingleService(params?.service);
+
+  const [stafflug, setStaffSlug] = React.useState("");
+  const { data: getStaff } = useGetAllStaff("mu-parlor");
+
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
@@ -58,6 +62,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string);
   };
+
   return (
     <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
       <div
@@ -105,7 +110,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
       <div className="flex flex-col mb-10 gap-y-2 md:gap-y-4">
         <h1 className="text-3xl font-bold">{data?.service?.business_name}</h1>
         <p className="text-lg text-[#323232]">
-          1 hour 15 mins - 1 hour 40 mins
+          {data?.service?.estimated_time_string}
         </p>
         <p className="text-[30px] text-[#323232]">Ksh {data?.service?.price}</p>
         <p>{data?.service?.description}</p>
