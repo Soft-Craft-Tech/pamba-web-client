@@ -1,6 +1,9 @@
+import { DynamicObject } from "@/components/types";
+import { useAppDispatch } from "@/hooks";
+import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 export const useGetEvents = () => {
   return useQuery("appointments", async () => {
@@ -11,4 +14,15 @@ export const useGetEvents = () => {
       throw new Error("Error fetching all services");
     }
   });
+};
+
+export const useBookAppointments = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DynamicObject>(
+    async (formData: DynamicObject) => {
+      const response = await apiCall("POST", endpoints.signup, formData, {});
+      dispatch(setMessage(response.message));
+      return response;
+    }
+  );
 };

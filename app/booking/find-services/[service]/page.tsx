@@ -12,7 +12,6 @@ import DialogContent from "@mui/material/DialogContent";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import TimeIcon from "@/ui/icons/time-icon";
 import Button from "@/ui/button";
-import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,7 +19,8 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useGetSingleService } from "@/app/api/services";
-import { useGetAllStaff } from "@/app/api/staff";
+import { DynamicObject } from "@/components/types";
+import { FormControl } from "@mui/material";
 
 const daysData = [
   { day: "Fri", date: "03 Feb", slots: 16 },
@@ -39,11 +39,8 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
-  const { data, isSuccess } = useGetSingleService(params?.service);
-
-  const [stafflug, setStaffSlug] = React.useState("");
-  const { data: getStaff } = useGetAllStaff("mu-parlor");
-
+  const { data } = useGetSingleService(params?.service);
+  console.log(data?.staff);
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
@@ -169,23 +166,27 @@ const Page: React.FC<PageProps> = ({ params }) => {
               <h1 className="text-xl font-semibold">Book Appointment</h1>
               <div className="gap-y-10 flex flex-col">
                 <div className="flex-col flex max-w-[336px]  gap-y-3">
-                  <InputLabel
-                    className="text-[#0F1C35] tetx-lg font-bold"
-                    id="demo-simple-select-label"
-                  >
-                    Select Service Provider
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Olivia Rahy"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
+                  <FormControl>
+                    <InputLabel
+                      className="text-[#0F1C35] tetx-lg font-bold"
+                      id="demo-simple-select-label"
+                    >
+                      Select Service Provider
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={age}
+                      label="Olivia Rahy"
+                      onChange={handleChange}
+                    >
+                      {data?.staff.map(({ f_name, id }: DynamicObject) => (
+                        <MenuItem key={id} value={id}>
+                          {f_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="flex flex-row gap-x-5">
                   {daysData.map(({ day, date, slots }, index) => (
