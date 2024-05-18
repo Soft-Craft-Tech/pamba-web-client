@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import { DynamicObject } from "../types";
@@ -118,11 +118,48 @@ const FinancialSummary = ({
   lifetime_expenses = [],
   lifetime_sales = [],
 }: FinancialSummaryProps) => {
+  // Helper function to sum expenses or sales by month
+  const sumByMonth = (data: any[]) => {
+    const months = Array(12).fill(0);
+    data.forEach(
+      (item: {
+        created_at: string;
+        date_created: string;
+        amount: number;
+        price: number;
+      }) => {
+        const month = new Date(item.created_at || item.date_created).getMonth();
+        months[month] += item.amount || item.price;
+      }
+    );
+    return months;
+  };
+
+  const expensesByMonth = sumByMonth(lifetime_expenses);
+  const salesByMonth = sumByMonth(lifetime_sales);
+
+  // Calculate the maximum value for expenses and revenue
+  const maxExpense = Math.max(...expensesByMonth);
+  const maxRevenue = Math.max(...salesByMonth);
+  let maxYAxisValue = Math.max(maxExpense, maxRevenue);
+
+  // Round maxYAxisValue to the nearest 100
+  maxYAxisValue = Math.ceil(maxYAxisValue / 100) * 100;
+
+  // Update the options object with the new maxYAxisValue
+  if (Array.isArray(options.yaxis)) {
+    options.yaxis.forEach((axis) => {
+      axis.max = maxYAxisValue;
+    });
+  } else if (options.yaxis) {
+    options.yaxis.max = maxYAxisValue;
+  }
+
   const [state, setState] = useState({
     series: [
       {
         name: "Product One",
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+        data: expensesByMonth,
         fill: {
           type: "gradient",
           gradient: {
@@ -148,7 +185,7 @@ const FinancialSummary = ({
 
       {
         name: "Product Two",
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        data: salesByMonth,
         fill: {
           type: "gradient",
           gradient: {
