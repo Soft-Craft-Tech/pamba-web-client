@@ -4,15 +4,81 @@ import { useGetClientServices } from "@/app/api/services";
 import AllShopsHero from "@/components/AllShopsHero";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject, sliderDataTwo } from "@/components/types";
+import { DynamicObject } from "@/components/types";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import ArrowBack from "@/ui/icons/arrow-back";
 import * as React from "react";
 
 const AllShops: React.FC = () => {
   const { data } = useGetClientServices();
   const { data: allBusinessesData } = useGetAllBusinesses();
+
+  const [filteredServices, setFilteredServices] = React.useState(
+    data?.services
+  );
+
+  const {
+    search: { searchQuery },
+  } = useAppSelector((state: RootState) => state);
+  const [search, setSearch] = React.useState(false);
+
+  console.log("Search Query", search);
+
+  console.log(filteredServices, "Filtered ervices");
+
+  const handleSearch = (service: string, shop: string) => {
+    const filtered = data?.services?.filter(
+      ({
+        business_name,
+        business_location,
+      }: {
+        business_name: string;
+        business_location: string;
+      }) =>
+        business_name.toLowerCase().includes(service.toLowerCase()) &&
+        business_location.toLowerCase().includes(shop.toLowerCase())
+    );
+    setFilteredServices(filtered);
+    setSearch(true);
+  };
+  if (search)
+    return (
+      <div className="mx-auto max-w-screen-2xl px-4 w-full my-10 relative">
+        <div
+          className="flex flex-row gap-x-3 cursor-pointer mb-4 px-4"
+          onClick={() => setSearch(false)}
+        >
+          <div>
+            <ArrowBack />
+          </div>
+          <p>Back</p>
+        </div>
+        <div className="flex flex-row gap-x-3 my-10 px-4">
+          <ShopSepartor header={` Search Results for ${searchQuery}`} />
+        </div>
+        <div className="w-full flex flex-wrap justify-evenly gap-12">
+          {filteredServices?.map(
+            ({
+              business_profile_image,
+              business_name,
+              business_location,
+              id,
+            }: DynamicObject) => (
+              <Explorer
+                key={id}
+                imageUrl={business_profile_image}
+                shopName={business_name}
+                location={business_location}
+              />
+            )
+          )}
+        </div>
+      </div>
+    );
   return (
     <div>
-      <AllShopsHero />
+      <AllShopsHero onSearch={handleSearch} />
       <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
         <ShopSepartor header="Popular Shops" />
       </div>

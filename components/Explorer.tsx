@@ -70,7 +70,13 @@ const Explorer: React.FC<{
             </div>
           </div>
         )}
-        <Link href={`/booking/all-shops/${href}`}>
+        <Link
+          href={
+            booking
+              ? `/booking/find-services/${href}`
+              : `/booking/all-shops/${href}`
+          }
+        >
           <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium md:px-7 md:py-3">
             {btnText}
           </button>

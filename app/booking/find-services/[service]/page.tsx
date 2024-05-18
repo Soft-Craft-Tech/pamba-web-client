@@ -19,6 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useGetSingleService } from "@/app/api/services";
 
 const daysData = [
   { day: "Fri", date: "03 Feb", slots: 16 },
@@ -37,6 +38,8 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
+  const { data } = useGetSingleService(params?.service);
+  console.log(data);
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
@@ -135,7 +138,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
       <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
         <ShopSepartor header="You might also like" />
       </div>
-      <section className="mx-auto max-w-screen-2xl w-full mt-10 relative">
+      <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
         <div className="w-full flex flex-wrap justify-between gap-12">
           {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
             <Explorer
