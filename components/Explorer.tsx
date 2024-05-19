@@ -23,7 +23,7 @@ const Explorer: React.FC<{
   price = "Massage Ksh 1000",
 }) => {
   return (
-    <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[17rem]">
+    <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[20rem] w-[19.5rem]">
       <img
         className="object-cover w-full h-[10rem]"
         src={
