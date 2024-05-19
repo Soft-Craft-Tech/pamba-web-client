@@ -102,7 +102,7 @@ const FindServices: React.FC = () => {
         />
         <div>
           <Image
-            className="w-full"
+            className="w-full px-2 md:px-4 xl:px-0"
             src="/whyUs.svg"
             alt="pamba app"
             width={50}
