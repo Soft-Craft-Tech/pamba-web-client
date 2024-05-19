@@ -217,7 +217,8 @@ const Page: React.FC<PageProps> = ({ params }) => {
                       label="Select Service Provider"
                       onChange={handleChange}
                     >
-                      {data?.staff.map(({ f_name, id }: DynamicObject) => (
+                      <MenuItem value={2}>Default</MenuItem>
+                      {data?.staff?.map(({ f_name, id }: DynamicObject) => (
                         <MenuItem key={id} value={id}>
                           {f_name}
                         </MenuItem>
