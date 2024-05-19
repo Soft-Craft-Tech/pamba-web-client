@@ -10,9 +10,11 @@ import Loader from "./loader";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { setShowComponent } from "@/store/displaySlice";
+import { getUser } from "@/utils/auth";
 
 const AddServicesBox = () => {
-  const { data, isLoading } = useGetAllServices();
+  const { client } = getUser();
+  const { data, isLoading } = useGetAllServices(client?.slug);
   const { showComponent } = useAppSelector((state: RootState) => state.display);
   const dispatch = useAppDispatch();
   if (isLoading) return <Loader />;

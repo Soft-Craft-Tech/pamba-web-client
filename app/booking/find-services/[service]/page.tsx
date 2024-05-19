@@ -12,7 +12,6 @@ import DialogContent from "@mui/material/DialogContent";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import TimeIcon from "@/ui/icons/time-icon";
 import Button from "@/ui/button";
-import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,16 +19,43 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useGetSingleService } from "@/app/api/services";
+import { DynamicObject } from "@/components/types";
+import { FormControl } from "@mui/material";
+import { useBookAppointments } from "@/app/api/appointment";
+import { useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 
-const daysData = [
-  { day: "Fri", date: "03 Feb", slots: 16 },
-  { day: "Sun", date: "03 Feb", slots: 2 },
-  { day: "Mon", date: "03 Feb", slots: 2 },
-  { day: "Tue", date: "03 Feb", slots: 5 },
-  { day: "Wed", date: "03 Feb", slots: 4 },
-  { day: "Thur", date: "03 Feb", slots: 8 },
-  { day: "Sat", date: "03 Feb", slots: 7 },
-];
+dayjs.extend(isBetween);
+
+interface DayData {
+  day: string;
+  date: string;
+  slots: number;
+}
+
+const generateDaysData = (startDate: string, endDate: string): DayData[] => {
+  const daysData: DayData[] = [];
+  let currentDate = dayjs(startDate);
+  const endDateObj = dayjs(endDate);
+  while (
+    currentDate.isBefore(endDateObj) ||
+    currentDate.isSame(endDateObj, "day")
+  ) {
+    const day = currentDate.format("ddd");
+    const date = currentDate.format("DD MMM");
+    const slots = Math.floor(Math.random() * 16) + 1;
+
+    daysData.push({ day, date, slots });
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return daysData;
+};
+
+const startDate = dayjs().add(0, "day").startOf("day").toISOString();
+const endDate = dayjs().add(6, "day").endOf("day").toISOString();
+const daysData = generateDaysData(startDate, endDate);
 
 interface PageProps {
   params: {
@@ -39,25 +65,73 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ params }) => {
   const { data } = useGetSingleService(params?.service);
-  console.log(data);
+  const { mutateAsync } = useBookAppointments();
+  const [bookingFrame, setBookingFrame] = useState("start");
+  const [activeSelect, setActiveSelect] = useState<string | any>(null);
+  const [staff, setAge] = useState("");
+  const [selectedDay, setSelectedDay] = useState<any>(null);
+  const [selectedTime, setSelectedTime] = useState<any>(null);
+  const [notificationMethod, setNotificationMethod] = useState("whatsapp");
+
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    setAge(event.target.value);
+  };
+
+  const handleDaySelect = (index: number, day: string) => {
+    setActiveSelect(index);
+    setSelectedDay(day);
+  };
+
+  const handleTimeChange = (newValue: Dayjs | null) => {
+    setSelectedTime(newValue);
+  };
+
+  const handleNotificationChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNotificationMethod(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    formData.append("serviceProvider", staff);
+    formData.append("selectedDay", selectedDay);
+    formData.append("selectedTime", selectedTime);
+    formData.append("notificationMethod", notificationMethod);
+    const formJson = Object.fromEntries(formData.entries());
+    try {
+      await mutateAsync(formJson);
+    } catch (error) {
+      const customError = error;
+    }
+    handleClose();
+  };
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState("");
-
-  const [activeSelect, setActiveSelect] = React.useState(0);
-
-  const [bookingFrame, setBookingFrame] = React.useState("start");
 
   const handleClickOpen = () => {
+    setBookingFrame("start");
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+
+  const shouldDisableTime = (timeValue: Dayjs) => {
+    const disabledRanges = [
+      { start: "20:00", end: "23:59" },
+      { start: "00:00", end: "08:00" },
+    ];
+
+    return disabledRanges.some((range) => {
+      const start = dayjs(range.start, "HH:mm");
+      const end = dayjs(range.end, "HH:mm");
+      return timeValue.isBetween(start, end, null, "[)");
+    });
   };
+
   return (
     <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
       <div
@@ -105,7 +179,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
       <div className="flex flex-col mb-10 gap-y-2 md:gap-y-4">
         <h1 className="text-3xl font-bold">{data?.service?.business_name}</h1>
         <p className="text-lg text-[#323232]">
-          1 hour 15 mins - 1 hour 40 mins
+          {data?.service?.estimated_time_string}
         </p>
         <p className="text-[30px] text-[#323232]">Ksh {data?.service?.price}</p>
         <p>{data?.service?.description}</p>
@@ -148,14 +222,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
         onClose={handleClose}
         PaperProps={{
           component: "form",
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
+          onSubmit: handleSubmit,
         }}
       >
         <DialogContent style={{ padding: "20px" }}>
@@ -163,24 +230,29 @@ const Page: React.FC<PageProps> = ({ params }) => {
             <div className="w-full flex flex-col gap-y-10">
               <h1 className="text-xl font-semibold">Book Appointment</h1>
               <div className="gap-y-10 flex flex-col">
-                <div className="flex-col flex max-w-[336px]  gap-y-3">
-                  <InputLabel
-                    className="text-[#0F1C35] tetx-lg font-bold"
-                    id="demo-simple-select-label"
-                  >
-                    Select Service Provider
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Olivia Rahy"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
+                <div className="flex-col flex max-w-[336px] gap-y-3">
+                  <FormControl>
+                    <InputLabel
+                      className="text-[#0F1C35] text-lg font-bold"
+                      id="demo-simple-select-label"
+                    >
+                      Select Service Provider
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={staff}
+                      label="Select Service Provider"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={2}>Default</MenuItem>
+                      {data?.staff?.map(({ f_name, id }: DynamicObject) => (
+                        <MenuItem key={id} value={id}>
+                          {f_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="flex flex-row gap-x-5">
                   {daysData.map(({ day, date, slots }, index) => (
@@ -191,9 +263,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                           ? "border-[#DB1471]"
                           : "border-[#F2F2F2]"
                       }`}
-                      onClick={() => {
-                        setActiveSelect(index);
-                      }}
+                      onClick={() => handleDaySelect(index, day)}
                     >
                       <p className="text-[14px] text-[#1C1C1C] font-normal">
                         {day}
@@ -215,15 +285,20 @@ const Page: React.FC<PageProps> = ({ params }) => {
                     </div>
                   ))}
                 </div>
-                <div className="flex-col flex max-w-[336px]  gap-y-3">
+                <div className="flex-col flex max-w-[336px] gap-y-3">
                   <InputLabel
-                    className="text-[#0F1C35] tetx-lg font-bold"
+                    className="text-[#0F1C35] text-lg font-bold"
                     id="demo-simple-select-label"
                   >
                     Select Time
                   </InputLabel>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <TimePicker label="8:00 AM" name="startTime" />
+                    <TimePicker
+                      label="Select Time"
+                      value={selectedTime}
+                      onChange={handleTimeChange}
+                      shouldDisableTime={shouldDisableTime}
+                    />
                   </LocalizationProvider>
                 </div>
                 <div className="flex flex-row justify-end gap-x-4">
@@ -257,11 +332,11 @@ const Page: React.FC<PageProps> = ({ params }) => {
           {bookingFrame === "finish" && (
             <div className="flex flex-col gap-y-6">
               <h1 className="text-2xl font-semibold">Additional information</h1>
-              <p>Haircut appointment </p>
+              <p>Haircut appointment</p>
               <div className="flex flex-row gap-x-2">
                 <div className="flex flex-row gap-x-1">
                   <CalendarIcon />
-                  <p>Fri, 3 March</p>
+                  <p>{selectedTime}</p>
                 </div>
                 <div className="flex flex-row gap-x-1">
                   <TimeIcon />
@@ -271,22 +346,25 @@ const Page: React.FC<PageProps> = ({ params }) => {
               <input
                 type="text"
                 id="first_name"
-                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5 "
+                name="firstName"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 placeholder="John"
                 required
               />
               <input
                 type="text"
-                id="first_name"
-                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-                placeholder="John"
+                id="last_name"
+                name="lastName"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                placeholder="Doe"
                 required
               />
               <input
                 type="text"
-                id="first_name"
-                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px]  block w-full p-2.5 "
-                placeholder="John"
+                id="additional_info"
+                name="additionalInfo"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2.5"
+                placeholder="Additional information"
                 required
               />
               <p>How do you want to be notified?</p>
@@ -295,22 +373,25 @@ const Page: React.FC<PageProps> = ({ params }) => {
                   <input
                     id="default-radio-1"
                     type="radio"
-                    value=""
-                    name="default-radio"
+                    value="sms"
+                    name="notificationMethod"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                    checked={notificationMethod === "sms"}
+                    onChange={handleNotificationChange}
                   />
-                  <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  <label className="ms-2 text-sm font-medium text-gray-900">
                     SMS
                   </label>
                 </div>
                 <div className="flex items-center">
                   <input
-                    checked
                     id="default-radio-2"
                     type="radio"
-                    value=""
-                    name="default-radio"
+                    value="whatsapp"
+                    name="notificationMethod"
                     className="w-4 h-4 text-[#7F56D9] bg-[#7F56D9] border-[#7F56D9]"
+                    checked={notificationMethod === "whatsapp"}
+                    onChange={handleNotificationChange}
                   />
                   <label className="ms-2 text-sm font-medium text-gray-900">
                     Whatsapp

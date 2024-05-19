@@ -6,7 +6,7 @@ import { setMessage, setShowToast } from "@/store/toastSlice";
 import { DynamicObject } from "@/components/types";
 
 export const useGetAllStaff = (slug: string) => {
-  return useQuery("", async () => {
+  return useQuery("staff", async () => {
     try {
       const response = await apiCall(
         "GET",

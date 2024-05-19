@@ -76,10 +76,15 @@ export const useGetProfileCompletionStatus = () => {
   });
 };
 
-export const useGetAllServices = () => {
+export const useGetAllServices = (business_id: string) => {
   return useQuery("all-services", async () => {
     try {
-      const response = await apiCall("GET", endpoints.fetchServices, {}, {});
+      const response = await apiCall(
+        "GET",
+        `${endpoints.fetchServices}/${business_id}`,
+        {},
+        {}
+      );
       return response;
     } catch (error) {
       throw new Error("Error fetching Statuses");
@@ -110,6 +115,22 @@ export const useGetSingleBusiness = (business_id: string) => {
       return response;
     } catch (error) {
       throw new Error("Error fetching all services");
+    }
+  });
+};
+
+export const useGetBusinessService = (business_id: string) => {
+  return useQuery("", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        `${endpoints.fetchServices}/${business_id}`,
+        {},
+        {}
+      );
+      return response;
+    } catch (error) {
+      throw new Error("Error fetching Statuses");
     }
   });
 };

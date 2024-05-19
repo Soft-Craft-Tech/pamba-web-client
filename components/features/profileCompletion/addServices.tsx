@@ -9,6 +9,7 @@ import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";
 import { usePathname } from "next/navigation";
+import { getUser } from "@/utils/auth";
 
 export default function AddServices() {
   const dispatch = useDispatch();
@@ -23,8 +24,10 @@ export default function AddServices() {
     toastMessage: state.toast.toastMessage,
   }));
 
+  const { client } = getUser();
+
   const { data } = useGetServiceCategories();
-  const { refetch } = useGetAllServices();
+  const { refetch } = useGetAllServices(client?.slug);
 
   const {
     mutate: assignServices,
