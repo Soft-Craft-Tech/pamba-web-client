@@ -23,25 +23,39 @@ import { DynamicObject } from "@/components/types";
 import { FormControl } from "@mui/material";
 import { useBookAppointments } from "@/app/api/appointment";
 import { useState } from "react";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
+dayjs.extend(isBetween);
+
+interface DayData {
+  day: string;
+  date: string;
+  slots: number;
 }
 
-const daysData = [
-  { day: "Fri", date: "03 Feb", slots: 16 },
-  { day: "Sun", date: "03 Feb", slots: 2 },
-  { day: "Mon", date: "03 Feb", slots: 2 },
-  { day: "Tue", date: "03 Feb", slots: 5 },
-  { day: "Wed", date: "03 Feb", slots: 4 },
-  { day: "Thur", date: "03 Feb", slots: 8 },
-  { day: "Sat", date: "03 Feb", slots: 7 },
-];
+const generateDaysData = (startDate: string, endDate: string): DayData[] => {
+  const daysData: DayData[] = [];
+  let currentDate = dayjs(startDate);
+  const endDateObj = dayjs(endDate);
+  while (
+    currentDate.isBefore(endDateObj) ||
+    currentDate.isSame(endDateObj, "day")
+  ) {
+    const day = currentDate.format("ddd");
+    const date = currentDate.format("DD MMM");
+    const slots = Math.floor(Math.random() * 16) + 1;
+
+    daysData.push({ day, date, slots });
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return daysData;
+};
+
+const startDate = dayjs().add(0, "day").startOf("day").toISOString();
+const endDate = dayjs().add(6, "day").endOf("day").toISOString();
+const daysData = generateDaysData(startDate, endDate);
 
 interface PageProps {
   params: {
@@ -97,11 +111,25 @@ const Page: React.FC<PageProps> = ({ params }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
+    setBookingFrame("start");
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const shouldDisableTime = (timeValue: Dayjs) => {
+    const disabledRanges = [
+      { start: "20:00", end: "23:59" },
+      { start: "00:00", end: "08:00" },
+    ];
+
+    return disabledRanges.some((range) => {
+      const start = dayjs(range.start, "HH:mm");
+      const end = dayjs(range.end, "HH:mm");
+      return timeValue.isBetween(start, end, null, "[)");
+    });
   };
 
   return (
@@ -269,6 +297,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                       label="Select Time"
                       value={selectedTime}
                       onChange={handleTimeChange}
+                      shouldDisableTime={shouldDisableTime}
                     />
                   </LocalizationProvider>
                 </div>
@@ -307,7 +336,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
               <div className="flex flex-row gap-x-2">
                 <div className="flex flex-row gap-x-1">
                   <CalendarIcon />
-                  <p>Fri, 3 March</p>
+                  <p>{selectedTime}</p>
                 </div>
                 <div className="flex flex-row gap-x-1">
                   <TimeIcon />
