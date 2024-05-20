@@ -16,9 +16,6 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
         btnText={"RECOMMENDED"}
         header={"Find premier shops and beauty centers close to you"}
       />
-
-      {/* large screens */}
-
       <div className="w-full hidden sm:block">
         <Swiper
           modules={[Autoplay, Navigation]}
@@ -56,9 +53,6 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
           )}
         </Swiper>
       </div>
-
-      {/* small screens */}
-
       <div className="sm:hidden flex flex-col lg:flex-row lg:w-full  justify-evenly mb-12 gap-x-4 gap-y-4">
         {sliderData
           ?.slice(0, 4)
