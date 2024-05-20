@@ -36,9 +36,13 @@ input[type="checkbox"].form-checkbox:checked {
   left: -0.1px !important;
 }
 
-.swiper-slide, .swiper-slide-active {
+.swiper-slide,
+.swiper-slide-active {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+}
 
+.apexcharts-canvas {
+  z-index: 0 !important;
 }
