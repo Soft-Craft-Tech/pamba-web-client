@@ -41,7 +41,7 @@ const Explorer: React.FC<{
         {booking ? (
           <div>
             <div className="w-full flex mt-3 justify-between items-center">
-              <p className="text-lg">Ksh{price}</p>
+              <p className="text-lg">Ksh {price}</p>
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
                 <p>{rating}</p>
@@ -65,14 +65,14 @@ const Explorer: React.FC<{
             </div>
             <div className="flex flex-row mt-3 items-center gap-x-1">
               <LocationIcon />
-              <p className="text-xl text-grayArea">{location}</p>
+              <p className="text-lg text-grayArea">{location}</p>
             </div>
             <div className="w-full flex mt-3 justify-between items-center">
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
                 <p>{rating}</p>
               </div>
-              <p className="text-xl">{reviews} review(s)</p>
+              <p className="text-lg">{reviews} review(s)</p>
             </div>
           </div>
         )}
