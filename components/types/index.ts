@@ -64,7 +64,7 @@ const sidebarData: ISidebarData[] = [
   {
     link: "/user/reviews",
     name: "Reviews",
-    imageUrl: "/user-icons/settings.svg",
+    imageUrl: "/user-icons/reviews.svg",
   },
 ];
 
