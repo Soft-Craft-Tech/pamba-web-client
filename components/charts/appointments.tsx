@@ -1,17 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
+import { DynamicObject } from "../types";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
+
+interface AppointmentsTableProps {
+  all_appointments?: Array<DynamicObject>;
+}
+
 const options: ApexOptions = {
   legend: {
     show: true,
     position: "top",
     horizontalAlign: "right",
   },
-  colors: ["#007B99", "#DB1471"],
+  colors: ["#DB1471"],
   chart: {
     fontFamily: "Satoshi, sans-serif",
     height: 335,
@@ -47,7 +53,7 @@ const options: ApexOptions = {
     },
   ],
   stroke: {
-    width: [2, 2],
+    width: [2],
     curve: "smooth",
   },
   grid: {
@@ -104,27 +110,38 @@ const options: ApexOptions = {
     max: 100,
   },
 };
-const AppointmentsTable = () => {
+const AppointmentsTable = ({
+  all_appointments = [],
+}: AppointmentsTableProps) => {
   const [state, setState] = useState({
     series: [
       {
-        name: "Product One",
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-      },
-
-      {
-        name: "Product Two",
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        name: "All appointments",
+        data: [] as number[],
       },
     ],
   });
 
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
-  };
-  handleReset;
+  useEffect(() => {
+    // Process the appointments data to count appointments per day
+    const appointmentCounts = all_appointments.reduce((acc, appointment) => {
+      const date = appointment.date;
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Convert the counts to a format suitable for the chart
+    const chartData = Object.values(appointmentCounts);
+
+    setState({
+      series: [
+        {
+          name: "All appointments",
+          data: chartData,
+        },
+      ],
+    });
+  }, [all_appointments]);
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div id="chartTwo" className="-ml-5">
