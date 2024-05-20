@@ -106,20 +106,22 @@ const AllShops: React.FC = () => {
         </div>
       </section>
       <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
-        <ShopSepartor header="Recomended Services" />
+        <ShopSepartor header="Recommended Services" />
       </div>
       <section className="mx-auto max-w-screen-xl w-full my-10 relative">
         <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
           {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
             <Explorer
               key={serviceInfo?.id}
-              imageUrl={businessInfo?.profile_img}
+              service={serviceInfo?.service}
+              imageUrl={serviceInfo?.service_image}
               shopName={businessInfo?.business_name}
               price={serviceInfo?.price}
               rating={businessInfo?.rating}
               btnText="Book Appointment"
               booking={true}
               href={serviceInfo?.id}
+              shopImage={businessInfo?.profile_img}
             />
           ))}
         </div>

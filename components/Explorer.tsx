@@ -15,6 +15,8 @@ const Explorer: React.FC<{
   price?: number;
   rating?: string;
   reviews?: string;
+  service?: string;
+  shopImage?: string;
 }> = ({
   imageUrl,
   shopName,
@@ -25,6 +27,8 @@ const Explorer: React.FC<{
   price = "",
   rating,
   reviews,
+  service,
+  shopImage
 }) => {
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[20rem] w-[19.5rem]">
@@ -40,7 +44,8 @@ const Explorer: React.FC<{
       <div className="p-5  w-full">
         {booking ? (
           <div>
-            <div className="w-full flex mt-3 justify-between items-center">
+            <h3 className="text-secondary">{service}</h3>
+            <div className="w-full flex mt-2 justify-between items-center">
               <p className="text-lg">Ksh {price}</p>
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
@@ -48,13 +53,16 @@ const Explorer: React.FC<{
               </div>
             </div>
             <div className="flex flex-row items-center gap-x-3">
-              <Image
+              {shopImage &&
+                <Image
                 className="w-10 h-10 rounded-full"
                 width={20}
                 height={20}
-                src={imageUrl}
+                src={shopImage}
                 alt="Rounded avatar"
               />
+              }
+              
               <p className="text-lg">{shopName}</p>
             </div>
           </div>
