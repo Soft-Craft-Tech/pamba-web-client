@@ -21,7 +21,7 @@ const Explorer: React.FC<{
   booking = false,
   href = "not-found",
   location = "Not Provided",
-  price = "Massage Ksh 1000",
+  price = "",
   rating,
 }) => {
   return (

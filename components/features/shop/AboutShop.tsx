@@ -1,7 +1,7 @@
 import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject } from "@/components/types";
+import { DynamicObject, sliderDataTwo } from "@/components/types";
 import LocationIcon from "@/ui/icons/location";
 import RatingIcon from "@/ui/icons/rating";
 import { getUser } from "@/utils/auth";
@@ -11,6 +11,7 @@ import React from "react";
 const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
   const { data } = useGetSingleBusiness(slug);
   const { data: shopServices } = useGetAllServices(slug);
+
   return (
     <div className="flex flex-col w-full gap-y-10 mt-4">
       <div className="flex flex-col gap-3">
