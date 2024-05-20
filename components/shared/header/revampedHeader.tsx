@@ -77,7 +77,7 @@ const RevampedHeader = () => {
               </Link>
               <Link
                 className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-lg gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
-                href="/login"
+                href="/booking/all-shops"
               >
                 Book Appointment
               </Link>
