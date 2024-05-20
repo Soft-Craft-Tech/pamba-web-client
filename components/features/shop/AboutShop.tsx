@@ -54,7 +54,6 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
               service,
               id,
               location,
-              slug,
               price,
             }: DynamicObject) => (
               <Explorer
@@ -62,7 +61,7 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
                 imageUrl={service_image}
                 shopName={service}
                 location={location}
-                href={slug}
+                href={id}
                 booking={true}
                 btnText="Book Appointment"
                 price={price}
