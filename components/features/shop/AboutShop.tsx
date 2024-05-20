@@ -17,7 +17,15 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
       <div className="flex flex-col gap-3">
         <h2 className="text-3xl font-semibold"> {data?.business?.name}</h2>
         <div>
-          {data?.business && <Link target="_blank" className="text-primary border-[0.1px] border-primary py-1 px-3 rounded-full text-sm" href={data?.business?.google_map && data?.business?.google_map}>Directions</Link>}
+          {data?.business && (
+            <Link
+              target="_blank"
+              className="text-primary border-[0.1px] border-primary py-1 px-3 rounded-full text-sm"
+              href={data?.business?.google_map && data?.business?.google_map}
+            >
+              Directions
+            </Link>
+          )}
         </div>
         <div className="flex flex-row gap-x-3">
           <LocationIcon />
@@ -33,7 +41,9 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
             <RatingIcon fill="#FF9F0A" />
           </div>
         </div>
-        <p className="max-w-[800px] text-sm mt-2">{data?.business?.description}</p>
+        <p className="max-w-[800px] text-sm mt-2">
+          {data?.business?.description}
+        </p>
       </div>
       <div className="flex flex-col gap-5">
         <ShopSepartor header="Our Services" />

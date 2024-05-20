@@ -13,7 +13,7 @@ const Explorer: React.FC<{
   href?: string;
   location?: string;
   price?: number;
-  rating?: string
+  rating?: string;
 }> = ({
   imageUrl,
   shopName,
@@ -21,8 +21,8 @@ const Explorer: React.FC<{
   booking = false,
   href = "not-found",
   location = "Not Provided",
-  price = "Massage Ksh 1000",
-  rating
+  price = "",
+  rating,
 }) => {
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[20rem] w-[19.5rem]">
