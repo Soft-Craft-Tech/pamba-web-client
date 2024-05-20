@@ -89,6 +89,8 @@ const AllShops: React.FC = () => {
                 id,
                 location,
                 slug,
+                reviews,
+                rating
               }: DynamicObject) => (
                 <Explorer
                   key={id}
@@ -96,6 +98,8 @@ const AllShops: React.FC = () => {
                   shopName={business_name}
                   location={location}
                   href={slug}
+                  rating={rating}
+                  reviews={reviews}
                 />
               )
             )}
@@ -110,7 +114,6 @@ const AllShops: React.FC = () => {
             ({
               business_profile_image,
               business_name,
-
               id,
             }: DynamicObject) => (
               <Explorer

@@ -14,6 +14,7 @@ const Explorer: React.FC<{
   location?: string;
   price?: number;
   rating?: string;
+  reviews?: string;
 }> = ({
   imageUrl,
   shopName,
@@ -23,6 +24,7 @@ const Explorer: React.FC<{
   location = "Not Provided",
   price = "",
   rating,
+  reviews,
 }) => {
   return (
     <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[20rem] w-[19.5rem]">
@@ -68,9 +70,9 @@ const Explorer: React.FC<{
             <div className="w-full flex mt-3 justify-between items-center">
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
-                <p>4.9</p>
+                <p>{rating}</p>
               </div>
-              <p className="text-xl">104 reviews</p>
+              <p className="text-xl">{reviews} review(s)</p>
             </div>
           </div>
         )}
