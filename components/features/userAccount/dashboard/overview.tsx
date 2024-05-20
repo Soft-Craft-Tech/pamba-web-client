@@ -7,7 +7,7 @@ interface OverviewProps {
   current_month_revenue?: number;
   today_appointments?: Array<DynamicObject>;
   today_revenue?: number;
-};
+}
 
 export default function Overview({
   all_appointments = [],

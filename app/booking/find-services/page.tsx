@@ -20,7 +20,6 @@ const FindServices: React.FC = () => {
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
   );
-  console.log("Here", filteredServices);
   const {
     search: { searchQuery },
   } = useAppSelector((state: RootState) => state);
