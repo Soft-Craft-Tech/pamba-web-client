@@ -272,7 +272,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
                         {date}
                       </p>
                       <p
-                        className={`text-[11px] text-center max-w-[80px] ${
+                        className={`text-[11px] hidden text-center max-w-[80px] ${
                           slots > 10
                             ? "text-[#14B339]"
                             : slots >= 5
@@ -336,7 +336,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
               <div className="flex flex-row gap-x-2">
                 <div className="flex flex-row gap-x-1">
                   <CalendarIcon />
-                  <p>{selectedTime}</p>
+                  <p>Mon 2oth</p>
                 </div>
                 <div className="flex flex-row gap-x-1">
                   <TimeIcon />

@@ -67,7 +67,7 @@ const StaffManagementTable = () => {
     isLoading,
     isError,
     isRefetching,
-    refetch: refetchAllStaff,
+    // refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
   const { mutateAsync, isSuccess, isError: addExpenseError } = useCreateStaff();
 
@@ -98,7 +98,7 @@ const StaffManagementTable = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
-      refetchAllStaff();
+      // refetchAllStaff();
       reset({
         formData: {},
       });
@@ -137,7 +137,7 @@ const StaffManagementTable = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
     deleteUser(row.original.id);
-    refetchAllStaff();
+    // refetchAllStaff();
   };
 
   const table = useMaterialReactTable({
@@ -339,7 +339,7 @@ const StaffManagementTable = () => {
       isLoading,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
+      // showProgressBars: isRefetching,
       sorting,
     },
   });

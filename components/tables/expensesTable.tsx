@@ -70,7 +70,7 @@ const Table = () => {
     isLoading,
     isError,
     isRefetching,
-    refetch: refetchExpenses,
+    // refetch: refetchExpenses,
   } = useGetExpenses();
   const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
     useGetExpenseAccounts();
@@ -120,9 +120,9 @@ const Table = () => {
       // table.setEditingRow(null);
     }, 3000);
   }
-  if (isDeleteSuccess || isSuccess) {
-    refetchExpenses();
-  }
+  // if (isDeleteSuccess || isSuccess) {
+  //   refetchExpenses();
+  // }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
@@ -401,7 +401,7 @@ const Table = () => {
       isLoading,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
+      // showProgressBars: isRefetching,
       sorting,
     },
   });
