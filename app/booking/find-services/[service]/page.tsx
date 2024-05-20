@@ -133,7 +133,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
   };
 
   return (
-    <div className="mx-auto max-w-screen-2xl px-4 w-full mt-10 relative">
+    <div className="mx-auto max-w-screen-2xl px-4 w-full mt-5 relative">
       <div
         className="flex flex-row gap-x-3 cursor-pointer mb-4 px-4"
         onClick={() => router.back()}
@@ -143,67 +143,44 @@ const Page: React.FC<PageProps> = ({ params }) => {
         </div>
         <p>Back</p>
       </div>
-      <div className="parent max-h-[630px] grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-1">
-        <div className="div1 col-span-1 row-span-1">
-          <img
-            className="h-max-full max-w-full rounded-lg"
-            src="/imageOne.png"
-            alt=""
-          />
+      <div className="flex flex-col w-full h-auto gap-5">
+        <div className="parent h-auto">
+          <div className="w-full h-72">
+            <img
+              className="h-full w-full rounded-lg object-cover"
+              src={data?.service?.service_image}
+              alt=""
+            />
+          </div>
         </div>
-        <div className="parent grid grid-cols-1 grid-rows-2 gap-x-1 gap-y-2">
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="/imageTwo.png"
-            alt=""
-          />
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="/imageThree.png"
-            alt=""
-          />
+        <div className="flex flex-col mb-10 gap-y-2 md:gap-y-1">
+          <h1 className="text-2xl font-medium">{data?.service?.service}</h1>
+          <p className="font-light text-[#323232]">
+            {data?.service?.estimated_time_string}
+          </p>
+          <p className="text-xl text-[#323232]">Ksh {data?.service?.price}</p>
+          <button
+            onClick={() => {
+              handleClickOpen();
+            }}
+            className="bg-primary flex items-center w-max py-2 px-4 mt-2 text-white font-medium rounded-full gap-2 sm:px-8 lg:px-5"
+          >
+            Book Appointment
+            <Image
+              className="border bg-white rounded-full"
+              src="/arrow-right.svg"
+              alt="arrow-icon"
+              width={20}
+              height={20}
+            />
+          </button>
         </div>
-        <div className="parent grid grid-cols-1 grid-rows-1 md:grid-rows-2 gap-x-1 gap-y-2">
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="/imageTwo.png"
-            alt=""
-          />
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="/imageThree.png"
-            alt=""
-          />
-        </div>
-      </div>
-      <div className="flex flex-col mb-10 gap-y-2 md:gap-y-4">
-        <h1 className="text-3xl font-bold">{data?.service?.business_name}</h1>
-        <p className="text-lg text-[#323232]">
-          {data?.service?.estimated_time_string}
-        </p>
-        <p className="text-[30px] text-[#323232]">Ksh {data?.service?.price}</p>
-        <p>{data?.service?.description}</p>
-        <button
-          onClick={() => {
-            handleClickOpen();
-          }}
-          className="bg-primary flex items-center w-max py-2 px-4 mt-5 text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
-        >
-          Book Appointment
-          <Image
-            className="border bg-white rounded-full"
-            src="/arrow-right.svg"
-            alt="arrow-icon"
-            width={20}
-            height={20}
-          />
-        </button>
       </div>
       <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
         <ShopSepartor header="You might also like" />
       </div>
       <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
-        <div className="w-full flex flex-wrap justify-between gap-12">
+        <div className="w-full flex flex-wrap gap-12">
           {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
             <Explorer
               key={index}
