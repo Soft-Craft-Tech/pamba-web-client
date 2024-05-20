@@ -158,7 +158,7 @@ const FinancialSummary = ({
   const [state, setState] = useState({
     series: [
       {
-        name: "Product One",
+        name: "Expenses",
         data: expensesByMonth,
         fill: {
           type: "gradient",
@@ -184,7 +184,7 @@ const FinancialSummary = ({
       },
 
       {
-        name: "Product Two",
+        name: "Revenue",
         data: salesByMonth,
         fill: {
           type: "gradient",
