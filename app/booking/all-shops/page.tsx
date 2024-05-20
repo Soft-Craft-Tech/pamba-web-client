@@ -90,7 +90,7 @@ const AllShops: React.FC = () => {
                 location,
                 slug,
                 reviews,
-                rating
+                rating,
               }: DynamicObject) => (
                 <Explorer
                   key={id}
@@ -110,22 +110,18 @@ const AllShops: React.FC = () => {
       </div>
       <section className="mx-auto max-w-screen-xl w-full my-10 relative">
         <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
-          {data?.services?.map(
-            ({
-              business_profile_image,
-              business_name,
-              id,
-            }: DynamicObject) => (
-              <Explorer
-                key={id}
-                imageUrl={business_profile_image}
-                shopName={business_name}
-                btnText="Book Appointment"
-                booking={true}
-                href={id}
-              />
-            )
-          )}
+          {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
+            <Explorer
+              key={serviceInfo?.id}
+              imageUrl={businessInfo?.profile_img}
+              shopName={businessInfo?.business_name}
+              price={serviceInfo?.price}
+              rating={businessInfo?.rating}
+              btnText="Book Appointment"
+              booking={true}
+              href={serviceInfo?.id}
+            />
+          ))}
         </div>
       </section>
     </div>

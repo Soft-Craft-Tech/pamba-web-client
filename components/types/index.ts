@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export interface SignUpFormData {}
 
 export interface DeleteFormData {
@@ -88,3 +90,35 @@ const sliderDataTwo = [
 ];
 
 export { sidebarData, sliderData, sliderDataTwo };
+
+export interface DayData {
+  day: string;
+  date: string;
+  slots: number;
+}
+
+export const generateDaysData = (
+  startDate: string,
+  endDate: string
+): DayData[] => {
+  const daysData: DayData[] = [];
+  let currentDate = dayjs(startDate);
+  const endDateObj = dayjs(endDate);
+  while (
+    currentDate.isBefore(endDateObj) ||
+    currentDate.isSame(endDateObj, "day")
+  ) {
+    const day = currentDate.format("ddd");
+    const date = currentDate.format("DD MMM");
+    const slots = Math.floor(Math.random() * 16) + 1;
+
+    daysData.push({ day, date, slots });
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return daysData;
+};
+
+export const startDate = dayjs().add(0, "day").startOf("day").toISOString();
+export const endDate = dayjs().add(6, "day").endOf("day").toISOString();
+export const daysData = generateDaysData(startDate, endDate);
