@@ -63,7 +63,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     formData.append("service", serviceId.toString());
     formData.append("staff", staff.toString());
     formData.append("business", businessId?.toString());
-    formData.append("date", selectedDay);
+    formData.append("date", dayjs(selectedDay).format("DD-MM-YYYY"));
     formData.append("time", dayjs(selectedTime).format("HH:mm"));
     formData.append("notification", notification);
     const formJson = Object.fromEntries(formData.entries());
