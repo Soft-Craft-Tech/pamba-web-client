@@ -25,15 +25,11 @@ const AllShops: React.FC = () => {
 
   const handleSearch = (service: string, shop: string) => {
     const filtered = data?.services?.filter(
-      ({
-        business_name,
-        business_location,
-      }: {
-        business_name: string;
-        business_location: string;
-      }) =>
-        business_name.toLowerCase().includes(service.toLowerCase()) &&
-        business_location.toLowerCase().includes(shop.toLowerCase())
+      ({ businessInfo }: any) =>
+        businessInfo?.business_name
+          .toLowerCase()
+          .includes(service.toLowerCase()) &&
+        businessInfo?.location.toLowerCase().includes(shop.toLowerCase())
     );
     setFilteredServices(filtered);
     setSearch(true);
@@ -54,21 +50,18 @@ const AllShops: React.FC = () => {
           <ShopSepartor header={` Search Results for ${searchQuery}`} />
         </div>
         <div className="w-full flex flex-wrap justify-evenly gap-12">
-          {filteredServices?.map(
-            ({
-              business_profile_image,
-              business_name,
-              business_location,
-              id,
-            }: DynamicObject) => (
-              <Explorer
-                key={id}
-                imageUrl={business_profile_image}
-                shopName={business_name}
-                location={business_location}
-              />
-            )
-          )}
+          {filteredServices?.map(({ businessInfo, serviceInfo }: any) => (
+            <Explorer
+              key={serviceInfo?.id}
+              imageUrl={businessInfo?.profile_img}
+              shopName={businessInfo?.business_name}
+              price={serviceInfo?.price}
+              rating={businessInfo?.rating}
+              btnText="Book Appointment"
+              booking={true}
+              href={serviceInfo?.id}
+            />
+          ))}
         </div>
       </div>
     );
