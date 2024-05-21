@@ -31,20 +31,21 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   const { mutateAsync } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
-  const [staff, setAge] = React.useState("");
+  const [staff, setAge] = React.useState<any>(0);
   const [selectedDay, setSelectedDay] = React.useState<any>(null);
   const [selectedTime, setSelectedTime] = React.useState<any>(null);
-  const [notificationMethod, setNotificationMethod] =
-    React.useState("whatsapp");
+  const [notification, setNotificationMethod] = React.useState("whatsapp");
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
+  const handleChange = (event: SelectChangeEvent<number>) => {
     setAge(event.target.value);
   };
 
-  const handleDaySelect = (index: number, day: string) => {
+  const handleDaySelect = (index: number, day: dayjs.Dayjs) => {
     setActiveSelect(index);
     setSelectedDay(day);
   };
+
+  const businessId = data?.service?.business_id;
 
   const handleTimeChange = (newValue: Dayjs | null) => {
     setSelectedTime(newValue);
@@ -59,19 +60,26 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    formData.append("serviceProvider", staff);
-    formData.append("selectedDay", selectedDay);
-    formData.append("selectedTime", selectedTime);
-    formData.append("notificationMethod", notificationMethod);
+    formData.append("service", serviceId.toString());
+    formData.append("staff", staff.toString());
+    formData.append("business", businessId?.toString());
+    formData.append("date", selectedDay);
+    formData.append("time", dayjs(selectedTime).format("HH:mm"));
+    formData.append("notification", notification);
     const formJson = Object.fromEntries(formData.entries());
+    const data = {
+      ...formJson,
+      service: Number(formJson.service),
+      staff: Number(formJson.staff),
+      business: Number(formJson.business),
+    };
     try {
-      await mutateAsync(formJson);
+      await mutateAsync(data);
     } catch (error) {
       const customError = error;
     }
     handleClose();
   };
-  const router = useRouter();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -186,7 +194,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   </FormControl>
                 </div>
                 <div className="flex flex-row gap-x-5">
-                  {daysData.map(({ day, date, slots }, index) => (
+                  {daysData.map(({ day, date, slots, dateObj }, index) => (
                     <div
                       key={index}
                       className={`px-4 py-2 flex flex-col gap-y-4 items-center justify-center cursor-pointer border-2 rounded-lg ${
@@ -194,7 +202,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                           ? "border-[#DB1471]"
                           : "border-[#F2F2F2]"
                       }`}
-                      onClick={() => handleDaySelect(index, day)}
+                      onClick={() => handleDaySelect(index, dateObj)}
                     >
                       <p className="text-[14px] text-[#1C1C1C] font-normal">
                         {day}
@@ -275,25 +283,25 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 </div>
               </div>
               <input
-                type="text"
-                id="first_name"
-                name="firstName"
+                type="tel"
+                id="phone"
+                name="phone"
                 className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 placeholder="John"
                 required
               />
               <input
-                type="text"
-                id="last_name"
-                name="lastName"
+                type="email"
+                id="email"
+                name="email"
                 className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Doe"
+                placeholder="example@example.com"
                 required
               />
               <input
                 type="text"
                 id="additional_info"
-                name="additionalInfo"
+                name="comment"
                 className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2.5"
                 placeholder="Additional information"
                 required
@@ -305,9 +313,9 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     id="default-radio-1"
                     type="radio"
                     value="sms"
-                    name="notificationMethod"
+                    name="notification"
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    checked={notificationMethod === "sms"}
+                    checked={notification === "sms"}
                     onChange={handleNotificationChange}
                   />
                   <label className="ms-2 text-sm font-medium text-gray-900">
@@ -319,9 +327,9 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     id="default-radio-2"
                     type="radio"
                     value="whatsapp"
-                    name="notificationMethod"
+                    name="notification"
                     className="w-4 h-4 text-[#7F56D9] bg-[#7F56D9] border-[#7F56D9]"
-                    checked={notificationMethod === "whatsapp"}
+                    checked={notification === "whatsapp"}
                     onChange={handleNotificationChange}
                   />
                   <label className="ms-2 text-sm font-medium text-gray-900">
