@@ -20,7 +20,7 @@ const Explorer: React.FC<{
 }> = ({
   imageUrl,
   shopName,
-  btnText = "Explorer",
+  btnText = "Explore",
   booking = false,
   href = "not-found",
   location = "Not Provided",
@@ -31,9 +31,9 @@ const Explorer: React.FC<{
   shopImage
 }) => {
   return (
-    <div className=" bg-white border  border-gray-200 rounded-lg shadow max-w-[20rem] w-[19.5rem]">
+    <div className=" bg-white border w-full border-gray-200 rounded-lg shadow md:max-w-[20rem] md:w-[19.5rem]">
       <img
-        className="object-cover w-full h-[10rem]"
+        className="object-cover w-full h-[10rem] sm:h-[12rem] lg:h-[10rem]"
         src={
           imageUrl === null
             ? "https://res.cloudinary.com/dnfrxficl/image/upload/v1715585716/pamba-web/iejtagfjemtmqr2k2f0n.svg"
@@ -69,18 +69,18 @@ const Explorer: React.FC<{
         ) : (
           <div className="mt-3">
             <div className="flex flex-row items-center gap-x-3">
-              <p className="text-xl">{shopName}</p>
+              <p className="text-lg">{shopName}</p>
             </div>
             <div className="flex flex-row mt-3 items-center gap-x-1">
               <LocationIcon />
-              <p className="text-lg text-grayArea">{location}</p>
+              <p className="text-sm text-grayArea line-clamp-1">{location}</p>
             </div>
             <div className="w-full flex mt-3 justify-between items-center">
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
                 <p>{rating}</p>
               </div>
-              <p className="text-lg">{reviews} review(s)</p>
+              <p className="text-sm">{reviews} review(s)</p>
             </div>
           </div>
         )}
