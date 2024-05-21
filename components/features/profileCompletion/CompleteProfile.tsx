@@ -25,8 +25,13 @@ const CompleteProfileComponent = () => {
       data?.openingAndClosing
     ) {
       return 6;
-    } else if (data?.description && data?.profileImg && data?.services && data?.expenseAccounts) {
-      return 5
+    } else if (
+      data?.description &&
+      data?.profileImg &&
+      data?.services &&
+      data?.expenseAccounts
+    ) {
+      return 5;
     } else if (data?.description && data?.profileImg && data?.services) {
       return 4;
     } else if (data?.description && data?.profileImg) {
