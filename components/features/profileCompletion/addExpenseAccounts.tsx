@@ -127,7 +127,7 @@ export default function AddExpenseAccounts() {
           onClick={handleSubmitData}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Loading" : "Finish"}
+          {isLoading ? "Loading" : "Next"}
         </button>
       </div>
     </div>
