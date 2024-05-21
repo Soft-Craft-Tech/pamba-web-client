@@ -1,5 +1,6 @@
 import { CloudinaryData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
@@ -18,6 +19,25 @@ export const useAssignService = () => {
     return response;
   });
 };
+
+export const useAddOpeningClosingHours = (step: number) => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, DynamicObject>(async (data: any) => {
+    try {
+        const response = await apiCall(
+        "PUT",
+        endpoints.businessOpeningClosing,
+        { ...data },
+        {}
+      );
+      dispatch(setMessage(response.message));
+      dispatch(setStep(step + 1));
+      return response;
+    } catch (error) {
+      throw new Error("Error");
+    }
+  });
+}
 
 export const useGetAllBusinesses = () => {
   return useQuery("businesses", async () => {
