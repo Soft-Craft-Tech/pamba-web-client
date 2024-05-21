@@ -42,7 +42,7 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
   return (
     <section className="h-auto">
       <div
-        className="w-full px-10 flex flex-col items-center h-[60vh] justify-center"
+        className="w-full px-10 flex flex-col items-center h-[70vh] justify-center"
         style={{
           backgroundImage:
             "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/all-shops.png')",

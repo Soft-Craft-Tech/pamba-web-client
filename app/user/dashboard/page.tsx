@@ -11,11 +11,11 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   const { data } = useGetProfileCompletionStatus();
-  const { data: businessAnalysis, isLoading } = useGetBusinessesAnalysis();
+  const { data: businessAnalysis } = useGetBusinessesAnalysis();
 
   return (
     <div className="w-full flex flex-col gap-5">
-      {!data?.expenseAccounts && (
+      {!data?.openingAndClosing && (
         <div className="flex flex-row justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
           <p>Your profile is incomplete</p>
           <Link

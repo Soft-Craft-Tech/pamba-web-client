@@ -68,55 +68,61 @@ const AllShops: React.FC = () => {
   return (
     <div>
       <AllShopsHero onSearch={handleSearch} />
-      <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
-        <ShopSepartor header="Popular Shops" />
-      </div>
-      <section className="mx-auto max-w-screen-xl w-full mt-10 relative">
-        <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
-          {allBusinessesData?.businesses
-            ?.slice(0, 9)
-            ?.map(
-              ({
-                profile_img,
-                business_name,
-                id,
-                location,
-                slug,
-                reviews,
-                rating,
-              }: DynamicObject) => (
-                <Explorer
-                  key={id}
-                  imageUrl={profile_img}
-                  shopName={business_name}
-                  location={location}
-                  href={slug}
-                  rating={rating}
-                  reviews={reviews}
-                />
-              )
-            )}
+      <div className="px-5 sm:px-10 lg:px-20 2xl:px-0">
+        <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+          <ShopSepartor header="Popular Shops" />
         </div>
-      </section>
-      <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
-        <ShopSepartor header="Recomended Services" />
+        <section className="mx-auto max-w-screen-xl w-full mt-10 relative">
+          <div className="w-full flex flex-wrap gap-10">
+            {allBusinessesData?.businesses
+              ?.slice(0, 9)
+              ?.map(
+                ({
+                  profile_img,
+                  business_name,
+                  id,
+                  location,
+                  slug,
+                  reviews,
+                  rating,
+                }: DynamicObject) => (
+                  <Explorer
+                    key={id}
+                    imageUrl={profile_img}
+                    shopName={business_name}
+                    location={location}
+                    href={slug}
+                    rating={rating}
+                    reviews={reviews}
+                  />
+                )
+              )}
+          </div>
+        </section>
       </div>
-      <section className="mx-auto max-w-screen-xl w-full my-10 relative">
-        <div className="w-full flex flex-wrap justify-center gap-12 3xl:max-w-[80%] ">
-          {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
-            <Explorer
-              key={serviceInfo?.id}
-              imageUrl={businessInfo?.profile_img}
-              shopName={businessInfo?.business_name}
-              price={serviceInfo?.price}
-              rating={businessInfo?.rating}
-              btnText="Book Appointment"
-              booking={true}
-              href={serviceInfo?.id}
-            />
-          ))}
+      <div className="px-5 sm:px-10 lg:px-20 2xl:px-0">
+        <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+          <ShopSepartor header="Recommended Services" />
         </div>
-      </section>
+        <section className="mx-auto max-w-screen-xl w-full my-10 relative">
+          <div className="w-full flex flex-wrap gap-10 ">
+            {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
+              <Explorer
+                key={serviceInfo?.id}
+                service={serviceInfo?.service}
+                imageUrl={serviceInfo?.service_image}
+                shopName={businessInfo?.business_name}
+                price={serviceInfo?.price}
+                rating={businessInfo?.rating}
+                btnText="Book Appointment"
+                booking={true}
+                href={serviceInfo?.id}
+                shopImage={businessInfo?.profile_img}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

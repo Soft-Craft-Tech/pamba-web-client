@@ -5,6 +5,7 @@ import AddExpenseAccounts from "./addExpenseAccounts";
 import AddServices from "./addServices";
 import ProfileComplete from "./completed";
 import UploadProfileImg from "./profileImageUpload";
+import OpenCloseTimes from "./openingClosingTime";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { useGetProfileCompletionStatus } from "@/app/api/businesses";
@@ -16,21 +17,32 @@ const CompleteProfileComponent = () => {
   const dispatch = useAppDispatch();
 
   const getNextStep = () => {
+    const {
+      description,
+      profileImg,
+      services,
+      expenseAccounts,
+      openingAndClosing,
+    } = data || {};
     if (
-      data?.description &&
-      data?.profileImg &&
-      data?.services &&
-      data?.expenseAccounts
+      openingAndClosing &&
+      expenseAccounts &&
+      services &&
+      profileImg &&
+      description
     ) {
+      return 6;
+    } else if (expenseAccounts && services && profileImg && description) {
       return 5;
-    } else if (data?.description && data?.profileImg && data?.services) {
+    } else if (services && profileImg && description) {
       return 4;
-    } else if (data?.description && data?.profileImg) {
+    } else if (profileImg && description) {
       return 3;
-    } else if (data?.description) {
+    } else if (description) {
       return 2;
+    } else {
+      return 1;
     }
-    return 1;
   };
 
   useEffect(() => {
@@ -70,7 +82,8 @@ const CompleteProfileComponent = () => {
       {step === 2 && <UploadProfileImg />}
       {step === 3 && <AddServices />}
       {step === 4 && <AddExpenseAccounts />}
-      {step === 5 && <ProfileComplete />}
+      {step === 5 && <OpenCloseTimes />}
+      {step === 6 && <ProfileComplete />}
     </div>
   );
 };
