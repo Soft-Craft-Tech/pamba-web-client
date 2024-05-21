@@ -95,6 +95,7 @@ export interface DayData {
   day: string;
   date: string;
   slots: number;
+  dateObj: dayjs.Dayjs;
 }
 
 export const generateDaysData = (
@@ -112,7 +113,7 @@ export const generateDaysData = (
     const date = currentDate.format("DD MMM");
     const slots = Math.floor(Math.random() * 16) + 1;
 
-    daysData.push({ day, date, slots });
+    daysData.push({ day, date, slots, dateObj: currentDate });
     currentDate = currentDate.add(1, "day");
   }
 

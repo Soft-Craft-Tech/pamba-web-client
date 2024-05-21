@@ -31,15 +31,3 @@ export const useBookAppointments = () => {
     }
   );
 };
-
-// body: {
-//   "date": "***",
-//   "time": "***",
-//   "comment": "***",      // Additional comments
-//   "business": *** ,      // Business ID
-//   "service": *** ,       // Service ID
-//   "staff": *** ,         // Staff ID (optional)
-//   "email": "***",        // Client's email
-//   "phone": "***",        // Client's phone number
-//   "notification": "***"  // Notification mode (e.g., 'email' or 'sms')
-// }

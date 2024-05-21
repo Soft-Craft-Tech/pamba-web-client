@@ -1,6 +1,6 @@
 const appointmentsEndpoints: { [key: string]: string } = {
   fetchEvents: "/appointments/business-appointments",
-  bookAppointments: "/appoinments/book/web-appoinments",
+  bookAppointments: "/appointments/book/web-appointments",
 };
 
 export default appointmentsEndpoints;
