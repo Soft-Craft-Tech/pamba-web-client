@@ -19,9 +19,13 @@ const filteredServicesSlice = createSlice({
     ) {
       state.filteredServices = action.payload;
     },
+    clearFilteredServices<T>(state: FilteredServicesState<T>) {
+      state.filteredServices = [];
+    },
   },
 });
 
-export const { setFilteredServices } = filteredServicesSlice.actions;
+export const { setFilteredServices, clearFilteredServices } =
+  filteredServicesSlice.actions;
 
 export default filteredServicesSlice.reducer;
