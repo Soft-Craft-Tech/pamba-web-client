@@ -71,6 +71,16 @@ const TimeSlots: React.FC = () => {
           deletable={false}
           view="month"
           events={events}
+          editable={false}
+          hourFormat="24"
+          week={{
+            startHour: 7,
+            endHour: 23,
+            step: 50,
+            weekDays: [0, 1, 2, 3, 4, 5],
+            weekStartOn: 6,
+          }}
+          day={{ startHour: 7, endHour: 23, step: 50 }}
         />
       )}
     </Fragment>
