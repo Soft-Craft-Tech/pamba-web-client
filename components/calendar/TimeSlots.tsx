@@ -76,11 +76,11 @@ const TimeSlots: React.FC = () => {
           week={{
             startHour: 7,
             endHour: 23,
-            step: 50,
+            step: 80,
             weekDays: [0, 1, 2, 3, 4, 5],
             weekStartOn: 6,
           }}
-          day={{ startHour: 7, endHour: 23, step: 50 }}
+          day={{ startHour: 7, endHour: 23, step: 80 }}
         />
       )}
     </Fragment>
