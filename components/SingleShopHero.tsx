@@ -1,5 +1,5 @@
 "use client";
-import { useGetSingleBusiness } from "@/app/api/businesses";
+import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import {
   clearFilteredServices,
@@ -19,6 +19,8 @@ const SingleShopHero: React.FC<{
     setService(event.target.value);
   };
   const { data } = useGetSingleBusiness(slug);
+
+  const { data: shopServices } = useGetAllServices(slug);
 
   const filteredServices = useAppSelector(
     (state: RootState) => state.filteredServices.filteredServices
@@ -53,7 +55,7 @@ const SingleShopHero: React.FC<{
                 className="cursor-pointer"
                 onClick={() => {
                   setService("");
-                  dispatch(setFilteredServices(filteredServices));
+                  dispatch(setFilteredServices(shopServices.services));
                 }}
               >
                 {service === "" ? <SearchIcon /> : <CancelIcon />}
