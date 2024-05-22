@@ -8,6 +8,7 @@ import tabSlice from "./settingsTabSlice";
 import loadingSlice from "./loadingSlice";
 import searchSlice from "./searchSlice";
 import displaySlice from "./displaySlice";
+import filteredServicesSlice from "./filteredServicesSlice";
 
 const rootReducer = combineReducers({
   steps: stepsReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   loading: loadingSlice,
   search: searchSlice,
   display: displaySlice,
+  filteredServices: filteredServicesSlice,
 });
 
 export default rootReducer;

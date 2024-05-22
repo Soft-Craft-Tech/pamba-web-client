@@ -1,10 +1,33 @@
 "use client";
 import { useGetSingleBusiness } from "@/app/api/businesses";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setFilteredServices } from "@/store/filteredServicesSlice";
+import { RootState } from "@/store/store";
 import SearchIcon from "@/ui/icons/search";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 
-const SingleShopHero: React.FC<{ slug: string }> = ({ slug }) => {
+const SingleShopHero: React.FC<{
+  slug: string;
+}> = ({ slug }) => {
+  const [service, setService] = useState("");
+  const dispatch = useAppDispatch();
+  const handleServiceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setService(event.target.value);
+  };
   const { data } = useGetSingleBusiness(slug);
+
+  const filteredServices = useAppSelector(
+    (state: RootState) => state.filteredServices.filteredServices
+  );
+
+  const handleSearch = (serviceValue: string) => {
+    const filtered = filteredServices?.filter(
+      ({ service }: { service: string }) =>
+        service.toLowerCase().includes(serviceValue.toLowerCase())
+    );
+    dispatch(setFilteredServices(filtered));
+  };
+
   return (
     <section className="h-auto">
       <div
@@ -27,10 +50,15 @@ const SingleShopHero: React.FC<{ slug: string }> = ({ slug }) => {
                 type="text"
                 placeholder="Search Service"
                 className="py-2 px-4 w-full text-black focus:outline-primary"
+                value={service}
+                onChange={handleServiceChange}
               />
             </div>
           </div>
-          <button className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md">
+          <button
+            onClick={() => handleSearch(service)}
+            className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md"
+          >
             Search
           </button>
         </div>
