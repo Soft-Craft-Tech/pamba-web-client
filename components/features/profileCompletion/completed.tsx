@@ -8,7 +8,7 @@ export default function ProfileComplete() {
         <p className="text-muted text-sm font-bold">
           You profile is now 100% complete
         </p>
-        <Link className="bg-primary text-white rounded-full py-2 px-5" href="/">
+        <Link className="bg-primary text-white rounded-full py-2 px-5" href="/user/dashboard">
           Go to Dashboard
         </Link>
       </div>
