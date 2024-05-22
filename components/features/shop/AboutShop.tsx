@@ -1,16 +1,27 @@
 import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject, sliderDataTwo } from "@/components/types";
+import { DynamicObject } from "@/components/types";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setFilteredServices } from "@/store/filteredServicesSlice";
+import { RootState } from "@/store/store";
 import LocationIcon from "@/ui/icons/location";
 import RatingIcon from "@/ui/icons/rating";
-import { getUser } from "@/utils/auth";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
+  const filteredServices = useAppSelector(
+    (state: RootState) => state.filteredServices.filteredServices
+  );
+  const dispatch = useAppDispatch();
   const { data } = useGetSingleBusiness(slug);
-  const { data: shopServices } = useGetAllServices(slug);
+  const { data: shopServices, isSuccess } = useGetAllServices(slug);
+  useEffect(() => {
+    if (isSuccess && shopServices?.services) {
+      dispatch(setFilteredServices(shopServices.services));
+    }
+  }, [isSuccess, shopServices, dispatch]);
 
   return (
     <div className="flex flex-col w-full gap-y-10 mt-4">
@@ -48,7 +59,7 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
       <div className="flex flex-col gap-5">
         <ShopSepartor header="Our Services" />
         <div className="w-full flex flex-wrap gap-12 3xl:max-w-[80%] ">
-          {shopServices?.services?.map(
+          {filteredServices?.map(
             ({
               service_image,
               service,
