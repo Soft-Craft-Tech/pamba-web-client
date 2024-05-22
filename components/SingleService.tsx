@@ -1,11 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 import Image from "next/image";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import Explorer from "@/components/Explorer";
-import { sliderDatThree } from "@/components/types/fakeData";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import CalendarIcon from "@/ui/icons/calendar-con";
@@ -23,10 +21,15 @@ import { FormControl } from "@mui/material";
 import { useBookAppointments } from "@/app/api/appointment";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
 
 dayjs.extend(isBetween);
 
 const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
+  const filteredServices = useAppSelector(
+    (state: RootState) => state.filteredServices.filteredServices
+  );
   const { data } = useGetSingleService(serviceId);
   const { mutateAsync } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
@@ -143,16 +146,27 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
       </div>
       <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
         <div className="w-full flex flex-wrap gap-12">
-          {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
-            <Explorer
-              key={index}
-              imageUrl={imageUrl}
-              shopName={shopName}
-              btnText="Book Appointment"
-              booking={true}
-              href="/booking/find-services/massage"
-            />
-          ))}
+          {filteredServices?.map(
+            ({
+              service_image,
+              service,
+              id,
+              location,
+              price,
+            }: DynamicObject) => (
+              <Explorer
+                key={id}
+                imageUrl={service_image}
+                shopName={service}
+                location={location}
+                href={id}
+                booking={true}
+                btnText="Book Appointment"
+                price={price}
+                rating={data?.business?.rating}
+              />
+            )
+          )}
         </div>
       </section>
       <Dialog
