@@ -21,17 +21,29 @@ import { FormControl } from "@mui/material";
 import { useBookAppointments } from "@/app/api/appointment";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
+import Toast from "./shared/toasts/authToast";
+import { setMessage, setShowToast } from "@/store/toastSlice";
 
 dayjs.extend(isBetween);
 
+interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
-  const filteredServices = useAppSelector(
-    (state: RootState) => state.filteredServices.filteredServices
-  );
+  const {
+    filteredServices: { filteredServices },
+    toast: { toastMessage },
+  } = useAppSelector((state: RootState) => state);
   const { data } = useGetSingleService(serviceId);
-  const { mutateAsync } = useBookAppointments();
+  const dispatch = useAppDispatch();
+  const { mutateAsync, isSuccess, isError } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
   const [staff, setAge] = React.useState<any>(0);
@@ -78,8 +90,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     };
     try {
       await mutateAsync(data);
+      dispatch(setShowToast(true));
     } catch (error) {
-      const customError = error;
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+      dispatch(setShowToast(true));
     }
     handleClose();
   };
@@ -96,6 +111,8 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
 
   return (
     <div>
+      {isError && <Toast message={toastMessage} type="error" />}
+      {isSuccess && <Toast message={toastMessage} type="success" />}
       <div className="flex flex-col w-full h-auto gap-5">
         <div className="parent h-auto">
           <div className="w-full h-72">
