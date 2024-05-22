@@ -1,7 +1,7 @@
 import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject, sliderDataTwo } from "@/components/types";
+import { DynamicObject } from "@/components/types";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setFilteredServices } from "@/store/filteredServicesSlice";
 import { RootState } from "@/store/store";
