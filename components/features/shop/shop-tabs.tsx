@@ -31,7 +31,7 @@ const ShopTabs: React.FC<{ slug: string }> = ({ slug }) => {
       </div>
       {activeTab === "about" && <AboutShop slug={slug} />}
       {activeTab === "review" && <ReviewShop />}
-      {activeTab === "gallery" && <GalleryShop />}
+      {activeTab === "gallery" && <GalleryShop slug={slug} />}
     </div>
   );
 };
