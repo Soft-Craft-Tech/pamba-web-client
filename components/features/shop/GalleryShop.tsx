@@ -8,7 +8,7 @@ const GalleryShop: React.FC<{ slug: string }> = ({ slug }) => {
   const { data: imagesData } = useAllImages(slug);
   return (
     <div className="grid grid-cols-2 mt-10 md:grid-cols-4 gap-4">
-      {imagesData?.gallery.length === 0 ? (
+      {imagesData?.gallery?.length === 0 ? (
         <div>
           <p>No Images Posted</p>
         </div>

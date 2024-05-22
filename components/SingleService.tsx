@@ -94,18 +94,18 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     setOpen(false);
   };
 
-  const shouldDisableTime = (timeValue: Dayjs) => {
-    const disabledRanges = [
-      { start: "20:00", end: "23:59" },
-      { start: "00:00", end: "08:00" },
-    ];
+  // const shouldDisableTime = (timeValue: Dayjs) => {
+  //   const disabledRanges = [
+  //     { start: "20:00", end: "23:59" },
+  //     { start: "00:00", end: "08:00" },
+  //   ];
 
-    return disabledRanges.some((range) => {
-      const start = dayjs(range.start, "HH:mm");
-      const end = dayjs(range.end, "HH:mm");
-      return timeValue.isBetween(start, end, null, "[)");
-    });
-  };
+  //   return disabledRanges.some((range) => {
+  //     const start = dayjs(range.start, "HH:mm");
+  //     const end = dayjs(range.end, "HH:mm");
+  //     return timeValue.isBetween(start, end, null, "[)");
+  //   });
+  // };
   return (
     <div>
       <div className="flex flex-col w-full h-auto gap-5">
@@ -184,6 +184,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <h1 className="text-xl font-semibold">Book Appointment</h1>
               <div className="gap-y-10 flex flex-col">
                 <div className="flex-col flex max-w-[336px] gap-y-3">
+                  {data?.staff?.length === 0 && (
+                    <p className="text-lg text-red-300">
+                      Staff for this shop not available
+                    </p>
+                  )}
                   <FormControl>
                     <InputLabel
                       className="text-[#0F1C35] text-lg font-bold"
@@ -198,7 +203,6 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       label="Select Service Provider"
                       onChange={handleChange}
                     >
-                      <MenuItem value={2}>Default</MenuItem>
                       {data?.staff?.map(({ f_name, id }: DynamicObject) => (
                         <MenuItem key={id} value={id}>
                           {f_name}
@@ -250,7 +254,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       label="Select Time"
                       value={selectedTime}
                       onChange={handleTimeChange}
-                      shouldDisableTime={shouldDisableTime}
+                      // shouldDisableTime={shouldDisableTime}
                     />
                   </LocalizationProvider>
                 </div>
@@ -267,7 +271,9 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     onClick={() => {
                       setBookingFrame("finish");
                     }}
+                    disabled={data?.staff?.length === 0}
                     variant="primary"
+                    // variant={data?.staff?.length === 0 ? "disabled" : "primary"}
                   >
                     <p>Confirm Appointment</p>
                     <Image
