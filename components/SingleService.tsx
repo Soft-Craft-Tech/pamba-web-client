@@ -94,18 +94,6 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     setOpen(false);
   };
 
-  // const shouldDisableTime = (timeValue: Dayjs) => {
-  //   const disabledRanges = [
-  //     { start: "20:00", end: "23:59" },
-  //     { start: "00:00", end: "08:00" },
-  //   ];
-
-  //   return disabledRanges.some((range) => {
-  //     const start = dayjs(range.start, "HH:mm");
-  //     const end = dayjs(range.end, "HH:mm");
-  //     return timeValue.isBetween(start, end, null, "[)");
-  //   });
-  // };
   return (
     <div>
       <div className="flex flex-col w-full h-auto gap-5">
@@ -273,7 +261,6 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     }}
                     disabled={data?.staff?.length === 0}
                     variant="primary"
-                    // variant={data?.staff?.length === 0 ? "disabled" : "primary"}
                   >
                     <p>Confirm Appointment</p>
                     <Image
@@ -295,11 +282,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <div className="flex flex-row gap-x-2">
                 <div className="flex flex-row gap-x-1">
                   <CalendarIcon />
-                  <p>Mon 2oth</p>
+                  <p>{dayjs(new Date(selectedDay)).format("MMM D")}</p>
                 </div>
                 <div className="flex flex-row gap-x-1">
                   <TimeIcon />
-                  <p>2:00PM EAT</p>
+                  <p>{dayjs(new Date(selectedTime)).format("LT")}</p>
                 </div>
               </div>
               <input
@@ -307,7 +294,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 id="phone"
                 name="phone"
                 className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                placeholder="John"
+                placeholder="Phone Number"
                 required
               />
               <input
