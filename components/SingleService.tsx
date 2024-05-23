@@ -1,11 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 import Image from "next/image";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import Explorer from "@/components/Explorer";
-import { sliderDatThree } from "@/components/types/fakeData";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import CalendarIcon from "@/ui/icons/calendar-con";
@@ -23,12 +21,29 @@ import { FormControl } from "@mui/material";
 import { useBookAppointments } from "@/app/api/appointment";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import Toast from "./shared/toasts/authToast";
+import { setMessage, setShowToast } from "@/store/toastSlice";
 
 dayjs.extend(isBetween);
 
+interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
+  const {
+    filteredServices: { filteredServices },
+    toast: { toastMessage },
+  } = useAppSelector((state: RootState) => state);
   const { data } = useGetSingleService(serviceId);
-  const { mutateAsync } = useBookAppointments();
+  const dispatch = useAppDispatch();
+  const { mutateAsync, isSuccess, isError } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
   const [staff, setAge] = React.useState<any>(0);
@@ -75,8 +90,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     };
     try {
       await mutateAsync(data);
+      dispatch(setShowToast(true));
     } catch (error) {
-      const customError = error;
+      const customError = error as CustomError;
+      dispatch(setMessage(customError?.response?.data?.message));
+      dispatch(setShowToast(true));
     }
     handleClose();
   };
@@ -91,20 +109,10 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     setOpen(false);
   };
 
-  const shouldDisableTime = (timeValue: Dayjs) => {
-    const disabledRanges = [
-      { start: "20:00", end: "23:59" },
-      { start: "00:00", end: "08:00" },
-    ];
-
-    return disabledRanges.some((range) => {
-      const start = dayjs(range.start, "HH:mm");
-      const end = dayjs(range.end, "HH:mm");
-      return timeValue.isBetween(start, end, null, "[)");
-    });
-  };
   return (
     <div>
+      {isError && <Toast message={toastMessage} type="error" />}
+      {isSuccess && <Toast message={toastMessage} type="success" />}
       <div className="flex flex-col w-full h-auto gap-5">
         <div className="parent h-auto">
           <div className="w-full h-72">
@@ -143,16 +151,27 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
       </div>
       <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
         <div className="w-full flex flex-wrap gap-12">
-          {sliderDatThree?.map(({ imageUrl, shopName }, index) => (
-            <Explorer
-              key={index}
-              imageUrl={imageUrl}
-              shopName={shopName}
-              btnText="Book Appointment"
-              booking={true}
-              href="/booking/find-services/massage"
-            />
-          ))}
+          {filteredServices?.map(
+            ({
+              service_image,
+              service,
+              id,
+              location,
+              price,
+            }: DynamicObject) => (
+              <Explorer
+                key={id}
+                imageUrl={service_image}
+                shopName={service}
+                location={location}
+                href={id}
+                booking={true}
+                btnText="Book Appointment"
+                price={price}
+                rating={data?.business?.rating}
+              />
+            )
+          )}
         </div>
       </section>
       <Dialog
@@ -170,6 +189,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <h1 className="text-xl font-semibold">Book Appointment</h1>
               <div className="gap-y-10 flex flex-col">
                 <div className="flex-col flex max-w-[336px] gap-y-3">
+                  {data?.staff?.length === 0 && (
+                    <p className="text-lg text-red-300">
+                      Staff for this shop not available
+                    </p>
+                  )}
                   <FormControl>
                     <InputLabel
                       className="text-[#0F1C35] text-lg font-bold"
@@ -184,7 +208,6 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       label="Select Service Provider"
                       onChange={handleChange}
                     >
-                      <MenuItem value={2}>Default</MenuItem>
                       {data?.staff?.map(({ f_name, id }: DynamicObject) => (
                         <MenuItem key={id} value={id}>
                           {f_name}
@@ -236,7 +259,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       label="Select Time"
                       value={selectedTime}
                       onChange={handleTimeChange}
-                      shouldDisableTime={shouldDisableTime}
+                      // shouldDisableTime={shouldDisableTime}
                     />
                   </LocalizationProvider>
                 </div>
@@ -253,6 +276,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     onClick={() => {
                       setBookingFrame("finish");
                     }}
+                    disabled={data?.staff?.length === 0}
                     variant="primary"
                   >
                     <p>Confirm Appointment</p>
@@ -275,11 +299,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <div className="flex flex-row gap-x-2">
                 <div className="flex flex-row gap-x-1">
                   <CalendarIcon />
-                  <p>Mon 2oth</p>
+                  <p>{dayjs(new Date(selectedDay)).format("MMM D")}</p>
                 </div>
                 <div className="flex flex-row gap-x-1">
                   <TimeIcon />
-                  <p>2:00PM EAT</p>
+                  <p>{dayjs(new Date(selectedTime)).format("LT")}</p>
                 </div>
               </div>
               <input
@@ -287,7 +311,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 id="phone"
                 name="phone"
                 className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                placeholder="John"
+                placeholder="Phone Number"
                 required
               />
               <input
