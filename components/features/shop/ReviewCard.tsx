@@ -7,7 +7,7 @@ const ReviewsCard: React.FC<{
   date?: string;
   comment?: string;
   rating?: number;
-}> = ({ reviewer = "Anonymous", date, comment, rating = 0 }) => {
+}> = ({ reviewer = "", date, comment, rating = 0 }) => {
   return (
     <div className="w-full p-4 flex flex-row items-center gap-16  bg-white border border-gray-200 rounded-lg shadow sm:p8">
       <div className="flex items-center flex-col gap-4">
