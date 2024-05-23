@@ -33,7 +33,7 @@ const ReviewShop: React.FC<{ slug: string }> = ({ slug }) => {
         <div>
           <div className="flex flex-row items-center">
             <h1 className="text-[57px]">
-              {reviewsData?.ratingsAverage.toFixed(1)}
+              {reviewsData?.ratingsAverage?.toFixed(1)}
             </h1>
             <RatingIcon fill="#FF9F0A" width={42} height={42} />
           </div>
