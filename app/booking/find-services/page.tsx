@@ -25,18 +25,22 @@ const FindServices: React.FC = () => {
   } = useAppSelector((state: RootState) => state);
   const [search, setSearch] = React.useState(false);
 
-  const handleSearch = (service: string, shop: string) => {
-    const filtered = data?.services?.filter(
-      ({
-        business_name,
-        business_location,
-      }: {
-        business_name: string;
-        business_location: string;
-      }) =>
-        business_name.toLowerCase().includes(service.toLowerCase()) &&
-        business_location.toLowerCase().includes(shop.toLowerCase())
-    );
+  const handleSearch = (service: string, location: string) => {
+    const searchQuery = `${service.toLowerCase()} ${location.toLowerCase()}`;
+    const filtered = data?.services?.filter((item: DynamicObject) => {
+      const businessInfo = item?.businessInfo;
+      const serviceInfo = item?.serviceInfo;
+      if (!businessInfo || !serviceInfo) {
+        return false;
+      }
+      const businessLocation = businessInfo?.location?.toLowerCase() || "";
+      const serviceNames = serviceInfo?.service?.toLowerCase() || "";
+      if (!businessLocation || !serviceNames) {
+        return false;
+      }
+      const itemString = `${serviceNames} ${businessLocation}`.toLowerCase();
+      return itemString.includes(searchQuery);
+    });
     setFilteredServices(filtered);
     setSearch(true);
   };
@@ -56,22 +60,18 @@ const FindServices: React.FC = () => {
           <ShopSepartor header={` Search Results for ${searchQuery}`} />
         </div>
         <div className="w-full flex flex-wrap justify-evenly gap-12">
-          {filteredServices?.map(
-            ({
-              business_profile_image,
-              business_name,
-              business_location,
-              id,
-            }: DynamicObject) => (
-              <Explorer
-                key={id}
-                imageUrl={business_profile_image}
-                shopName={business_name}
-                location={business_location}
-                href={id}
-              />
-            )
-          )}
+          {filteredServices?.map(({ businessInfo, serviceInfo }: any) => (
+            <Explorer
+              key={serviceInfo?.id}
+              imageUrl={businessInfo?.profile_img}
+              shopName={businessInfo?.business_name}
+              price={serviceInfo?.price}
+              rating={businessInfo?.rating}
+              btnText="Book Appointment"
+              booking={true}
+              href={serviceInfo?.id}
+            />
+          ))}
         </div>
       </div>
     );
