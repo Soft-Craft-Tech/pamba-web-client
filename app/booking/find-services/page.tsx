@@ -16,7 +16,6 @@ import { DynamicObject } from "@/components/types";
 
 const FindServices: React.FC = () => {
   const { data } = useGetClientServices();
-  console.log("Here", data?.services);
   const { data: allBusinessesData } = useGetAllBusinesses();
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
@@ -25,8 +24,6 @@ const FindServices: React.FC = () => {
     search: { searchQuery },
   } = useAppSelector((state: RootState) => state);
   const [search, setSearch] = React.useState(false);
-
-  console.log(filteredServices, "filteredServices");
 
   const handleSearch = (service: string, location: string) => {
     const searchQuery = `${service.toLowerCase()} ${location.toLowerCase()}`;
