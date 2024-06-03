@@ -13,7 +13,7 @@ import Button from "@/ui/button";
 import {
   useCreateStaff,
   useDeleteStaff,
-  useEditExpense,
+  useEditStaff,
   useGetAllStaff,
 } from "@/app/api/requests";
 import { Controller, useForm } from "react-hook-form";
@@ -48,10 +48,28 @@ const StaffManagementTable = () => {
   const { showToast } = useSelector((state: RootState) => ({
     showToast: state.toast.showToast,
   }));
-  const { control, handleSubmit, reset } = useForm<DynamicObject>();
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    clearErrors,
+    watch,
+    formState: { errors },
+  } = useForm<DynamicObject>({
+    defaultValues: {
+      formData: {
+        f_name: "",
+        phone: "",
+        role: "",
+      },
+    },
+  });
+
+  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+  //   []
+  // );
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -69,9 +87,14 @@ const StaffManagementTable = () => {
     isRefetching,
     refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
+
   const { mutateAsync, isSuccess, isError: addExpenseError } = useCreateStaff();
 
-  const { mutateAsync: editExpense } = useEditExpense();
+  const {
+    mutateAsync: editStaff,
+    isSuccess: isEditSuccess,
+    isError: isEditError,
+  } = useEditStaff();
 
   const {
     mutateAsync: deleteUser,
@@ -79,12 +102,23 @@ const StaffManagementTable = () => {
     isError: isDeleteError,
   } = useDeleteStaff();
 
-  const editExpenseRow = async (formData: any) => {
+  const editStaffRow = async (
+    // event: React.FormEvent<HTMLFormElement>,
+    id: number,
+    formData: any
+  ) => {
+    // event.preventDefault();
+
     try {
-      await editExpense(formData?.id, formData);
+      const data = {
+        ...formData,
+        id,
+      };
+      await editStaff(data);
       reset({
         formData: {},
       });
+      table.setEditingRow(null);
     } catch (error) {
       const customError = error as CustomError;
       dispatch(setMessage(customError?.response?.data?.message));
@@ -116,6 +150,11 @@ const StaffManagementTable = () => {
   const columns = useMemo<MRT_ColumnDef<Staff>[]>(
     () => [
       {
+        accessorKey: "id",
+        header: "Id",
+        enableEditing: false,
+      },
+      {
         accessorKey: "f_name",
         header: "First Name",
       },
@@ -139,10 +178,14 @@ const StaffManagementTable = () => {
   const table = useMaterialReactTable({
     columns,
     data: isLoading ? [] : allStaffData?.staff ?? [],
-    initialState: { showColumnFilters: true, showGlobalFilter: true },
+    initialState: {
+      showColumnFilters: false,
+      showGlobalFilter: true,
+      columnVisibility: { id: false },
+    },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    onColumnFiltersChange: setColumnFilters,
+    // onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -167,7 +210,7 @@ const StaffManagementTable = () => {
         </p>
       </div>
     ),
-    renderEditRowDialogContent: () => (
+    renderEditRowDialogContent: ({ table, row }) => (
       <div className="p-10">
         {showToast && (
           <p
@@ -182,62 +225,71 @@ const StaffManagementTable = () => {
             {toastMessage}
           </p>
         )}
-        <p className="mb-2">Update Expense</p>
+        <p className="mb-2">Staff Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(editExpenseRow)}
+          onSubmit={handleSubmit((data) =>
+            editStaffRow(row.original.id ?? 0, data)
+          )}
         >
           <Controller
-            name="expenseTitle"
+            name="f_name"
             control={control}
-            defaultValue=""
+            defaultValue={row.original.f_name}
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
                 type="text"
                 {...field}
-                placeholder="Expense"
+                placeholder="Staff Name"
               />
             )}
             rules={{ required: true }}
           />
           <Controller
-            name="expenseAmount"
+            name="phone"
             control={control}
-            defaultValue=""
+            defaultValue={row.original.phone}
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="number"
-                {...field}
-                placeholder="Amount"
-              />
-            )}
-            rules={{ required: true }}
-          />
-          <Controller
-            name="description"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
                 type="text"
                 {...field}
-                placeholder="Description"
+                placeholder="Phone Number"
+              />
+            )}
+            rules={{ required: true }}
+          />
+          <Controller
+            name="role"
+            control={control}
+            defaultValue={row.original.role}
+            render={({ field }) => (
+              <input
+                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
+                type="text"
+                {...field}
+                placeholder="Role"
               />
             )}
             rules={{ required: true }}
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
-              onClick={() => table.setEditingRow(null)}
+              onClick={() => {
+                table.setEditingRow(null);
+                reset();
+              }}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              label="Save"
+              variant="primary"
+              // onClick={() => table.setEditingRow(row)}
+            />
           </div>
         </form>
       </div>
@@ -265,7 +317,6 @@ const StaffManagementTable = () => {
           <Controller
             name="f_name"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -279,7 +330,6 @@ const StaffManagementTable = () => {
           <Controller
             name="phone"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -293,11 +343,9 @@ const StaffManagementTable = () => {
           <Controller
             name="role"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
                 type="text"
                 {...field}
                 placeholder="Role"
@@ -307,6 +355,7 @@ const StaffManagementTable = () => {
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
               onClick={() => {
                 table.setCreatingRow(null);
@@ -330,7 +379,7 @@ const StaffManagementTable = () => {
       </Button>
     ),
     state: {
-      columnFilters,
+      // columnFilters,
       globalFilter,
       isLoading,
       pagination,
@@ -342,8 +391,12 @@ const StaffManagementTable = () => {
 
   return (
     <>
-      {isDeleteError && <Toast message={toastMessage} type="error" />}
-      {isDeleteSuccess && <Toast message={toastMessage} type="success" />}
+      {(isDeleteError || isEditError) && (
+        <Toast message={toastMessage} type="error" />
+      )}
+      {(isDeleteSuccess || isEditSuccess) && (
+        <Toast message={toastMessage} type="success" />
+      )}
       <MaterialReactTable table={table} />
     </>
   );

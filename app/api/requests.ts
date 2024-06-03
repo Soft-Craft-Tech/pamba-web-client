@@ -145,41 +145,12 @@ export const useCreateExpenseAccounts = () => {
   });
 };
 
-export const useCreateStaff = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async ({ f_name, phone, role }) => {
-    const response = await apiCall(
-      "POST",
-      `${endpoints.createStaff}`,
-      { f_name, phone, role },
-      {}
-    );
-    dispatch(setMessage(response.message));
-    return response;
-  });
-};
-
 export const useDeleteExpense = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(async (expense_id: number) => {
     const response = await apiCall(
       "DELETE",
       `${endpoints.deleteExpenses}${expense_id}`,
-      {},
-      {}
-    );
-    dispatch(setMessage(response.message));
-    dispatch(setShowToast(true));
-    return response;
-  });
-};
-
-export const useDeleteStaff = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async (staff_id: number) => {
-    const response = await apiCall(
-      "DELETE",
-      `${endpoints.deleteStaff}${staff_id}`,
       {},
       {}
     );
@@ -205,6 +176,51 @@ export const useEditExpense = () => {
     }, 3000);
     return response;
   });
+};
+
+export const useCreateStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async ({ f_name, phone, role }) => {
+    const response = await apiCall(
+      "POST",
+      `${endpoints.createStaff}`,
+      { f_name, phone, role },
+      {}
+    );
+    dispatch(setMessage(response.message));
+    return response;
+  });
+};
+
+export const useDeleteStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async (staff_id: number) => {
+    const response = await apiCall(
+      "DELETE",
+      `${endpoints.deleteStaff}${staff_id}`,
+      {},
+      {}
+    );
+    dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
+    return response;
+  });
+};
+
+export const useEditStaff = () => {
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, any>(async ({ id, f_name, phone, role }) => {
+    const response = await apiCall(
+      "PUT",
+      `${endpoints.editStaff}${id}`,
+      { phone, role },
+      {}
+    );
+    dispatch(setMessage(response.message));
+    dispatch(setShowToast(true));
+    return response;
+  },
+);
 };
 
 export const useGetProfileCompletionStatus = () => {
