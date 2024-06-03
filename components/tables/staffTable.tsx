@@ -45,19 +45,12 @@ const StaffManagementTable = () => {
   const { toastMessage } = useSelector((state: RootState) => ({
     toastMessage: state.toast.toastMessage,
   }));
+
   const { showToast } = useSelector((state: RootState) => ({
     showToast: state.toast.showToast,
   }));
-  const {
-    control,
-    handleSubmit,
-    reset,
-    setValue,
-    getValues,
-    clearErrors,
-    watch,
-    formState: { errors },
-  } = useForm<DynamicObject>({
+
+  const { control, handleSubmit, reset } = useForm<DynamicObject>({
     defaultValues: {
       formData: {
         f_name: "",
@@ -66,10 +59,6 @@ const StaffManagementTable = () => {
       },
     },
   });
-
-  // const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-  //   []
-  // );
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -88,12 +77,18 @@ const StaffManagementTable = () => {
     refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
 
-  const { mutateAsync, isSuccess, isError: addExpenseError } = useCreateStaff();
+  const {
+    mutateAsync,
+    isSuccess,
+    isError: createStuffError,
+    status: createStuffStatus,
+  } = useCreateStaff();
 
   const {
     mutateAsync: editStaff,
     isSuccess: isEditSuccess,
     isError: isEditError,
+    status: editStuffStatus,
   } = useEditStaff();
 
   const {
@@ -102,13 +97,7 @@ const StaffManagementTable = () => {
     isError: isDeleteError,
   } = useDeleteStaff();
 
-  const editStaffRow = async (
-    // event: React.FormEvent<HTMLFormElement>,
-    id: number,
-    formData: any
-  ) => {
-    // event.preventDefault();
-
+  const editStaffRow = async (id: number, formData: any) => {
     try {
       const data = {
         ...formData,
@@ -125,7 +114,7 @@ const StaffManagementTable = () => {
     }
   };
 
-  const submitExpense = async (formData: any) => {
+  const submitStuffDetails = async (formData: any) => {
     try {
       await mutateAsync(formData);
       refetchAllStaff();
@@ -139,7 +128,7 @@ const StaffManagementTable = () => {
     }
   };
 
-  if (isSuccess || addExpenseError) {
+  if (isSuccess || createStuffError) {
     dispatch(setShowToast(true));
     setTimeout(() => {
       dispatch(setShowToast(false));
@@ -153,6 +142,7 @@ const StaffManagementTable = () => {
         accessorKey: "id",
         header: "Id",
         enableEditing: false,
+        enableGlobalFilter: false,
       },
       {
         accessorKey: "f_name",
@@ -185,7 +175,10 @@ const StaffManagementTable = () => {
     },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    // onColumnFiltersChange: setColumnFilters,
+    muiSearchTextFieldProps: {
+      placeholder: "Search by Name, Phone, Role",
+      sx: { minWidth: "400px" },
+    },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -215,7 +208,7 @@ const StaffManagementTable = () => {
         {showToast && (
           <p
             className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${
-              addExpenseError
+              createStuffError
                 ? "bg-red-100 text-red-700"
                 : isSuccess
                 ? "bg-green-100 text-green-700"
@@ -235,6 +228,7 @@ const StaffManagementTable = () => {
           <Controller
             name="f_name"
             control={control}
+            disabled
             defaultValue={row.original.f_name}
             render={({ field }) => (
               <input
@@ -288,7 +282,7 @@ const StaffManagementTable = () => {
             <Button
               label="Save"
               variant="primary"
-              // onClick={() => table.setEditingRow(row)}
+              disabled={editStuffStatus === "loading"}
             />
           </div>
         </form>
@@ -299,7 +293,7 @@ const StaffManagementTable = () => {
         {showToast && (
           <p
             className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${
-              addExpenseError
+              createStuffError
                 ? "bg-red-100 text-red-700"
                 : isSuccess
                 ? "bg-green-100 text-green-700"
@@ -312,7 +306,7 @@ const StaffManagementTable = () => {
         <p className="mb-2">Create Staff Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(submitExpense)}
+          onSubmit={handleSubmit(submitStuffDetails)}
         >
           <Controller
             name="f_name"
@@ -363,7 +357,11 @@ const StaffManagementTable = () => {
             >
               Cancel
             </button>
-            <Button label="Save Staff" variant="primary" />
+            <Button
+              label="Save Staff"
+              variant="primary"
+              disabled={createStuffStatus === "loading"}
+            />
           </div>
         </form>
       </div>
@@ -379,7 +377,6 @@ const StaffManagementTable = () => {
       </Button>
     ),
     state: {
-      // columnFilters,
       globalFilter,
       isLoading,
       pagination,

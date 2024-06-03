@@ -3,7 +3,7 @@ import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export const useChangeImageMutation = () => {
   return useMutation<void, Error, CloudinaryData>(
@@ -79,22 +79,6 @@ export const useGetExpenseAccounts = () => {
       return response;
     } catch (error) {
       throw new Error("Unable to fetch Accounts");
-    }
-  });
-};
-
-export const useGetAllStaff = (slug: string) => {
-  return useQuery("", async () => {
-    try {
-      const response = await apiCall(
-        "GET",
-        `${endpoints.getStaff}${slug}`,
-        {},
-        {}
-      );
-      return response || {};
-    } catch (error) {
-      throw new Error("Unable to fetch Staff");
     }
   });
 };
@@ -178,6 +162,22 @@ export const useEditExpense = () => {
   });
 };
 
+export const useGetAllStaff = (slug: string) => {
+  return useQuery("getAllStaff", async () => {
+    try {
+      const response = await apiCall(
+        "GET",
+        `${endpoints.getStaff}${slug}`,
+        {},
+        {}
+      );
+      return response || {};
+    } catch (error) {
+      throw new Error("Unable to fetch Staff");
+    }
+  });
+};
+
 export const useCreateStaff = () => {
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(async ({ f_name, phone, role }) => {
@@ -193,34 +193,49 @@ export const useCreateStaff = () => {
 };
 
 export const useDeleteStaff = () => {
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async (staff_id: number) => {
-    const response = await apiCall(
-      "DELETE",
-      `${endpoints.deleteStaff}${staff_id}`,
-      {},
-      {}
-    );
-    dispatch(setMessage(response.message));
-    dispatch(setShowToast(true));
-    return response;
-  });
+  return useMutation<void, Error, any>(
+    async (staff_id: number) => {
+      const response = await apiCall(
+        "DELETE",
+        `${endpoints.deleteStaff}${staff_id}`,
+        {},
+        {}
+      );
+      dispatch(setMessage(response.message));
+      dispatch(setShowToast(true));
+      return response;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getAllStaff");
+      },
+    }
+  );
 };
 
 export const useEditStaff = () => {
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async ({ id, f_name, phone, role }) => {
-    const response = await apiCall(
-      "PUT",
-      `${endpoints.editStaff}${id}`,
-      { phone, role },
-      {}
-    );
-    dispatch(setMessage(response.message));
-    dispatch(setShowToast(true));
-    return response;
-  },
-);
+  return useMutation<void, Error, any>(
+    async ({ id, f_name, phone, role }) => {
+      const response = await apiCall(
+        "PUT",
+        `${endpoints.editStaff}${id}`,
+        { phone, role },
+        {}
+      );
+      dispatch(setMessage(response.message));
+      dispatch(setShowToast(true));
+      return response;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getAllStaff");
+      },
+    }
+  );
 };
 
 export const useGetProfileCompletionStatus = () => {
