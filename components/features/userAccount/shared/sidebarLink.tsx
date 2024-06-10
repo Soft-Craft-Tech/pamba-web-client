@@ -3,8 +3,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppSelector } from "@/hooks";
-import { RootState } from "@/store/store";
 import { logoutUser } from "@/utils/auth";
 
 interface SideBarLinkProps {

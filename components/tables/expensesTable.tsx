@@ -16,9 +16,9 @@ import {
   useCreateExpense,
   useDeleteExpense,
   useEditExpense,
-  useGetExpenseAccounts,
   useGetExpenses,
-} from "@/app/api/requests";
+} from "@/app/api/expenses";
+import { useGetExpenseAccounts } from "@/app/api/accounts";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
@@ -70,7 +70,7 @@ const Table = () => {
     isLoading,
     isError,
     isRefetching,
-    refetch: refetchExpenses,
+    // refetch: refetchExpenses,
   } = useGetExpenses();
   const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
     useGetExpenseAccounts();
@@ -103,7 +103,6 @@ const Table = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
-      refetchExpenses();
       reset({
         formData: {},
       });
@@ -121,6 +120,9 @@ const Table = () => {
       // table.setEditingRow(null);
     }, 3000);
   }
+  // if (isDeleteSuccess || isSuccess) {
+  //   refetchExpenses();
+  // }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
@@ -151,7 +153,6 @@ const Table = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Expense>) => {
     deleteUser(row.original.id);
-    refetchExpenses();
   };
 
   const table = useMaterialReactTable({
@@ -400,7 +401,7 @@ const Table = () => {
       isLoading,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
+      // showProgressBars: isRefetching,
       sorting,
     },
   });

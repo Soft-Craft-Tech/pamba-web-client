@@ -1,5 +1,15 @@
 "use client";
-import { useMemo, useState } from "react";
+import {
+  useCreateStaff,
+  useDeleteStaff,
+  useEditStaff,
+  useGetAllStaff,
+} from "@/app/api/staff";
+import { useAppDispatch } from "@/hooks";
+import { RootState } from "@/store/store";
+import { setMessage, setShowToast } from "@/store/toastSlice";
+import Button from "@/ui/button";
+import { getUser } from "@/utils/auth";
 import {
   MRT_Row,
   MaterialReactTable,
@@ -8,21 +18,11 @@ import {
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import Button from "@/ui/button";
-import {
-  useCreateStaff,
-  useDeleteStaff,
-  useEditStaff,
-  useGetAllStaff,
-} from "@/app/api/requests";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { DynamicObject } from "../types";
-import { useAppDispatch } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import Toast from "../shared/toasts/authToast";
-import { getUser } from "@/utils/auth";
+import { DynamicObject } from "../types";
 
 type Staff = {
   f_name: string;
@@ -73,7 +73,7 @@ const StaffManagementTable = () => {
     isLoading,
     isError,
     isRefetching,
-    refetch: refetchAllStaff,
+    // refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
 
   const {
@@ -116,7 +116,7 @@ const StaffManagementTable = () => {
   const submitStuffDetails = async (formData: any) => {
     try {
       await mutateAsync(formData);
-      refetchAllStaff();
+      // refetchAllStaff();
       reset({
         formData: {},
       });
@@ -161,7 +161,7 @@ const StaffManagementTable = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
     deleteUser(row.original.id);
-    refetchAllStaff();
+    // refetchAllStaff();
   };
 
   const table = useMaterialReactTable({
@@ -380,7 +380,7 @@ const StaffManagementTable = () => {
       isLoading,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
+      // showProgressBars: isRefetching,
       sorting,
     },
   });
