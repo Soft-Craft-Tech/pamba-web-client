@@ -102,6 +102,7 @@ const StaffManagementTable = () => {
         ...formData,
         id,
       };
+
       await editStaff(data);
       reset({
         formData: {},
