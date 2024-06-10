@@ -35,10 +35,10 @@ const CreateAccount = () => {
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
       <h3 className="font-medium w-full text-lg text-center">Create Account</h3>
-      <div className="flex gap-2 w-32 h-3 justify-center items-center text-blue-500 font-semibold">
+      <div className="flex gap-2 w-32 h-3 justify-center items-center text-accent font-semibold">
         <p>1</p>
         <div className="w-24 h-[3px] bg-blue-200 flex justify-start items-center text-center">
-          <div className={`h-[3px] bg-blue-600 w-1/2`}></div>
+          <div className={`h-[3px] bg-accent w-1/2`}></div>
         </div>
         <p>2</p>
       </div>
@@ -46,7 +46,7 @@ const CreateAccount = () => {
         className="p-3 w-full flex flex-col gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col gap-5 lg:gap-4">
+        <div className="flex flex-col gap-5 lg:gap-5">
           <input
             className="border w-full h-14 py-1 px-2  lg:h-12"
             type="email"
@@ -75,7 +75,7 @@ const CreateAccount = () => {
               onClick={() => {
                 setShowPassword(!showPassword);
               }}
-              className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300"
+              className="absolute flex items-center  h-full w-max right-0 px-2 cursor-pointer hover:text-gray-300"
             >
               {showPassword ? (
                 <Image
@@ -101,18 +101,18 @@ const CreateAccount = () => {
             <div>
               <div className="flex w-full h-10 items-center gap-x-2">
                 <input
-                  className="h-5 w-5"
+                  id="termsandconditions"
                   type="checkbox"
                   {...register("acceptedTerms", {
                     required: "Please accept terms and conditions",
                   })}
                   defaultChecked={acceptedTerms}
                 />
-                <span className="text-sm flex gap-2">
+                <span className="text-xs flex flex-wrap gap-x-1 font-normal sm:font-medium sm:text-sm sm:gap-x-2">
                   Accept
-                  <Link href="/terms-and-conditions">Terms and Conditions</Link>
+                  <Link className="text-accent font-semibold" href="/terms-and-conditions">Terms and Conditions</Link>
                   and
-                  <Link href="/privacy-policy">Privacy Policy</Link>
+                  <Link className="text-accent font-semibold" href="/privacy-policy">Privacy Policy</Link>
                 </span>
               </div>
               {errors.acceptedTerms && (
@@ -125,13 +125,19 @@ const CreateAccount = () => {
         </div>
         <div className="flex h-auto w-full">
           <button
-            className="bg-primary w-full h-full py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary flex justify-center items-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             type="submit"
           >
-            Create Account
+            Next
           </button>
         </div>
       </form>
+      <div className="flex w-full h-6 gap-2 items-center justify-center">
+        <p className="text-muted text-sm">Already have an account? </p>
+        <Link className="text-accent font-bold text-sm" href="/login">
+          Login
+        </Link>
+      </div>
     </div>
   );
 };

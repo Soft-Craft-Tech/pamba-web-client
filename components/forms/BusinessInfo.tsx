@@ -72,10 +72,10 @@ const BusinessInfo = () => {
       <h3 className="font-medium w-full text-lg text-center">
         Business Information
       </h3>
-      <div className="flex gap-2 w-32 h-3 justify-center items-center text-blue-500 font-semibold">
+      <div className="flex gap-2 w-32 h-3 justify-center items-center text-accent font-semibold">
         <p>1</p>
         <div className="w-24 h-[3px] bg-blue-200 flex justify-start items-center text-center">
-          <div className={`h-[3px] bg-blue-600 w-full`}></div>
+          <div className={`h-[3px] bg-accent w-full`}></div>
         </div>
         <p>2</p>
       </div>
@@ -201,7 +201,7 @@ const BusinessInfo = () => {
           </div>
           <button
             type="submit"
-            className="bg-primary w-full h-full py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary flex items-center justify-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? "Submitting" : "Submit"}
