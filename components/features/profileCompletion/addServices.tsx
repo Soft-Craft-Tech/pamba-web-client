@@ -3,15 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import AddServicesForm from "../../forms/addServicesForm";
 import ProfileProgress from "@/components/core/cards/progress";
-import {
-  useAssignService,
-  useGetAllServices,
-  useGetServices,
-} from "@/app/api/requests";
+import { useAssignService } from "@/app/api/businesses";
+import { useGetServiceCategories } from "@/app/api/services";
 import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";
 import { usePathname } from "next/navigation";
+// import { getUser } from "@/utils/auth";
 
 export default function AddServices() {
   const dispatch = useDispatch();
@@ -26,13 +24,16 @@ export default function AddServices() {
     toastMessage: state.toast.toastMessage,
   }));
 
-  const { data } = useGetServices();
-  const { refetch } = useGetAllServices();
+  // const { client } = getUser();
+
+  const { data } = useGetServiceCategories();
+  // const { refetch } = useGetAllServices(client?.slug);
 
   const {
     mutate: assignServices,
     isLoading: postingServices,
     error: errorPosting,
+    isSuccess: successPosting,
   } = useAssignService();
 
   const handleNext = () => {
@@ -50,13 +51,17 @@ export default function AddServices() {
   const handleSubmitServices = () => {
     if (queuedServices.length !== 0) {
       assignServices(queuedServices);
-      refetch();
     }
     handleNext();
   };
 
+  // if (successPosting) {
+  //   // refetch();
+  // }
+
   return (
     <div className="w-full h-auto flex flex-col gap-5 px-5 py-10">
+      {successPosting && <Toast message={toastMessage} type="success" />}
       {errorPosting && <Toast message={toastMessage} type="error" />}
       {pathname !== "/user/services" && <ProfileProgress />}
       <div className="flex gap-10 w-full flex-col md:flex-row">

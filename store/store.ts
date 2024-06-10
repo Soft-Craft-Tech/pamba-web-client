@@ -1,23 +1,5 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import stepsReducer from "./signUpSlice";
-import signUpSlice from "./createAccountSlice";
-import toastSlice from "./toastSlice";
-import hamburgerSlice from "./sideHamburgerSlice";
-import completeProfileSlice from "./completeProfileSlice";
-import tabSlice from "./settingsTabSlice";
-import loadingSlice from "./loadingSlice";
-import searchSlice from "./searchSlice";
-
-const rootReducer = combineReducers({
-  steps: stepsReducer,
-  signUp: signUpSlice,
-  toast: toastSlice,
-  hamburger: hamburgerSlice,
-  completeProfile: completeProfileSlice,
-  settingsTab: tabSlice,
-  loading: loadingSlice,
-  search: searchSlice,
-});
+import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./rootReducer";
 
 export const makeStore = () => {
   return configureStore({

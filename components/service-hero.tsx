@@ -4,11 +4,6 @@ import LocationIcon from "@/ui/icons/location";
 import SearchIcon from "@/ui/icons/search";
 import React, { ChangeEvent, useState } from "react";
 
-interface Service {
-  name: string;
-  location: string;
-}
-
 interface ServiceHeroProps {
   onSearch?: (service: string, shop: string) => void;
 }
@@ -35,10 +30,10 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
     }
   };
   return (
-    <section className="h-auto bg-secondary">
-      <div className="grid h-[90vh] w-full mx-auto lg:gap-8 xl:gap-0  lg:grid-cols-2">
-        <div className="mr-auto px-16 place-self-center w-full">
-          <p className="text-lg uppercase text-white">
+    <section className="h-auto md:bg-secondary">
+      <div className="grid md:h-[90vh] w-full mx-auto lg:gap-8 xl:gap-0  lg:grid-cols-2">
+        <div className="mr-auto md:px-16 px-4 md:place-self-center w-full">
+          <p className="text-xs md:text-lg uppercase md:text-white pb-4 md:pb-0">
             Hair Salon, Barber shop, spa, makeup
           </p>
           <h1 className="max-w-lg mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-primary ">
@@ -71,14 +66,14 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
             </div>
             <button
               onClick={handleClick}
-              className="bg-primary w-1/5 hover:bg-primary  text-white font-bold py-2 px-4 rounded-r-md"
+              className="bg-primary w-1/5 hover:bg-primary text-sm md:text-base text-white font-bold md:py-2 md:px-4 rounded-r-md"
             >
               Search
             </button>
           </div>
         </div>
         <div
-          className="relative lg:mt-0  lg:flex"
+          className="relative lg:mt-0  lg:flex hidden md:block"
           style={{
             backgroundImage: "url('/findservice.svg')",
             backgroundRepeat: "no-repeat",

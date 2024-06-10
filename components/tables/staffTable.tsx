@@ -13,9 +13,9 @@ import Button from "@/ui/button";
 import {
   useCreateStaff,
   useDeleteStaff,
-  useEditExpense,
   useGetAllStaff,
-} from "@/app/api/requests";
+} from "@/app/api/staff";
+import { useEditStaff } from "@/app/api/staff";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
 import { useAppDispatch } from "@/hooks";
@@ -67,11 +67,15 @@ const StaffManagementTable = () => {
     isLoading,
     isError,
     isRefetching,
-    refetch: refetchAllStaff,
+    // refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
   const { mutateAsync, isSuccess, isError: addExpenseError } = useCreateStaff();
 
-  const { mutateAsync: editExpense } = useEditExpense();
+  const {
+    mutateAsync: editStaff,
+    isSuccess: isEditSuccess,
+    isError: isEditError,
+  } = useEditStaff();
 
   const {
     mutateAsync: deleteUser,
@@ -81,7 +85,7 @@ const StaffManagementTable = () => {
 
   const editExpenseRow = async (formData: any) => {
     try {
-      await editExpense(formData?.id, formData);
+      await editStaff(formData?.id, formData);
       reset({
         formData: {},
       });
@@ -94,7 +98,7 @@ const StaffManagementTable = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
-      refetchAllStaff();
+      // refetchAllStaff();
       reset({
         formData: {},
       });
@@ -133,7 +137,7 @@ const StaffManagementTable = () => {
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
     deleteUser(row.original.id);
-    refetchAllStaff();
+    // refetchAllStaff();
   };
 
   const table = useMaterialReactTable({
@@ -182,7 +186,7 @@ const StaffManagementTable = () => {
             {toastMessage}
           </p>
         )}
-        <p className="mb-2">Update Expense</p>
+        <p className="mb-2">Update Staff</p>
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(editExpenseRow)}
@@ -196,7 +200,7 @@ const StaffManagementTable = () => {
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
                 type="text"
                 {...field}
-                placeholder="Expense"
+                placeholder="Staff Name"
               />
             )}
             rules={{ required: true }}
@@ -210,7 +214,7 @@ const StaffManagementTable = () => {
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
                 type="number"
                 {...field}
-                placeholder="Amount"
+                placeholder="Phone Number"
               />
             )}
             rules={{ required: true }}
@@ -225,7 +229,7 @@ const StaffManagementTable = () => {
                 defaultValue=""
                 type="text"
                 {...field}
-                placeholder="Description"
+                placeholder="Role"
               />
             )}
             rules={{ required: true }}
@@ -237,7 +241,7 @@ const StaffManagementTable = () => {
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button label="Save Staff" variant="primary" />
           </div>
         </form>
       </div>
@@ -335,7 +339,7 @@ const StaffManagementTable = () => {
       isLoading,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
+      // showProgressBars: isRefetching,
       sorting,
     },
   });

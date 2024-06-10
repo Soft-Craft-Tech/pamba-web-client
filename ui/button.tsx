@@ -1,6 +1,11 @@
 import React, { ButtonHTMLAttributes, MouseEvent } from "react";
 
-type ButtonVariants = "primary" | "secondary" | "default" | "outline";
+type ButtonVariants =
+  | "primary"
+  | "secondary"
+  | "default"
+  | "outline"
+  | "disabled";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
@@ -28,6 +33,8 @@ const Button: React.FC<ButtonProps> = ({
     secondary: "w-max  px-10 py-2 text-[#828188] rounded-full text-sm ",
     default:
       "bg-gray-300 text-gray-700 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2",
+    disabled:
+      "opacity-50 cursor-not-allowed w-max border border-borders bg-primary px-10 py-2 text-white rounded-full text-sm font-semibold",
   };
 
   const buttonClasses = `${baseClasses} ${variantClasses[variant]}`;

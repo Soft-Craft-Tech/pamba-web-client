@@ -10,20 +10,20 @@ export default function UserTopBar() {
   return (
     <div className="w-full h-10 bg-background flex justify-between items-center">
       <h2 className="capitalize text-lg font-bold">{currentPage}</h2>
-      <div className="flex h-full items-center gap-10">
+      <div className="flex h-full items-center gap-5">
         <Image
           src="/user-icons/notifications-icon.svg"
           alt=""
-          width={20}
-          height={20}
+          width={25}
+          height={25}
         />
         <Link href={`/user/settings`}>
           <Image
             className=""
-            src="/user-icons/profile-icon.svg"
+            src="/user-icons/settings.svg"
             alt=""
-            width={35}
-            height={35}
+            width={25}
+            height={25}
           />
         </Link>
       </div>

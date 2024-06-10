@@ -18,7 +18,7 @@ import {
   useEditExpense,
   useGetExpenseAccounts,
   useGetExpenses,
-} from "@/app/api/requests";
+} from "@/app/api/expenses";
 import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import { DynamicObject } from "../types";
@@ -53,10 +53,16 @@ const Table = () => {
   const { showToast } = useSelector((state: RootState) => ({
     showToast: state.toast.showToast,
   }));
-  const { control, handleSubmit, reset } = useForm<DynamicObject>();
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  const { control, handleSubmit, reset } = useForm<DynamicObject>({
+    defaultValues: {
+      formData: {
+        expenseTitle: "",
+        expenseAmount: "",
+        description: "",
+        accountID: "",
+      },
+    },
+  });
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -78,6 +84,7 @@ const Table = () => {
     mutateAsync,
     isSuccess,
     isError: addExpenseError,
+    status: createExpenseStatus,
   } = useCreateExpense();
 
   const {
@@ -86,10 +93,12 @@ const Table = () => {
     isError: isDeleteError,
   } = useDeleteExpense();
 
-  const { mutateAsync: editExpense } = useEditExpense();
+  const { mutateAsync: editExpense, status: editExpenseStatus } =
+    useEditExpense();
 
   const editExpenseRow = async (formData: any) => {
     try {
+      console.log(formData);
       await editExpense(formData?.id, formData);
       reset({
         formData: {},
@@ -157,10 +166,9 @@ const Table = () => {
   const table = useMaterialReactTable({
     columns,
     data: isLoading ? [] : data?.expenses ?? [],
-    initialState: { showColumnFilters: true, showGlobalFilter: true },
+    initialState: { showGlobalFilter: true },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -209,7 +217,6 @@ const Table = () => {
           <Controller
             name="expenseTitle"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -221,9 +228,8 @@ const Table = () => {
             rules={{ required: true }}
           />
           <Controller
-            name="expenseAmount"
+            name="amount"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -237,11 +243,9 @@ const Table = () => {
           <Controller
             name="description"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
                 type="text"
                 {...field}
                 placeholder="Description"
@@ -252,7 +256,6 @@ const Table = () => {
           <Controller
             name="accountID"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <select
                 {...field}
@@ -274,12 +277,17 @@ const Table = () => {
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
               onClick={() => table.setEditingRow(null)}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              label="Save Expense"
+              variant="primary"
+              disabled={editExpenseStatus === "loading"}
+            />
           </div>
         </form>
       </div>
@@ -307,7 +315,6 @@ const Table = () => {
           <Controller
             name="expenseTitle"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -321,7 +328,6 @@ const Table = () => {
           <Controller
             name="expenseAmount"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -335,11 +341,9 @@ const Table = () => {
           <Controller
             name="description"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
                 type="text"
                 {...field}
                 placeholder="Description"
@@ -350,7 +354,6 @@ const Table = () => {
           <Controller
             name="accountID"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <select
                 {...field}
@@ -379,7 +382,11 @@ const Table = () => {
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              label="Save Expense"
+              variant="primary"
+              disabled={createExpenseStatus === "loading"}
+            />
           </div>
         </form>
       </div>
@@ -388,14 +395,22 @@ const Table = () => {
       <Button
         variant="primary"
         onClick={() => {
-          table.setCreatingRow(true);
+          expenseAccountsData.account.length > 1 ? (
+            table.setCreatingRow(true)
+          ) : (
+            <Toast
+              message={
+                "Complete your profile setup first before creating expense"
+              }
+              type="error"
+            />
+          );
         }}
       >
         Create Expense
       </Button>
     ),
     state: {
-      columnFilters,
       globalFilter,
       isLoading,
       pagination,

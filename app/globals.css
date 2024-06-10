@@ -18,3 +18,31 @@ input[type="checkbox"].form-checkbox:checked {
   --gradient-end-4: rgba(15, 28, 53, 0);
   --gradient-angle: 89.61deg;
 }
+
+.swiper {
+  padding: 0 40px !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #000000 !important;
+}
+
+.swiper-button-next {
+  right: -0.1px !important;
+}
+
+.swiper-button-prev {
+  left: -0.1px !important;
+}
+
+.swiper-slide,
+.swiper-slide-active {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.apexcharts-canvas {
+  z-index: 0 !important;
+}

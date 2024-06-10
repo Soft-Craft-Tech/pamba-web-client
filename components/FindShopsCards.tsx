@@ -4,6 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Explorer from "./Explorer";
 import { DynamicObject } from "./types";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
 
 const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
   return (
@@ -12,18 +16,42 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
         btnText={"RECOMMENDED"}
         header={"Find premier shops and beauty centers close to you"}
       />
-      <div className="flex flex-col lg:flex-row lg:w-full  justify-evenly mb-12 gap-x-4 gap-y-4">
-        {sliderData?.map(
-          ({ profile_img, business_name, id, location, slug }) => (
-            <Explorer
-              key={id}
-              imageUrl={profile_img}
-              shopName={business_name}
-              location={location}
-              href={slug}
-            />
-          )
-        )}
+      <div className="w-full">
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          navigation={true}
+          slidesPerView={1}
+          spaceBetween={0}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          }}
+          className="mySwiper w-full"
+        >
+          {sliderData?.map(
+            ({ profile_img, business_name, id, location, slug }) => (
+              <SwiperSlide key={id} className="">
+                <Explorer
+                  imageUrl={profile_img}
+                  shopName={business_name}
+                  location={location}
+                  href={slug}
+                />
+              </SwiperSlide>
+            )
+          )}
+        </Swiper>
       </div>
       <Link
         href="/booking/all-shops"

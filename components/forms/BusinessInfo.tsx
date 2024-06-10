@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import Toast from "../shared/toasts/authToast";
 import { setMessage, setShowToast } from "@/store/toastSlice";
-import { useGetCategories } from "@/app/api/requests";
+import { useGetCategories } from "@/app/api/businesses";
 
 interface CustomError extends Error {
   response?: {

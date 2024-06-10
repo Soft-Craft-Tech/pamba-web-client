@@ -5,6 +5,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { setMobileSidebar } from "@/store/sideHamburgerSlice";
+import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 export default function SideBarHamburger() {
   const showMenu = useAppSelector(
@@ -19,6 +20,7 @@ export default function SideBarHamburger() {
           size={30}
           onClick={() => {
             dispacth(setMobileSidebar(true));
+            disablePageScroll();
           }}
         />
       ) : (
@@ -26,6 +28,7 @@ export default function SideBarHamburger() {
           size={30}
           onClick={() => {
             dispacth(setMobileSidebar(false));
+            enablePageScroll();
           }}
         />
       )}

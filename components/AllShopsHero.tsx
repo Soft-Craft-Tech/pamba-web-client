@@ -1,9 +1,35 @@
+import { useAppDispatch } from "@/hooks";
+import { setSearchQuery } from "@/store/searchSlice";
 import FilterIcon from "@/ui/icons/filter";
 import LocationIcon from "@/ui/icons/location";
 import SearchIcon from "@/ui/icons/search";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 
-const AllShopsHero = () => {
+interface ServiceHeroProps {
+  onSearch?: (service: string, shop: string) => void;
+}
+
+const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
+  const dispatch = useAppDispatch();
+
+  const [service, setService] = useState("");
+  const [shop, setShop] = useState("");
+
+  const handleServiceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setService(event.target.value);
+    dispatch(setSearchQuery(service));
+  };
+
+  const handleShopChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setShop(event.target.value);
+    dispatch(setSearchQuery(shop));
+  };
+
+  const handleClick = () => {
+    if (onSearch) {
+      onSearch(service, shop);
+    }
+  };
   const filterBtn = [
     "BarberShop",
     "Salon",
@@ -16,7 +42,7 @@ const AllShopsHero = () => {
   return (
     <section className="h-auto">
       <div
-        className="w-full px-10 flex flex-col items-center h-[60vh] justify-center"
+        className="w-full px-10 flex flex-col items-center h-[70vh] justify-center"
         style={{
           backgroundImage:
             "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/all-shops.png')",
@@ -34,6 +60,8 @@ const AllShopsHero = () => {
               <input
                 type="text"
                 placeholder="Service"
+                value={service}
+                onChange={handleServiceChange}
                 className="py-2 px-4 text-black focus:outline-primary"
               />
             </div>
@@ -42,11 +70,18 @@ const AllShopsHero = () => {
               <input
                 type="text"
                 placeholder="Shop"
+                value={shop}
+                onChange={handleShopChange}
                 className="py-2 px-4 w-full text-black focus:outline-primary"
               />
             </div>
           </div>
-          <button className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md">
+          <button
+            onClick={() => {
+              handleClick();
+            }}
+            className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md"
+          >
             Search
           </button>
         </div>

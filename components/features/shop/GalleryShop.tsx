@@ -1,101 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+import { useAllImages } from "@/app/api/gallery";
+import { DynamicObject } from "@/components/types";
 import React from "react";
 
-const GalleryShop = () => {
+const GalleryShop: React.FC<{ slug: string }> = ({ slug }) => {
+  const { data: imagesData } = useAllImages(slug);
   return (
     <div className="grid grid-cols-2 mt-10 md:grid-cols-4 gap-4">
-      <div className="grid gap-4">
+      {imagesData?.gallery?.length === 0 ? (
         <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
-            alt=""
-          />
+          <p>No Images Posted</p>
         </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
-            alt=""
-          />
+      ) : (
+        <div className="grid gap-4">
+          {imagesData?.gallery?.map(({ image_url, id }: DynamicObject) => (
+            <div key={id}>
+              <img
+                className="h-auto max-w-full rounded-lg"
+                src={image_url}
+                alt=""
+              />
+            </div>
+          ))}
         </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
-            alt=""
-          />
-        </div>
-      </div>
-      <div className="grid gap-4">
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg"
-            alt=""
-          />
-        </div>
-      </div>
-      <div className="grid gap-4">
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
-            alt=""
-          />
-        </div>
-      </div>
-      <div className="grid gap-4">
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
-            alt=""
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };
