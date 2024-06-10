@@ -23,16 +23,23 @@ export const useGetAllStaff = (slug: string) => {
 
 export const useCreateStaff = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(async ({ f_name, phone, role }) => {
-    const response = await apiCall(
-      "POST",
-      `${endpoints.createStaff}`,
-      { f_name, phone, role },
-      {}
-    );
-    dispatch(setMessage(response.message));
-    return response;
-  });
+  return useMutation<void, Error, any>(
+    async ({ f_name, phone, role }) => {
+      const response = await apiCall(
+        "POST",
+        `${endpoints.createStaff}`,
+        { f_name, phone, role },
+        {}
+      );
+      dispatch(setMessage(response.message));
+      return response;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getAllStaff");
+      },
+    }
+  );
 };
 
 export const useDeleteStaff = () => {
