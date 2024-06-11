@@ -133,7 +133,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
             onClick={() => {
               handleClickOpen();
             }}
-            className="bg-primary flex items-center w-max py-2 px-4 mt-2 text-white font-medium rounded-full gap-2 sm:px-8 lg:px-5"
+            className="bg-primary flex items-center w-max py-2 px-4 mt-2 text-white font-medium rounded-full gap-2 hover:bg-primaryHover hover:scale-[1.02] duration-100 delay-75 sm:px-8 lg:px-5"
           >
             Book Appointment
             <Image
@@ -223,7 +223,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       className={`px-4 py-2 flex flex-col gap-y-4 items-center justify-center cursor-pointer border-2 rounded-lg ${
                         activeSelect === index
                           ? "border-[#DB1471]"
-                          : "border-[#F2F2F2]"
+                          : "border-[#F2F2F2] hover:bg-background hover:scale-[1.02]"
                       }`}
                       onClick={() => handleDaySelect(index, dateObj)}
                     >

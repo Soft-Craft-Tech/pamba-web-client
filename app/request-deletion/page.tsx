@@ -7,7 +7,7 @@ export default function RequestDeletion() {
     <div className="w-full h-screen overflow-hidden flex flex-col gap-10 justify-center items-center lg:p-20 lg:gap-5">
       <Link href="/">
         <Image
-          className="w-36 h-auto"
+          className="w-36 h-auto hover:scale-105 duration-100 delay-100"
           src="/logo.svg"
           alt="pamba logo"
           width={40}

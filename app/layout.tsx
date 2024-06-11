@@ -3,7 +3,7 @@ import "./globals.css";
 import QueryProvider from "./QueryProvider";
 import StoreProvider from "./StoreProvider";
 
-import FloaterAppoitment from "@/components/FloaterAppoitment";
+import FloaterAppoitment from "@/components/FloaterAppointment";
 
 export const metadata: Metadata = {
   title: "Pamba App",

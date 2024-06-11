@@ -110,9 +110,9 @@ const CreateAccount = () => {
                 />
                 <span className="text-xs flex flex-wrap gap-x-1 font-normal sm:font-medium sm:text-sm sm:gap-x-2">
                   Accept
-                  <Link className="text-accent font-semibold" href="/terms-and-conditions">Terms and Conditions</Link>
+                  <Link className="text-accent font-semibold hover:underline" href="/terms-and-conditions">Terms and Conditions</Link>
                   and
-                  <Link className="text-accent font-semibold" href="/privacy-policy">Privacy Policy</Link>
+                  <Link className="text-accent font-semibold hover:underline" href="/privacy-policy">Privacy Policy</Link>
                 </span>
               </div>
               {errors.acceptedTerms && (
@@ -125,7 +125,7 @@ const CreateAccount = () => {
         </div>
         <div className="flex h-auto w-full">
           <button
-            className="bg-primary flex justify-center items-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary flex justify-center items-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-75 delay-75 hover:bg-primaryHover"
             type="submit"
           >
             Next
@@ -134,7 +134,7 @@ const CreateAccount = () => {
       </form>
       <div className="flex w-full h-6 gap-2 items-center justify-center">
         <p className="text-muted text-sm">Already have an account? </p>
-        <Link className="text-accent font-bold text-sm" href="/login">
+        <Link className="text-accent font-bold text-sm hover:underline" href="/login">
           Login
         </Link>
       </div>

@@ -194,14 +194,14 @@ const BusinessInfo = () => {
             onClick={() => {
               dispatch(prevStep());
             }}
-            className="h-full w-full flex items-center py-2 text-primary gap-1 cursor-pointer"
+            className="h-full w-full flex items-center py-2 text-primary gap-1 cursor-pointer delay-75 duration-75 hover:text-primaryHover"
           >
             <Image src="/arrow-left.svg" alt="" width={20} height={20} />
             <h2 className="text-sm font-semibold">Back</h2>
           </div>
           <button
             type="submit"
-            className="bg-primary flex items-center justify-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary flex items-center justify-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-75 delay-75 hover:bg-primaryHover"
             disabled={isLoading}
           >
             {isLoading ? "Submitting" : "Submit"}

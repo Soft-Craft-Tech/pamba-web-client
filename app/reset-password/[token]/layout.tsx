@@ -21,7 +21,7 @@ export default function PasswordReset({ children }: { children: ReactNode }) {
         <div className="flex flex-col items-center gap-1 w-full h-auto">
           <Link href="/">
             <Image
-              className="w-36 h-auto"
+              className="w-36 h-auto hover:scale-105 duration-100 delay-100"
               src="/logo.svg"
               alt="pamba logo"
               priority={true}

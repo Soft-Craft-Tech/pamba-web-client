@@ -91,7 +91,7 @@ const Explorer: React.FC<{
               : `/booking/all-shops/${href}`
           }
         >
-          <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium md:px-7 md:py-3">
+          <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium duration-100 delay-75 hover:scale-[1.02] md:px-7 md:py-3">
             {btnText}
           </button>
         </Link>

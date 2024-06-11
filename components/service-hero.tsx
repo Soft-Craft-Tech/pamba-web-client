@@ -66,7 +66,7 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
             </div>
             <button
               onClick={handleClick}
-              className="bg-primary w-1/5 hover:bg-primary text-sm md:text-base text-white font-bold md:py-2 md:px-4 rounded-r-md"
+              className="bg-primary w-1/5 hover:bg-primaryHover text-sm md:text-base text-white font-bold delay-75 duration-100 md:py-2 md:px-4 rounded-r-md"
             >
               Search
             </button>
