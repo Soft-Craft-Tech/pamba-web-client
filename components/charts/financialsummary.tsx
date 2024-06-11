@@ -137,6 +137,8 @@ const FinancialSummary = ({
   const [maxYAxisValue, setMaxYAxisValue] = useState(0);
   const [chartOptions, setChartOptions] = useState(options);
 
+ 
+
   useEffect(() => {
     // Helper function to sum expenses or sales by month
     const sumByMonth = (data: any[]) => {
@@ -163,7 +165,9 @@ const FinancialSummary = ({
     // Calculate the maximum value for expenses and revenue
     const maxExpense = Math.max(...expensesByMonth);
     const maxRevenue = Math.max(...salesByMonth);
+
     setMaxYAxisValue(Math.ceil(Math.max(maxExpense, maxRevenue) / 100) * 100);
+    console.log("Charts: ", maxExpense, maxRevenue);
 
     // Update the options object with the new maxYAxisValue
     if (Array.isArray(options.yaxis)) {
@@ -240,8 +244,8 @@ const FinancialSummary = ({
         },
       ],
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lifetime_expenses, lifetime_sales, maxYAxisValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxYAxisValue]);
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5  sm:px-7.5 xl:col-span-8">
