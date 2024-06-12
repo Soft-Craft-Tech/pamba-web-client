@@ -55,7 +55,7 @@ const FindShopsCards = ({ sliderData }: { sliderData: DynamicObject[] }) => {
       </div>
       <Link
         href="/booking/all-shops"
-        className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-full gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
+        className="bg-primary duration-100 delay-75 hover:scale-[1.02] hover:bg-primaryHover flex items-center w-max py-2 px-4  text-white font-medium rounded-full gap-2 mt-10 sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
       >
         View All Shops
         <Image

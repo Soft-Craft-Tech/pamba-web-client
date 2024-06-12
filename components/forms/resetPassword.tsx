@@ -78,7 +78,7 @@ export default function PasswordResetForm({ token }: { token: string }) {
         <button
           disabled={isLoading}
           type="submit"
-          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primaryHover delay-75 duration-100"
         >
           {isLoading ? "Loading..." : "Submit"}
         </button>

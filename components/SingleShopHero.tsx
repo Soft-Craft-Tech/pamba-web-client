@@ -71,7 +71,7 @@ const SingleShopHero: React.FC<{
           </div>
           <button
             onClick={() => handleSearch(service)}
-            className="bg-primary hover:bg-primary text-white font-bold py-2 px-4 rounded-md"
+            className="bg-primary hover:bg-primaryHover delay-75 duration-100 text-white font-bold py-2 px-4 rounded-md"
           >
             Search
           </button>

@@ -31,7 +31,7 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
           {data?.business && (
             <Link
               target="_blank"
-              className="text-primary border-[0.1px] border-primary py-1 px-3 rounded-full text-sm"
+              className="text-primary border-[0.1px] border-primary py-1 px-3 rounded-full text-sm duration-100 delay-75 hover:text-accent hover:border-accent"
               href={data?.business?.google_map && data?.business?.google_map}
             >
               Directions

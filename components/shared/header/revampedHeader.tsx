@@ -10,7 +10,7 @@ const RevampedHeader = () => {
     <div className="mx-auto w-full max-w-screen-2xl">
       <nav>
         <div className="flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link className="h-full w-auto" href="/">
+          <Link className="h-full w-auto duration-200 delay-100 hover:scale-105" href="/">
             <Image
               className="h-full w-28 lg:w-40"
               src="/logo.svg"
@@ -50,9 +50,9 @@ const RevampedHeader = () => {
           >
             <ul className="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
               <Link
-                className={`py-3 flex h-full items-center ${
+                className={`py-3 flex h-full items-center px-3 hover:text-accent ${
                   pathname === "/booking/find-services"
-                    ? "text-primary"
+                    ? "text-primary hover:border-primary"
                     : undefined
                 }`}
                 href="/booking/find-services"
@@ -60,7 +60,7 @@ const RevampedHeader = () => {
                 Home
               </Link>
               <Link
-                className={`py-3 flex h-full items-center ${
+                className={`py-3 flex h-full items-center px-3 hover:text-accent ${
                   pathname === "/booking/all-shops" ? "text-primary" : undefined
                 }`}
                 href="/booking/all-shops"
@@ -68,7 +68,7 @@ const RevampedHeader = () => {
                 Services
               </Link>
               <Link
-                className={`py-3 flex h-full items-center ${
+                className={`py-3 flex h-full items-center px-3 hover:text-accent ${
                   pathname === "/contact-us" ? "text-primary" : undefined
                 }`}
                 href="/about"
@@ -76,7 +76,7 @@ const RevampedHeader = () => {
                 Contact Us
               </Link>
               <Link
-                className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-lg gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
+                className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-lg gap-2 hover:bg-primaryHover delay-75 duration-75 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
                 href="/booking/all-shops"
               >
                 Book Appointment

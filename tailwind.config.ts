@@ -15,6 +15,7 @@ const config: Config = {
       },
       colors: {
         primary: "#DB1471",
+        primaryHover: "#FF0077",
         secondary: "#0F1C35",
         muted: "#323232",
         accent: "#007B99",

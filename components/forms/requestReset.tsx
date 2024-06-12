@@ -37,7 +37,7 @@ export default function RequestResetForm() {
         />
         <button
           disabled={isLoading}
-          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-100 delay-75 hover:bg-primaryHover "
         >
           {isLoading ? "Loading..." : "Submit"}
         </button>

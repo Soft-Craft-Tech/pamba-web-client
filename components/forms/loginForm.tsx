@@ -66,7 +66,7 @@ export default function LoginForm() {
       {error && <Toast message={errorMessage} type="error" />}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 lg:gap-3"
+        className="flex flex-col gap-4 lg:gap-5"
       >
         <Controller
           name="username"
@@ -115,7 +115,7 @@ export default function LoginForm() {
             onClick={() => {
               setShowPassword(!showPassword);
             }}
-            className="absolute flex items-center h-full w-max top-0 right-1 px-2 hover:text-gray-300"
+            className="absolute flex items-center h-full w-max top-0 right-1 px-2 cursor-pointer hover:text-gray-300"
           >
             {showPassword ? (
               <Image
@@ -137,14 +137,14 @@ export default function LoginForm() {
         <div className="flex justify-end">
           <Link
             href="/request-password-reset"
-            className="text-xs font-bold text-cyan-600"
+            className="text-sm font-bold text-accent duration-75 delay-75 hover:underline"
           >
             Forgot Password?
           </Link>
         </div>
         <button
           disabled={loginLoading}
-          className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed delay-75 duration-75 hover:bg-primaryHover"
           type="submit"
         >
           {loginLoading ? "Loading" : "Login"}

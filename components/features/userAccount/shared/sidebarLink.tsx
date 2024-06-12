@@ -17,7 +17,7 @@ const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
   return (
     <Link href={link} legacyBehavior>
       <a
-        className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 ${
+        className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 hover:scale-[1.02] delay-75 duration-100 ${
           pathname === link ? "bg-sideLinksBg" : ""
         }`}
       >
@@ -47,7 +47,7 @@ export const Logout: React.FC = () => {
   return (
     <div
       onClick={logOut}
-      className="w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 cursor-pointer"
+      className="w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 cursor-pointer hover:scale-[1.02] delay-75 duration-100"
     >
       <Image
         className="w-[20px] h-[20px]"
