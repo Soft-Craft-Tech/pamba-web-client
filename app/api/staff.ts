@@ -22,6 +22,7 @@ export const useGetAllStaff = (slug: string) => {
 };
 
 export const useCreateStaff = () => {
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   return useMutation<void, Error, any>(
     async ({ f_name, phone, role }) => {
