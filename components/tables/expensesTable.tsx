@@ -30,6 +30,7 @@ import Toast from "../shared/toasts/authToast";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 type Expense = {
+  expense_account: number;
   created_at: Date;
   category: string;
   expense: string;
@@ -294,7 +295,7 @@ const Table = () => {
           <Controller
             name="accountID"
             control={control}
-            defaultValue={row.original.account_id}
+            defaultValue={row.original.expense_account}
             render={({ field }) => (
               <select
                 {...field}
