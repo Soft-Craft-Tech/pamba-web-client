@@ -34,6 +34,8 @@ type Expense = {
   category: string;
   expense: string;
   amount: string;
+  description: string;
+  account_id: number;
   id: number;
 };
 
@@ -53,10 +55,16 @@ const Table = () => {
   const { showToast } = useSelector((state: RootState) => ({
     showToast: state.toast.showToast,
   }));
-  const { control, handleSubmit, reset } = useForm<DynamicObject>();
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  const { control, handleSubmit, reset } = useForm<DynamicObject>({
+    defaultValues: {
+      formData: {
+        expenseTitle: "",
+        expenseAmount: "",
+        description: "",
+        accountID: null, //"expense_account"
+      },
+    },
+  });
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -70,14 +78,17 @@ const Table = () => {
     isLoading,
     isError,
     isRefetching,
-    // refetch: refetchExpenses,
+    refetch: refetchExpenses,
   } = useGetExpenses();
+  
   const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
     useGetExpenseAccounts();
+
   const {
     mutateAsync,
     isSuccess,
     isError: addExpenseError,
+    status: createExpenseStatus,
   } = useCreateExpense();
 
   const {
@@ -86,11 +97,20 @@ const Table = () => {
     isError: isDeleteError,
   } = useDeleteExpense();
 
-  const { mutateAsync: editExpense } = useEditExpense();
+  const { mutateAsync: editExpense, status: editExpenseStatus } =
+    useEditExpense();
 
-  const editExpenseRow = async (formData: any) => {
+  const editExpenseRow = async (expenseId: number, formData: any) => {
     try {
-      await editExpense(formData?.id, formData);
+      let data = {
+        expenseId,
+        expenseTitle: formData?.expenseTitle,
+        expenseAmount: formData?.amount,
+        description: formData?.description,
+        accountID: formData?.accountID.toString(),
+      };
+
+      await editExpense(data);
       reset({
         formData: {},
       });
@@ -103,6 +123,7 @@ const Table = () => {
   const submitExpense = async (formData: any) => {
     try {
       await mutateAsync(formData);
+      refetchExpenses();
       reset({
         formData: {},
       });
@@ -120,9 +141,6 @@ const Table = () => {
       // table.setEditingRow(null);
     }, 3000);
   }
-  // if (isDeleteSuccess || isSuccess) {
-  //   refetchExpenses();
-  // }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
@@ -147,21 +165,43 @@ const Table = () => {
         accessorKey: "amount",
         header: "Amount",
       },
+      {
+        accessorKey: "description",
+        header: "Description",
+        disableFilters: true,
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: "id",
+        header: "Expense ID",
+        disableFilters: true,
+        enableEditing: false,
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: "account_id",
+        header: "Expense Account",
+        disableFilters: true,
+        enableGlobalFilter: false,
+      },
     ],
     []
   );
 
   const openDeleteConfirmModal = (row: MRT_Row<Expense>) => {
     deleteUser(row.original.id);
+    refetchExpenses();
   };
 
   const table = useMaterialReactTable({
     columns,
     data: isLoading ? [] : data?.expenses ?? [],
-    initialState: { showColumnFilters: true, showGlobalFilter: true },
+    initialState: {
+      showGlobalFilter: true,
+      columnVisibility: { description: false, account_id: false, id: false },
+    },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -187,7 +227,7 @@ const Table = () => {
         </p>
       </div>
     ),
-    renderEditRowDialogContent: () => (
+    renderEditRowDialogContent: ({ table, row }) => (
       <div className="p-10">
         {showToast && (
           <p
@@ -205,12 +245,14 @@ const Table = () => {
         <p className="mb-2">Update Expense</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(editExpenseRow)}
+          onSubmit={handleSubmit((data) =>
+            editExpenseRow(row.original.id ?? 0, data)
+          )}
         >
           <Controller
             name="expenseTitle"
             control={control}
-            defaultValue=""
+            defaultValue={row.original.expense}
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -222,9 +264,9 @@ const Table = () => {
             rules={{ required: true }}
           />
           <Controller
-            name="expenseAmount"
+            name="amount"
             control={control}
-            defaultValue=""
+            defaultValue={row.original.amount}
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -238,11 +280,10 @@ const Table = () => {
           <Controller
             name="description"
             control={control}
-            defaultValue=""
+            defaultValue={row.original.description}
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
                 type="text"
                 {...field}
                 placeholder="Description"
@@ -253,19 +294,17 @@ const Table = () => {
           <Controller
             name="accountID"
             control={control}
-            defaultValue=""
+            defaultValue={row.original.account_id}
             render={({ field }) => (
               <select
                 {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
-                name=""
+                className="text-gray-400 border w-full h-14 py-1 px-2 lg:h-12"
               >
-                <option value="">--Add Expense Account--</option>
                 {!isLoadingAccounts &&
                   expenseAccountsData?.account?.map(
-                    (account: { id: string; account_name: string }) => (
-                      <option key={account?.id} value={account?.id}>
-                        {account?.account_name}
+                    (account: { id: number; account_name: string }) => (
+                      <option key={account.id} value={account.id}>
+                        {account.account_name}
                       </option>
                     )
                   )}
@@ -275,12 +314,17 @@ const Table = () => {
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
               onClick={() => table.setEditingRow(null)}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              label="Save Expense"
+              variant="primary"
+              disabled={editExpenseStatus === "loading"}
+            />
           </div>
         </form>
       </div>
@@ -308,7 +352,6 @@ const Table = () => {
           <Controller
             name="expenseTitle"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -322,7 +365,6 @@ const Table = () => {
           <Controller
             name="expenseAmount"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
@@ -336,11 +378,9 @@ const Table = () => {
           <Controller
             name="description"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <input
                 className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
                 type="text"
                 {...field}
                 placeholder="Description"
@@ -351,7 +391,6 @@ const Table = () => {
           <Controller
             name="accountID"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <select
                 {...field}
@@ -380,7 +419,11 @@ const Table = () => {
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              label="Save Expense"
+              variant="primary"
+              disabled={createExpenseStatus === "loading"}
+            />
           </div>
         </form>
       </div>
@@ -389,19 +432,27 @@ const Table = () => {
       <Button
         variant="primary"
         onClick={() => {
-          table.setCreatingRow(true);
+          expenseAccountsData.account.length > 1 ? (
+            table.setCreatingRow(true)
+          ) : (
+            <Toast
+              message={
+                "Complete your profile setup first before creating expense"
+              }
+              type="error"
+            />
+          );
         }}
       >
         Create Expense
       </Button>
     ),
     state: {
-      columnFilters,
       globalFilter,
       isLoading,
       pagination,
       showAlertBanner: isError,
-      // showProgressBars: isRefetching,
+      showProgressBars: isRefetching,
       sorting,
     },
   });
