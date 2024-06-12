@@ -80,7 +80,7 @@ const Table = () => {
     isRefetching,
     refetch: refetchExpenses,
   } = useGetExpenses();
-  
+
   const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
     useGetExpenseAccounts();
 
@@ -466,14 +466,10 @@ const Table = () => {
   );
 };
 
-const queryClient = new QueryClient();
-
 const ExpensesTable = () => (
-  <QueryClientProvider client={queryClient}>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Table />
-    </LocalizationProvider>
-  </QueryClientProvider>
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Table />
+  </LocalizationProvider>
 );
 
 export default ExpensesTable;

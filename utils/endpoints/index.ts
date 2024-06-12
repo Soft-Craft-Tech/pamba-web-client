@@ -7,6 +7,7 @@ import servicesEndpoints from "./servicesEndpoints";
 import staffEndpoints from "./staffEndpoints";
 import galleryEndpoints from "./galleryEndpoints";
 import reviewsEndpoints from "./reviewsEndpoints";
+import inventoryEndpoints from "./inventoryEndpoints";
 
 const endpoints: { [key: string]: string } = {
   ...authEndpoints,
@@ -18,6 +19,7 @@ const endpoints: { [key: string]: string } = {
   ...staffEndpoints,
   ...galleryEndpoints,
   ...reviewsEndpoints,
+  ...inventoryEndpoints,
 };
 
 export default endpoints;
