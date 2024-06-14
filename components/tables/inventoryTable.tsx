@@ -25,6 +25,8 @@ import { useSelector } from "react-redux";
 import Toast from "../shared/toasts/authToast";
 import { DynamicObject } from "../types";
 
+// TODO: form validation and strict types
+
 type InventoryType = {
   id: number;
   product: string;
@@ -222,6 +224,7 @@ const InventoryTable = () => {
                 placeholder="Entry Date"
               />
             )}
+            rules={{ required: "Entry date is required" }}
           />
           <Controller
             name="product"
@@ -235,6 +238,7 @@ const InventoryTable = () => {
                 placeholder="Item"
               />
             )}
+            rules={{ required: "Product name is required" }}
           />
           <Controller
             name="status"
@@ -248,13 +252,13 @@ const InventoryTable = () => {
                 placeholder="Status"
               />
             )}
-            rules={{ required: true }}
+            rules={{ required: "Status is required" }}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
               type="button"
-              className="px-12 py-2 border border-gray-400 rounded-md"
+              className="px-10 py-2 border border-primary text-primary rounded-md font-bold"
               onClick={() => table.setEditingRow(null)}
             >
               Cancel
@@ -300,7 +304,7 @@ const InventoryTable = () => {
                 placeholder="Item"
               />
             )}
-            rules={{ required: true }}
+            rules={{ required: "Product name is required" }}
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
