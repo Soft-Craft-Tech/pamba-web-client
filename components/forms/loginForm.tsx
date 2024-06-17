@@ -73,7 +73,7 @@ export default function LoginForm() {
           control={control}
           render={({ field }) => (
             <input
-              className={`w-full h-14 rounded-md  border px-2 py-1 outline-none lg:h-12 xl:h-14 ${
+              className={`w-full h-14 rounded-md  border px-2 py-1 outline-none lg:h-12 xl:h-14 focus:border-secondary ${
                 errors.username ? "border-red-500" : "border-borders"
               }`}
               type="text"
@@ -89,7 +89,7 @@ export default function LoginForm() {
           </span>
         )}
         <div
-          className={`w-full h-14 relative rounded-md border lg:h-12 xl:h-14 ${
+          className={`w-full h-14 relative rounded-md lg:h-12 xl:h-14 ${
             errors.username ? "border-red-500" : "border-borders"
           }`}
         >
@@ -98,7 +98,7 @@ export default function LoginForm() {
             control={control}
             render={({ field }) => (
               <input
-                className="h-full w-full  py-1 px-2 outline-none rounded-md"
+                className="h-full w-full  py-1 px-2 outline-none rounded-md border focus:border-secondary"
                 type={showPassword ? "text" : "password"}
                 {...field}
                 placeholder="Password"

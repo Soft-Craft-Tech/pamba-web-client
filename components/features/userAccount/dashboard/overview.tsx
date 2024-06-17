@@ -17,10 +17,10 @@ export default function Overview({
   today_revenue = 0,
 }: OverviewProps) {
   return (
-    <div className="flex w-full h-60 gap-5">
-      <div className="bg-white rounded-md h-full w-full p-5 text-secondary shadow-md flex items-center gap-5">
-        <div className="flex flex-col justify-between h-full w-full">
-          <div>
+    <div className="flex w-full h-max gap-5 flex-col lg:h-60 lg:flex-row">
+      <div className="bg-white rounded-md h-full w-full p-5 text-secondary shadow-md flex items-center gap-5 ">
+        <div className="flex flex-col gap-2 justify-between h-full w-full">
+          <div className="mb-3 lg:mb-0">
             <h2 className="text-primary font-semibold text-2xl">
               Welcome back
             </h2>
@@ -28,19 +28,19 @@ export default function Overview({
               Here&apos;s what happening in your business today
             </p>
           </div>
-          <div>
+          <div className="flex flex-col-reverse lg:flex-col">
             <h4 className="font-semibold">
               Ksh <span className="text-xl font-bold">{today_revenue}</span>
             </h4>
-            <p className="font-light text-sm text-muted">
+            <p className="font-medium text-sm">
               Today&apos;s Revenue
             </p>
           </div>
-          <div>
+          <div className="flex flex-col-reverse lg:flex-col">
             <h4 className="font-bold text-xl">
               {today_appointments ? today_appointments.length : 0}
             </h4>
-            <p className="font-light text-sm text-muted">
+            <p className="font-medium text-sm">
               Scheduled appointments
             </p>
           </div>

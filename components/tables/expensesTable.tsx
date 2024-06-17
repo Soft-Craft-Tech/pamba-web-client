@@ -413,7 +413,7 @@ const Table = () => {
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
-              className="px-12 py-2 border border-gray-400 rounded-md"
+              className="px-8 py-2 border border-gray-400 rounded-md lg:px-12"
               onClick={() => {
                 table.setCreatingRow(null);
               }}
