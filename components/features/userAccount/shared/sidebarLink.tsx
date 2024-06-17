@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { logoutUser } from "@/utils/auth";
+import { useAppDispatch} from "@/hooks";
+import { setMobileSidebar } from "@/store/sideHamburgerSlice";
+import { enablePageScroll } from "scroll-lock";
 
 interface SideBarLinkProps {
   link: string;
@@ -13,10 +16,14 @@ interface SideBarLinkProps {
 
 const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
 
   return (
     <Link href={link} legacyBehavior>
-      <a
+      <a onClick={() => {
+        dispatch(setMobileSidebar(false));
+        enablePageScroll();
+      }}
         className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 hover:scale-[1.02] delay-75 duration-100 ${
           pathname === link ? "bg-sideLinksBg" : ""
         }`}

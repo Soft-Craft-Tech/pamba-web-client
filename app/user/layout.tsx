@@ -16,7 +16,7 @@ export default function UserAccountLayout({
     <NewProvider>
       <main className="flex flex-col w-full h-auto bg-background gap-3 lg:flex-row">
         <div className="w-full relative lg:w-72 lg:h-screen">
-          <div className="fixed w-full  flex flex-col gap-5 p-5  bg-white shadow-sm lg:w-72 lg:fixed lg:top-0 lg:left-0 lg:h-screen">
+          <div className="fixed w-full z-50 flex flex-col gap-5 p-5  bg-white shadow-sm lg:w-72 lg:fixed lg:top-0 lg:left-0 lg:h-screen">
             <div className="w-full flex justify-between h-auto items-center">
               <Link href="/">
                 <Image
