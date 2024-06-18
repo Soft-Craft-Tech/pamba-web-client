@@ -16,7 +16,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useGetSingleService } from "@/app/api/services";
-import { DynamicObject, daysData } from "@/components/types";
+import { DynamicObject } from "@/components/types";
 import { FormControl } from "@mui/material";
 import { useBookAppointments } from "@/app/api/appointment";
 import dayjs, { Dayjs } from "dayjs";
@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import Toast from "./shared/toasts/authToast";
 import { setMessage, setShowToast } from "@/store/toastSlice";
+import { daysData } from "@/data";
 
 dayjs.extend(isBetween);
 

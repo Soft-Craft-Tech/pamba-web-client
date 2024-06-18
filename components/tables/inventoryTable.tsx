@@ -23,7 +23,8 @@ import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Toast from "../shared/toasts/authToast";
-import { DynamicObject } from "../types";
+import { DynamicObject, FormDataType } from "../types";
+import FormField from "@/ui/FormField";
 
 // TODO: form validation and strict types
 
@@ -50,7 +51,14 @@ const InventoryTable = () => {
   const { showToast } = useSelector((state: RootState) => ({
     showToast: state.toast.showToast,
   }));
-  const { control, handleSubmit, reset } = useForm<DynamicObject>();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors },
+    setError,
+  } = useForm<DynamicObject>();
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -266,7 +274,7 @@ const InventoryTable = () => {
             <Button
               label="Submit"
               variant="primary"
-              disabled={editInventoryStatus === "loading"}
+              disabled={editInventoryStatus === "pending"}
             />
           </div>
         </form>
@@ -306,6 +314,13 @@ const InventoryTable = () => {
             )}
             rules={{ required: "Product name is required" }}
           />
+          {/* <FormField
+            type="text"
+            placeholder="Item"
+            name="product"
+            register={register}
+            error={errors.email}
+          /> */}
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
               className="px-10 py-2 border border-primary text-primary rounded-md font-bold"
@@ -318,7 +333,7 @@ const InventoryTable = () => {
             <Button
               label="Submit"
               variant="primary"
-              disabled={createInventoryStatus === "loading"}
+              disabled={createInventoryStatus === "pending"}
             />
           </div>
         </form>

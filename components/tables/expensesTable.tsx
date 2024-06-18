@@ -27,7 +27,7 @@ import { setMessage, setShowToast } from "@/store/toastSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Toast from "../shared/toasts/authToast";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 type Expense = {
   created_at: Date;
@@ -323,7 +323,7 @@ const Table = () => {
             <Button
               label="Save Expense"
               variant="primary"
-              disabled={editExpenseStatus === "loading"}
+              disabled={editExpenseStatus === "pending"}
             />
           </div>
         </form>
@@ -422,7 +422,7 @@ const Table = () => {
             <Button
               label="Save Expense"
               variant="primary"
-              disabled={createExpenseStatus === "loading"}
+              disabled={createExpenseStatus === "pending"}
             />
           </div>
         </form>

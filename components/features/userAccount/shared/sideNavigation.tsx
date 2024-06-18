@@ -1,8 +1,9 @@
 "use client";
-import { DynamicObject, sidebarData } from "@/components/types";
+import { DynamicObject } from "@/components/types";
 import SideBarLink, { Logout } from "./sidebarLink";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
+import { sidebarData } from "@/data";
 
 export default function SideNav() {
   const showMenu = useAppSelector(

@@ -3,16 +3,15 @@ import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetInventory = () => {
-  return useQuery("getInventory", async () => {
-    try {
-      const response = await apiCall("GET", endpoints.getInventory, {}, {});
+  return useQuery({
+    queryKey: ["getInventory"],
+    queryFn: async () => {
+      const response = await apiCall("GET", endpoints.getInventory);
       return response;
-    } catch (error) {
-      throw new Error("Error fetching Inventory");
-    }
+    },
   });
 };
 
@@ -20,58 +19,49 @@ export const useCreateInventory = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
 
-  return useMutation<void, Error, DynamicObject>(
-    async ({ product }) => {
-      const response = await apiCall(
-        "POST",
-        `${endpoints.recordInventory}`,
-        { product },
-        {}
-      );
+  return useMutation<void, Error, DynamicObject>({
+    mutationFn: async ({ product }) => {
+      const response = await apiCall("POST", endpoints.recordInventory, {
+        product,
+      });
       dispatch(setMessage(response.message));
       return response;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getInventory");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getInventory"] });
+    },
+  });
 };
 
 export const useDeleteInventory = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(
-    async (inventoryId: number) => {
+  return useMutation({
+    mutationFn: async (inventoryId: number) => {
       const response = await apiCall(
         "DELETE",
-        `${endpoints.deleteInventory}${inventoryId}`,
-        {},
-        {}
+        `${endpoints.deleteInventory}${inventoryId}`
       );
       dispatch(setMessage(response.message));
       dispatch(setShowToast(true));
       return response;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getInventory");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getInventory"] });
+    },
+  });
 };
 
 export const useEditInventory = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(
-    async ({ status, inventoryId }) => {
+
+  return useMutation<void, Error, DynamicObject>({
+    mutationFn: async ({ status, inventoryId }) => {
       const response = await apiCall(
         "PUT",
         `${endpoints.updateInventoryStatus}${inventoryId}`,
-        { status },
-        {}
+        { status }
       );
       dispatch(setMessage(response.message));
       dispatch(setShowToast(true));
@@ -80,10 +70,8 @@ export const useEditInventory = () => {
       }, 3000);
       return response;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getInventory");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getInventory"] });
+    },
+  });
 };

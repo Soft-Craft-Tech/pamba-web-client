@@ -161,7 +161,7 @@ const StaffManagementTable = () => {
   );
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
-    deleteUser(row.original.id);
+    if (row.original.id) deleteUser(row.original.id);
     // refetchAllStaff();
   };
 
@@ -282,7 +282,7 @@ const StaffManagementTable = () => {
             <Button
               label="Save"
               variant="primary"
-              disabled={editStuffStatus === "loading"}
+              disabled={editStuffStatus === "pending"}
             />
           </div>
         </form>
@@ -360,7 +360,7 @@ const StaffManagementTable = () => {
             <Button
               label="Save Staff"
               variant="primary"
-              disabled={createStuffStatus === "loading"}
+              disabled={createStuffStatus === "pending"}
             />
           </div>
         </form>

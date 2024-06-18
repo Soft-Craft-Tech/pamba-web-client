@@ -5,8 +5,8 @@ import { getUser } from "./auth";
 export const apiCall = (
   method: Method,
   url: string,
-  body: any,
-  headers: {}
+  body?: unknown,
+  headers?: {}
 ) => {
   const { authToken } = getUser();
   return axiosInstance({
