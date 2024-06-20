@@ -75,13 +75,13 @@ const Table = () => {
 
   const {
     data,
-    isLoading,
+    isPending,
     isError,
     isRefetching,
     refetch: refetchExpenses,
   } = useGetExpenses();
 
-  const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
+  const { data: expenseAccountsData, isPending: isLoadingAccounts } =
     useGetExpenseAccounts();
 
   const {
@@ -195,7 +195,7 @@ const Table = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : data?.expenses ?? [],
+    data: isPending ? [] : data?.expenses ?? [],
     initialState: {
       showGlobalFilter: true,
       columnVisibility: { description: false, account_id: false, id: false },
@@ -449,7 +449,7 @@ const Table = () => {
     ),
     state: {
       globalFilter,
-      isLoading,
+      isLoading:isPending,
       pagination,
       showAlertBanner: isError,
       showProgressBars: isRefetching,

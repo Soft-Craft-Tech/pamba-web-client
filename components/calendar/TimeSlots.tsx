@@ -7,7 +7,7 @@ import React from "react";
 
 const TimeSlots: React.FC = () => {
   const calendarRef = useRef<SchedulerRef>(null);
-  const { data, isSuccess, isLoading, isError } = useGetEvents();
+  const { data, isSuccess, isPending, isError } = useGetEvents();
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const TimeSlots: React.FC = () => {
     }
   }, [data, isSuccess]);
 
-  if (isLoading)
+  if (isPending)
     return (
       <div className="w-full flex justify-center  h-full">
         <div className="mt-[20%]" role="status">

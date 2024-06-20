@@ -13,7 +13,7 @@ import { setStep } from "@/store/completeProfileSlice";
 
 const CompleteProfileComponent = () => {
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { data, isLoading } = useGetProfileCompletionStatus();
+  const { data, isPending } = useGetProfileCompletionStatus();
   const dispatch = useAppDispatch();
 
   const getNextStep = () => {
@@ -51,7 +51,7 @@ const CompleteProfileComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  if (isLoading)
+  if (isPending)
     return (
       <div className="w-full flex justify-center  h-full">
         <div className="mt-[20%]" role="status">

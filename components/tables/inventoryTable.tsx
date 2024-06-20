@@ -52,7 +52,7 @@ const InventoryTable = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading, isError } = useGetInventory();
+  const { data, isPending, isError } = useGetInventory();
 
   const {
     mutateAsync,
@@ -79,7 +79,6 @@ const InventoryTable = () => {
   };
 
   const submitInventory = async (formData: { product: string }) => {
-    console.log("formData", formData);
     await mutateAsync(formData);
     reset();
     table.setCreatingRow(null);
@@ -121,7 +120,7 @@ const InventoryTable = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : data?.inventory ?? [],
+    data: isPending ? [] : data?.inventory ?? [],
     initialState: {
       showGlobalFilter: true,
       columnVisibility: { id: false },
@@ -257,7 +256,7 @@ const InventoryTable = () => {
     ),
     state: {
       globalFilter,
-      isLoading,
+      isLoading:isPending,
       pagination,
       showAlertBanner: isError,
       sorting,

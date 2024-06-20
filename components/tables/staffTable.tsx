@@ -70,7 +70,7 @@ const StaffManagementTable = () => {
 
   const {
     data: allStaffData,
-    isLoading,
+    isPending,
     isError,
     isRefetching,
     // refetch: refetchAllStaff,
@@ -167,7 +167,7 @@ const StaffManagementTable = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : allStaffData?.staff ?? [],
+    data: isPending ? [] : allStaffData?.staff ?? [],
     initialState: {
       showColumnFilters: false,
       showGlobalFilter: true,
@@ -378,7 +378,7 @@ const StaffManagementTable = () => {
     ),
     state: {
       globalFilter,
-      isLoading,
+      isLoading: isPending,
       pagination,
       showAlertBanner: isError,
       // showProgressBars: isRefetching,

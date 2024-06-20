@@ -46,3 +46,8 @@ export type DayData = {
   slots: number;
   dateObj: dayjs.Dayjs;
 };
+
+export type Expense = {
+  accountName: string;
+  description: string;
+};

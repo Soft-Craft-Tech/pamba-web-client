@@ -7,7 +7,7 @@ import { useAppDispatch } from "@/hooks";
 
 export default function VerifyAccountButton({ token }: { token: string }) {
   const dispatch = useAppDispatch();
-  const { mutate, isLoading, error, isSuccess } =
+  const { mutate, isPending, error, isSuccess } =
     useVerifyAccountMutation(token);
   const router = useRouter();
 
@@ -30,10 +30,10 @@ export default function VerifyAccountButton({ token }: { token: string }) {
         onClick={() => {
           handleVerify();
         }}
-        disabled={isLoading}
+        disabled={isPending}
         className="text-white bg-primary w-full py-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? "Loading" : "Verify Account"}
+        {isPending ? "Loading" : "Verify Account"}
       </button>
     </>
   );

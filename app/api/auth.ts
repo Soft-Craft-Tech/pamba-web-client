@@ -121,22 +121,26 @@ export const loginRequest = async (
   password: string,
   router: any
 ) => {
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/businesses/login`,
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-      },
-      auth: {
-        username: email,
-        password: password,
-      },
-    }
-  );
-  const data = response.data;
-  setTimeout(() => router.push(`/user/dashboard`), 500);
-  setUser(data);
-  return { response, data };
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/businesses/login`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
+        },
+        auth: {
+          username: email,
+          password: password,
+        },
+      }
+    );
+    const data = response.data;
+    setTimeout(() => router.push(`/user/dashboard`), 500);
+    setUser(data);
+    return { response, data };
+  } catch (error) {
+    return { error };
+  }
 };

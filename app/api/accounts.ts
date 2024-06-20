@@ -1,3 +1,4 @@
+import { Expense } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage } from "@/store/toastSlice";
@@ -8,8 +9,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 // Create Expense Accounts
 export const useCreateExpenseAccounts = (step: number) => {
   const dispatch = useAppDispatch();
+
   return useMutation({
-    mutationFn: async (accounts) => {
+    mutationFn: async (accounts: { accounts: Expense[] }) => {
       if (accounts === undefined) {
         throw new Error("Accounts data is undefined");
       }

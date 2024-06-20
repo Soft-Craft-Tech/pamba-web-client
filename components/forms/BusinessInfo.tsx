@@ -27,7 +27,7 @@ const BusinessInfo = () => {
     signUp: { email, password, acceptedTerms },
     toast: { toastMessage },
   } = useSelector((state: RootState) => state);
-  const { mutateAsync, isLoading, isSuccess, isError } = useSignUpMutation();
+  const { mutateAsync, isPending, isSuccess, isError } = useSignUpMutation();
 
   const { data } = useGetCategories();
 
@@ -202,9 +202,9 @@ const BusinessInfo = () => {
           <button
             type="submit"
             className="bg-primary flex items-center justify-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-75 delay-75 hover:bg-primaryHover"
-            disabled={isLoading}
+            disabled={isPending}
           >
-            {isLoading ? "Submitting" : "Submit"}
+            {isPending ? "Submitting" : "Submit"}
           </button>
         </div>
       </form>
