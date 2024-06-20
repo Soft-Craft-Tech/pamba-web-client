@@ -5,7 +5,7 @@ import UserTopBar from "@/components/features/userAccount/shared/userTopBar";
 import Link from "next/link";
 import { ReactNode } from "react";
 import Image from "next/image";
-import { NewProvider } from "@/components/NewProvider";
+import { NewProvider } from "@/utils/providers/NewProvider";
 
 export default function UserAccountLayout({
   children,

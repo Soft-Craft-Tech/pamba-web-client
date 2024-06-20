@@ -8,8 +8,6 @@ import endpoints from "@/utils/endpoints";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-// TODO: Message should be handled on clientside by .mutate hook
-
 export const useSignUpMutation = () => {
   const dispatch = useAppDispatch();
   return useMutation({

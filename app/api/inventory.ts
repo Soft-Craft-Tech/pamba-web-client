@@ -1,9 +1,8 @@
 import { DynamicObject } from "@/components/types";
-import { useAppDispatch } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useGetInventory = () => {
   return useQuery({
@@ -17,44 +16,47 @@ export const useGetInventory = () => {
 
 export const useCreateInventory = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
-  return useMutation<void, Error, DynamicObject>({
-    mutationFn: async ({ product }) => {
+  return useMutation({
+    mutationFn: async ({ product }: { product: string }) => {
       const response = await apiCall("POST", endpoints.recordInventory, {
         product,
       });
-      dispatch(setMessage(response.message));
       return response;
     },
     onSuccess: () => {
+      toast.success("Inventory status updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
+    },
+    onError: () => {
+      toast.error("Could not create inventory! Please try again.");
     },
   });
 };
 
 export const useDeleteInventory = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
+
   return useMutation({
     mutationFn: async (inventoryId: number) => {
       const response = await apiCall(
         "DELETE",
         `${endpoints.deleteInventory}${inventoryId}`
       );
-      dispatch(setMessage(response.message));
-      dispatch(setShowToast(true));
       return response;
     },
     onSuccess: () => {
+      toast.success("Inventory status updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
+    },
+    onError: () => {
+      toast.error("Could not delete! Please try again.");
     },
   });
 };
 
 export const useEditInventory = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
   return useMutation<void, Error, DynamicObject>({
     mutationFn: async ({ status, inventoryId }) => {
@@ -63,15 +65,14 @@ export const useEditInventory = () => {
         `${endpoints.updateInventoryStatus}${inventoryId}`,
         { status }
       );
-      dispatch(setMessage(response.message));
-      dispatch(setShowToast(true));
-      setTimeout(() => {
-        dispatch(setMessage(""));
-      }, 3000);
       return response;
     },
     onSuccess: () => {
+      toast.success("Inventory status updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
+    },
+    onError: () => {
+      toast.error("Update failed! Please try again.");
     },
   });
 };

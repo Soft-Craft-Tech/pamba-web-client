@@ -5,9 +5,10 @@ export type FormFieldProps = {
   type: string;
   placeholder: string;
   name: string;
-  register: UseFormRegister<FormData>;
+  register: UseFormRegister<any>;
   error: FieldError | undefined;
-  valueAsNumber?: boolean;
+  defaultValue?: unknown;
+  disabled?:boolean
 };
 
 export type FormDataType = {
