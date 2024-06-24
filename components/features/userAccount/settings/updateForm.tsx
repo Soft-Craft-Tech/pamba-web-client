@@ -106,7 +106,7 @@ export default function ProfileUpdateForm({ client }: any) {
           type="password"
           {...register("password", { required: true })}
         />
-        <p>Enter password to confirm you are the one updating details here</p>
+        <p className="text-xs text-secondary">Enter password to confirm you are the one updating details here.</p>
         <button
           type="submit"
           disabled={isPending}

@@ -37,7 +37,7 @@ export default function AddServicesForm({ data }: { data: any }) {
   };
 
   return (
-    <div className="flex flex-col gap-5 w-full  p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+    <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
       <h3>What Services do you offer?</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -51,7 +51,7 @@ export default function AddServicesForm({ data }: { data: any }) {
             render={({ field }) => (
               <select
                 {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                className="text-gray-400 border w-full h-14 py-1 -z-[1] px-2 lg:h-12"
                 name=""
               >
                 <option value="">Select Category</option>

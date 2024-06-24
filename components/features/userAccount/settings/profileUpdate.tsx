@@ -54,8 +54,8 @@ export default function EditProfile() {
   }, []);
 
   return (
-    <div className="flex gap-10">
-      <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-10 lg:flex-row">
+      <div className="flex flex-col items-center gap-3">
         <div className="w-32 h-32 border rounded-full relative overflow-hidden">
           <Image
             className="top-0 left-0 object-cover w-full h-full"

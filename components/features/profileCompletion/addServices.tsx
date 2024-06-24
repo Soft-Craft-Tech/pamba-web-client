@@ -60,7 +60,7 @@ export default function AddServices() {
   // }
 
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10">
+    <div className="w-full h-auto flex flex-col gap-5 py-10">
       {successPosting && <Toast message={toastMessage} type="success" />}
       {errorPosting && <Toast message={toastMessage} type="error" />}
       {pathname !== "/user/services" && <ProfileProgress />}
