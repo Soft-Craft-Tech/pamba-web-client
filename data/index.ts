@@ -42,11 +42,11 @@ const sidebarData: ISidebarData[] = [
     name: "Inventory",
     imageUrl: "/user-icons/inventory.svg",
   },
-  {
-    link: "/user/reviews",
-    name: "Reviews",
-    imageUrl: "/user-icons/reviews.svg",
-  },
+  // {
+  //   link: "/user/reviews",
+  //   name: "Reviews",
+  //   imageUrl: "/user-icons/reviews.svg",
+  // },
 ];
 
 const sliderData = [

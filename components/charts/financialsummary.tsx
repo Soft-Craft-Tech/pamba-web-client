@@ -4,10 +4,13 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import { DynamicObject } from "../types";
 
-interface FinancialSummaryProps {
+type FinancialSummaryProps = {
   lifetime_expenses?: Array<DynamicObject>;
   lifetime_sales?: Array<DynamicObject>;
-}
+  title?: string;
+  line1?: string;
+  line2?: string;
+};
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -117,6 +120,9 @@ const options: ApexOptions = {
 const FinancialSummary = ({
   lifetime_expenses = [],
   lifetime_sales = [],
+  title = "Financial Summary",
+  line1 = "Revenue",
+  line2 = "Expenses",
 }: FinancialSummaryProps) => {
   const [state, setState] = useState({
     series: [
@@ -136,8 +142,6 @@ const FinancialSummary = ({
 
   const [maxYAxisValue, setMaxYAxisValue] = useState(0);
   const [chartOptions, setChartOptions] = useState(options);
-
- 
 
   useEffect(() => {
     // Helper function to sum expenses or sales by month
@@ -247,24 +251,24 @@ const FinancialSummary = ({
   }, [maxYAxisValue]);
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5  sm:px-7.5 xl:col-span-8">
-      <div className="flex flex-wrap w-full  items-center pt-10 justify-between gap-3 sm:flex-nowrap">
-        <p>Financial Summary</p>
+    <div className="col-span-12  bg-white px-5 pb-5 xl:col-span-8">
+      <div className="flex flex-wrap w-full items-center justify-between gap-3 sm:flex-nowrap">
+        <p>{title}</p>
         <div className="flex flex-wrap gap-3 sm:gap-5">
           <div className="flex">
-            <span className="mr-3 mt-1 flex h-4 w-full items-center justify-center rounded-full border border-primary">
-              <span className="block w-full rounded-full bg-primary"></span>
+            <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
+              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
             </span>
             <div>
-              <p className="font-semibold text-primary">Revenue</p>
+              <p className="font-semibold text-primary">{line1}</p>
             </div>
           </div>
           <div className="flex">
-            <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-secondary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-secondary"></span>
+            <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-accent">
+              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-accent"></span>
             </span>
             <div>
-              <p className="font-semibold text-secondary">Expenses</p>
+              <p className="font-semibold text-accent">{line2}</p>
             </div>
           </div>
         </div>

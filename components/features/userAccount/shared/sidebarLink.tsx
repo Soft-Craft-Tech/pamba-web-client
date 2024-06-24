@@ -15,21 +15,20 @@ const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
   const pathname = usePathname();
 
   return (
-    <Link href={link} legacyBehavior>
-      <a
-        className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 hover:scale-[1.02] delay-75 duration-100 ${
-          pathname === link ? "bg-sideLinksBg" : ""
-        }`}
-      >
-        <Image
-          className="w-[20px] h-[20px]"
-          src={image}
-          alt="Pamba"
-          width={24}
-          height={24}
-        />
-        <p className="font-medium text-sm text-secondary">{name}</p>
-      </a>
+    <Link
+      href={link}
+      className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 hover:scale-[1.02] delay-75 duration-100 ${
+        pathname === link ? "bg-sideLinksBg" : ""
+      }`}
+    >
+      <Image
+        className="w-[20px] h-[20px]"
+        src={image}
+        alt="Pamba"
+        width={24}
+        height={24}
+      />
+      <p className="font-medium text-sm text-secondary">{name}</p>
     </Link>
   );
 };
