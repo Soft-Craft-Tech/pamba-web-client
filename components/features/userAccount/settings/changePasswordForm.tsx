@@ -26,7 +26,7 @@ export default function ChangePassword() {
 
   const router = useRouter();
 
-  const { mutateAsync, isLoading, isSuccess, isError } = useChangePassword();
+  const { mutateAsync, isPending, isSuccess, isError } = useChangePassword();
 
   const { register, handleSubmit } = useForm();
 
@@ -78,10 +78,10 @@ export default function ChangePassword() {
       />
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isPending}
         className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md disabled:cursor-not-allowed disabled:bg-opacity-20"
       >
-        {isLoading ? "Submitting" : "Save Changes"}
+        {isPending ? "Submitting" : "Save Changes"}
       </button>
     </form>
   );

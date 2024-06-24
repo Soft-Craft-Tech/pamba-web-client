@@ -12,7 +12,7 @@ export default function RequestResetForm() {
   } = useAppSelector((state: RootState) => state);
   const {
     mutate: passwordReset,
-    isLoading,
+    isPending,
     error,
     isSuccess,
   } = useRequestPasswordReset();
@@ -36,10 +36,10 @@ export default function RequestResetForm() {
           className="w-full h-10 border rounded-md py-1 px-2"
         />
         <button
-          disabled={isLoading}
+          disabled={isPending}
           className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-100 delay-75 hover:bg-primaryHover "
         >
-          {isLoading ? "Loading..." : "Submit"}
+          {isPending ? "Loading..." : "Submit"}
         </button>
       </form>
     </>

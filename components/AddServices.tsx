@@ -14,10 +14,10 @@ import { getUser } from "@/utils/auth";
 
 const AddServicesBox = () => {
   const { client } = getUser();
-  const { data, isLoading } = useGetAllServices(client?.slug);
+  const { data, isPending } = useGetAllServices(client?.slug);
   const { showComponent } = useAppSelector((state: RootState) => state.display);
   const dispatch = useAppDispatch();
-  if (isLoading) return <Loader />;
+  if (isPending) return <Loader />;
   return (
     <div className="flex flex-col gap-5 w-full h-auto">
       <React.Suspense fallback={<Loader />}>

@@ -1,82 +1,89 @@
-import { DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetExpenses = () => {
-  return useQuery("getAllExpenses", async () => {
-    try {
-      const response = await apiCall("GET", endpoints.fetchExpenses, {}, {});
+  return useQuery({
+    queryKey: ["getAllExpenses"],
+    queryFn: async () => {
+      const response = await apiCall("GET", endpoints.fetchExpenses);
       return response;
-    } catch (error) {
-      throw new Error("Error fetching Expenses");
-    }
+    },
   });
 };
 
 export const useCreateExpense = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async ({ expenseTitle, expenseAmount, description, accountID }) => {
-      const response = await apiCall(
-        "POST",
-        `${endpoints.addExpense}`,
-        { expenseTitle, expenseAmount, description, accountID },
-        {}
-      );
+  return useMutation({
+    mutationFn: async ({
+      expenseTitle,
+      expenseAmount,
+      description,
+      accountID,
+    }: {
+      expenseTitle: string;
+      expenseAmount: number;
+      description: string;
+      accountID: number;
+    }) => {
+      const response = await apiCall("POST", endpoints.addExpense, {
+        expenseTitle,
+        expenseAmount,
+        description,
+        accountID,
+      });
       dispatch(setMessage(response.message));
       return response;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getAllExpenses");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+    },
+  });
 };
 
 export const useDeleteExpense = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(
-    async (expense_id: number) => {
+  return useMutation({
+    mutationFn: async (expense_id: number) => {
       const response = await apiCall(
         "DELETE",
-        `${endpoints.deleteExpenses}${expense_id}`,
-        {},
-        {}
+        `${endpoints.deleteExpenses}${expense_id}`
       );
       dispatch(setMessage(response.message));
       dispatch(setShowToast(true));
       return response;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getAllExpenses");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+    },
+  });
 };
 
 export const useEditExpense = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, any>(
-    async ({
+  return useMutation({
+    mutationFn: async ({
       expenseId,
       expenseAmount,
       expenseTitle,
       description,
       accountID,
+    }: {
+      expenseId: number;
+      expenseAmount: string;
+      expenseTitle: string;
+      description: string;
+      accountID: string;
     }) => {
       const response = await apiCall(
         "PUT",
         `${endpoints.editExpenses}${expenseId}`,
-        { expenseAmount, expenseTitle, description, accountID },
-        {}
+        { expenseAmount, expenseTitle, description, accountID }
       );
       dispatch(setMessage(response.message));
       dispatch(setShowToast(true));
@@ -85,10 +92,8 @@ export const useEditExpense = () => {
       }, 3000);
       return response;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getAllExpenses");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+    },
+  });
 };

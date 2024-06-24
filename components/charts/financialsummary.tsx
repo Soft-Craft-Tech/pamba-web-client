@@ -167,7 +167,6 @@ const FinancialSummary = ({
     const maxRevenue = Math.max(...salesByMonth);
 
     setMaxYAxisValue(Math.ceil(Math.max(maxExpense, maxRevenue) / 100) * 100);
-    console.log("Charts: ", maxExpense, maxRevenue);
 
     // Update the options object with the new maxYAxisValue
     if (Array.isArray(options.yaxis)) {

@@ -36,7 +36,7 @@ const OpenCloseTimes = () => {
 
     const {
         mutate,
-        isLoading,
+        isPending,
         error,
         isSuccess,
       } = useAddOpeningClosingHours(5)
@@ -167,12 +167,12 @@ const OpenCloseTimes = () => {
       </div>
       <div className="w-full h-10 flex justify-end">
         <button
-            disabled={isLoading}
+            disabled={isPending}
             type="button"
             className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSubmit(onSubmit)}
         >
-          {isLoading ? "Loading..." : "Finish"}
+          {isPending ? "Loading..." : "Finish"}
         </button>
       </div>
     </div>

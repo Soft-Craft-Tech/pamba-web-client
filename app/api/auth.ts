@@ -6,130 +6,116 @@ import { apiCall } from "@/utils/apiRequest";
 import { setUser } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 export const useSignUpMutation = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
+  return useMutation({
+    mutationFn: async (formData: DynamicObject) => {
       const response = await apiCall("POST", endpoints.signup, formData, {});
       dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+  });
 };
 
 export const useRequestPasswordReset = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, string | undefined>(
-    async (email: string | undefined) => {
+  return useMutation({
+    mutationFn: async (email: string | undefined) => {
       const response = await apiCall(
         "POST",
         `${endpoints.requestPasswordReset}`,
-        { email },
-        {}
+        { email }
       );
       dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+  });
 };
 
 export const useUpdateProfile = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
-      const response = await apiCall(
-        "PUT",
-        endpoints.updateProfile,
-        formData,
-        {}
-      );
+  return useMutation({
+    mutationFn: async (formData: DynamicObject) => {
+      const response = await apiCall("PUT", endpoints.updateProfile, formData);
       dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+  });
 };
 
 export const useChangePassword = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
-      const response = await apiCall(
-        "PUT",
-        endpoints.changePassword,
-        formData,
-        {}
-      );
+  return useMutation({
+    mutationFn: async (formData: DynamicObject) => {
+      const response = await apiCall("PUT", endpoints.changePassword, formData);
       dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+  });
 };
 
 export const useDeleteAccountMutation = () => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, DeleteFormData>(
-    async (formData: DeleteFormData) => {
-      const response = await apiCall(
-        "POST",
-        endpoints.deleteAccount,
-        formData,
-        {}
-      );
+  return useMutation({
+    mutationFn: async (formData: DeleteFormData) => {
+      const response = await apiCall("POST", endpoints.deleteAccount, formData);
       dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+  });
 };
 
 export const useResetPasswordMutation = (token: string) => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, string | undefined>(
-    async (password: string | undefined) => {
+  return useMutation({
+    mutationFn: async (password: string | undefined) => {
       const response = await apiCall(
         "PUT",
         `${endpoints.resetPassword}${token}`,
-        { password },
-        {}
+        { password }
       );
       dispatch(setShowToast(true));
       dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+  });
 };
 
 export const useVerifyAccountMutation = (token: string) => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error>(async () => {
-    const response = await apiCall(
-      "POST",
-      `${endpoints.verifyAccount}${token}`,
-      {},
-      {}
-    );
-    dispatch(setMessage(response.message));
-    return response.data;
+  return useMutation({
+    mutationFn: async () => {
+      const response = await apiCall(
+        "POST",
+        `${endpoints.verifyAccount}${token}`
+      );
+      dispatch(setMessage(response.message));
+      return response.data;
+    },
   });
 };
 
 export const useUpdateDescription = (step: number) => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, string>(async (description: string) => {
-    const response = await apiCall(
-      "PUT",
-      endpoints.updateDescription,
-      { description },
-      {}
-    );
-    dispatch(setStep(step + 1));
-    return response.data;
+  return useMutation({
+    mutationFn: async (description: string) => {
+      const response = await apiCall(
+        "PUT",
+        endpoints.updateDescription,
+        { description },
+        {}
+      );
+      dispatch(setStep(step + 1));
+      return response.data;
+    },
   });
 };
 
+// TODO: use react-query
 export const loginRequest = async (
   email: string,
   password: string,

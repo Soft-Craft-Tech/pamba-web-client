@@ -27,7 +27,7 @@ import { setMessage, setShowToast } from "@/store/toastSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Toast from "../shared/toasts/authToast";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 type Expense = {
   expense_account: number;
@@ -76,13 +76,13 @@ const Table = () => {
 
   const {
     data,
-    isLoading,
+    isPending,
     isError,
     isRefetching,
     refetch: refetchExpenses,
   } = useGetExpenses();
-  
-  const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
+
+  const { data: expenseAccountsData, isPending: isLoadingAccounts } =
     useGetExpenseAccounts();
 
   const {
@@ -196,7 +196,7 @@ const Table = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : data?.expenses ?? [],
+    data: isPending ? [] : data?.expenses ?? [],
     initialState: {
       showGlobalFilter: true,
       columnVisibility: { description: false, account_id: false, id: false },
@@ -324,7 +324,7 @@ const Table = () => {
             <Button
               label="Save Expense"
               variant="primary"
-              disabled={editExpenseStatus === "loading"}
+              disabled={editExpenseStatus === "pending"}
             />
           </div>
         </form>
@@ -423,7 +423,7 @@ const Table = () => {
             <Button
               label="Save Expense"
               variant="primary"
-              disabled={createExpenseStatus === "loading"}
+              disabled={createExpenseStatus === "pending"}
             />
           </div>
         </form>
@@ -450,7 +450,7 @@ const Table = () => {
     ),
     state: {
       globalFilter,
-      isLoading,
+      isLoading:isPending,
       pagination,
       showAlertBanner: isError,
       showProgressBars: isRefetching,
@@ -467,14 +467,10 @@ const Table = () => {
   );
 };
 
-const queryClient = new QueryClient();
-
 const ExpensesTable = () => (
-  <QueryClientProvider client={queryClient}>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Table />
-    </LocalizationProvider>
-  </QueryClientProvider>
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Table />
+  </LocalizationProvider>
 );
 
 export default ExpensesTable;
