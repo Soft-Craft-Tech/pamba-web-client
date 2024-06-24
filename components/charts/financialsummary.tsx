@@ -251,7 +251,7 @@ const FinancialSummary = ({
   }, [maxYAxisValue]);
 
   return (
-    <div className="col-span-12  bg-white px-5 pb-5 xl:col-span-8">
+    <div className="col-span-12 pt-10 border border-stroke rounded-2xl bg-white px-7 pb-5 xl:col-span-8">
       <div className="flex flex-wrap w-full items-center justify-between gap-3 sm:flex-nowrap">
         <p>{title}</p>
         <div className="flex flex-wrap gap-3 sm:gap-5">

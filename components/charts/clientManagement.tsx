@@ -1,7 +1,6 @@
 "use client";
 import { ApexOptions } from "apexcharts";
 import { useState } from "react";
-import ReactApexChart from "react-apexcharts";
 import FinancialSummary from "./financialsummary";
 
 const ClientSummary = () => {
@@ -101,13 +100,11 @@ const ClientSummary = () => {
   };
 
   return (
-    <div className="col-span-12 border border-stroke bg-white px-5 pb-5 pt-10 sm:px-7.5 xl:col-span-8 rounded-2xl">
-      <FinancialSummary
-        title="Client Management"
-        line1="Pamba Clients"
-        line2="Walk-ins Clients"
-      />
-    </div>
+    <FinancialSummary
+      title="Client Management"
+      line1="Pamba Clients"
+      line2="Walk-ins Clients"
+    />
   );
 };
 

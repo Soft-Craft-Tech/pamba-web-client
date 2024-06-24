@@ -145,7 +145,7 @@ const AppointmentsTable = ({ all_appointments }: AppointmentsTableProps) => {
   }, [all_appointments]);
 
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <div className="rounded-xl border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div id="chartTwo" className="-ml-5">
         <ReactApexChart
           options={options}
