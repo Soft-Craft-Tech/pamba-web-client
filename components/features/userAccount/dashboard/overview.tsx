@@ -28,7 +28,7 @@ export default function Overview({
         <div className="flex flex-col justify-between h-full w-full">
           <div>
             <h2 className="text-primary font-semibold text-lg">
-              Welcome back, {client.business_name}!
+              Welcome back, {client?.business_name}!
             </h2>
             <p className="text-sm font-normal text-tryGray">
               Here&apos;s what happening in your business today
