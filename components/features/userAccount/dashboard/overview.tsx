@@ -1,4 +1,3 @@
-"use client";
 import { getUser } from "@/utils/auth";
 import KPI from "../cards/KPICards";
 import { DynamicObject } from "@/components/types";
@@ -23,12 +22,12 @@ export default function Overview({
   const { client } = getUser();
 
   return (
-    <div className="flex w-full h-60 gap-5">
-      <div className="bg-white rounded-xl h-full w-full p-5 text-secondary border flex items-center gap-5">
-        <div className="flex flex-col justify-between h-full w-full">
+    <div className="flex flex-col sm:flex-row w-full sm:h-60 gap-5">
+      <div className="bg-white rounded-xl h-full w-full p-5 text-secondary border flex flex-col sm:flex-row items-center gap-5">
+        <div className="flex flex-col justify-between h-full w-full gap-5 sm:gap-1">
           <div>
             <h2 className="text-primary font-semibold text-lg">
-              Welcome back, {client?.business_name}!
+              Welcome back {client?.business_name ? `, ${client.business_name}` : ""}!
             </h2>
             <p className="text-sm font-normal text-tryGray">
               Here&apos;s what happening in your business today
@@ -47,8 +46,8 @@ export default function Overview({
             <p className="text-sm text-tryGray">Scheduled appointments</p>
           </div>
         </div>
-        <div>
-          <Image src={DashImg} alt="Business Image" />
+        <div className="mr-auto">
+          <Image src={DashImg} alt="Business Image" priority />
         </div>
       </div>
       <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-3">
