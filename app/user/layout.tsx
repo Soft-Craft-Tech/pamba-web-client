@@ -20,11 +20,11 @@ export default function UserAccountLayout({
           "2xl:max-w-screen-2xl xl:max-w-screen-xl"
         } w-full relative`}
       >
-        <div className="flex flex-col w-full h-screen bg-background gap-8 lg:flex-row">
-          <div className="w-1/6 hidden lg:flex bg-white">
+        <div className="flex flex-col w-full h-full bg-background gap-8 lg:flex-row">
+          <div className="w-1/6 lg:flex bg-white">
             <SideNav />
           </div>
-          <div className="grow py-5 space-y-8">
+          <div className="grow py-5 space-y-8 px-4 lg:px-0">
             <UserTopBar />
             {children}
           </div>

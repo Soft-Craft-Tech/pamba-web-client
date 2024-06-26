@@ -24,10 +24,11 @@ export default function Overview({
   return (
     <div className="flex flex-col sm:flex-row w-full sm:h-60 gap-5">
       <div className="bg-white rounded-xl h-full w-full p-5 text-secondary border flex flex-col sm:flex-row items-center gap-5">
-        <div className="flex flex-col justify-between h-full w-full gap-5 sm:gap-1">
+        <div className="flex flex-col justify-between h-full w-full gap-5 sm:gap-0">
           <div>
             <h2 className="text-primary font-semibold text-lg">
-              Welcome back {client?.business_name ? `, ${client.business_name}` : ""}!
+              Welcome back{" "}
+              {client?.business_name ? `, ${client.business_name}` : ""}!
             </h2>
             <p className="text-sm font-normal text-tryGray">
               Here&apos;s what happening in your business today
@@ -46,11 +47,18 @@ export default function Overview({
             <p className="text-sm text-tryGray">Scheduled appointments</p>
           </div>
         </div>
-        <div className="mr-auto">
-          <Image src={DashImg} alt="Business Image" priority />
+        <div className="mr-auto hidden lg:block">
+          <Image
+            src={client.profile_img}
+            alt={client.business_name}
+            className="shadow-xl rounded-full"
+            priority
+            width={300}
+            height={300}
+          />
         </div>
       </div>
-      <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-3">
+      <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-5">
         <KPI
           title="This month Revenue"
           value={current_month_revenue}

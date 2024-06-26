@@ -18,8 +18,8 @@ export default function SideNav() {
   };
 
   return (
-    <div className="w-full">
-      <div className="w-full flex justify-between h-auto items-center py-6">
+    <div className="w-screen">
+      <div className="w-full bg-white px-1 flex justify-between h-auto items-center py-6">
         <Link href="/">
           <Image
             className="w-32 h-auto"
@@ -50,7 +50,28 @@ export default function SideNav() {
           )}
         </div>
       </div>
-      <div className="flex flex-col gap-1 w-full">
+      {/* Mobile sidelinks */}
+      {showMenu && (
+        <div className="flex-col gap-1 w-full flex lg:hidden bg-white">
+          {sidebarData?.map(
+            ({ link, name, imageUrl }: DynamicObject, index) => {
+              return (
+                <SideBarLink
+                  key={index}
+                  link={link}
+                  name={name}
+                  image={imageUrl}
+                  onClick={handleLinkClick}
+                />
+              );
+            }
+          )}
+          <Logout />
+        </div>
+      )}
+
+      {/* Desktop sidelinks */}
+      <div className="flex-col gap-1 w-full hidden lg:flex">
         {sidebarData?.map(({ link, name, imageUrl }: DynamicObject, index) => {
           return (
             <SideBarLink
