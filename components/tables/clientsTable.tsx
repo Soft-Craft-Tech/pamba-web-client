@@ -123,19 +123,6 @@ const ClientsTable = () => {
         filterVariant: "date",
         enableGlobalFilter: false,
       },
-      {
-        accessorKey: "totalRevenue",
-        header: "Total Revenue",
-      },
-      {
-        accessorKey: "status",
-        header: "Status",
-        Cell: ({ cell }) => (
-          <div className="text-[#027A48] bg-[#ECFDF3] p-4 capitalize font-medium text-xs">
-            {cell.getValue<string>()}
-          </div>
-        ),
-      },
     ],
     []
   );
@@ -181,7 +168,7 @@ const ClientsTable = () => {
     ),
     renderEditRowDialogContent: ({ table, row }) => (
       <div className="p-10">
-        <p className="mb-2">Update Inventory</p>
+        <p className="mb-2">Update Client</p>
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) =>

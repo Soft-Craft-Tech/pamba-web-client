@@ -9,7 +9,7 @@ export default function UserTopBar() {
   const currentPage = pathname.slice(lastIndex + 1);
   return (
     <div className="w-full h-10 bg-background flex justify-between items-center mt-20 lg:mt-0">
-      <h2 className="capitalize text-lg font-bold">{currentPage}</h2>
+      <h2 className="capitalize text-2xl font-semibold">{currentPage}</h2>
       <div className="flex h-full items-center gap-5">
         <Link className="hover:animate-bounce hover:scale-[1.02] delay-75 duration-100" href={`#`}>
           <Image

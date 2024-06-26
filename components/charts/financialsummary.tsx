@@ -255,21 +255,15 @@ const FinancialSummary = ({
       <div className="flex flex-wrap w-full items-center justify-between gap-3 sm:flex-nowrap">
         <p>{title}</p>
         <div className="flex flex-wrap gap-3 sm:gap-5">
-          <div className="flex">
-            <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
-            </span>
-            <div>
-              <p className="font-semibold text-primary">{line1}</p>
-            </div>
+          <div className="flex items-center gap-3">
+            <span className="size-3 rounded-full bg-primary"></span>
+
+            <p className="font-semibold text-primary text-nowrap">{line1}</p>
           </div>
-          <div className="flex">
-            <span className="mr-3 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-accent">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-accent"></span>
-            </span>
-            <div>
-              <p className="font-semibold text-accent">{line2}</p>
-            </div>
+          <div className="flex items-center gap-3">
+            <span className="size-3 rounded-full bg-accent"></span>
+
+            <p className="font-semibold text-accent text-nowrap">{line2}</p>
           </div>
         </div>
       </div>

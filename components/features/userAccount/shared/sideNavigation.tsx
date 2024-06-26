@@ -8,6 +8,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import SideBarLink, { Logout } from "./sidebarLink";
+import Logo from "@/public/logo.svg";
 
 export default function SideNav() {
   const [showMenu, setShowMenu] = useState(false);
@@ -17,12 +18,12 @@ export default function SideNav() {
   };
 
   return (
-    <div className="fixed w-full z-50 flex flex-col gap-5 p-5  bg-white shadow-sm lg:w-72 lg:fixed lg:top-0 lg:left-0 lg:h-screen">
-      <div className="w-full flex justify-between h-auto items-center">
+    <div className="w-full">
+      <div className="w-full flex justify-between h-auto items-center py-6">
         <Link href="/">
           <Image
             className="w-32 h-auto"
-            src="/logo.svg"
+            src={Logo}
             alt="pamba logo"
             priority={true}
             width={40}
@@ -49,29 +50,19 @@ export default function SideNav() {
           )}
         </div>
       </div>
-      <div
-        className={`absolute w-full top-full left-0 px-5 z-50 gap-5 bg-white ${
-          showMenu ? "flex flex-col" : "hidden lg:flex"
-        } lg:flex lg:flex-col lg:relative lg:px-0 lg:left-0 lg:top-0`}
-      >
-        <div className="flex flex-col gap-1">
-          {sidebarData?.map(
-            ({ link, name, imageUrl }: DynamicObject, index) => {
-              return (
-                <SideBarLink
-                  key={index}
-                  link={link}
-                  name={name}
-                  image={imageUrl}
-                  onClick={handleLinkClick}
-                />
-              );
-            }
-          )}
-        </div>
-        <div className="">
-          <Logout />
-        </div>
+      <div className="flex flex-col gap-1 w-full">
+        {sidebarData?.map(({ link, name, imageUrl }: DynamicObject, index) => {
+          return (
+            <SideBarLink
+              key={index}
+              link={link}
+              name={name}
+              image={imageUrl}
+              onClick={handleLinkClick}
+            />
+          );
+        })}
+        <Logout />
       </div>
     </div>
   );
