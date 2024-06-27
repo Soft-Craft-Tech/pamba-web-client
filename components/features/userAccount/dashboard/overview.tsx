@@ -1,5 +1,8 @@
+import { getUser } from "@/utils/auth";
 import KPI from "../cards/KPICards";
 import { DynamicObject } from "@/components/types";
+import Image from "next/image";
+import DashImg from "@/public/dashboard.png";
 
 interface OverviewProps {
   all_appointments?: Array<DynamicObject>;
@@ -16,37 +19,46 @@ export default function Overview({
   today_appointments = [],
   today_revenue = 0,
 }: OverviewProps) {
+  const { client } = getUser();
+
   return (
-    <div className="flex w-full h-max gap-5 flex-col lg:h-60 lg:flex-row">
-      <div className="bg-white rounded-md h-full w-full p-5 text-secondary shadow-md flex items-center gap-5 ">
-        <div className="flex flex-col gap-2 justify-between h-full w-full">
-          <div className="mb-3 lg:mb-0">
-            <h2 className="text-primary font-semibold text-2xl">
-              Welcome back
+    <div className="flex flex-col sm:flex-row w-full sm:h-60 gap-5">
+      <div className="bg-white rounded-xl h-full w-full p-5 text-secondary border flex flex-col sm:flex-row items-center gap-5">
+        <div className="flex flex-col justify-between h-full w-full gap-5 sm:gap-0">
+          <div>
+            <h2 className="text-primary font-semibold text-lg">
+              Welcome back{" "}
+              {client?.business_name ? `, ${client.business_name}` : ""}!
             </h2>
-            <p className="text-sm font-light text-muted">
+            <p className="text-sm font-normal text-tryGray">
               Here&apos;s what happening in your business today
             </p>
           </div>
-          <div className="flex flex-col-reverse lg:flex-col">
-            <h4 className="font-semibold">
+          <div className="font-semibold">
+            <h4>
               Ksh <span className="text-xl font-bold">{today_revenue}</span>
             </h4>
-            <p className="font-medium text-sm">
-              Today&apos;s Revenue
-            </p>
+            <p className="text-sm text-tryGray">Today&apos;s revenue</p>
           </div>
-          <div className="flex flex-col-reverse lg:flex-col">
+          <div className="font-semibold">
             <h4 className="font-bold text-xl">
               {today_appointments ? today_appointments.length : 0}
             </h4>
-            <p className="font-medium text-sm">
-              Scheduled appointments
-            </p>
+            <p className="text-sm text-tryGray">Scheduled appointments</p>
           </div>
         </div>
+        <div className="mr-auto hidden lg:block">
+          <Image
+            src={client?.profile_img}
+            alt={client?.business_name}
+            className="shadow-xl rounded-full"
+            priority
+            width={300}
+            height={300}
+          />
+        </div>
       </div>
-      <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-3">
+      <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-5">
         <KPI
           title="This month Revenue"
           value={current_month_revenue}
