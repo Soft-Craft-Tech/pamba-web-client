@@ -49,8 +49,8 @@ export default function Overview({
         </div>
         <div className="mr-auto hidden lg:block">
           <Image
-            src={client.profile_img}
-            alt={client.business_name}
+            src={client?.profile_img}
+            alt={client?.business_name}
             className="shadow-xl rounded-full"
             priority
             width={300}
