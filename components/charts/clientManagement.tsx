@@ -1,109 +1,146 @@
 "use client";
 import { ApexOptions } from "apexcharts";
-import { useState } from "react";
-import FinancialSummary from "./financialsummary";
+import ChartSummary from "./chartSummary";
+import { useAllAppointments } from "@/app/api/appointment";
+
+const options: ApexOptions = {
+  legend: {
+    show: false,
+    position: "top",
+    horizontalAlign: "left",
+  },
+  colors: ["#DB1471", "#007B99"],
+  chart: {
+    fontFamily: "Satoshi, sans-serif",
+    height: 335,
+    type: "area",
+    dropShadow: {
+      enabled: true,
+      color: "#fff",
+      top: 10,
+      blur: 4,
+      left: 0,
+      opacity: 0.1,
+    },
+
+    toolbar: {
+      show: false,
+    },
+  },
+  responsive: [
+    {
+      breakpoint: 1024,
+      options: {
+        chart: {
+          height: 300,
+        },
+      },
+    },
+    {
+      breakpoint: 1366,
+      options: {
+        chart: {
+          height: 350,
+        },
+      },
+    },
+  ],
+  stroke: {
+    width: [2, 2],
+    curve: "straight",
+  },
+  grid: {
+    xaxis: {
+      lines: {
+        show: false,
+      },
+    },
+    yaxis: {
+      lines: {
+        show: false,
+      },
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  xaxis: {
+    type: "category",
+    categories: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    axisBorder: {
+      show: true,
+    },
+    axisTicks: {
+      show: true,
+    },
+  },
+  yaxis: {
+    title: {
+      style: {
+        fontSize: "0px",
+      },
+    },
+    axisBorder: {
+      show: true,
+    },
+    axisTicks: {
+      show: true,
+    },
+    min: 0,
+    max: 100,
+  },
+};
 
 const ClientSummary = () => {
-  const [series] = useState([
+  const { data } = useAllAppointments();
+  
+  const series = [
     {
       name: "Pamba Clients",
-      data: [],
-      fill: {},
-    },
-    {
-      name: "Walk-ins Clients",
-      data: [],
-      fill: {},
-    },
-  ]);
-
-  const options: ApexOptions = {
-    chart: {
-      height: 350,
-      type: "line",
-      zoom: {
-        enabled: false,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      width: [5, 7, 5],
-      curve: "straight",
-      dashArray: [0, 8, 5],
-    },
-    title: {
-      text: "Page Statistics",
-      align: "left",
-    },
-    legend: {
-      tooltipHoverFormatter: function (
-        val: string,
-        opts: {
-          w: { globals: { series: { [x: string]: { [x: string]: string } } } };
-          seriesIndex: string | number;
-          dataPointIndex: string | number;
-        }
-      ) {
-        return (
-          val +
-          " - <strong>" +
-          opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
-          "</strong>"
-        );
-      },
-    },
-    markers: {
-      size: 0,
-      hover: {
-        sizeOffset: 6,
-      },
-    },
-    xaxis: {
-      categories: [
-        "01 Jan",
-        "02 Jan",
-        "03 Jan",
-        "04 Jan",
-        "05 Jan",
-        "06 Jan",
-        "07 Jan",
-        "08 Jan",
-        "09 Jan",
-        "10 Jan",
-        "11 Jan",
-        "12 Jan",
-      ],
-    },
-    tooltip: {
-      y: [
-        {
-          title: {
-            formatter: function (val: string) {
-              return val + " (mins)";
+      data,
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.0,
+          stops: [0, 100],
+          colorStops: [
+            {
+              offset: 0,
+              color: "#3C50E0",
+              opacity: 1,
             },
-          },
-        },
-        {
-          title: {
-            formatter: function (val: string) {
-              return val + " per session";
+            {
+              offset: 100,
+              color: "#fff",
+              opacity: 1,
             },
-          },
+          ],
         },
-      ],
+      },
     },
-    grid: {
-      borderColor: "#f1f1f1",
-    },
-  };
+  ];
 
   return (
-    <FinancialSummary
+    <ChartSummary
       title="Client Management"
       line1="Pamba Clients"
-      line2="Walk-ins Clients"
+      options={options}
+      series={series}
     />
   );
 };

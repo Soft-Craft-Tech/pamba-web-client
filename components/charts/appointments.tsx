@@ -1,16 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
+import { useEffect, useState } from "react";
 import { DynamicObject } from "../types";
-import { all } from "axios";
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
+import ChartSummary from "./chartSummary";
 
-interface AppointmentsTableProps {
+type AppointmentsTableProps = {
   all_appointments?: Array<DynamicObject>;
-}
+};
 
 const options: ApexOptions = {
   legend: {
@@ -111,12 +107,13 @@ const options: ApexOptions = {
     max: 100,
   },
 };
+
 const AppointmentsTable = ({ all_appointments }: AppointmentsTableProps) => {
   const [state, setState] = useState({
     series: [
       {
         name: "All appointments",
-        data: [] as number[],
+        data: [] as any[],
       },
     ],
   });
@@ -145,17 +142,12 @@ const AppointmentsTable = ({ all_appointments }: AppointmentsTableProps) => {
   }, [all_appointments]);
 
   return (
-    <div className="rounded-xl border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <div id="chartTwo" className="-ml-5">
-        <ReactApexChart
-          options={options}
-          series={state.series}
-          type="line"
-          height={350}
-          width={"100%"}
-        />
-      </div>
-    </div>
+    <ChartSummary
+      title="All Appointments"
+      line1="appointments"
+      options={options}
+      series={state.series}
+    />
   );
 };
 

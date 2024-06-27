@@ -5,11 +5,11 @@ import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useGetEvents = () => {
+export const useAllAppointments = () => {
   return useQuery({
-    queryKey: ["appointments"],
+    queryKey: ["allAppointments"],
     queryFn: async () => {
-      const response = await apiCall("GET", endpoints.fetchEvents, {}, {});
+      const response = await apiCall("GET", endpoints.fetchAllAppointments);
       return response;
     },
   });

@@ -19,7 +19,7 @@ const authEndpoints: { [key: string]: string } = {
   fetchExpenses: "/expenses/my-expenses",
   addExpense: "/expenses/record-expense",
   fetchExpenseAccounts: "/accounts/all",
-  fetchEvents: "/appointments/business-appointments",
+  fetchAllAppointments: "/appointments/business-appointments",
   deleteExpenses: "/expenses/delete-expense/",
   editExpenses: "/expenses/update-expense/",
   createStaff: "/staff/create_staff",

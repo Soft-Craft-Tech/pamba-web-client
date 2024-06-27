@@ -1,129 +1,119 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import { DynamicObject } from "../types";
+import ChartSummary from "./chartSummary";
 
 type FinancialSummaryProps = {
   lifetime_expenses?: Array<DynamicObject>;
   lifetime_sales?: Array<DynamicObject>;
-  title?: string;
-  line1?: string;
-  line2?: string;
-};
-
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false,
-});
-
-const options: ApexOptions = {
-  legend: {
-    show: false,
-    position: "top",
-    horizontalAlign: "left",
-  },
-  colors: ["#007B99", "#DB1471"],
-  chart: {
-    fontFamily: "Satoshi, sans-serif",
-    height: 335,
-    type: "area",
-    dropShadow: {
-      enabled: true,
-      color: "#fff",
-      top: 10,
-      blur: 4,
-      left: 0,
-      opacity: 0.1,
-    },
-
-    toolbar: {
-      show: false,
-    },
-  },
-  responsive: [
-    {
-      breakpoint: 1024,
-      options: {
-        chart: {
-          height: 300,
-        },
-      },
-    },
-    {
-      breakpoint: 1366,
-      options: {
-        chart: {
-          height: 350,
-        },
-      },
-    },
-  ],
-  stroke: {
-    width: [2, 2],
-    curve: "straight",
-  },
-  grid: {
-    xaxis: {
-      lines: {
-        show: false,
-      },
-    },
-    yaxis: {
-      lines: {
-        show: false,
-      },
-    },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  xaxis: {
-    type: "category",
-    categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    axisBorder: {
-      show: true,
-    },
-    axisTicks: {
-      show: true,
-    },
-  },
-  yaxis: {
-    title: {
-      style: {
-        fontSize: "0px",
-      },
-    },
-    axisBorder: {
-      show: true,
-    },
-    axisTicks: {
-      show: true,
-    },
-    min: 0,
-    max: 100,
-  },
 };
 
 const FinancialSummary = ({
   lifetime_expenses = [],
   lifetime_sales = [],
-  title = "Financial Summary",
-  line1 = "Revenue",
-  line2 = "Expenses",
 }: FinancialSummaryProps) => {
+  const options: ApexOptions = {
+    legend: {
+      show: false,
+      position: "top",
+      horizontalAlign: "left",
+    },
+    colors: ["#007B99", "#DB1471"],
+    chart: {
+      fontFamily: "Satoshi, sans-serif",
+      height: 335,
+      type: "area",
+      dropShadow: {
+        enabled: true,
+        color: "#fff",
+        top: 10,
+        blur: 4,
+        left: 0,
+        opacity: 0.1,
+      },
+
+      toolbar: {
+        show: false,
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 1024,
+        options: {
+          chart: {
+            height: 300,
+          },
+        },
+      },
+      {
+        breakpoint: 1366,
+        options: {
+          chart: {
+            height: 350,
+          },
+        },
+      },
+    ],
+    stroke: {
+      width: [2, 2],
+      curve: "straight",
+    },
+    grid: {
+      xaxis: {
+        lines: {
+          show: false,
+        },
+      },
+      yaxis: {
+        lines: {
+          show: false,
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      type: "category",
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
+      axisBorder: {
+        show: true,
+      },
+      axisTicks: {
+        show: true,
+      },
+    },
+    yaxis: {
+      title: {
+        style: {
+          fontSize: "0px",
+        },
+      },
+      axisBorder: {
+        show: true,
+      },
+      axisTicks: {
+        show: true,
+      },
+      min: 0,
+      max: 100,
+    },
+  };
+
   const [state, setState] = useState({
     series: [
       {
@@ -251,34 +241,13 @@ const FinancialSummary = ({
   }, [maxYAxisValue]);
 
   return (
-    <div className="col-span-12 pt-10 border border-stroke rounded-2xl bg-white px-7 pb-5 xl:col-span-8">
-      <div className="flex flex-wrap w-full items-center justify-between gap-3 sm:flex-nowrap">
-        <p>{title}</p>
-        <div className="flex flex-wrap gap-3 sm:gap-5">
-          <div className="flex items-center gap-3">
-            <span className="size-3 rounded-full bg-primary"></span>
-
-            <p className="font-semibold text-primary text-nowrap">{line1}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="size-3 rounded-full bg-accent"></span>
-
-            <p className="font-semibold text-accent text-nowrap">{line2}</p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div id="chartOne" className="-ml-5">
-          <ReactApexChart
-            options={chartOptions}
-            series={state.series}
-            type="area"
-            height={350}
-            width={"100%"}
-          />
-        </div>
-      </div>
-    </div>
+    <ChartSummary
+      title="Financial Summary"
+      line1="Revenue"
+      line2="Expenses"
+      options={options}
+      series={state.series}
+    />
   );
 };
 
