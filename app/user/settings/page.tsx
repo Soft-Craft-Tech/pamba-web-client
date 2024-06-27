@@ -11,7 +11,7 @@ export default function Settings() {
     settingsTab: { activeTab },
   } = useAppSelector((state: RootState) => state);
   return (
-    <div className="w-full h-auto rounded-xl bg-white border p-2 flex flex-col gap-10">
+    <div className="w-full h-auto rounded-xl bg-white border p-2 flex flex-col gap-10 lg:p-5">
       <SettingsNav />
       {activeTab === "edit" && <EditProfile />}
       {activeTab === "password" && <PasswordSecurity />}
