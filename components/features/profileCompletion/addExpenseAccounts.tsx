@@ -9,11 +9,7 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
-
-interface Expense {
-  accountName: string;
-  description: string;
-}
+import { Expense } from "@/components/types";
 
 interface CustomError extends Error {
   response?: {
@@ -31,7 +27,7 @@ export default function AddExpenseAccounts() {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { mutateAsync, isLoading, isError, isSuccess } =
+  const { mutateAsync, isPending, isError, isSuccess } =
     useCreateExpenseAccounts(step);
 
   const [queuedExpenses, setQueuedExpenses] = useState<Expense[]>([]);
@@ -122,12 +118,12 @@ export default function AddExpenseAccounts() {
       </div>
       <div className="w-full h-10 flex justify-end">
         <button
-          disabled={isLoading || queuedExpenses.length === 0}
+          disabled={isPending || queuedExpenses.length === 0}
           type="button"
           onClick={handleSubmitData}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Loading" : "Next"}
+          {isPending ? "Loading" : "Next"}
         </button>
       </div>
     </div>

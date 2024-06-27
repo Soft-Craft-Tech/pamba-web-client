@@ -5,6 +5,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import Image from "next/image";
+
 const data = [
   {
     name: {

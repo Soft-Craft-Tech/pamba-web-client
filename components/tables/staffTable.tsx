@@ -70,7 +70,7 @@ const StaffManagementTable = () => {
 
   const {
     data: allStaffData,
-    isLoading,
+    isPending,
     isError,
     isRefetching,
     // refetch: refetchAllStaff,
@@ -161,13 +161,13 @@ const StaffManagementTable = () => {
   );
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
-    deleteUser(row.original.id);
+    if (row.original.id) deleteUser(row.original.id);
     // refetchAllStaff();
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : allStaffData?.staff ?? [],
+    data: isPending ? [] : allStaffData?.staff ?? [],
     initialState: {
       showColumnFilters: false,
       showGlobalFilter: true,
@@ -282,7 +282,7 @@ const StaffManagementTable = () => {
             <Button
               label="Save"
               variant="primary"
-              disabled={editStuffStatus === "loading"}
+              disabled={editStuffStatus === "pending"}
             />
           </div>
         </form>
@@ -360,7 +360,7 @@ const StaffManagementTable = () => {
             <Button
               label="Save Staff"
               variant="primary"
-              disabled={createStuffStatus === "loading"}
+              disabled={createStuffStatus === "pending"}
             />
           </div>
         </form>
@@ -378,7 +378,7 @@ const StaffManagementTable = () => {
     ),
     state: {
       globalFilter,
-      isLoading,
+      isLoading: isPending,
       pagination,
       showAlertBanner: isError,
       // showProgressBars: isRefetching,

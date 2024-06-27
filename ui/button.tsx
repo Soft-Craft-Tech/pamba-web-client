@@ -20,6 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   variant = "default",
   disabled,
+  type = "button",
   ...rest
 }) => {
   const baseClasses =
@@ -30,7 +31,8 @@ const Button: React.FC<ButtonProps> = ({
       "w-max border border-borders bg-primary px-10 py-2 text-white rounded-full text-sm font-semibold hover:bg-primaryHover duration-100 delay-75",
     outline:
       "w-max border border-primary bg-white px-10  py-2 text-primary rounded-full text-sm font-semibold hover:border-accent  hover:text-accent duration-100 delay-75",
-    secondary: "w-max  px-10 py-2 text-[#828188] rounded-full text-sm hover:text-primary duration-100 delay-75",
+    secondary:
+      "w-max  px-10 py-2 text-[#828188] rounded-full text-sm hover:text-primary duration-100 delay-75",
     default:
       "bg-gray-300 text-gray-700 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 ",
     disabled:
@@ -41,6 +43,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type={type}
       className={buttonClasses}
       disabled={disabled}
       onClick={onClick}

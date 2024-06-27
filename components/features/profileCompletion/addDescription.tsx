@@ -13,7 +13,7 @@ export default function BusinessDescription() {
   });
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
 
-  const { mutateAsync, isLoading, error } = useUpdateDescription(step);
+  const { mutateAsync, isPending, error } = useUpdateDescription(step);
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -47,12 +47,12 @@ export default function BusinessDescription() {
       </div>
       <div className="w-full h-10 flex justify-end">
         <button
-          disabled={isLoading || !businessDescription.description}
+          disabled={isPending || !businessDescription.description}
           type="button"
           onClick={submitDescription}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? <>Loading</> : <>Next</>}
+          {isPending ? <>Loading</> : <>Next</>}
         </button>
       </div>
     </div>

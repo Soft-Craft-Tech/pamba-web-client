@@ -31,7 +31,7 @@ export default function AddServices() {
 
   const {
     mutate: assignServices,
-    isLoading: postingServices,
+    isPending: postingServices,
     error: errorPosting,
     isSuccess: successPosting,
   } = useAssignService();

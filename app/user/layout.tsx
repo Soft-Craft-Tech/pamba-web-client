@@ -1,41 +1,33 @@
 "use client";
-import SideBarHamburger from "@/components/features/userAccount/shared/sideBarHamburger";
 import SideNav from "@/components/features/userAccount/shared/sideNavigation";
 import UserTopBar from "@/components/features/userAccount/shared/userTopBar";
-import Link from "next/link";
+import { NewProvider } from "@/utils/providers/NewProvider";
+import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-import Image from "next/image";
-import { NewProvider } from "@/components/NewProvider";
 
 export default function UserAccountLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
     <NewProvider>
-      <main className="flex flex-col w-full h-auto bg-background gap-3 lg:flex-row">
-        <div className="w-full relative lg:w-72 lg:h-screen lg:overflow-hidden">
-          <div className="fixed w-full z-50 flex flex-col gap-5 p-5 bg-white shadow-sm lg:z-0 lg:w-72 lg:top-0 lg:left-0 lg:h-screen">
-            <div className="w-full flex justify-between h-auto items-center">
-              <Link href="/">
-                <Image
-                  className="w-32 h-auto"
-                  src="/logo.svg"
-                  alt="pamba logo"
-                  priority={true}
-                  width={40}
-                  height={20}
-                />
-              </Link>
-              <SideBarHamburger />
-            </div>
+      <main
+        className={`mx-auto ${
+          !pathname.includes("booking") &&
+          "2xl:max-w-screen-2xl xl:max-w-screen-xl"
+        } w-full relative`}
+      >
+        <div className="flex flex-col w-full h-full bg-background gap-8 lg:flex-row">
+          <div className="w-1/6 lg:flex bg-white">
             <SideNav />
           </div>
-        </div>
-        <div className="p-5 flex-1 flex flex-col gap-10">
-          <UserTopBar />
-          {children}
+          <div className="grow py-5 space-y-8 px-4 lg:px-0">
+            <UserTopBar />
+            {children}
+          </div>
         </div>
       </main>
     </NewProvider>

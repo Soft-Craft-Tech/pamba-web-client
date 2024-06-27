@@ -1,19 +1,16 @@
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const useAllImages = (business_id: string) => {
-  return useQuery("", async () => {
-    try {
+  return useQuery({
+    queryKey: ["allImages"],
+    queryFn: async () => {
       const response = await apiCall(
         "GET",
-        `${endpoints.getGalleryImages}/${business_id}`,
-        {},
-        {}
+        `${endpoints.getGalleryImages}/${business_id}`
       );
       return response;
-    } catch (error) {
-      throw new Error("Error fetching Statuses");
-    }
+    },
   });
 };

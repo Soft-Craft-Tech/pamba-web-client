@@ -12,7 +12,7 @@ const AppointmentsCard = () => {
   });
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
+    <div className="col-span-12 rounded-xl border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <div className="flex flex-col gap-4 px-4">
         <div className="flex justify-between items-center pb-2">
           <h2 className="text-lg font-semibold">Appointments</h2>
