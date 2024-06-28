@@ -111,7 +111,7 @@ const RevenueSummary = () => {
   const series = [
     {
       name: "Revenue",
-      data,
+      data: data?.expenses.length === 0 ? {} : data,
       fill: {
         type: "gradient",
         gradient: {
@@ -136,6 +136,9 @@ const RevenueSummary = () => {
     },
   ];
 
+  if (data?.expenses.length === 0) {
+    return <p className="text-center font-semibold">No data to display</p>;
+  }
   return (
     <ChartSummary
       title="Revenue Management"

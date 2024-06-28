@@ -134,7 +134,9 @@ const ClientSummary = () => {
       },
     },
   ];
-
+  if (data?.appointments.length === 0) {
+    return <p className="text-center font-semibold">No data to display</p>;
+  }
   return (
     <ChartSummary
       title="Client Management"

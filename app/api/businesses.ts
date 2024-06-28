@@ -1,13 +1,14 @@
 import { CloudinaryData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
-import { setStep } from "@/store/completeProfileSlice";
+import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import { setMessage } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useAssignService = () => {
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (services: any) => {
       const response = await apiCall("POST", endpoints.assignServices, {
@@ -16,6 +17,11 @@ export const useAssignService = () => {
       dispatch(setMessage(response.message));
       return response;
     },
+    onSuccess: () => {
+      dispatch(setQueuedServices([]));
+      queryClient.invalidateQueries({ queryKey: ["allServices"] });
+    },
+    onError: () => {},
   });
 };
 

@@ -38,7 +38,10 @@ export const useCreateExpense = () => {
       dispatch(setMessage(response.message));
       return response;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(
+        `This is the data from the get all expenses endpoint: ${data}`
+      );
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
     },
   });
