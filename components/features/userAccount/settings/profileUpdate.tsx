@@ -67,10 +67,6 @@ export default function EditProfile() {
             priority
           />
         </div>
-        <button className="text-sm text-blue-400 w-auto h-auto flex items-center gap-2">
-          <AiFillEdit size={20} />
-          Change Image
-        </button>
       </div>
       <ProfileUpdateForm client={client} />
     </div>
