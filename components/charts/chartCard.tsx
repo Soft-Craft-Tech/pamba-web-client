@@ -1,3 +1,5 @@
+import { useAllAppointments } from "@/app/api/appointment";
+
 const appointmentsData = [
   { id: 0, appointment: "Braiding", time: "Today - 11.30 AM" },
   { id: 1, appointment: "Braiding", time: "Today - 11.30 AM" },
@@ -5,6 +7,8 @@ const appointmentsData = [
 ];
 
 const AppointmentsCard = () => {
+  const { data } = useAllAppointments();
+
   const todaysDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",

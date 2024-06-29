@@ -28,7 +28,6 @@ export default function AddServices() {
 
   const { data } = useGetServiceCategories();
   // const { refetch } = useGetAllServices(client?.slug);
-
   const {
     mutate: assignServices,
     isPending: postingServices,

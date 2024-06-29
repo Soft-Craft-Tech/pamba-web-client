@@ -1,7 +1,7 @@
 "use client";
+import { useGetExpenses } from "@/app/api/expenses";
 import { ApexOptions } from "apexcharts";
 import ChartSummary from "./chartSummary";
-import { useAllAppointments } from "@/app/api/appointment";
 
 const options: ApexOptions = {
   legend: {
@@ -104,12 +104,12 @@ const options: ApexOptions = {
   },
 };
 
-const ClientSummary = () => {
-  const { data } = useAllAppointments();
-  
+const ExpenseSummary = () => {
+  const { data } = useGetExpenses();
+
   const series = [
     {
-      name: "Pamba Clients",
+      name: "Expenses",
       data,
       fill: {
         type: "gradient",
@@ -134,17 +134,15 @@ const ClientSummary = () => {
       },
     },
   ];
-  if (data?.appointments.length === 0) {
-    return <p className="text-center font-semibold">No data to display</p>;
-  }
+
   return (
     <ChartSummary
-      title="Client Management"
-      line1="Pamba Clients"
+      title="Expense Management"
+      line1="Expenses"
       options={options}
       series={series}
     />
   );
 };
 
-export default ClientSummary;
+export default ExpenseSummary;

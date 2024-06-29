@@ -1,13 +1,13 @@
 "use client";
 import { Fragment, useRef, useState, useEffect } from "react";
 import { Scheduler } from "@aldabil/react-scheduler";
-import { useGetEvents } from "@/app/api/appointment";
+import { useAllAppointments } from "@/app/api/appointment";
 import { SchedulerRef } from "@aldabil/react-scheduler/types";
 import React from "react";
 
 const TimeSlots: React.FC = () => {
   const calendarRef = useRef<SchedulerRef>(null);
-  const { data, isSuccess, isPending, isError } = useGetEvents();
+  const { data, isSuccess, isPending, isError } = useAllAppointments();
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {

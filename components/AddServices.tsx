@@ -41,7 +41,7 @@ const AddServicesBox = () => {
             ) => (
               <div
                 key={index}
-                className="flex flex-col w-full gap-y-3 rounded-lg overflow-hidden shadow-md border  border-stroke bg-white w-72 h-72 "
+                className="flex flex-col  gap-y-3 rounded-lg overflow-hidden shadow-md border  border-stroke bg-white w-72 h-72 "
               >
                 <div className="h-2/3 w-full overflow-hidden">
                   <img

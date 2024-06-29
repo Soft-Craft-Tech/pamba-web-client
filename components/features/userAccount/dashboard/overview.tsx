@@ -48,14 +48,16 @@ export default function Overview({
           </div>
         </div>
         <div className="mr-auto hidden lg:block">
-          <Image
-            src={client?.profile_img}
-            alt={client?.business_name}
-            className="shadow-xl rounded-full"
-            priority
-            width={300}
-            height={300}
-          />
+          {client?.profile_img && (
+            <Image
+              src={client?.profile_img}
+              alt={client?.business_name}
+              className="shadow-xl rounded-full"
+              priority
+              width={300}
+              height={300}
+            />
+          )}
         </div>
       </div>
       <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-5">
