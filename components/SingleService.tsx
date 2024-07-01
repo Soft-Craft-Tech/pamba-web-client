@@ -1,41 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import * as React from "react";
-import Image from "next/image";
-import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
+import { useBookAppointments } from "@/app/api/appointment";
+import { useGetSingleService } from "@/app/api/services";
 import Explorer from "@/components/Explorer";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
+import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
+import { DynamicObject } from "@/components/types";
+import { daysData } from "@/data";
+import { useAppSelector } from "@/hooks";
+import { RootState } from "@/store/store";
+import Button from "@/ui/button";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import TimeIcon from "@/ui/icons/time-icon";
-import Button from "@/ui/button";
+import { FormControl } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { useGetSingleService } from "@/app/api/services";
-import { DynamicObject } from "@/components/types";
-import { FormControl } from "@mui/material";
-import { useBookAppointments } from "@/app/api/appointment";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { RootState } from "@/store/store";
+import Image from "next/image";
+import * as React from "react";
 import Toast from "./shared/toasts/authToast";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { daysData } from "@/data";
+import { useForm } from "react-hook-form";
 
 dayjs.extend(isBetween);
-
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
 
 const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   const {
@@ -43,7 +35,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
   const { data } = useGetSingleService(serviceId);
-  const dispatch = useAppDispatch();
+
   const { mutateAsync, isSuccess, isError } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
@@ -73,6 +65,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     setNotificationMethod(event.target.value);
   };
 
+  // TODO: Implement form validation
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -82,6 +75,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     formData.append("date", dayjs(selectedDay).format("DD-MM-YYYY"));
     formData.append("time", dayjs(selectedTime).format("HH:mm"));
     formData.append("notification", notification);
+
     const formJson = Object.fromEntries(formData.entries());
     const data = {
       ...formJson,
@@ -89,16 +83,12 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
       staff: Number(formJson.staff),
       business: Number(formJson.business),
     };
-    try {
-      await mutateAsync(data);
-      dispatch(setShowToast(true));
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-      dispatch(setShowToast(true));
-    }
+    console.log("Apppointments", data);
+    await mutateAsync(data);
+
     handleClose();
   };
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -371,7 +361,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   }}
                   variant="outline"
                 />
-                <Button label="Book Appointment" variant="primary">
+                <Button type="submit" label="Book Appointment" variant="primary">
                   <p>Confirm Appointment</p>
                   <Image
                     className="border bg-white ml-3 rounded-full"

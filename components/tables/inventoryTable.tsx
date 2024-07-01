@@ -17,12 +17,12 @@ import {
 } from "material-react-table";
 import moment from "moment";
 import { useMemo, useState } from "react";
-import { Controller, Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
+import FormField from "@/ui/FormField";
 import { inventorySchema } from "@/utils/zodSchema";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
-import FormField from "@/ui/FormField";
 
 type InventoryType = {
   id: number;
@@ -35,12 +35,10 @@ type FormValues = z.infer<typeof inventorySchema>;
 
 const InventoryTable = () => {
   const {
-    control,
     handleSubmit,
     reset,
     register,
     formState: { errors },
-    setError,
   } = useForm<FormValues>({
     resolver: zodResolver(inventorySchema),
   });
@@ -56,7 +54,6 @@ const InventoryTable = () => {
 
   const {
     mutateAsync,
-    isSuccess,
     status: createInventoryStatus,
   } = useCreateInventory();
 
