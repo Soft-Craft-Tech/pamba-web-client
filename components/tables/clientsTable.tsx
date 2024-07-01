@@ -1,9 +1,9 @@
 "use client";
 import {
-  useCreateInventory,
-  useDeleteInventory,
-  useEditInventory,
-} from "@/app/api/inventory";
+  useCreateClients,
+  useDeleteClients,
+  useEditClients,
+} from "@/app/api/clients";
 import Button from "@/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,7 +18,7 @@ import moment from "moment";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { inventorySchema } from "@/utils/zodSchema";
+import { clientSchema } from "@/utils/zodSchema";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import FormField from "@/ui/FormField";
@@ -26,18 +26,14 @@ import { useGetAllClients } from "@/app/api/clients";
 
 type ClientsType = {
   id: number;
-  customer: {
-    name: string;
-    imageURL: string;
-  };
-  phoneNumber: string;
+  customer: string;
+  phone: string;
   lastApppointment: Date | null;
   nextApppointment: Date | null;
-  totalRevenue: number;
-  status: string;
+  service: string;
 };
 
-type FormValues = z.infer<typeof inventorySchema>;
+type FormValues = z.infer<typeof clientSchema>;
 
 const ClientsTable = () => {
   const {
@@ -46,7 +42,7 @@ const ClientsTable = () => {
     register,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(inventorySchema),
+    resolver: zodResolver(clientSchema),
   });
 
   const [globalFilter, setGlobalFilter] = useState("");
@@ -58,31 +54,24 @@ const ClientsTable = () => {
 
   const { data, isPending, isError } = useGetAllClients();
 
-  const {
-    mutateAsync,
-    isSuccess,
-    status: createInventoryStatus,
-  } = useCreateInventory();
+  const { mutateAsync, status: createClientStatus } = useCreateClients();
 
-  const { mutateAsync: deleteInventory } = useDeleteInventory();
+  const { mutateAsync: deleteClient } = useDeleteClients();
 
-  const { mutateAsync: editInventory, status: editInventoryStatus } =
-    useEditInventory();
+  const { mutateAsync: editClient, status: editClientStatus } =
+    useEditClients();
 
-  const editInventoryRow = async (
-    inventoryId: number,
-    formData: FormValues
-  ) => {
-    const data = {
-      inventoryId,
-      status: formData.status,
-    };
-    await editInventory(data);
+  const editClientRow = async (clientId: number, formData: FormValues) => {
+    // const data = {
+    //   clientId,
+    //   status: formData,
+    // };
+    // await editClient(data);
     reset();
     table.setEditingRow(null);
   };
 
-  const submitInventory = async (formData: { product: string }) => {
+  const submitClient = async (formData: { product: string }) => {
     await mutateAsync(formData);
     reset();
     table.setCreatingRow(null);
@@ -92,7 +81,7 @@ const ClientsTable = () => {
     () => [
       {
         accessorKey: "id",
-        header: "Inventory ID",
+        header: "Client ID",
         disableFilters: true,
         enableEditing: false,
         enableGlobalFilter: false,
@@ -102,7 +91,7 @@ const ClientsTable = () => {
         header: "Customer",
       },
       {
-        accessorKey: "phoneNumber",
+        accessorKey: "phone",
         header: "Phone Number",
       },
       {
@@ -128,7 +117,7 @@ const ClientsTable = () => {
   );
 
   const openDeleteConfirmModal = (row: MRT_Row<ClientsType>) => {
-    deleteInventory(row.original.id);
+    deleteClient(row.original.id);
   };
 
   const table = useMaterialReactTable({
@@ -172,36 +161,50 @@ const ClientsTable = () => {
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) =>
-            editInventoryRow(row.original.id ?? 0, data)
+            editClientRow(row.original.id ?? 0, data)
           )}
         >
           <FormField
             type="text"
+            placeholder="Customer Name"
+            name="customer"
+            register={register}
+            defaultValue={row.original.customer}
+            error={errors.customer}
+          />
+          <FormField
+            type="email"
+            placeholder="Email"
+            name="email"
+            register={register}
+            // defaultValue={row.original.email}
+            error={errors.email}
+          />
+          <FormField
+            type="tel"
+            placeholder="Phone Number"
+            name="phone"
+            register={register}
+            defaultValue={row.original.phone}
+            error={errors.phone}
+          />
+          <FormField
+            type="datetime-local"
             placeholder="Appointment Date"
-            name="nextAppointment"
+            name="appointmentDate"
             register={register}
-            error={errors.updated_at}
-            defaultValue={moment(row.original.nextApppointment).format(
-              "MMM D, YYYY"
-            )}
-            disabled
+            // defaultValue={moment(row.original.appointmentDate).format(
+            //   "MMM D, YYYY"
+            // )}
+            error={errors.appointmentDate}
           />
           <FormField
             type="text"
-            placeholder="Item"
-            name="product"
+            placeholder="Service"
+            name="service"
             register={register}
-            error={errors.product}
-            defaultValue={row.original.customer.name}
-            disabled
-          />
-          <FormField
-            type="text"
-            placeholder="Item"
-            name="status"
-            register={register}
-            error={errors.status}
-            defaultValue={row.original.status}
+            defaultValue={row.original.service}
+            error={errors.service}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
@@ -216,7 +219,7 @@ const ClientsTable = () => {
               type="submit"
               label="Submit"
               variant="primary"
-              disabled={editInventoryStatus === "pending"}
+              disabled={editClientStatus === "pending"}
             />
           </div>
         </form>
@@ -224,19 +227,47 @@ const ClientsTable = () => {
     ),
     renderCreateRowDialogContent: () => (
       <div className="p-10">
-        <p className="mb-2">Inventory Details</p>
+        <p className="mb-2">Client Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit((data) => {
-            submitInventory(data);
-          })}
+          // onSubmit={handleSubmit((data) => {
+          //   submitClient(data);
+          // })}
         >
           <FormField
             type="text"
-            placeholder="Item"
-            name="product"
+            placeholder="Customer Name"
+            name="customer"
             register={register}
-            error={errors.product}
+            error={errors.customer}
+          />
+          <FormField
+            type="email"
+            placeholder="Email"
+            name="Email"
+            register={register}
+            error={errors.email}
+          />
+          <FormField
+            type="tel"
+            placeholder="Phone Number"
+            name="phone"
+            register={register}
+            error={errors.phone}
+          />
+          <FormField
+            type="datetime-local"
+            placeholder="Appointment Date"
+            name="appointmentDate"
+            register={register}
+            error={errors.appointmentDate}
+          />
+          <FormField
+            type="text"
+            placeholder="Service"
+            name="service"
+            register={register}
+            error={errors.service}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
@@ -252,7 +283,7 @@ const ClientsTable = () => {
               type="submit"
               label="Submit"
               variant="primary"
-              disabled={createInventoryStatus === "pending"}
+              disabled={createClientStatus === "pending"}
             />
           </div>
         </form>

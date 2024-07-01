@@ -51,3 +51,19 @@ export type Expense = {
   accountName: string;
   description: string;
 };
+
+export type AppointmentType = {
+  cancelled: boolean;
+  color: string;
+  comment: string;
+  completed: boolean;
+  create_at: string;
+  date: string;
+  end: string;
+  event_id: number;
+  id: number;
+  staff: string;
+  start: string;
+  time: string;
+  title: string;
+};
