@@ -17,12 +17,18 @@ import {
 } from "material-react-table";
 import moment from "moment";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-
+import { TiTick } from "react-icons/ti";
 import FormField from "@/ui/FormField";
 import { inventorySchema } from "@/utils/zodSchema";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
+import { GrFormClose } from "react-icons/gr";
+import { useForm, Controller } from "react-hook-form";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 type InventoryType = {
   id: number;
@@ -35,6 +41,7 @@ type FormValues = z.infer<typeof inventorySchema>;
 
 const InventoryTable = () => {
   const {
+    control,
     handleSubmit,
     reset,
     register,
@@ -52,10 +59,7 @@ const InventoryTable = () => {
 
   const { data, isPending, isError } = useGetInventory();
 
-  const {
-    mutateAsync,
-    status: createInventoryStatus,
-  } = useCreateInventory();
+  const { mutateAsync, status: createInventoryStatus } = useCreateInventory();
 
   const { mutateAsync: deleteInventory } = useDeleteInventory();
 
@@ -106,6 +110,34 @@ const InventoryTable = () => {
       {
         accessorKey: "status",
         header: "Status",
+        Cell: ({ cell }) => (
+          <div
+            className={`rounded-2xl w-fit py-0.5 px-2 text-xs flex items-center gap-1 ${
+              cell.getValue<string>() === "Critical"
+                ? "text-red-500 bg-red-100"
+                : cell.getValue<string>() === "Normal"
+                ? "text-[#027A48] bg-[#ECFDF3]"
+                : "text-[#EAD413] bg-[#F8F6E5]"
+            }`}
+          >
+            {cell.getValue<string>() === "Normal" ? (
+              <TiTick className="text-[#12B76A]" />
+            ) : (
+              <GrFormClose
+                className={`${
+                  cell.getValue<string>() === "Critical"
+                    ? "text-red-500"
+                    : "text-[#EAD413]"
+                }`}
+              />
+            )}
+            {cell.getValue<string>() === "Normal"
+              ? "In Stock"
+              : cell.getValue<string>() === "Critical"
+              ? "Out of Stock"
+              : "Low Stock"}
+          </div>
+        ),
       },
     ],
     []
@@ -155,9 +187,10 @@ const InventoryTable = () => {
         <p className="mb-2">Update Inventory</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit((data) =>
-            editInventoryRow(row.original.id ?? 0, data)
-          )}
+          onSubmit={handleSubmit((data) => {
+            editInventoryRow(row.original.id ?? 0, data);
+            console.log(row.original.updated_at);
+          })}
         >
           <FormField
             type="text"
@@ -177,14 +210,25 @@ const InventoryTable = () => {
             defaultValue={row.original.product}
             disabled
           />
-          <FormField
-            type="text"
-            placeholder="Item"
-            name="status"
-            register={register}
-            error={errors.status}
-            defaultValue={row.original.status}
-          />
+          <FormControl sx={{  minWidth: 120 }}>
+            <Controller
+              control={control}
+              name="status"
+              render={({ field: { onChange, value, ref } }) => (
+                <Select
+                  value={value}
+                  onChange={onChange}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Select status" }}
+                  defaultValue={row.original.status}
+                >
+                  <MenuItem value={"Critical"}>Out of Stock</MenuItem>
+                  <MenuItem value={"Low"}>Low Stock</MenuItem>
+                  <MenuItem value={"Normal"}>In Stock</MenuItem>
+                </Select>
+              )}
+            />
+          </FormControl>
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
@@ -253,7 +297,7 @@ const InventoryTable = () => {
     ),
     state: {
       globalFilter,
-      isLoading:isPending,
+      isLoading: isPending,
       pagination,
       showAlertBanner: isError,
       sorting,
