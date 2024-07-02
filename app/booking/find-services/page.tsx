@@ -24,7 +24,7 @@ const FindServices: React.FC = () => {
     search: { searchQuery },
   } = useAppSelector((state: RootState) => state);
   const [search, setSearch] = React.useState(false);
-
+console.log(data)
   const handleSearch = (service: string, shop: string) => {
     const filtered = data?.businesses?.filter(
       ({
