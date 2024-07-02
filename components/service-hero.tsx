@@ -17,7 +17,7 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
   const dispatch = useAppDispatch();
 
   const [service, setService] = useState("");
-  const [shop, setShop] = useState("");
+  const [shop, setShop] = useState("Nairobi");
 
   const handleServiceChange = (event: ChangeEvent<HTMLInputElement>) => {
     setService(event.target.value);
@@ -53,19 +53,20 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
               <SearchIcon />
               <input
                 type="text"
-                placeholder="Service"
+                placeholder="What service are you looking for?"
                 className="py-2 px-4 text-black focus:outline-none w-full"
                 value={service}
                 onChange={handleServiceChange}
               />
             </div>
-            <div className="flex flex-row items-center gap-1 w-2/5">
+            <div className="flex  flex-row items-center gap-1 w-2/5">
               <LocationIcon />
               <input
                 type="text"
-                placeholder="Shop"
+                placeholder="Location"
                 className="py-2 px-4  text-black focus:outline-none w-full"
                 value={shop}
+                defaultValue="Nairobi"
                 onChange={handleShopChange}
               />
             </div>
