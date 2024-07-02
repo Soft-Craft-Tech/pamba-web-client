@@ -7,8 +7,8 @@ interface RatingIconProps {
 }
 
 const RatingIcon: React.FC<RatingIconProps> = ({
-  width = 17,
-  height = 17,
+  width = 12,
+  height = 12,
   fill = "#DB1471",
 }) => {
   return (

@@ -10,7 +10,10 @@ const RevampedHeader = () => {
     <div className="mx-auto w-full max-w-screen-2xl">
       <nav>
         <div className="flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link className="h-full w-auto" href="/">
+          <Link
+            className="h-full w-auto duration-200 delay-100 hover:scale-105"
+            href="/"
+          >
             <Image
               className="h-full w-28 lg:w-40"
               src="/logo.svg"
@@ -74,8 +77,8 @@ const RevampedHeader = () => {
                 Contact Us
               </Link>
               <Link
-                className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-lg gap-2 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
-                href="/login"
+                className="bg-primary flex items-center w-max py-2 px-4  text-white font-medium rounded-lg gap-2 hover:bg-primaryHover delay-75 duration-75 sm:py-4 sm:px-8 lg:py-3 lg:px-5"
+                href="/booking/all-shops"
               >
                 Book Appointment
               </Link>

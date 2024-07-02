@@ -5,32 +5,44 @@ import AddExpenseAccounts from "./addExpenseAccounts";
 import AddServices from "./addServices";
 import ProfileComplete from "./completed";
 import UploadProfileImg from "./profileImageUpload";
+import OpenCloseTimes from "./openingClosingTime";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
-import { useGetProfileCompletionStatus } from "@/app/api/requests";
+import { useGetProfileCompletionStatus } from "@/app/api/businesses";
 import { setStep } from "@/store/completeProfileSlice";
 
 const CompleteProfileComponent = () => {
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { data, isLoading } = useGetProfileCompletionStatus();
+  const { data, isPending } = useGetProfileCompletionStatus();
   const dispatch = useAppDispatch();
 
   const getNextStep = () => {
+    const {
+      description,
+      profileImg,
+      services,
+      expenseAccounts,
+      openingAndClosing,
+    } = data || {};
     if (
-      data?.description &&
-      data?.profileImg &&
-      data?.services &&
-      data?.expenseAccounts
+      openingAndClosing &&
+      expenseAccounts &&
+      services &&
+      profileImg &&
+      description
     ) {
+      return 6;
+    } else if (expenseAccounts && services && profileImg && description) {
       return 5;
-    } else if (data?.description && data?.profileImg && data?.services) {
+    } else if (services && profileImg && description) {
       return 4;
-    } else if (data?.description && data?.profileImg) {
+    } else if (profileImg && description) {
       return 3;
-    } else if (data?.description) {
+    } else if (description) {
       return 2;
+    } else {
+      return 1;
     }
-    return 1;
   };
 
   useEffect(() => {
@@ -39,7 +51,7 @@ const CompleteProfileComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  if (isLoading)
+  if (isPending)
     return (
       <div className="w-full flex justify-center  h-full">
         <div className="mt-[20%]" role="status">
@@ -70,7 +82,8 @@ const CompleteProfileComponent = () => {
       {step === 2 && <UploadProfileImg />}
       {step === 3 && <AddServices />}
       {step === 4 && <AddExpenseAccounts />}
-      {step === 5 && <ProfileComplete />}
+      {step === 5 && <OpenCloseTimes />}
+      {step === 6 && <ProfileComplete />}
     </div>
   );
 };

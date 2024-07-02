@@ -17,9 +17,9 @@ const KPI: React.FC<KPIProps> = ({
   financial,
 }: KPIProps) => {
   return (
-    <div className="max-w-60 max-h-56 p-7 rounded-md flex flex-col justify-between bg-white shadow-sm">
+    <div className="max-h-56 px-6 py-3 rounded-lg flex flex-col justify-between bg-white shadow-sm border">
       <h3 className="text-xs text-muted font-light">{title}</h3>
-      <div className="flex gap-2 h-max items-center">
+      <div className="flex flex-col sm:flex-row gap-2 h-max items-start sm:items-center">
         <h3 className="text-secondary text-xl font-bold">
           {financial ? CurrencyFormatter(value) : value}
         </h3>

@@ -1,5 +1,7 @@
 import AppSection from "@/components/features/home/appSection";
 import RevampedHeader from "@/components/shared/header/revampedHeader";
+import CTA from "@/components/features/home/ctaSection";
+import BookingsFooter from "@/components/features/shop/BookingsFooter";
 import { ReactNode } from "react";
 export const metadata = {
   title: "Book your Appointment",
@@ -12,6 +14,8 @@ export default function BookingLayout({ children }: { children: ReactNode }) {
       <RevampedHeader />
       {children}
       <AppSection />
+      <CTA />
+      <BookingsFooter />
     </div>
   );
 }

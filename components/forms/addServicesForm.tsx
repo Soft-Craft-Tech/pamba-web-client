@@ -1,26 +1,23 @@
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { useDispatch, useSelector } from "react-redux";
 import { setQueuedServices, setService } from "@/store/completeProfileSlice";
-import { useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { CldUploadWidget } from "next-cloudinary";
 import React from "react";
 import { RootState } from "@/store/store";
 
 export default function AddServicesForm({ data }: { data: any }) {
   const { register, handleSubmit, reset, control } = useForm();
-  const dispatch = useDispatch();
-  const { service, queuedServices } = useSelector(
+  const dispatch = useAppDispatch();
+  const { queuedServices } = useAppSelector(
     (state: RootState) => state.completeProfile
   );
 
   const [newImage, setImage] = React.useState(null);
 
   const onSubmit = (formData: any) => {
+    console.log("Form is being submitted");
     const exists = queuedServices.some(
       (item: { name: any }) => item.name === formData.name
     );
@@ -37,13 +34,17 @@ export default function AddServicesForm({ data }: { data: any }) {
         imageURL: "",
       })
     );
+    setImage(null);
     reset();
   };
 
   return (
-    <div className="flex flex-col gap-5 w-full  p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+    <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
       <h3>What Services do you offer?</h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 p-1">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-3 p-1"
+      >
         <FormControl fullWidth>
           <Controller
             name="category"
@@ -52,10 +53,10 @@ export default function AddServicesForm({ data }: { data: any }) {
             render={({ field }) => (
               <select
                 {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
+                className="text-gray-400 rounded-md border border-gray-400 w-full h-14 py-1 px-2 lg:h-14"
                 name=""
               >
-                <option value="">Select Category</option>
+                <option value="1">Select Category</option>
                 {data?.categories?.map(
                   ({ category, id }: { category: string; id: number }) => (
                     <option key={id} value={id}>
@@ -73,12 +74,14 @@ export default function AddServicesForm({ data }: { data: any }) {
           id="service"
           label="Service Name"
           type="text"
+          className="rounded-md"
         />
         <TextField
           {...register("description", { required: true })}
           id="description"
           label="Description"
           type="text"
+          className="rounded-md"
         />
 
         <TextField
@@ -86,18 +89,22 @@ export default function AddServicesForm({ data }: { data: any }) {
           id="time"
           label="Estimated Service Duration (in hrs)"
           type="number"
+          className="rounded-md"
         />
         <TextField
           {...register("price", { required: true })}
           id="price"
           label="Price"
           type="number"
+          className="rounded-md"
         />
-        <div className={`w-full h-16 flex items-center overflow-hidden p-1 rounded-md border border-dashed ${
-          newImage
-            ? "text-green-500 border-green-500"
-            : "text-primary border-primary"
-          }`}>
+        <div
+          className={`w-full h-16 flex items-center overflow-hidden p-1 rounded-md border border-dashed ${
+            newImage
+              ? "text-green-500 border-green-500"
+              : "text-primary border-primary"
+          }`}
+        >
           <Controller
             name="imageURL"
             control={control}
@@ -133,8 +140,11 @@ export default function AddServicesForm({ data }: { data: any }) {
             )}
           />
         </div>
+        <p className="font-semibold text-sm text-primary">
+          ** Service image is required**
+        </p>
         <button
-          className="py-3 px-10 bg-secondary text-white h-max rounded-md"
+          className="py-3 px-10 bg-secondary hover:scale-105 transition-all ease-in-out text-white h-max rounded-md"
           type="submit"
         >
           Add

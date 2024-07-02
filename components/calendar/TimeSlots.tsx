@@ -1,13 +1,13 @@
 "use client";
 import { Fragment, useRef, useState, useEffect } from "react";
 import { Scheduler } from "@aldabil/react-scheduler";
-import { useGetEvents } from "@/app/api/requests";
+import { useAllAppointments } from "@/app/api/appointment";
 import { SchedulerRef } from "@aldabil/react-scheduler/types";
 import React from "react";
 
 const TimeSlots: React.FC = () => {
   const calendarRef = useRef<SchedulerRef>(null);
-  const { data, isSuccess, isLoading, isError } = useGetEvents();
+  const { data, isSuccess, isPending, isError } = useAllAppointments();
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const TimeSlots: React.FC = () => {
     }
   }, [data, isSuccess]);
 
-  if (isLoading)
+  if (isPending)
     return (
       <div className="w-full flex justify-center  h-full">
         <div className="mt-[20%]" role="status">
@@ -71,6 +71,16 @@ const TimeSlots: React.FC = () => {
           deletable={false}
           view="month"
           events={events}
+          editable={false}
+          hourFormat="24"
+          week={{
+            startHour: 7,
+            endHour: 23,
+            step: 80,
+            weekDays: [0, 1, 2, 3, 4, 5, 6],
+            weekStartOn: 0,
+          }}
+          day={{ startHour: 7, endHour: 23, step: 80 }}
         />
       )}
     </Fragment>

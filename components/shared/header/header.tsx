@@ -20,7 +20,10 @@ export default function Header({ page }: { page: string }) {
   return (
     <header className="fixed top-0 left-0 w-full h-20 flex items-center justify-center border-b-[0.5px] border-borders z-20">
       <div className="relative border shadow-sm w-full h-full flex justify-between items-center font-medium text-gray-800 text-base bg-white z-30 px-5 sm:px-10 lg:px-20">
-        <Link className="h-full w-auto" href="/">
+        <Link
+          className="h-full w-auto duration-200 delay-100 hover:scale-105"
+          href="/"
+        >
           <Image
             className="h-full w-28 lg:w-40"
             src="/logo.svg"
@@ -63,7 +66,15 @@ export default function Header({ page }: { page: string }) {
                 "text-primary"
               }`}
             >
-              <p className="cursor-pointer">Services</p>
+              <p
+                className={`flex h-full items-center cursor-pointer hover:border-b-2 ${
+                  ["reporting", "scheduling", "business"].includes(page)
+                    ? "text-primary hover:border-primary"
+                    : "hover:border-secondary hover:text-gray-700"
+                }`}
+              >
+                Services
+              </p>
               <RxCaretDown size={22} />
               {toggleServices && (
                 <div className="dropdown-nav absolute shadow-xl flex flex-col items-center p-2 gap-1 top-full left-0 w-full rounded-sm h-auto bg-white z-20 lg:w-48">
@@ -99,13 +110,13 @@ export default function Header({ page }: { page: string }) {
             {!isAuthenticated() ? (
               <>
                 <Link
-                  className="border-[0.1px] border-primary text-primary px-5 py-2 rounded-lg lg:border-none lg:text-secondary"
+                  className="border-[0.1px] border-primary text-primary px-5 py-2 rounded-lg lg:border-none lg:text-secondary hover:underline"
                   href="/login"
                 >
                   Login
                 </Link>
                 <Link
-                  className="bg-primary text-white px-5 py-2 rounded-lg"
+                  className="bg-primary text-white px-5 py-2 rounded-lg hover:bg-primaryHover delay-75 duration-75"
                   href="/signup"
                 >
                   Sign Up

@@ -19,7 +19,7 @@ export default function PasswordResetForm({ token }: { token: string }) {
   const dispatch = useAppDispatch();
   const {
     mutate: resetPassword,
-    isLoading,
+    isPending,
     error,
     isSuccess,
   } = useResetPasswordMutation(token);
@@ -76,11 +76,11 @@ export default function PasswordResetForm({ token }: { token: string }) {
           />
         </div>
         <button
-          disabled={isLoading}
+          disabled={isPending}
           type="submit"
-          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primaryHover delay-75 duration-100"
         >
-          {isLoading ? "Loading..." : "Submit"}
+          {isPending ? "Loading..." : "Submit"}
         </button>
       </form>
     </>
