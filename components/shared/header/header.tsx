@@ -131,7 +131,7 @@ export default function Header({ page }: { page: string }) {
             )}
           </div>
         </div>
-        <div className="h-full flex items-center text-secondary lg:hidden">
+        <div className="h-full flex items-center text-secondary lg:hidden pr-4">
           {navExpanded ? (
             <AiOutlineClose
               size={30}

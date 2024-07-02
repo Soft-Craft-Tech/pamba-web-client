@@ -15,8 +15,8 @@ export default function SignupLayout({ children }: { children: ReactNode }) {
         <SignupImageCarousel />
       </div>
       <div className="w-full lg:w-1/2 p-5 h-full flex justify-center bg-white xl:p-0  2xl:rounded-tr-lg 2xl:rounded-br-lg 2xl:shadow-lg">
-        <div className="w-full overflow-auto h-auto flex flex-col gap-2 lg:gap-0 sm:w-2/3 lg:w-full lg:p-10 xl:px-5">
-          <div className="flex flex-col items-center w-full h-auto">
+        <div className="w-full  overflow-auto  h-auto flex lg:justify-center flex-col gap-2 lg:gap-0 sm:w-2/3 lg:w-full lg:p-10 xl:px-5">
+          <div className="flex flex-col items-center w-full h-auto  border-dotted">
             <Link href="/">
               <Image
                 className="w-36 h-auto"
