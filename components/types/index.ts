@@ -8,7 +8,7 @@ export type FormFieldProps = {
   register: UseFormRegister<any>;
   error: FieldError | undefined;
   defaultValue?: unknown;
-  disabled?:boolean
+  disabled?: boolean;
 };
 
 export type FormDataType = {
@@ -66,4 +66,70 @@ export type AppointmentType = {
   start: string;
   time: string;
   title: string;
+};
+
+// All services
+export type ServicesType = {
+  services: { serviceInfo: ServiceInfoType; businessInfo: BusinessInfoType };
+};
+
+export type ServiceInfoType = {
+  business_id: number;
+  description: string;
+  estimated_service_time: number;
+  id: number;
+  price: number;
+  service: string;
+  service_category: number;
+  service_image: string;
+};
+
+export type BusinessInfoType = {
+  active: boolean;
+  business_name: string;
+  city: string;
+  description: string;
+  email: string;
+  google_map: string;
+  id: number;
+  join_date: string;
+  location: string;
+  phone: string;
+  profile_img: string;
+  rating: string;
+  slug: string;
+  verified: boolean;
+  weekday_closing: string;
+  weekday_opening: string;
+  weekend_closing: string;
+  weekend_opening: string;
+};
+
+//  services by Individual business
+export type BusinessServiceType = {
+  business_id: number;
+  description: string;
+  estimated_service_time: number;
+  id: number;
+  price: number;
+  service: string;
+  service_category: number;
+  service_image: string;
+};
+
+// Revenue Analysis
+export type LifetimeSale = {
+  date_created: string;
+  description: string;
+  id: number;
+  payment_method: string;
+  price: number;
+};
+
+export type RevenueAnalysis = {
+  current_month_revenue: number;
+  last_seven_days: number;
+  lifetime_sales: LifetimeSale[];
+  message: string;
+  total_sales: number;
 };

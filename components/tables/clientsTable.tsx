@@ -3,9 +3,16 @@ import {
   useCreateClients,
   useDeleteClients,
   useEditClients,
+  useGetAllClients,
 } from "@/app/api/clients";
+import { useGetServices } from "@/app/api/services";
 import Button from "@/ui/button";
+import FormField from "@/ui/FormField";
+import { clientSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import {
   MRT_Row,
   MaterialReactTable,
@@ -16,20 +23,17 @@ import {
 } from "material-react-table";
 import moment from "moment";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-
-import { clientSchema } from "@/utils/zodSchema";
+import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
-import FormField from "@/ui/FormField";
-import { useGetAllClients } from "@/app/api/clients";
+import { ServiceInfoType } from "../types";
 
 type ClientsType = {
   id: number;
   customer: string;
+  email: string;
   phone: string;
   lastApppointment: Date | null;
-  nextApppointment: Date | null;
   service: string;
 };
 
@@ -37,6 +41,7 @@ type FormValues = z.infer<typeof clientSchema>;
 
 const ClientsTable = () => {
   const {
+    control,
     handleSubmit,
     reset,
     register,
@@ -53,14 +58,13 @@ const ClientsTable = () => {
   });
 
   const { data, isPending, isError } = useGetAllClients();
-
   const { mutateAsync, status: createClientStatus } = useCreateClients();
-
   const { mutateAsync: deleteClient } = useDeleteClients();
-
   const { mutateAsync: editClient, status: editClientStatus } =
     useEditClients();
+  const { data: allServices } = useGetServices();
 
+      // TODO: appointments API same as the clients in table
   const editClientRow = async (clientId: number, formData: FormValues) => {
     // const data = {
     //   clientId,
@@ -97,16 +101,7 @@ const ClientsTable = () => {
       {
         accessorFn: (row) => new Date(row.lastApppointment!),
         id: "lastApppointment",
-        header: "Last Appointment",
-        Cell: ({ cell }) => moment(cell.getValue<Date>()).format("MMM D, YYYY"),
-        filterFn: "greaterThan",
-        filterVariant: "date",
-        enableGlobalFilter: false,
-      },
-      {
-        accessorFn: (row) => new Date(row.nextApppointment!),
-        id: "nextApppointment",
-        header: "Next Apppointment",
+        header: "Appointment",
         Cell: ({ cell }) => moment(cell.getValue<Date>()).format("MMM D, YYYY"),
         filterFn: "greaterThan",
         filterVariant: "date",
@@ -177,7 +172,7 @@ const ClientsTable = () => {
             placeholder="Email"
             name="email"
             register={register}
-            // defaultValue={row.original.email}
+            defaultValue={row.original.email}
             error={errors.email}
           />
           <FormField
@@ -262,13 +257,32 @@ const ClientsTable = () => {
             register={register}
             error={errors.appointmentDate}
           />
-          <FormField
-            type="text"
-            placeholder="Service"
-            name="service"
-            register={register}
-            error={errors.service}
-          />
+          <FormControl sx={{ minWidth: 120 }}>
+            <Controller
+              control={control}
+              name="service"
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  value={value}
+                  onChange={onChange}
+                  inputProps={{ "aria-label": "Select service" }}
+                  placeholder="Select Service"
+                >
+                  {allServices &&
+                    allServices.services.map(
+                      (
+                        { serviceInfo }: { serviceInfo: ServiceInfoType },
+                        idx: number
+                      ) => (
+                        <MenuItem key={idx} value={serviceInfo?.service}>
+                          {serviceInfo?.service}
+                        </MenuItem>
+                      )
+                    )}
+                </Select>
+              )}
+            />
+          </FormControl>
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button

@@ -9,6 +9,13 @@ export const inventorySchema = z.object({
   updated_at: z.string().nullable(),
 });
 
+export const revenueSchema = z.object({
+  // customer: z.string().nonempty("Name is required"),
+  serviceId: z.number().min(1, "Service is required"),
+  description: z.string().nonempty("Description is required"),
+  paymentMethod: z.string().nonempty("Payment method is required"),
+});
+
 export const clientSchema = z.object({
   customer: z.string().nonempty("Name is required"),
   email: z.string().email("Invalid email address"),

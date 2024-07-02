@@ -66,6 +66,9 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   };
 
   // TODO: Implement form validation
+  // TODO: Client Name
+  // TODO: Make Book appointment card clickable
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -321,7 +324,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 placeholder="Additional information"
                 required
               />
-              <p>How do you want to be notified?</p>
+              {/* <p>How do you want to be notified?</p>
               <div className="flex flex-row items-center gap-x-3">
                 <div className="flex items-center">
                   <input
@@ -351,7 +354,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     Whatsapp
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="flex flex-row gap-x-4 justify-between">
                 <Button
                   label="Cancel"
@@ -361,7 +364,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   }}
                   variant="outline"
                 />
-                <Button type="submit" label="Book Appointment" variant="primary">
+                <Button
+                  type="submit"
+                  label="Book Appointment"
+                  variant="primary"
+                >
                   <p>Confirm Appointment</p>
                   <Image
                     className="border bg-white ml-3 rounded-full"
