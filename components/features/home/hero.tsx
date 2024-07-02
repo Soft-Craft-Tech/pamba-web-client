@@ -5,20 +5,7 @@ import Carousel from "../../core/cards/imageCarousel";
 import StartTrial from "../../core/buttons/startTrial";
 import { carouselImages } from "@/ui/carouselImages";
 export default function Hero() {
-  // const variants = {
-  //   hidden: {
-  //     scale: 0.9,
-  //     opacity: 0,
-  //   },
-  //   visible: {
-  //     scale: 1,
-  //     opacity: 1,
-  //     transition: {
-  //       delay: 0.05,
-  //       duration: 1,
-  //     },
-  //   },
-  // };
+  
 
   return (
     <section className="px-5 h-auto flex flex-col gap-6 py-10 mt-20 mb-10 sm:mb-20 sm:px-10 sm:gap-10 lg:h-screen lg:px-20 lg:grid lg:grid-cols-9 xl:h-auto xl:py-20 xl:mt-24">

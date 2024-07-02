@@ -66,7 +66,7 @@ export default function Header({ page }: { page: string }) {
               <p className="cursor-pointer">Services</p>
               <RxCaretDown size={22} />
               {toggleServices && (
-                <div className="dropdown-nav absolute flex flex-col items-center px-2 py-4 gap-1 top-full left-0 w-full rounded-sm h-auto bg-white z-20 lg:w-48">
+                <div className="dropdown-nav absolute shadow-xl flex flex-col items-center p-2 gap-1 top-full left-0 w-full rounded-sm h-auto bg-white z-20 lg:w-48">
                   <Link
                     className={`text-sm font-light border-b w-full hover:text-primary transition-all ease-in-out  py-2 lg:py-[5px] ${
                       page === "business" ? "text-primary" : "text-secondary"
