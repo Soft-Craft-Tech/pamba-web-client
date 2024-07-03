@@ -1,7 +1,8 @@
 "use client";
+import { useGetSalesAnalysis } from "@/app/api/revenue";
 import { ApexOptions } from "apexcharts";
 import ChartSummary from "./chartSummary";
-import { useGetExpenses } from "@/app/api/expenses";
+import { LifetimeSale } from "../types";
 
 const options: ApexOptions = {
   legend: {
@@ -100,18 +101,18 @@ const options: ApexOptions = {
       show: true,
     },
     min: 0,
-    max: 100,
   },
 };
 
 const RevenueSummary = () => {
-  //TODO: Add correct revenue query
-  const { data } = useGetExpenses();
+  const { data } = useGetSalesAnalysis();
+
+  const prices = data?.lifetime_sales.map((item: LifetimeSale) => item.price);
 
   const series = [
     {
       name: "Revenue",
-      data: data?.expenses.length === 0 ? {} : data,
+      data: data?.lifetime_sales.length === 0 ? [] : prices,
       fill: {
         type: "gradient",
         gradient: {
@@ -136,7 +137,7 @@ const RevenueSummary = () => {
     },
   ];
 
-  if (data?.expenses.length === 0) {
+  if (data?.lifetime_sales.length === 0) {
     return <p className="text-center font-semibold">No data to display</p>;
   }
   return (

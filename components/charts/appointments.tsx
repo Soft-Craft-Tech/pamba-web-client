@@ -144,7 +144,7 @@ const AppointmentsTable = ({ all_appointments }: AppointmentsTableProps) => {
   return (
     <ChartSummary
       title="All Appointments"
-      line1="appointments"
+      line1="Appointments"
       options={options}
       series={state.series}
     />

@@ -1,9 +1,8 @@
-import { DynamicObject } from "@/components/types";
-import { useAppDispatch } from "@/hooks";
-import { setMessage } from "@/store/toastSlice";
+import { DynamicObject, WebApppointmentBookingType } from "@/components/types";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useAllAppointments = () => {
   return useQuery({
@@ -16,16 +15,25 @@ export const useAllAppointments = () => {
 };
 
 export const useBookAppointments = () => {
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async (formData: DynamicObject) => {
+    mutationFn: async (formData: DynamicObject | WebApppointmentBookingType) => {
       const response = await apiCall(
         "POST",
         endpoints.bookAppointments,
         formData
       );
-      dispatch(setMessage(response.message));
       return response;
+    },
+    onSuccess: () => {
+      toast.success("Appointment booked successfully!");
+      queryClient.invalidateQueries({
+        queryKey: ["allAppointments", "getAllClients"],
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };

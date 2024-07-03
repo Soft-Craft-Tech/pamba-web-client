@@ -20,7 +20,7 @@ const FormField: React.FC<FormFieldProps> = ({
       disabled={disabled}
     />
     {error && (
-      <span className="bg-red-100 text-red-700 p-4 rounded-lg">build
+      <span className="bg-red-100 text-red-700 p-4 rounded-lg">
         {error.message}
       </span>
     )}

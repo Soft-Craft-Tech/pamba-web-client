@@ -1,52 +1,56 @@
 "use client";
-import {
-  useCreateInventory,
-  useDeleteInventory,
-  useEditInventory,
-} from "@/app/api/inventory";
+import { useGetAllServices } from "@/app/api/businesses";
+import { useCreateClients, useGetAllClients } from "@/app/api/clients";
 import Button from "@/ui/button";
+import FormField from "@/ui/FormField";
+import { getUser } from "@/utils/auth";
+import { clientSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import {
-  MRT_Row,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import moment from "moment";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-
-import { inventorySchema } from "@/utils/zodSchema";
+import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
-import FormField from "@/ui/FormField";
-import { useGetAllClients } from "@/app/api/clients";
+import {
+  BusinessServiceType,
+  ServiceInfoType,
+  WebApppointmentBookingType,
+} from "../types";
+import { useBookAppointments } from "@/app/api/appointment";
+import { InputLabel } from "@mui/material";
+import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 type ClientsType = {
   id: number;
-  customer: {
-    name: string;
-    imageURL: string;
-  };
-  phoneNumber: string;
+  customer: string;
+  email: string;
+  phone: string;
   lastApppointment: Date | null;
-  nextApppointment: Date | null;
-  totalRevenue: number;
-  status: string;
+  service: string;
 };
 
-type FormValues = z.infer<typeof inventorySchema>;
+type FormValues = z.infer<typeof clientSchema>;
 
 const ClientsTable = () => {
   const {
+    control,
     handleSubmit,
     reset,
     register,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(inventorySchema),
+    resolver: zodResolver(clientSchema),
   });
 
   const [globalFilter, setGlobalFilter] = useState("");
@@ -56,34 +60,28 @@ const ClientsTable = () => {
     pageSize: 10,
   });
 
+  const { client } = getUser();
   const { data, isPending, isError } = useGetAllClients();
+  const { mutateAsync, status: createClientStatus } = useBookAppointments();
+  const { data: allServices } = useGetAllServices(client?.slug);
 
-  const {
-    mutateAsync,
-    isSuccess,
-    status: createInventoryStatus,
-  } = useCreateInventory();
+  const submitClient = async (formData: FormValues) => {
+    const now = dayjs().format("HH:mm");
 
-  const { mutateAsync: deleteInventory } = useDeleteInventory();
-
-  const { mutateAsync: editInventory, status: editInventoryStatus } =
-    useEditInventory();
-
-  const editInventoryRow = async (
-    inventoryId: number,
-    formData: FormValues
-  ) => {
-    const data = {
-      inventoryId,
-      status: formData.status,
+    const data: WebApppointmentBookingType = {
+      name: formData.name,
+      date: dayjs(formData.appointmentDate).format("DD-MM-YYYY"),
+      time: now,
+      comment: "",
+      staff: "",
+      business: client?.id,
+      service: formData.service,
+      email: formData.email,
+      phone: formData.phone,
+      notification: "email",
     };
-    await editInventory(data);
-    reset();
-    table.setEditingRow(null);
-  };
 
-  const submitInventory = async (formData: { product: string }) => {
-    await mutateAsync(formData);
+    await mutateAsync(data);
     reset();
     table.setCreatingRow(null);
   };
@@ -92,44 +90,26 @@ const ClientsTable = () => {
     () => [
       {
         accessorKey: "id",
-        header: "Inventory ID",
+        header: "Client ID",
         disableFilters: true,
         enableEditing: false,
         enableGlobalFilter: false,
       },
       {
-        accessorKey: "customer",
-        header: "Customer",
+        accessorKey: "name",
+        header: "Client",
       },
       {
-        accessorKey: "phoneNumber",
+        accessorKey: "email",
+        header: "Email",
+      },
+      {
+        accessorKey: "phone",
         header: "Phone Number",
-      },
-      {
-        accessorFn: (row) => new Date(row.lastApppointment!),
-        id: "lastApppointment",
-        header: "Last Appointment",
-        Cell: ({ cell }) => moment(cell.getValue<Date>()).format("MMM D, YYYY"),
-        filterFn: "greaterThan",
-        filterVariant: "date",
-        enableGlobalFilter: false,
-      },
-      {
-        accessorFn: (row) => new Date(row.nextApppointment!),
-        id: "nextApppointment",
-        header: "Next Apppointment",
-        Cell: ({ cell }) => moment(cell.getValue<Date>()).format("MMM D, YYYY"),
-        filterFn: "greaterThan",
-        filterVariant: "date",
-        enableGlobalFilter: false,
       },
     ],
     []
   );
-
-  const openDeleteConfirmModal = (row: MRT_Row<ClientsType>) => {
-    deleteInventory(row.original.id);
-  };
 
   const table = useMaterialReactTable({
     columns,
@@ -143,101 +123,91 @@ const ClientsTable = () => {
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    enableRowActions: true,
-    renderRowActions: ({ table, row }) => (
-      <div className="flex flex-row gap-x-3 items-center">
-        <p
-          onClick={() => {
-            reset();
-            table.setEditingRow(row);
-          }}
-          className="cursor-pointer font-bold"
-        >
-          Edit
-        </p>
-
-        <p
-          onClick={() => {
-            openDeleteConfirmModal(row);
-          }}
-          className="cursor-pointer text-[#007B99] font-bold"
-        >
-          Delete
-        </p>
-      </div>
-    ),
-    renderEditRowDialogContent: ({ table, row }) => (
-      <div className="p-10">
-        <p className="mb-2">Update Client</p>
-        <form
-          className="flex flex-col gap-2"
-          onSubmit={handleSubmit((data) =>
-            editInventoryRow(row.original.id ?? 0, data)
-          )}
-        >
-          <FormField
-            type="text"
-            placeholder="Appointment Date"
-            name="nextAppointment"
-            register={register}
-            error={errors.updated_at}
-            defaultValue={moment(row.original.nextApppointment).format(
-              "MMM D, YYYY"
-            )}
-            disabled
-          />
-          <FormField
-            type="text"
-            placeholder="Item"
-            name="product"
-            register={register}
-            error={errors.product}
-            defaultValue={row.original.customer.name}
-            disabled
-          />
-          <FormField
-            type="text"
-            placeholder="Item"
-            name="status"
-            register={register}
-            error={errors.status}
-            defaultValue={row.original.status}
-          />
-
-          <div className="flex h-auto w-full gap-5 justify-end mt-4">
-            <button
-              type="button"
-              className="px-10 py-2 border border-primary text-primary rounded-md font-bold"
-              onClick={() => table.setEditingRow(null)}
-            >
-              Cancel
-            </button>
-            <Button
-              type="submit"
-              label="Submit"
-              variant="primary"
-              disabled={editInventoryStatus === "pending"}
-            />
-          </div>
-        </form>
-      </div>
-    ),
+    // enableRowActions: true,
     renderCreateRowDialogContent: () => (
       <div className="p-10">
-        <p className="mb-2">Inventory Details</p>
+        <p className="mb-2">Client Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit((data) => {
-            submitInventory(data);
-          })}
+          onSubmit={handleSubmit(submitClient)}
         >
           <FormField
             type="text"
-            placeholder="Item"
-            name="product"
+            placeholder="Customer Name"
+            name="name"
             register={register}
-            error={errors.product}
+            error={errors.name}
           />
+          <FormField
+            type="email"
+            placeholder="Email"
+            name="email"
+            register={register}
+            error={errors.email}
+          />
+          <FormField
+            type="tel"
+            placeholder="Phone Number"
+            name="phone"
+            register={register}
+            error={errors.phone}
+          />
+          <FormField
+            type="date"
+            placeholder="Appointment Date"
+            name="appointmentDate"
+            register={register}
+            error={errors.appointmentDate}
+          />
+          {/* <Controller
+            control={control}
+            name="appointmentTime.$d"
+            render={({ field: { onChange, value } }) => (
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <TimePicker value={value ?? null} onChange={onChange} />
+              </LocalizationProvider>
+            )}
+          />
+          {errors.appointmentTime?.$d && (
+            <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+              {errors.appointmentTime?.$d.message}
+            </span>
+          )} */}
+
+          <Controller
+            control={control}
+            name="service"
+            render={({ field: { onChange, value } }) => (
+              <Select
+                value={value ?? ""}
+                onChange={onChange}
+                inputProps={{ "aria-label": "Select service" }}
+                displayEmpty
+                renderValue={(selected) => {
+                  if (!selected) {
+                    return <em>Select Service</em>;
+                  }
+                  return (
+                    allServices.services.find(
+                      (service: BusinessServiceType) => service.id === selected
+                    )?.service || ""
+                  );
+                }}
+              >
+                {allServices &&
+                  allServices.services.map((service: BusinessServiceType) => (
+                    <MenuItem key={service?.id} value={service?.id}>
+                      {service?.service}
+                    </MenuItem>
+                  ))}
+              </Select>
+            )}
+          />
+          {errors.service && (
+            <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+              {errors.service.message}
+            </span>
+          )}
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
@@ -252,7 +222,7 @@ const ClientsTable = () => {
               type="submit"
               label="Submit"
               variant="primary"
-              disabled={createInventoryStatus === "pending"}
+              disabled={createClientStatus === "pending"}
             />
           </div>
         </form>

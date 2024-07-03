@@ -14,7 +14,29 @@ export const useGetAllClients = () => {
   });
 };
 
-export const useDeleteclients = () => {
+export const useCreateClients = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, DynamicObject>({
+    mutationFn: async ({ status, clientsId }) => {
+      const response = await apiCall(
+        "POST",
+        `${endpoints.editClients}${clientsId}`,
+        { status }
+      );
+      return response;
+    },
+    onSuccess: () => {
+      toast.success("Client created successfully!");
+      queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
+    },
+    onError: () => {
+      toast.error("Update failed! Please try again.");
+    },
+  });
+};
+
+export const useDeleteClients = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -35,7 +57,7 @@ export const useDeleteclients = () => {
   });
 };
 
-export const useEditclients = () => {
+export const useEditClients = () => {
   const queryClient = useQueryClient();
 
   return useMutation<void, Error, DynamicObject>({
