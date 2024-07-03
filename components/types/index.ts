@@ -68,6 +68,42 @@ export type AppointmentType = {
   title: string;
 };
 
+export type WebApppointmentBookingType = {
+  name: string;
+  date: string;
+  time: string;
+  comment: string;
+  service: number;
+  staff: string;
+  business: number;
+  email: string;
+  phone: string;
+  notification: string;
+};
+
+export type AllAppointementsType = {
+  all_appointments: AllAppointmentType[];
+  all_clients: AllClientsType[];
+};
+
+export type AllClientsType = {
+  email: string;
+  id: number;
+  name: string;
+  phone: string;
+  verified: boolean;
+};
+
+export type AllAppointmentType = {
+  cancelled: boolean;
+  comment: string;
+  completed: boolean;
+  create_at: string;
+  date: string;
+  id: number;
+  time: string;
+};
+
 // All services
 export type ServicesType = {
   services: { serviceInfo: ServiceInfoType; businessInfo: BusinessInfoType };

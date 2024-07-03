@@ -187,7 +187,6 @@ const InventoryTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) => {
             editInventoryRow(row.original.id ?? 0, data);
-            console.log(row.original.updated_at);
           })}
         >
           <FormField

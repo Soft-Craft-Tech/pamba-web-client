@@ -104,7 +104,6 @@ export const useDeleteSale = () => {
 
   return useMutation({
     mutationFn: async (sale_id: number) => {
-      console.log(typeof sale_id, sale_id)
       const response = await apiCall(
         "DELETE",
         `${endpoints.deleteSale}${sale_id}`

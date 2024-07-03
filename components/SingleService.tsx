@@ -86,7 +86,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
       staff: Number(formJson.staff),
       business: Number(formJson.business),
     };
-    console.log("Apppointments", data);
+    
     await mutateAsync(data);
 
     handleClose();
