@@ -8,6 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // 2xl:max-w-screen-2xl xl:max-w-screen-xl mx-auto
+      container: {
+        center: true,
+        screens: {
+          "2xl": "1536px",
+          xl: "1280px",
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
