@@ -137,34 +137,39 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
           </button>
         </div>
       </div>
-      <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
-        <ShopSepartor header="You might also like" />
-      </div>
-      <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
-        <div className="w-full flex flex-wrap gap-12">
-          {filteredServices?.map(
-            ({
-              service_image,
-              service,
-              id,
-              location,
-              price,
-            }: DynamicObject) => (
-              <Explorer
-                key={id}
-                imageUrl={service_image}
-                shopName={service}
-                location={location}
-                href={id}
-                booking={true}
-                btnText="Book Appointment"
-                price={price}
-                rating={data?.business?.rating}
-              />
-            )
-          )}
-        </div>
-      </section>
+      {filteredServices.length > 0 && (
+        <>
+          <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
+            <ShopSepartor header="You might also like" />
+          </div>
+
+          <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
+            <div className="w-full flex flex-wrap gap-12">
+              {filteredServices?.map(
+                ({
+                  service_image,
+                  service,
+                  id,
+                  location,
+                  price,
+                }: DynamicObject) => (
+                  <Explorer
+                    key={id}
+                    imageUrl={service_image}
+                    shopName={service}
+                    location={location}
+                    href={id}
+                    booking={true}
+                    btnText="Book Appointment"
+                    price={price}
+                    rating={data?.business?.rating}
+                  />
+                )
+              )}
+            </div>
+          </section>
+        </>
+      )}
       <Dialog
         maxWidth="lg"
         open={open}
@@ -288,13 +293,17 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <h1 className="text-2xl font-semibold">Additional information</h1>
               <p>Haircut appointment</p>
               <div className="flex flex-row gap-x-2">
-                <div className="flex flex-row gap-x-1">
+                <div className="flex flex-row gap-x-1 items-center">
                   <CalendarIcon />
-                  <p>{dayjs(new Date(selectedDay)).format("MMM D")}</p>
+                  <p className="text-sm">
+                    {dayjs(new Date(selectedDay)).format("MMM D")}
+                  </p>
                 </div>
-                <div className="flex flex-row gap-x-1">
+                <div className="flex flex-row gap-x-1 items-center">
                   <TimeIcon />
-                  <p>{dayjs(new Date(selectedTime)).format("LT")}</p>
+                  <p className="text-sm">
+                    {dayjs(new Date(selectedTime)).format("LT")}
+                  </p>
                 </div>
               </div>
               <input
@@ -317,11 +326,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 type="text"
                 id="additional_info"
                 name="comment"
-                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2.5"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2"
                 placeholder="Additional information"
                 required
               />
-              <p>How do you want to be notified?</p>
+              {/* <p>How do you want to be notified?</p>
               <div className="flex flex-row items-center gap-x-3">
                 <div className="flex items-center">
                   <input
@@ -351,7 +360,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     Whatsapp
                   </label>
                 </div>
-              </div>
+              </div> */}
               <div className="flex flex-row gap-x-4 justify-between">
                 <Button
                   label="Cancel"
@@ -361,7 +370,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   }}
                   variant="outline"
                 />
-                <Button type="submit" label="Book Appointment" variant="primary">
+                <Button
+                  type="submit"
+                  label="Book Appointment"
+                  variant="primary"
+                >
                   <p>Confirm Appointment</p>
                   <Image
                     className="border bg-white ml-3 rounded-full"

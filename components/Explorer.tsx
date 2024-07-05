@@ -33,7 +33,7 @@ const Explorer: React.FC<{
   return (
     <div className=" bg-white border rounded-lg w-full border-gray-200  shadow md:max-w-[20rem] md:w-[19.5rem]">
       <img
-        className="object-cover border border-red-500 w-full h-[10rem] sm:h-[12rem] lg:h-[10rem] rounded-t-lg"
+        className="object-cover w-full h-[10rem] sm:h-[12rem] lg:h-[10rem] rounded-t-lg"
         src={
           imageUrl === null
             ? "https://res.cloudinary.com/dnfrxficl/image/upload/v1715585716/pamba-web/iejtagfjemtmqr2k2f0n.svg"
