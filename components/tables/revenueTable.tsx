@@ -5,6 +5,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import Image from "next/image";
+
 const data = [
   {
     name: {
@@ -127,12 +128,13 @@ export default function RevenueTable() {
   return (
     <div className="w-auto h-auto bg-white border rounded-md flex flex-col">
       <div className="w-full h-max flex justify-end p-5">
-        <button className="flex gap-2 items-center h-full w-max py-2 px-6 rounded-md text-white bg-primary text-sm">
+        <button className="flex gap-3 items-center h-full w-max py-2 px-6 rounded-md text-white bg-primary text-sm hover:bg-primaryHover duration-100 delay-75">
           <Image
             src="/user-icons/add-icon.svg"
             alt="Add"
-            width={20}
-            height={20}
+            width={10}
+            height={10}
+            className="w-4 h-4"
           />
           Add Sale
         </button>

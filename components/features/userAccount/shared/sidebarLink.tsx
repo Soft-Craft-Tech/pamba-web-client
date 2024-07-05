@@ -1,37 +1,41 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { useAppSelector } from "@/hooks";
-import { RootState } from "@/store/store";
 import { logoutUser } from "@/utils/auth";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
-interface SideBarLinkProps {
+type SideBarLinkProps = {
   link: string;
   name: string;
   image: string;
-}
+  onClick?: () => void;
+};
 
-const SideBarLink: React.FC<SideBarLinkProps> = ({ link, name, image }) => {
+const SideBarLink: React.FC<SideBarLinkProps> = ({
+  link,
+  name,
+  image,
+  onClick,
+}) => {
   const pathname = usePathname();
 
   return (
-    <Link href={link} legacyBehavior>
-      <a
-        className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 ${
-          pathname === link ? "bg-sideLinksBg" : ""
-        }`}
-      >
-        <Image
-          className="w-[20px] h-[20px]"
-          src={image}
-          alt="Pamba"
-          width={24}
-          height={24}
-        />
-        <p className="font-medium text-sm text-secondary">{name}</p>
-      </a>
+    <Link
+      href={link}
+      className={`w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 hover:scale-[1.02] delay-75 duration-100 ${
+        pathname === link ? "bg-sideLinksBg" : ""
+      }`}
+      onClick={onClick}
+    >
+      <Image
+        className="w-[20px] h-[20px]"
+        src={image}
+        alt="Pamba"
+        width={24}
+        height={24}
+      />
+      <p className="font-medium text-sm text-secondary">{name}</p>
     </Link>
   );
 };
@@ -49,7 +53,7 @@ export const Logout: React.FC = () => {
   return (
     <div
       onClick={logOut}
-      className="w-full h-8 flex gap-3 items-center rounded-sm py-5 px-3 cursor-pointer"
+      className="w-2/3 h-8 my-5 flex gap-3 items-center rounded-md py-5 px-3 cursor-pointer hover:scale-[1.02] delay-75 duration-100"
     >
       <Image
         className="w-[20px] h-[20px]"
@@ -58,7 +62,7 @@ export const Logout: React.FC = () => {
         width={24}
         height={24}
       />
-      <p className="font-medium text-sm text-secondary">Logout</p>
+      <p className="font-medium text-sm">Logout</p>
     </div>
   );
 };

@@ -19,7 +19,7 @@ export default function ProfileUpdateForm({ client }: any) {
     toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
 
-  const { mutateAsync, isLoading, isSuccess, isError } = useUpdateProfile();
+  const { mutateAsync, isPending, isSuccess, isError } = useUpdateProfile();
 
   const dispatch = useAppDispatch();
 
@@ -106,13 +106,13 @@ export default function ProfileUpdateForm({ client }: any) {
           type="password"
           {...register("password", { required: true })}
         />
-        <p>Enter password to confirm you are the one updating details here</p>
+        <p className="text-xs text-secondary">Enter password to confirm you are the one updating details here.</p>
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isPending}
           className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
         >
-          {isLoading ? "Saving" : "Save Changes"}
+          {isPending ? "Saving" : "Save Changes"}
         </button>
       </form>
     </div>

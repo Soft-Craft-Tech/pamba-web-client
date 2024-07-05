@@ -1,90 +1,69 @@
-export interface SignUpFormData {}
+import dayjs from "dayjs";
+import { FieldError, UseFormRegister } from "react-hook-form";
 
-export interface DeleteFormData {
+export type FormFieldProps = {
+  type: string;
+  placeholder: string;
+  name: string;
+  register: UseFormRegister<any>;
+  error: FieldError | undefined;
+  defaultValue?: unknown;
+  disabled?:boolean
+};
+
+export type FormDataType = {
+  product: string;
+};
+
+export type SignUpFormData = {};
+
+export type DeleteFormData = {
   email: string;
   reason: string;
-}
-export interface BusinessDescriptionData {
-  description: string;
-}
+};
 
-export interface CloudinaryData {
+export type BusinessDescriptionData = {
+  description: string;
+};
+
+export type CloudinaryData = {
   imageURL: string;
-}
+};
+
 export type DynamicObject = {
   [x: string]: any;
 };
-interface ISidebarData {
+
+export type ISidebarData = {
   link: string;
   name: string;
   imageUrl: string;
-}
+};
 
-const sidebarData: ISidebarData[] = [
-  {
-    link: "/user/dashboard",
-    name: "Dashboard",
-    imageUrl: "/user-icons/dashboard.svg",
-  },
-  {
-    link: "/user/scheduling",
-    name: "Scheduling",
-    imageUrl: "/user-icons/calendar.svg",
-  },
-  {
-    link: "/user/revenue",
-    name: "Revenue",
-    imageUrl: "/user-icons/revenue.svg",
-  },
-  {
-    link: "/user/clients",
-    name: "Clients",
-    imageUrl: "/user-icons/client.svg",
-  },
-  {
-    link: "/user/staff-management",
-    name: "Staff Management",
-    imageUrl: "/user-icons/staff.svg",
-  },
-  {
-    link: "/user/services",
-    name: "Services",
-    imageUrl: "/user-icons/services.svg",
-  },
-  {
-    link: "/user/expenses",
-    name: "Expenses",
-    imageUrl: "/user-icons/expenses.svg",
-  },
-  {
-    link: "/user/inventory",
-    name: "Inventory",
-    imageUrl: "/user-icons/inventory.svg",
-  },
-  {
-    link: "/user/reviews",
-    name: "Reviews",
-    imageUrl: "/user-icons/settings.svg",
-  },
-];
+export type DayData = {
+  day: string;
+  date: string;
+  slots: number;
+  dateObj: dayjs.Dayjs;
+};
 
-const sliderData = [
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-];
+export type Expense = {
+  accountName: string;
+  description: string;
+};
 
-const sliderDataTwo = [
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-  { imageUrl: "/closeShops.svg", shopName: "Beauty spot salon" },
-];
-
-export { sidebarData, sliderData, sliderDataTwo };
+export type AppointmentType = {
+  cancelled: boolean;
+  color: string;
+  comment: string;
+  completed: boolean;
+  create_at: string;
+  date: string;
+  end: string;
+  event_id: number;
+  id: number;
+  staff: string;
+  start: string;
+  time: string;
+  title: string;
+};

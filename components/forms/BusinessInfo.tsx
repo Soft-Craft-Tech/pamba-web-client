@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import Toast from "../shared/toasts/authToast";
 import { setMessage, setShowToast } from "@/store/toastSlice";
-import { useGetCategories } from "@/app/api/requests";
+import { useGetCategories } from "@/app/api/businesses";
 
 interface CustomError extends Error {
   response?: {
@@ -27,7 +27,7 @@ const BusinessInfo = () => {
     signUp: { email, password, acceptedTerms },
     toast: { toastMessage },
   } = useSelector((state: RootState) => state);
-  const { mutateAsync, isLoading, isSuccess, isError } = useSignUpMutation();
+  const { mutateAsync, isPending, isSuccess, isError } = useSignUpMutation();
 
   const { data } = useGetCategories();
 
@@ -72,10 +72,10 @@ const BusinessInfo = () => {
       <h3 className="font-medium w-full text-lg text-center">
         Business Information
       </h3>
-      <div className="flex gap-2 w-32 h-3 justify-center items-center text-blue-500 font-semibold">
+      <div className="flex gap-2 w-32 h-3 justify-center items-center text-accent font-semibold">
         <p>1</p>
         <div className="w-24 h-[3px] bg-blue-200 flex justify-start items-center text-center">
-          <div className={`h-[3px] bg-blue-600 w-full`}></div>
+          <div className={`h-[3px] bg-accent w-full`}></div>
         </div>
         <p>2</p>
       </div>
@@ -194,17 +194,17 @@ const BusinessInfo = () => {
             onClick={() => {
               dispatch(prevStep());
             }}
-            className="h-full w-full flex items-center py-2 text-primary gap-1 cursor-pointer"
+            className="h-full w-full flex items-center py-2 text-primary gap-1 cursor-pointer delay-75 duration-75 hover:text-primaryHover"
           >
             <Image src="/arrow-left.svg" alt="" width={20} height={20} />
             <h2 className="text-sm font-semibold">Back</h2>
           </div>
           <button
             type="submit"
-            className="bg-primary w-full h-full py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={isLoading}
+            className="bg-primary flex items-center justify-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-75 delay-75 hover:bg-primaryHover"
+            disabled={isPending}
           >
-            {isLoading ? "Submitting" : "Submit"}
+            {isPending ? "Submitting" : "Submit"}
           </button>
         </div>
       </form>

@@ -13,7 +13,7 @@ export default function RequestDeletionForm() {
   });
   const {
     mutate: deleteAccount,
-    isLoading,
+    isPending,
     error,
     isSuccess,
   } = useDeleteAccountMutation();
@@ -57,11 +57,11 @@ export default function RequestDeletionForm() {
         rows={3}
       />
       <button
-        disabled={isLoading}
+        disabled={isPending}
         className="bg-secondary text-white w-max px-10 py-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Submit
-        {isLoading ? "Loading" : "Submit"}
+        {isPending ? "Loading" : "Submit"}
       </button>
     </form>
   );

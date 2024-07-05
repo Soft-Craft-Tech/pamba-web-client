@@ -6,37 +6,41 @@ import Separator from "@/components/shared/sectionSeparators/separator";
 import FindShopsCards from "@/components/FindShopsCards";
 import ArrowBack from "@/ui/icons/arrow-back";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject } from "@/components/types";
 import Explorer from "@/components/Explorer";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetAllBusinesses } from "@/app/api/requests";
+import { useGetClientServices } from "@/app/api/services";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
+import { useGetAllBusinesses } from "@/app/api/businesses";
+import { DynamicObject } from "@/components/types";
 
 const FindServices: React.FC = () => {
-  const router = useRouter();
-  const { data, isLoading } = useGetAllBusinesses();
+  const { data } = useGetClientServices();
+  const { data: allBusinessesData } = useGetAllBusinesses();
   const [filteredServices, setFilteredServices] = React.useState(
-    data?.businesses
+    data?.services
   );
   const {
     search: { searchQuery },
   } = useAppSelector((state: RootState) => state);
   const [search, setSearch] = React.useState(false);
-console.log(data)
-  const handleSearch = (service: string, shop: string) => {
-    const filtered = data?.businesses?.filter(
-      ({
-        business_name,
-        location,
-      }: {
-        business_name: string;
-        location: string;
-      }) =>
-        business_name.toLowerCase().includes(service.toLowerCase()) &&
-        location.toLowerCase().includes(shop.toLowerCase())
-    );
+
+  const handleSearch = (service: string, location: string) => {
+    const searchQuery = `${service.toLowerCase()} ${location.toLowerCase()}`;
+    const filtered = data?.services?.filter((item: DynamicObject) => {
+      const businessInfo = item?.businessInfo;
+      const serviceInfo = item?.serviceInfo;
+      if (!businessInfo || !serviceInfo) {
+        return false;
+      }
+      const businessLocation = businessInfo?.location?.toLowerCase() || "";
+      const serviceNames = serviceInfo?.service?.toLowerCase() || "";
+      if (!businessLocation || !serviceNames) {
+        return false;
+      }
+      const itemString = `${serviceNames} ${businessLocation}`.toLowerCase();
+      return itemString.includes(searchQuery);
+    });
     setFilteredServices(filtered);
     setSearch(true);
   };
@@ -56,16 +60,18 @@ console.log(data)
           <ShopSepartor header={` Search Results for ${searchQuery}`} />
         </div>
         <div className="w-full flex flex-wrap justify-evenly gap-12">
-          {filteredServices?.map(
-            ({ profile_img, business_name, location, id }: DynamicObject) => (
-              <Explorer
-                key={id}
-                imageUrl={profile_img}
-                shopName={business_name}
-                location={location}
-              />
-            )
-          )}
+          {filteredServices?.map(({ businessInfo, serviceInfo }: any) => (
+            <Explorer
+              key={serviceInfo?.id}
+              imageUrl={businessInfo?.profile_img}
+              shopName={businessInfo?.business_name}
+              price={serviceInfo?.price}
+              rating={businessInfo?.rating}
+              btnText="Book Appointment"
+              booking={true}
+              href={serviceInfo?.id}
+            />
+          ))}
         </div>
       </div>
     );
@@ -90,14 +96,14 @@ console.log(data)
             <CategoryCard img="/makestar.svg" text="Barbersalon" />
           </div>
         </section>
-        <FindShopsCards sliderData={data?.businesses ?? []} />
+        <FindShopsCards sliderData={allBusinessesData?.businesses} />
         <Separator
           btnText={"WHY US"}
           header={"We are experienced in making you very beautiful"}
         />
         <div>
           <Image
-            className="w-full"
+            className="w-full px-2 md:px-4 xl:px-0"
             src="/whyUs.svg"
             alt="pamba app"
             width={50}

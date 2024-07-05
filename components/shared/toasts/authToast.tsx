@@ -10,7 +10,7 @@ export default function Toast({
   type,
 }: {
   message: string | undefined;
-  type: any;
+  type: "error" | "info" | "success" | "warning";
 }) {
   const { showToast } = useAppSelector((state: RootState) => state.toast);
   const dispath = useAppDispatch();
