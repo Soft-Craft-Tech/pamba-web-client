@@ -3,6 +3,7 @@ import {
   useGetBusinessesAnalysis,
   useGetProfileCompletionStatus,
 } from "@/app/api/businesses";
+import { useGetSalesAnalysis } from "@/app/api/revenue";
 import AppointmentsTable from "@/components/charts/appointments";
 import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
@@ -12,6 +13,7 @@ import Link from "next/link";
 export default function DashboardPage() {
   const { data } = useGetProfileCompletionStatus();
   const { data: businessAnalysis } = useGetBusinessesAnalysis();
+  const { data: revenueData } = useGetSalesAnalysis();
 
   return (
     <div className="w-full flex flex-col gap-5">
@@ -29,7 +31,7 @@ export default function DashboardPage() {
       <Overview {...businessAnalysis} />
       <FinancialSummary
         lifetime_expenses={businessAnalysis?.lifetime_expenses}
-        lifetime_sales={businessAnalysis?.lifetime_revenue}
+        lifetime_sales={revenueData?.lifetime_sales}
       />
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <div className="col-span-12 xl:col-span-8">
