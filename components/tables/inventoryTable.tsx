@@ -99,7 +99,7 @@ const InventoryTable = () => {
         Cell: ({ cell }) => moment(cell.getValue<Date>()).format("MMM D, YYYY"),
         filterFn: "greaterThan",
         filterVariant: "date",
-        enableGlobalFilter: false,
+        // enableGlobalFilter: false,
       },
       {
         accessorKey: "product",
@@ -207,7 +207,7 @@ const InventoryTable = () => {
             defaultValue={row.original.product}
             disabled
           />
-          <FormControl sx={{  minWidth: 120 }}>
+          <FormControl sx={{ minWidth: 120 }}>
             <Controller
               control={control}
               name="status"
@@ -250,9 +250,7 @@ const InventoryTable = () => {
         <p className="mb-2">Inventory Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit((data) => {
-            submitInventory(data);
-          })}
+          onSubmit={handleSubmit(submitInventory)}
         >
           <FormField
             type="text"
