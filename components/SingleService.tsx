@@ -26,6 +26,7 @@ import Image from "next/image";
 import * as React from "react";
 import Toast from "./shared/toasts/authToast";
 import { useForm } from "react-hook-form";
+import Loader from "./loader";
 
 dayjs.extend(isBetween);
 
@@ -36,7 +37,12 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   } = useAppSelector((state: RootState) => state);
   const { data } = useGetSingleService(serviceId);
 
-  const { mutateAsync, isSuccess, isError } = useBookAppointments();
+  const {
+    mutateAsync,
+    isSuccess,
+    isError,
+    isPending: isPendingBookAppointment,
+  } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
   const [staff, setAge] = React.useState<any>(0);
@@ -75,14 +81,19 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     formData.append("date", dayjs(selectedDay).format("DD-MM-YYYY"));
     formData.append("time", dayjs(selectedTime).format("HH:mm"));
     formData.append("notification", notification);
+    // //@ts-expect-error:Type error
+    // formData.append("name", name);
 
     const formJson = Object.fromEntries(formData.entries());
+
     const data = {
       ...formJson,
       service: Number(formJson.service),
       staff: Number(formJson.staff),
       business: Number(formJson.business),
+      name: formJson.name,
     };
+
     console.log("Apppointments", data);
     await mutateAsync(data);
 
@@ -259,16 +270,17 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     />
                   </LocalizationProvider>
                 </div>
-                <div className="flex flex-row justify-end gap-x-4">
+                <div className="flex flex-col gap-3 lg:flex-row justify-end">
                   <Button
                     label="Cancel"
-                    variant="outline"
+                    className=" border border-primary rounded-sm py-1 lg:py-0 text-sm lg:text-base lg:px-6 xl:px-8 hover:bg-primary hover:text-white transition-all ease-in-out"
                     onClick={() => {
                       handleClose();
                     }}
                   />
                   <Button
                     label="Book Appointment"
+                    className=" bg-primary rounded-sm flex items-center gap-2 py-2 lg:p-4 justify-center text-white text-sm lg:text-base"
                     onClick={() => {
                       setBookingFrame("finish");
                     }}
@@ -306,6 +318,14 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   </p>
                 </div>
               </div>
+              <input
+                type="name"
+                id="name"
+                name="name"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                placeholder="Client name"
+                required
+              />
               <input
                 type="tel"
                 id="phone"
@@ -374,15 +394,20 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   type="submit"
                   label="Book Appointment"
                   variant="primary"
+                  disabled={isPendingBookAppointment}
                 >
                   <p>Confirm Appointment</p>
-                  <Image
-                    className="border bg-white ml-3 rounded-full"
-                    src="/arrow-right.svg"
-                    alt="arrow-icon"
-                    width={20}
-                    height={20}
-                  />
+                  {isPendingBookAppointment ? (
+                    <Loader />
+                  ) : (
+                    <Image
+                      className="border bg-white ml-3 rounded-full"
+                      src="/arrow-right.svg"
+                      alt="arrow-icon"
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </Button>
               </div>
             </div>
