@@ -1,8 +1,7 @@
-import { useAppDispatch } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useGetAllStaff = (slug: string) => {
   return useQuery({
@@ -16,7 +15,6 @@ export const useGetAllStaff = (slug: string) => {
 
 export const useCreateStaff = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
   return useMutation({
     mutationFn: async ({
@@ -33,18 +31,20 @@ export const useCreateStaff = () => {
         phone,
         role,
       });
-      dispatch(setMessage(response.message));
       return response;
     },
     onSuccess: () => {
+      toast.success("Staff created successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllStaff"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useDeleteStaff = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
   return useMutation({
     mutationFn: async (staff_id: number) => {
@@ -52,19 +52,20 @@ export const useDeleteStaff = () => {
         "DELETE",
         `${endpoints.deleteStaff}${staff_id}`
       );
-      dispatch(setMessage(response.message));
-      dispatch(setShowToast(true));
       return response;
     },
     onSuccess: () => {
+      toast.success("Staff deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllStaff"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useEditStaff = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
 
   return useMutation({
     mutationFn: async ({
@@ -80,12 +81,14 @@ export const useEditStaff = () => {
         phone,
         role,
       });
-      dispatch(setMessage(response.message));
-      dispatch(setShowToast(true));
       return response;
     },
     onSuccess: () => {
+      toast.success("Staff edited successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllStaff"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };

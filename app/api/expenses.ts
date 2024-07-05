@@ -1,8 +1,7 @@
-import { useAppDispatch } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useGetExpenses = () => {
   return useQuery({
@@ -16,59 +15,67 @@ export const useGetExpenses = () => {
 
 export const useCreateExpense = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
+
   return useMutation({
     mutationFn: async ({
       expenseTitle,
-      expenseAmount,
+      amount,
       description,
       accountID,
     }: {
       expenseTitle: string;
-      expenseAmount: number;
+      amount: string;
       description: string;
-      accountID: number;
+      accountID: string;
     }) => {
+      console.log(expenseTitle, amount, description, accountID);
+
       const response = await apiCall("POST", endpoints.addExpense, {
         expenseTitle,
-        expenseAmount,
+        expenseAmount: Number(amount),
         description,
-        accountID,
+        accountID: Number(accountID),
       });
-      dispatch(setMessage(response.message));
+
       return response;
     },
     onSuccess: (data) => {
       console.log(
         `This is the data from the get all expenses endpoint: ${data}`
       );
+      toast.success("Expense created successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useDeleteExpense = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
+
   return useMutation({
     mutationFn: async (expense_id: number) => {
       const response = await apiCall(
         "DELETE",
         `${endpoints.deleteExpenses}${expense_id}`
       );
-      dispatch(setMessage(response.message));
-      dispatch(setShowToast(true));
       return response;
     },
     onSuccess: () => {
+      toast.success("Expense deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useEditExpense = () => {
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
+
   return useMutation({
     mutationFn: async ({
       expenseId,
@@ -88,15 +95,14 @@ export const useEditExpense = () => {
         `${endpoints.editExpenses}${expenseId}`,
         { expenseAmount, expenseTitle, description, accountID }
       );
-      dispatch(setMessage(response.message));
-      dispatch(setShowToast(true));
-      setTimeout(() => {
-        dispatch(setMessage(""));
-      }, 3000);
       return response;
     },
     onSuccess: () => {
+      toast.success("Expense updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
