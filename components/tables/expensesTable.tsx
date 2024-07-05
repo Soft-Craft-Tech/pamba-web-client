@@ -29,6 +29,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import * as z from "zod";
 import Toast from "../shared/toasts/authToast";
+import SelectField from "@/ui/SelectField";
+import { MenuItem } from "@mui/material";
 
 type Expense = {
   expense_account: number;
@@ -54,14 +56,6 @@ const Table = () => {
     resolver: zodResolver(expenseSchema),
   });
 
-  const dispatch = useAppDispatch();
-  const { toastMessage } = useSelector((state: RootState) => ({
-    toastMessage: state.toast.toastMessage,
-  }));
-  const { showToast } = useSelector((state: RootState) => ({
-    showToast: state.toast.showToast,
-  }));
-
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
@@ -76,15 +70,11 @@ const Table = () => {
 
   const {
     mutateAsync,
-    isSuccess,
-    isError: addExpenseError,
     status: createExpenseStatus,
   } = useCreateExpense();
 
   const {
     mutateAsync: deleteUser,
-    isSuccess: isDeleteSuccess,
-    isError: isDeleteError,
   } = useDeleteExpense();
 
   const { mutateAsync: editExpense, status: editExpenseStatus } =
@@ -110,14 +100,6 @@ const Table = () => {
     reset();
     table.setCreatingRow(null);
   };
-
-  if (isSuccess || addExpenseError) {
-    dispatch(setShowToast(true));
-    setTimeout(() => {
-      dispatch(setShowToast(false));
-      // table.setEditingRow(null);
-    }, 3000);
-  }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
@@ -239,26 +221,22 @@ const Table = () => {
             register={register}
             error={errors.description}
           />
-          <Controller
+      
+          <SelectField
+            placeholder="Select Account"
             name="accountID"
+            error={errors.accountID}
             control={control}
-            defaultValue={row.original.account_id}
-            render={({ field }) => (
-              <select
-                {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2 lg:h-12"
-              >
-                {!isLoadingAccounts &&
-                  expenseAccountsData?.account?.map(
-                    (account: { id: string; account_name: string }) => (
-                      <option key={account.id} value={account.id}>
-                        {account.account_name}
-                      </option>
-                    )
-                  )}
-              </select>
-            )}
-            rules={{ required: true }}
+            options={
+              expenseAccountsData &&
+              expenseAccountsData?.account?.map(
+                (account: { id: string; account_name: string }) => (
+                  <option key={account.id} value={account.id}>
+                    {account.account_name}
+                  </option>
+                )
+              )
+            }
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button

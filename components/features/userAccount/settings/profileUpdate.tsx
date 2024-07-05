@@ -1,55 +1,10 @@
 "use client";
-import Image from "next/image";
-import { AiFillEdit } from "react-icons/ai";
-import ProfileUpdateForm from "./updateForm";
 import { getUser } from "@/utils/auth";
-import { useEffect, useState } from "react";
-
-interface IUser {
-  active: boolean;
-  business_name: string;
-  city: string;
-  description: string;
-  email: string;
-  google_map: string;
-  id: number;
-  join_date: string;
-  location: string;
-  phone: string;
-  profile_img: string;
-  slug: string;
-  verified: boolean;
-  weekday_closing: string;
-  weekday_opening: string;
-  weekend_closing: string;
-  weekend_opening: string;
-}
+import Image from "next/image";
+import ProfileUpdateForm from "./updateForm";
 
 export default function EditProfile() {
-  const [client, setClient] = useState<IUser>({
-    active: true,
-    business_name: "",
-    city: "",
-    description: "",
-    email: "",
-    google_map: "",
-    id: 1,
-    join_date: "",
-    location: "",
-    phone: "",
-    profile_img: "",
-    slug: "",
-    verified: true,
-    weekday_closing: "",
-    weekday_opening: "",
-    weekend_closing: "",
-    weekend_opening: "",
-  });
-
-  useEffect(() => {
-    const { client } = getUser();
-    setClient(client);
-  }, []);
+  const { client } = getUser();
 
   return (
     <div className="flex flex-col gap-10 ">

@@ -33,7 +33,7 @@ const AddServicesBox = () => {
           </Button>
         </div>
         {showComponent && <AddServices />}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 w-full h-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 w-full h-auto max-w-4xl mx-auto">
           {data?.services?.map(
             (
               { service, price, service_image }: DynamicObject,

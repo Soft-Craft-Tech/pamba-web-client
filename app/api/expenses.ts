@@ -39,10 +39,7 @@ export const useCreateExpense = () => {
 
       return response;
     },
-    onSuccess: (data) => {
-      console.log(
-        `This is the data from the get all expenses endpoint: ${data}`
-      );
+    onSuccess: () => {
       toast.success("Expense created successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
     },
