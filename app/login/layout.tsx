@@ -9,7 +9,7 @@ export const metadata = {
 export default function LoginLayout({ children }: { children: ReactNode }) {
   return (
     <main className="w-full h-screen overflow-hidden flex justify-center items-center bg-background">
-      <div className="w-full h-screen flex justify-center items-center border-r bg-white lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-5">
+      <div className="container w-full h-screen flex justify-center items-center border-r bg-white lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-5">
         <div className="relative w-full h-full hidden lg:flex">
           <Image
             className="object-cover"

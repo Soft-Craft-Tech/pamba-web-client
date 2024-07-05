@@ -10,7 +10,7 @@ export const metadata = {
 };
 export default function SignupLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="flex w-full h-screen overflow-hidden bg-background items-center">
+    <main className="container flex w-full h-screen overflow-hidden bg-background items-center">
       <div className="h-full hidden lg:block lg:w-1/2 overflow-hidden">
         <SignupImageCarousel />
       </div>

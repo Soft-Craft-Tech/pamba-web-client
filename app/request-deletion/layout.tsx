@@ -5,5 +5,5 @@ export default function RequestDeletionLayout({
 }: {
   children: ReactNode;
 }) {
-  return <main>{children}</main>;
+  return <main className="container">{children}</main>;
 }
