@@ -31,10 +31,10 @@ export default function ProfileUpdateForm({ client }: { client: IUser }) {
         <LabelledFormField
           type="text"
           placeholder="Business Name"
-          name="business_name"
+          name="name"
           register={register}
           defaultValue={client?.business_name}
-          error={errors.business_name}
+          error={errors.name}
         />
         <LabelledFormField
           type="email"

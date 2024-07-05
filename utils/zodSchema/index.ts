@@ -4,7 +4,7 @@ import * as z from "zod";
 const toDate = z.coerce.date();
 
 export const profileUpdateSchema = z.object({
-  business_name: z.string().min(1, "Business name is required"),
+  name: z.string().min(1, "Business name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
   city: z.string().min(1, "City is required"),
