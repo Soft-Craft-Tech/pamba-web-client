@@ -39,9 +39,9 @@ const ServiceHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
           <h1 className="max-w-lg mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-primary ">
             Find a service close to you
           </h1>
-          <p className="max-w-lg mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-            There are many variation of passages are Ipsum available, majority
-            have suffered alteration in some form.
+          <p className="max-w-lg mb-6 font-light text-gray-500 lg:mb-8 md:text-lg  dark:text-gray-400">
+            Looking for assistance nearby? Use our service locator to find
+            support options close to your location.
           </p>
           <div className="flex bg-white rounded-md px-4 py-2 w-full">
             <div className="flex flex-row items-center gap-1 w-2/5">

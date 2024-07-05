@@ -28,12 +28,12 @@ const Explorer: React.FC<{
   rating,
   reviews,
   service,
-  shopImage
+  shopImage,
 }) => {
   return (
-    <div className=" bg-white border w-full border-gray-200 rounded-lg shadow md:max-w-[20rem] md:w-[19.5rem]">
+    <div className=" bg-white border rounded-lg w-full border-gray-200  shadow md:max-w-[20rem] md:w-[19.5rem]">
       <img
-        className="object-cover w-full h-[10rem] sm:h-[12rem] lg:h-[10rem]"
+        className="object-cover border border-red-500 w-full h-[10rem] sm:h-[12rem] lg:h-[10rem] rounded-t-lg"
         src={
           imageUrl === null
             ? "https://res.cloudinary.com/dnfrxficl/image/upload/v1715585716/pamba-web/iejtagfjemtmqr2k2f0n.svg"
@@ -44,44 +44,44 @@ const Explorer: React.FC<{
       <div className="p-5  w-full">
         {booking ? (
           <div>
-            <h3 className="text-secondary">{service}</h3>
+            <h3 className="text-secondary text-lg">{service}</h3>
             <div className="w-full flex mt-2 justify-between items-center">
-              <p className="text-lg">Ksh {price}</p>
-              <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
+              <p className="text-base">Ksh {price}</p>
+              {/* <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
                 <p>{rating}</p>
-              </div>
+              </div> */}
             </div>
-            <div className="flex flex-row items-center gap-x-3">
-              {shopImage &&
+            <div className="flex flex-row items-center gap-x-3 mt-2">
+              {shopImage && (
                 <Image
-                className="w-10 h-10 rounded-full"
-                width={20}
-                height={20}
-                src={shopImage}
-                alt="Rounded avatar"
-              />
-              }
-              
-              <p className="text-lg">{shopName}</p>
+                  className="w-8 h-8 rounded-full"
+                  width={20}
+                  height={20}
+                  src={shopImage}
+                  alt="Rounded avatar"
+                />
+              )}
+
+              <p className="text-base">{shopName}</p>
             </div>
           </div>
         ) : (
           <div className="mt-3">
             <div className="flex flex-row items-center gap-x-3">
-              <p className="text-lg">{shopName}</p>
+              <p className="text-lg text-secondary">{shopName}</p>
             </div>
-            <div className="flex flex-row mt-3 items-center gap-x-1">
+            <div className="flex flex-row mt-3 items-center gap-x-2">
               <LocationIcon />
               <p className="text-sm text-grayArea line-clamp-1">{location}</p>
             </div>
-            <div className="w-full flex mt-3 justify-between items-center">
+            {/* <div className="w-full flex mt-3 justify-between items-center">
               <div className="flex bg-[#DB147114] p-2 rounded-2xl  flex-row gap-x-1 items-center">
                 <RatingIcon />
                 <p>{rating}</p>
               </div>
               <p className="text-sm">{reviews} review(s)</p>
-            </div>
+            </div> */}
           </div>
         )}
         <Link
@@ -91,7 +91,7 @@ const Explorer: React.FC<{
               : `/booking/all-shops/${href}`
           }
         >
-          <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium duration-100 delay-75 hover:scale-[1.02] md:px-7 md:py-3">
+          <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium duration-100 delay-75 hover:bg-primary hover:text-white hover:scale-[1.02] md:px-7 md:py-3 hover:font-semibold">
             {btnText}
           </button>
         </Link>
