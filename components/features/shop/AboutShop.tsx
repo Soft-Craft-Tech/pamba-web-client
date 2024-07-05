@@ -31,18 +31,18 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
           {data?.business && (
             <Link
               target="_blank"
-              className="text-primary border-[0.1px] border-primary py-1 px-3 rounded-full text-sm duration-100 delay-75 hover:text-accent hover:border-accent"
+              className="text-primary border-[0.1px] border-primary py-1 px-3 hover:bg-primary hover:text-white transition-all ease-in-out rounded-full text-sm duration-100 delay-75 "
               href={data?.business?.google_map && data?.business?.google_map}
             >
               Directions
             </Link>
           )}
         </div>
-        <div className="flex flex-row gap-x-3">
+        <div className="flex flex-row gap-x-3 mt-2">
           <LocationIcon />
           <p className="text-sm font-light"> {data?.business?.location}</p>
         </div>
-        <div className="flex flex-row items-center gap-x-2">
+        {/* <div className="flex flex-row items-center gap-x-2">
           <p className="font-semibold text-xl">{data?.business?.rating}</p>
           <div className="flex gap-1">
             <RatingIcon fill="#FF9F0A" />
@@ -51,7 +51,7 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
             <RatingIcon fill="#FF9F0A" />
             <RatingIcon fill="#FF9F0A" />
           </div>
-        </div>
+        </div> */}
         <p className="max-w-[800px] text-sm mt-2">
           {data?.business?.description}
         </p>

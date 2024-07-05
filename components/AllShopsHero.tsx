@@ -13,9 +13,16 @@ interface ServiceHeroProps {
 const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
   const dispatch = useAppDispatch();
 
-  const [service, setService] = useState(null);
+  const [service, setService] = useState<{
+    label: string;
+    value: string;
+  } | null>(null);
 
   const [shop, setShop] = useState("");
+  const [location, setLocation] = useState<{
+    label: string;
+    value: string;
+  } | null>(null);
   const servicesOptions = [
     { label: "Barbershop", value: "Barbershop" },
     { label: "Spa", value: "Spa" },
@@ -55,11 +62,12 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
     dispatch(setSearchQuery(shop));
   };
 
-  // const handleClick = () => {
-  //   if (onSearch) {
-  //     onSearch(service, shop);
-  //   }
-  // };
+  const handleClick = () => {
+    console.log(service, location);
+    if (onSearch) {
+      onSearch(service?.value as string, location?.value as string);
+    }
+  };
   const filterBtn = [
     "BarberShop",
     "Salon",
@@ -80,7 +88,7 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
           backgroundSize: "cover",
         }}
       >
-        <p className="text-white text-3xl md:text-[50px] font-bold max-w-[900px] text-center">
+        <p className="text-white text-3xl md:text-[50px] leading-tight font-bold max-w-[900px] text-center">
           Discover Your Perfect Look: Explore Services Near You
         </p>
         <div className="flex bg-white w-full mt-4 gap-2 justify-between max-w-[940px] rounded-md px-4 py-2">
@@ -113,7 +121,7 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
                 defaultValue={service}
                 className="py-2 px-4 w-full text-black focus:outline-primary"
                 // @ts-ignore
-                onChange={setService}
+                onChange={setLocation}
               />
               {/* <input
                 type="text"
@@ -124,9 +132,9 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
               /> */}
             </div>
             <button
-              // onClick={() => {
-              //   handleClick();
-              // }}
+              onClick={() => {
+                handleClick();
+              }}
               className="bg-primary text-white font-bold py-2 px-4 rounded-md w-full lg:w-max duration-100 hover:bg-primaryHover"
             >
               Search
