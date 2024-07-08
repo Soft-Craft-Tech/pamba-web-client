@@ -18,7 +18,7 @@ export default function SideNav() {
   };
 
   return (
-    <div className="w-screen">
+    <div className="w-screen lg:min-h-screen ">
       <div className="w-full bg-white px-1 flex justify-between h-auto items-center py-6">
         <Link href="/">
           <Image
