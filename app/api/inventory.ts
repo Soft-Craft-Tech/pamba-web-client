@@ -46,7 +46,7 @@ export const useDeleteInventory = () => {
       return response;
     },
     onSuccess: () => {
-      toast.success("Inventory status updated successfully!");
+      toast.success("Inventory deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
     },
     onError: () => {

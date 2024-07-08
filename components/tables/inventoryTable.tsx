@@ -6,7 +6,12 @@ import {
   useGetInventory,
 } from "@/app/api/inventory";
 import Button from "@/ui/button";
+import FormField from "@/ui/FormField";
+import { inventorySchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import {
   MRT_Row,
   MaterialReactTable,
@@ -17,18 +22,11 @@ import {
 } from "material-react-table";
 import moment from "moment";
 import { useMemo, useState } from "react";
-import { TiTick } from "react-icons/ti";
-import FormField from "@/ui/FormField";
-import { inventorySchema } from "@/utils/zodSchema";
+import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
-import * as z from "zod";
 import { GrFormClose } from "react-icons/gr";
-import { useForm, Controller } from "react-hook-form";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { TiTick } from "react-icons/ti";
+import * as z from "zod";
 
 type InventoryType = {
   id: number;
@@ -189,7 +187,6 @@ const InventoryTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) => {
             editInventoryRow(row.original.id ?? 0, data);
-            console.log(row.original.updated_at);
           })}
         >
           <FormField
@@ -214,7 +211,7 @@ const InventoryTable = () => {
             <Controller
               control={control}
               name="status"
-              render={({ field: { onChange, value, ref } }) => (
+              render={({ field: { onChange, value } }) => (
                 <Select
                   value={value}
                   onChange={onChange}

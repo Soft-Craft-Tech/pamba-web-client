@@ -18,6 +18,8 @@ const SingleShopHero: React.FC<{
   const handleServiceChange = (event: ChangeEvent<HTMLInputElement>) => {
     setService(event.target.value);
   };
+
+  // TODO: use single business query
   const { data } = useGetSingleBusiness(slug);
 
   const { data: shopServices } = useGetAllServices(slug);

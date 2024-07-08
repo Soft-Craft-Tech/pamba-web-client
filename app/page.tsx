@@ -10,7 +10,7 @@ import Separator from "@/components/shared/sectionSeparators/separator";
 
 export default function Home() {
   return (
-    <main className="">
+    <main className="container">
       <Header page="home" />
       <Hero />
       <Separator

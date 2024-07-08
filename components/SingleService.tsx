@@ -72,6 +72,9 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   };
 
   // TODO: Implement form validation
+  // TODO: Client Name
+  // TODO: Make Book appointment card clickable
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
