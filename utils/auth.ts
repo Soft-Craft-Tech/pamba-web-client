@@ -1,5 +1,6 @@
 "use client";
 
+import { IUser } from "@/components/types";
 import dayjs from "dayjs";
 
 export const getUser = () => {
@@ -17,6 +18,16 @@ export const setUser = (value: any) => {
       "authToken",
       JSON.stringify({ ...value, expires: dayjs().add(1, "d") })
     );
+};
+
+export const updateClientInLocalStorage = (newClient: IUser) => {
+  const user = getUser();
+
+  if (user) {
+    user.client = newClient;
+    const updatedAuthData = JSON.stringify(user);
+    window.localStorage.setItem("authToken", updatedAuthData);
+  }
 };
 
 export const authUser = () => {
