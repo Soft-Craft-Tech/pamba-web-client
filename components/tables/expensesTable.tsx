@@ -6,11 +6,9 @@ import {
   useEditExpense,
   useGetExpenses,
 } from "@/app/api/expenses";
-import { useAppDispatch } from "@/hooks";
-import { RootState } from "@/store/store";
-import { setShowToast } from "@/store/toastSlice";
 import Button from "@/ui/button";
 import FormField from "@/ui/FormField";
+import SelectField from "@/ui/SelectField";
 import { expenseSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -26,11 +24,8 @@ import {
 import moment from "moment";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import * as z from "zod";
 import Toast from "../shared/toasts/authToast";
-import SelectField from "@/ui/SelectField";
-import { MenuItem } from "@mui/material";
 
 type Expense = {
   expense_account: number;
@@ -68,14 +63,9 @@ const Table = () => {
   const { data: expenseAccountsData, isPending: isLoadingAccounts } =
     useGetExpenseAccounts();
 
-  const {
-    mutateAsync,
-    status: createExpenseStatus,
-  } = useCreateExpense();
+  const { mutateAsync, status: createExpenseStatus } = useCreateExpense();
 
-  const {
-    mutateAsync: deleteUser,
-  } = useDeleteExpense();
+  const { mutateAsync: deleteUser } = useDeleteExpense();
 
   const { mutateAsync: editExpense, status: editExpenseStatus } =
     useEditExpense();
@@ -221,7 +211,7 @@ const Table = () => {
             register={register}
             error={errors.description}
           />
-      
+
           <SelectField
             placeholder="Select Account"
             name="accountID"
@@ -331,7 +321,7 @@ const Table = () => {
       <Button
         variant="primary"
         onClick={() => {
-          expenseAccountsData.account.length > 1 ? (
+          expenseAccountsData?.account.length > 1 ? (
             table.setCreatingRow(true)
           ) : (
             <Toast
