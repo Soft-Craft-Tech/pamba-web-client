@@ -1,5 +1,5 @@
 import { DynamicObject } from "@/components/types";
-import { apiCall } from "@/utils/apiRequest";
+import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ export const useGetInventory = () => {
   return useQuery({
     queryKey: ["getInventory"],
     queryFn: async () => {
-      const response = await apiCall("GET", endpoints.getInventory);
+      const response = await privateApiCall("GET", endpoints.getInventory);
       return response;
     },
   });
@@ -19,7 +19,7 @@ export const useCreateInventory = () => {
 
   return useMutation({
     mutationFn: async ({ product }: { product: string }) => {
-      const response = await apiCall("POST", endpoints.recordInventory, {
+      const response = await privateApiCall("POST", endpoints.recordInventory, {
         product,
       });
       return response;
@@ -28,8 +28,8 @@ export const useCreateInventory = () => {
       toast.success("Inventory status updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
     },
-    onError: () => {
-      toast.error("Could not create inventory! Please try again.");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
@@ -39,7 +39,7 @@ export const useDeleteInventory = () => {
 
   return useMutation({
     mutationFn: async (inventoryId: number) => {
-      const response = await apiCall(
+      const response = await privateApiCall(
         "DELETE",
         `${endpoints.deleteInventory}${inventoryId}`
       );
@@ -49,8 +49,8 @@ export const useDeleteInventory = () => {
       toast.success("Inventory deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
     },
-    onError: () => {
-      toast.error("Could not delete! Please try again.");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
@@ -60,7 +60,7 @@ export const useEditInventory = () => {
 
   return useMutation<void, Error, DynamicObject>({
     mutationFn: async ({ status, inventoryId }) => {
-      const response = await apiCall(
+      const response = await privateApiCall(
         "PUT",
         `${endpoints.updateInventoryStatus}${inventoryId}`,
         { status }
@@ -71,8 +71,8 @@ export const useEditInventory = () => {
       toast.success("Inventory status updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getInventory"] });
     },
-    onError: () => {
-      toast.error("Update failed! Please try again.");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
