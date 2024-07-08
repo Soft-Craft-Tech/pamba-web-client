@@ -220,3 +220,12 @@ export type ExpensesType = {
   expense_account: number;
   id: number;
 };
+
+export type ServiceType = {
+  name: string;
+  price: string;
+  category: string;
+  description: string;
+  estimatedTime: string;
+  imageURL: string;
+};

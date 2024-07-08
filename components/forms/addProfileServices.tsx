@@ -1,23 +1,18 @@
-import { useAssignService } from "@/app/api/businesses";
-import { useGetServiceCategories } from "@/app/api/services";
-import Button from "@/ui/button";
+import { Controller, useForm } from "react-hook-form";
+
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setQueuedServices, setService } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
 import LabelledFormField from "@/ui/LabelledFormField";
-import SelectField from "@/ui/SelectField";
 import { serviceSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CldUploadWidget } from "next-cloudinary";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React from "react";
 import * as z from "zod";
-import { IoClose } from "react-icons/io5";
 
 type FormValues = z.infer<typeof serviceSchema>;
 
-export default function AddServicesForm({
-  onSubmitSuccess,
-}: {
-  onSubmitSuccess?: () => void;
-}) {
+export default function AddProfileServicesForm({ data }: { data: any }) {
   const {
     control,
     handleSubmit,
@@ -27,43 +22,49 @@ export default function AddServicesForm({
   } = useForm<FormValues>({
     resolver: zodResolver(serviceSchema),
   });
-  const { data } = useGetServiceCategories();
-  const { mutateAsync, isPending } = useAssignService();
+  const dispatch = useAppDispatch();
+  const { queuedServices } = useAppSelector(
+    (state: RootState) => state.completeProfile
+  );
 
-  const [newImage, setImage] = useState(null);
+  const [newImage, setImage] = React.useState(null);
 
-  const onSubmit = async (formData: FormValues) => {
-    const data = [formData];
-    await mutateAsync(data);
-
+  const onSubmit = (formData: any) => {
+    const exists = queuedServices.some(
+      (item: { name: any }) => item.name === formData.name
+    );
+    if (!exists) {
+      dispatch(setQueuedServices([...queuedServices, formData]));
+    }
+    dispatch(
+      setService({
+        category: "",
+        price: "",
+        description: "",
+        estimatedTime: "",
+        name: "",
+        imageURL: "",
+      })
+    );
     setImage(null);
     reset();
-    if (onSubmitSuccess) {
-      onSubmitSuccess();
-    }
   };
 
   return (
-    <div className="flex flex-col gap-5 w-1/2 p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
-      <div className="flex justify-between">
-        <h3 className="text-[#4F5253] text-lg" id="service-modal-title">
-          What Services do you offer?
-        </h3>
-        <Button onClick={() => onSubmitSuccess && onSubmitSuccess()}>
-          <IoClose className="size-8" />
-        </Button>
-      </div>
+    <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+      <h3>What Services do you offer?</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 p-1"
       >
-        <SelectField
-          placeholder="Select Category"
+        <Controller
           name="category"
-          error={errors.category}
           control={control}
-          options={
-            <>
+          render={({ field }) => (
+            <select
+              {...field}
+              className="text-gray-400 rounded-md border border-gray-400 w-full h-14 py-1 px-2 lg:h-14"
+            >
               <option value="1">Select Category</option>
               {data?.categories?.map(
                 ({ category, id }: { category: string; id: number }) => (
@@ -72,9 +73,11 @@ export default function AddServicesForm({
                   </option>
                 )
               )}
-            </>
-          }
+            </select>
+          )}
+          rules={{ required: true }}
         />
+
         <LabelledFormField
           type="text"
           placeholder="Service Name"
@@ -154,21 +157,12 @@ export default function AddServicesForm({
             {errors.imageURL.message}
           </span>
         )}
-        <div className="flex gap-8 ml-auto">
-          <Button
-            variant="outline"
-            onClick={() => {
-              reset();
-              setImage(null);
-              onSubmitSuccess && onSubmitSuccess();
-            }}
-          >
-            Cancel
-          </Button>
-          <Button type="submit" variant="primary" disabled={isPending}>
-            Submit
-          </Button>
-        </div>
+        <button
+          className="py-3 px-10 bg-secondary hover:scale-105 transition-all ease-in-out text-white h-max rounded-md"
+          type="submit"
+        >
+          Add
+        </button>
       </form>
     </div>
   );

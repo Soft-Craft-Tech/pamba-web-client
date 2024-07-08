@@ -1,5 +1,5 @@
 import { SelectFieldProps } from "@/components/types";
-import { FormControl, Select, MenuItem } from "@mui/material";
+import { FormControl } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 const SelectField: React.FC<SelectFieldProps> = ({
