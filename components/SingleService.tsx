@@ -26,6 +26,7 @@ import Image from "next/image";
 import * as React from "react";
 import Toast from "./shared/toasts/authToast";
 import { useForm } from "react-hook-form";
+import Loader from "./loader";
 
 dayjs.extend(isBetween);
 
@@ -36,7 +37,12 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   } = useAppSelector((state: RootState) => state);
   const { data } = useGetSingleService(serviceId);
 
-  const { mutateAsync, isSuccess, isError } = useBookAppointments();
+  const {
+    mutateAsync,
+    isSuccess,
+    isError,
+    isPending: isPendingBookAppointment,
+  } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
   const [staff, setAge] = React.useState<any>(0);
@@ -78,15 +84,20 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     formData.append("date", dayjs(selectedDay).format("DD-MM-YYYY"));
     formData.append("time", dayjs(selectedTime).format("HH:mm"));
     formData.append("notification", notification);
+    // //@ts-expect-error:Type error
+    // formData.append("name", name);
 
     const formJson = Object.fromEntries(formData.entries());
+
     const data = {
       ...formJson,
       service: Number(formJson.service),
       staff: Number(formJson.staff),
       business: Number(formJson.business),
+      name: formJson.name,
     };
-    
+
+    console.log("Apppointments", data);
     await mutateAsync(data);
 
     handleClose();
@@ -140,34 +151,39 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
           </button>
         </div>
       </div>
-      <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
-        <ShopSepartor header="You might also like" />
-      </div>
-      <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
-        <div className="w-full flex flex-wrap gap-12">
-          {filteredServices?.map(
-            ({
-              service_image,
-              service,
-              id,
-              location,
-              price,
-            }: DynamicObject) => (
-              <Explorer
-                key={id}
-                imageUrl={service_image}
-                shopName={service}
-                location={location}
-                href={id}
-                booking={true}
-                btnText="Book Appointment"
-                price={price}
-                rating={data?.business?.rating}
-              />
-            )
-          )}
-        </div>
-      </section>
+      {filteredServices.length > 0 && (
+        <>
+          <div className="mx-auto max-w-screen-2xl w-full mt-10 relative">
+            <ShopSepartor header="You might also like" />
+          </div>
+
+          <section className="mx-auto max-w-screen-2xl w-full my-10 relative">
+            <div className="w-full flex flex-wrap gap-12">
+              {filteredServices?.map(
+                ({
+                  service_image,
+                  service,
+                  id,
+                  location,
+                  price,
+                }: DynamicObject) => (
+                  <Explorer
+                    key={id}
+                    imageUrl={service_image}
+                    shopName={service}
+                    location={location}
+                    href={id}
+                    booking={true}
+                    btnText="Book Appointment"
+                    price={price}
+                    rating={data?.business?.rating}
+                  />
+                )
+              )}
+            </div>
+          </section>
+        </>
+      )}
       <Dialog
         maxWidth="lg"
         open={open}
@@ -257,16 +273,17 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                     />
                   </LocalizationProvider>
                 </div>
-                <div className="flex flex-row justify-end gap-x-4">
+                <div className="flex flex-col gap-3 lg:flex-row justify-end">
                   <Button
                     label="Cancel"
-                    variant="outline"
+                    className=" border border-primary rounded-sm py-1 lg:py-0 text-sm lg:text-base lg:px-6 xl:px-8 hover:bg-primary hover:text-white transition-all ease-in-out"
                     onClick={() => {
                       handleClose();
                     }}
                   />
                   <Button
                     label="Book Appointment"
+                    className=" bg-primary rounded-sm flex items-center gap-2 py-2 lg:p-4 justify-center text-white text-sm lg:text-base"
                     onClick={() => {
                       setBookingFrame("finish");
                     }}
@@ -291,15 +308,27 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <h1 className="text-2xl font-semibold">Additional information</h1>
               <p>Haircut appointment</p>
               <div className="flex flex-row gap-x-2">
-                <div className="flex flex-row gap-x-1">
+                <div className="flex flex-row gap-x-1 items-center">
                   <CalendarIcon />
-                  <p>{dayjs(new Date(selectedDay)).format("MMM D")}</p>
+                  <p className="text-sm">
+                    {dayjs(new Date(selectedDay)).format("MMM D")}
+                  </p>
                 </div>
-                <div className="flex flex-row gap-x-1">
+                <div className="flex flex-row gap-x-1 items-center">
                   <TimeIcon />
-                  <p>{dayjs(new Date(selectedTime)).format("LT")}</p>
+                  <p className="text-sm">
+                    {dayjs(new Date(selectedTime)).format("LT")}
+                  </p>
                 </div>
               </div>
+              <input
+                type="name"
+                id="name"
+                name="name"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                placeholder="Client name"
+                required
+              />
               <input
                 type="tel"
                 id="phone"
@@ -320,7 +349,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 type="text"
                 id="additional_info"
                 name="comment"
-                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2.5"
+                className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2"
                 placeholder="Additional information"
                 required
               />
@@ -368,15 +397,20 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   type="submit"
                   label="Book Appointment"
                   variant="primary"
+                  disabled={isPendingBookAppointment}
                 >
                   <p>Confirm Appointment</p>
-                  <Image
-                    className="border bg-white ml-3 rounded-full"
-                    src="/arrow-right.svg"
-                    alt="arrow-icon"
-                    width={20}
-                    height={20}
-                  />
+                  {isPendingBookAppointment ? (
+                    <Loader />
+                  ) : (
+                    <Image
+                      className="border bg-white ml-3 rounded-full"
+                      src="/arrow-right.svg"
+                      alt="arrow-icon"
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </Button>
               </div>
             </div>
