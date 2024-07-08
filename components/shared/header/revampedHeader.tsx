@@ -10,7 +10,10 @@ const RevampedHeader = () => {
     <div className="mx-auto w-full max-w-screen-2xl">
       <nav>
         <div className="flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link className="h-full w-auto duration-200 delay-100 hover:scale-105" href="/">
+          <Link
+            className="h-full w-auto duration-200 delay-100 hover:scale-105"
+            href="/"
+          >
             <Image
               className="h-full w-28 lg:w-40"
               src="/logo.svg"
@@ -50,26 +53,24 @@ const RevampedHeader = () => {
           >
             <ul className="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
               <Link
-                className={`py-3 flex h-full items-center px-3 hover:text-accent ${
-                  pathname === "/booking/find-services"
-                    ? "text-primary hover:border-primary"
-                    : undefined
+                className={`py-3 flex h-full items-center ${
+                  pathname === "/booking/find-services" && "text-primary"
                 }`}
                 href="/booking/find-services"
               >
                 Home
               </Link>
               <Link
-                className={`py-3 flex h-full items-center px-3 hover:text-accent ${
-                  pathname === "/booking/all-shops" ? "text-primary" : undefined
+                className={`py-3 flex h-full items-center ${
+                  pathname === "/booking/all-shops" && "text-primary"
                 }`}
                 href="/booking/all-shops"
               >
                 Services
               </Link>
               <Link
-                className={`py-3 flex h-full items-center px-3 hover:text-accent ${
-                  pathname === "/contact-us" ? "text-primary" : undefined
+                className={`py-3 flex h-full items-center ${
+                  pathname === "/contact-us" && "text-primary"
                 }`}
                 href="/about"
               >

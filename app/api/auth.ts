@@ -1,12 +1,11 @@
 import { DeleteFormData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
-import { setMessage, setShowToast } from "@/store/toastSlice";
 import { publicApiCall } from "@/utils/apiRequest";
-import { setUser } from "@/utils/auth";
+import { setUser, updateClientInLocalStorage } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 export const useSignUpMutation = () => {
@@ -46,6 +45,8 @@ export const useRequestPasswordReset = () => {
 };
 
 export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (formData: DynamicObject) => {
       const response = await publicApiCall(
@@ -55,8 +56,11 @@ export const useUpdateProfile = () => {
       );
       return response;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Profile updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["singleBusiness"] });
+      queryClient.setQueryData(["singleBusiness"], data);
+      updateClientInLocalStorage(data.business);
     },
     onError: (error) => {
       toast.error(error.message);

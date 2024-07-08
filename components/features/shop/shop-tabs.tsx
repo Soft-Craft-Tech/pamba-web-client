@@ -18,20 +18,14 @@ const ShopTabs: React.FC<{ slug: string }> = ({ slug }) => {
           variant={activeTab === "about" ? "primary" : "secondary"}
           onClick={() => handleTabChange("about")}
         />
-        <Button
+        {/* <Button
           variant={activeTab === "review" ? "primary" : "secondary"}
           label="Review"
           onClick={() => handleTabChange("review")}
-        />
-        <Button
-          variant={activeTab === "gallery" ? "primary" : "secondary"}
-          label="Gallery"
-          onClick={() => handleTabChange("gallery")}
-        />
+        /> */}
       </div>
       {activeTab === "about" && <AboutShop slug={slug} />}
-      {activeTab === "review" && <ReviewShop slug={slug} />}
-      {activeTab === "gallery" && <GalleryShop slug={slug} />}
+      {/* {activeTab === "review" && <ReviewShop slug={slug} />} */}
     </div>
   );
 };

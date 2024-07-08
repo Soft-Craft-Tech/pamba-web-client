@@ -22,8 +22,12 @@ const AllShops: React.FC = () => {
     search: { searchQuery },
   } = useAppSelector((state: RootState) => state);
   const [search, setSearch] = React.useState(false);
-
+  const [searchedString, setSearchString] = React.useState<{
+    location: string;
+    service: string;
+  }>({ location: "", service: "" });
   const handleSearch = (service: string, shop: string) => {
+    console.log(`Logs from handleSearch: ${service}, ${shop}`);
     const filtered = data?.services?.filter(
       ({ businessInfo }: any) =>
         businessInfo?.business_name
@@ -31,7 +35,15 @@ const AllShops: React.FC = () => {
           .includes(service.toLowerCase()) &&
         businessInfo?.location.toLowerCase().includes(shop.toLowerCase())
     );
+    const searchTextResponse = {
+      location: shop,
+      service,
+    };
+    setSearchString(searchTextResponse);
     setFilteredServices(filtered);
+    console.log(`Logs from filtered services: ${filteredServices}`);
+    console.log(`Log for search query: ${searchQuery}`);
+
     setSearch(true);
   };
   if (search)
@@ -47,7 +59,9 @@ const AllShops: React.FC = () => {
           <p>Back</p>
         </div>
         <div className="flex flex-row gap-x-3 my-10 px-4">
-          <ShopSepartor header={` Search Results for ${searchQuery}`} />
+          <ShopSepartor
+            header={` Search Results for ${searchedString.service}s in ${searchedString.location}`}
+          />
         </div>
         <div className="w-full flex flex-wrap justify-evenly gap-12">
           {filteredServices?.map(({ businessInfo, serviceInfo }: any) => (
