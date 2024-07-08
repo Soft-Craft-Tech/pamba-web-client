@@ -29,6 +29,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import { BusinessServiceType } from "../types";
+import SelectField from "@/ui/SelectField";
 
 type RevenueType = {
   id: number;
@@ -164,7 +165,7 @@ const RevenueTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) => editRevenue(data, row.original.id))}
         >
-          <FormControl sx={{ minWidth: 120 }}>
+          {/* <FormControl sx={{ minWidth: 120 }}>
             <Controller
               control={control}
               name="serviceId"
@@ -172,6 +173,7 @@ const RevenueTable = () => {
                 <Select
                   value={value}
                   onChange={onChange}
+                  displayEmpty
                   inputProps={{ "aria-label": "Select service" }}
                   placeholder="Select Service"
                 >
@@ -184,7 +186,23 @@ const RevenueTable = () => {
                 </Select>
               )}
             />
-          </FormControl>
+          </FormControl> */}
+          <SelectField
+            placeholder="Select Service"
+            name="serviceId"
+            error={errors.serviceId}
+            control={control}
+            options={
+              allServices &&
+              allServices.services.map((service: BusinessServiceType) => (
+                <option key={service?.id} value={service?.id}>
+                  {service?.service}
+                </option>
+              ))
+            }
+            defaultValue={row.original.service}
+          />
+
           <FormField
             type="text"
             placeholder="Description"
@@ -235,27 +253,20 @@ const RevenueTable = () => {
             register={register}
             error={errors.customer}
           /> */}
-          <FormControl sx={{ minWidth: 120 }}>
-            <Controller
-              control={control}
-              name="serviceId"
-              render={({ field: { onChange, value } }) => (
-                <Select
-                  value={value}
-                  onChange={onChange}
-                  inputProps={{ "aria-label": "Select service" }}
-                  placeholder="Select Service"
-                >
-                  {allServices &&
-                    allServices.services.map((service: BusinessServiceType) => (
-                      <MenuItem key={service?.id} value={service?.id}>
-                        {service?.service}
-                      </MenuItem>
-                    ))}
-                </Select>
-              )}
-            />
-          </FormControl>
+          <SelectField
+            placeholder="Select Service"
+            name="serviceId"
+            error={errors.serviceId}
+            control={control}
+            options={
+              allServices &&
+              allServices.services.map((service: BusinessServiceType) => (
+                <option key={service?.id} value={service?.id}>
+                  {service?.service}
+                </option>
+              ))
+            }
+          />
           <FormField
             type="text"
             placeholder="Description"

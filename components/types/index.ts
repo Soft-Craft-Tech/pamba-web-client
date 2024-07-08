@@ -1,5 +1,38 @@
 import dayjs from "dayjs";
+import { ReactNode } from "react";
 import { FieldError, UseFormRegister } from "react-hook-form";
+
+export type IUser = {
+  active: boolean;
+  business_name: string;
+  city: string;
+  description: string;
+  email: string;
+  google_map: string;
+  id: number;
+  join_date: string;
+  location: string;
+  phone: string;
+  profile_img: string;
+  slug: string;
+  verified: boolean;
+  weekday_closing: string;
+  weekday_opening: string;
+  weekend_closing: string;
+  weekend_opening: string;
+};
+
+export type LabelledFormFieldProps = {
+  type: string;
+  placeholder: string;
+  name: string;
+  register: UseFormRegister<any>;
+  error: FieldError | undefined;
+  defaultValue?: unknown;
+  disabled?: boolean;
+  multiline?: boolean;
+  rows?: number;
+};
 
 export type FormFieldProps = {
   type: string;
@@ -9,6 +42,15 @@ export type FormFieldProps = {
   error: FieldError | undefined;
   defaultValue?: unknown;
   disabled?: boolean;
+};
+
+export type SelectFieldProps = {
+  placeholder: string;
+  name: string;
+  error: FieldError | undefined;
+  defaultValue?: unknown;
+  control: any;
+  options: ReactNode;
 };
 
 export type FormDataType = {
@@ -168,4 +210,13 @@ export type RevenueAnalysis = {
   lifetime_sales: LifetimeSale[];
   message: string;
   total_sales: number;
+};
+
+export type ExpensesType = {
+  amount: number;
+  created_at: string;
+  description: string;
+  expense: string;
+  expense_account: number;
+  id: number;
 };

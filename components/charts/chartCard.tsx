@@ -10,9 +10,9 @@ import { AppointmentType } from "../types";
 const AppointmentsCard = () => {
   const { data } = useAllAppointments();
 
-  const todaysDate = new Date().toISOString().split("T")[0];
+  const todayDate = moment().format("MMM DD, YYYY");
 
-  const [selectedDate, setSelectedDate] = useState(todaysDate);
+  const [selectedDate, setSelectedDate] = useState(todayDate);
   const filteredAppointments =
     (data &&
       data.appointments
@@ -32,7 +32,7 @@ const AppointmentsCard = () => {
           (appointment: AppointmentType) => appointment.date
         )
       )
-    ).sort();
+    ).sort((a:any, b:any) => new Date(b).getTime() - new Date(a).getTime());
 
   return (
     <div className="col-span-12 rounded-xl border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -45,10 +45,11 @@ const AppointmentsCard = () => {
             <Select
               labelId="select-date-label"
               id="selectedDate"
-              value={selectedDate}
+              value={todayDate}
               label="Date"
               onChange={(e) => setSelectedDate(e.target.value)}
             >
+              <MenuItem value={todayDate}>{todayDate}</MenuItem>
               {AllDatesSet?.map((date: string, index: number) => (
                 <MenuItem key={index} value={date}>
                   {moment(date).format("MMM DD, YYYY")}
@@ -57,24 +58,32 @@ const AppointmentsCard = () => {
             </Select>
           </FormControl>
         </div>
-        <p className="text-sm font-normal text-gray-600">Upcoming</p>
-        <div className="flex flex-col gap-4 overflow-auto max-h-64">
-          {filteredAppointments.map((appointment: AppointmentType) => (
-            <div
-              key={appointment.id}
-              className="flex flex-col gap-1.5 border border-stroke dark:border-strokedark p-3 rounded-md bg-gray-50"
-            >
-              <p className="font-normal pb-1">
-                <span className="text-primary">{appointment.title} </span>
-                <span className="text-sm">by</span>{" "}
-                <span className="text-grayArea">{appointment.staff}</span>
-              </p>
-              <p className="text-xs font-normal text-gray-600">
-                {moment(appointment.start).format("hh:mm A")}
-              </p>
+        {filteredAppointments.length > 0 ? (
+          <div>
+            <p className="text-sm font-normal text-gray-600 mb-2">Upcoming</p>
+            <div className="flex flex-col gap-4 overflow-auto max-h-64">
+              {filteredAppointments.map((appointment: AppointmentType) => (
+                <div
+                  key={appointment.id}
+                  className="flex flex-col gap-1.5 border border-stroke dark:border-strokedark p-3 rounded-md bg-gray-50"
+                >
+                  <p className="font-normal pb-1">
+                    <span className="text-primary">{appointment.title} </span>
+                    <span className="text-sm">by</span>{" "}
+                    <span className="text-grayArea">{appointment.staff}</span>
+                  </p>
+                  <p className="text-xs font-normal text-gray-600">
+                    {moment(appointment.start).format("hh:mm A")}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <p className="text-center font-medium h-full">
+            You have no appointments today!
+          </p>
+        )}
       </div>
     </div>
   );

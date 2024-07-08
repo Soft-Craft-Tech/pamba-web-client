@@ -7,6 +7,7 @@ import {
 } from "@/app/api/inventory";
 import Button from "@/ui/button";
 import FormField from "@/ui/FormField";
+import SelectField from "@/ui/SelectField";
 import { inventorySchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormControl from "@mui/material/FormControl";
@@ -34,6 +35,12 @@ type InventoryType = {
   status: string;
   updated_at: Date | null;
 };
+
+const inventoryOptions = [
+  { value: "Critical", label: "Out of Stock" },
+  { value: "Low", label: "Low Stock" },
+  { value: "Normal", label: "In Stock" },
+];
 
 type FormValues = z.infer<typeof inventorySchema>;
 
@@ -99,7 +106,7 @@ const InventoryTable = () => {
         Cell: ({ cell }) => moment(cell.getValue<Date>()).format("MMM D, YYYY"),
         filterFn: "greaterThan",
         filterVariant: "date",
-        enableGlobalFilter: false,
+        // enableGlobalFilter: false,
       },
       {
         accessorKey: "product",
@@ -207,25 +214,18 @@ const InventoryTable = () => {
             defaultValue={row.original.product}
             disabled
           />
-          <FormControl sx={{  minWidth: 120 }}>
-            <Controller
-              control={control}
-              name="status"
-              render={({ field: { onChange, value } }) => (
-                <Select
-                  value={value}
-                  onChange={onChange}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Select status" }}
-                  defaultValue={row.original.status}
-                >
-                  <MenuItem value={"Critical"}>Out of Stock</MenuItem>
-                  <MenuItem value={"Low"}>Low Stock</MenuItem>
-                  <MenuItem value={"Normal"}>In Stock</MenuItem>
-                </Select>
-              )}
-            />
-          </FormControl>
+          <SelectField
+            placeholder="Select Status"
+            name="status"
+            error={errors.status}
+            control={control}
+            options={inventoryOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+            defaultValue={row.original.status}
+          />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
@@ -250,9 +250,7 @@ const InventoryTable = () => {
         <p className="mb-2">Inventory Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit((data) => {
-            submitInventory(data);
-          })}
+          onSubmit={handleSubmit(submitInventory)}
         >
           <FormField
             type="text"

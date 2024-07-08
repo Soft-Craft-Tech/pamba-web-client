@@ -6,7 +6,8 @@ import { apiCall } from "@/utils/apiRequest";
 import { setUser } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useSignUpMutation = () => {
   const dispatch = useAppDispatch();
@@ -36,12 +37,19 @@ export const useRequestPasswordReset = () => {
 };
 
 export const useUpdateProfile = () => {
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (formData: DynamicObject) => {
       const response = await apiCall("PUT", endpoints.updateProfile, formData);
-      dispatch(setMessage(response.message));
       return response;
+    },
+    onSuccess: () => {
+      toast.success("Profile updated successfully!");
+      queryClient.invalidateQueries();
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
