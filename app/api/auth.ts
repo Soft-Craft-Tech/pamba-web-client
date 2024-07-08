@@ -3,7 +3,7 @@ import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { setMessage, setShowToast } from "@/store/toastSlice";
 import { apiCall } from "@/utils/apiRequest";
-import { setUser } from "@/utils/auth";
+import { setUser, updateClientInLocalStorage } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -44,9 +44,11 @@ export const useUpdateProfile = () => {
       const response = await apiCall("PUT", endpoints.updateProfile, formData);
       return response;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Profile updated successfully!");
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ["singleBusiness"] });
+      queryClient.setQueryData(["singleBusiness"], data);
+      updateClientInLocalStorage(data.business)
     },
     onError: (error) => {
       toast.error(error.message);
