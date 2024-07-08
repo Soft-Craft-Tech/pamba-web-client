@@ -59,3 +59,12 @@ export const staffSchema = z.object({
   phone: z.string().min(1, "Phone number is required"),
   role: z.string().min(1, "Role is required"),
 });
+
+export const serviceSchema = z.object({
+  category: z.string().min(1, "Category is required"),
+  name: z.string().min(1, "Service name is required"),
+  description: z.string().min(1, "Description is required"),
+  estimatedTime: z.string().min(1, "Estimated time is required"),
+  price: z.string().min(1, "Price is required"),
+  imageURL: z.string().min(1, "Image is required"),
+});

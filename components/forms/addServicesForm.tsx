@@ -1,103 +1,110 @@
-import { Controller, useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import { setQueuedServices, setService } from "@/store/completeProfileSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAssignService } from "@/app/api/businesses";
+import { useGetServiceCategories } from "@/app/api/services";
+import Button from "@/ui/button";
+import LabelledFormField from "@/ui/LabelledFormField";
+import SelectField from "@/ui/SelectField";
+import { serviceSchema } from "@/utils/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { CldUploadWidget } from "next-cloudinary";
-import React from "react";
-import { RootState } from "@/store/store";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
+import { IoClose } from "react-icons/io5";
 
-export default function AddServicesForm({ data }: { data: any }) {
-  const { register, handleSubmit, reset, control } = useForm();
-  const dispatch = useAppDispatch();
-  const { queuedServices } = useAppSelector(
-    (state: RootState) => state.completeProfile
-  );
+type FormValues = z.infer<typeof serviceSchema>;
 
-  const [newImage, setImage] = React.useState(null);
+export default function AddServicesForm({
+  onSubmitSuccess,
+}: {
+  onSubmitSuccess: () => void;
+}) {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(serviceSchema),
+  });
+  const { data } = useGetServiceCategories();
+  const { mutateAsync, isPending } = useAssignService();
 
-  const onSubmit = (formData: any) => {
-    console.log("Form is being submitted");
-    const exists = queuedServices.some(
-      (item: { name: any }) => item.name === formData.name
-    );
-    if (!exists) {
-      dispatch(setQueuedServices([...queuedServices, formData]));
-    }
-    dispatch(
-      setService({
-        category: "",
-        price: "",
-        description: "",
-        estimatedTime: "",
-        name: "",
-        imageURL: "",
-      })
-    );
+  const [newImage, setImage] = useState(null);
+
+  const onSubmit = async (formData: FormValues) => {
+    const data = [formData];
+    await mutateAsync(data);
+
     setImage(null);
     reset();
+    onSubmitSuccess();
   };
 
   return (
-    <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
-      <h3>What Services do you offer?</h3>
+    <div className="flex flex-col gap-5 w-1/2 p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+      <div className="flex justify-between">
+        <h3 className="text-[#4F5253] text-lg" id="service-modal-title">
+          What Services do you offer?
+        </h3>
+        <Button onClick={onSubmitSuccess}>
+          <IoClose className="size-8" />
+        </Button>
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 p-1"
       >
-        <FormControl fullWidth>
-          <Controller
-            name="category"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <select
-                {...field}
-                className="text-gray-400 rounded-md border border-gray-400 w-full h-14 py-1 px-2 lg:h-14"
-                name=""
-              >
-                <option value="1">Select Category</option>
-                {data?.categories?.map(
-                  ({ category, id }: { category: string; id: number }) => (
-                    <option key={id} value={id}>
-                      {category}
-                    </option>
-                  )
-                )}
-              </select>
-            )}
-            rules={{ required: true }}
-          />
-        </FormControl>
-        <TextField
-          {...register("name", { required: true })}
-          id="service"
-          label="Service Name"
-          type="text"
-          className="rounded-md"
+        <SelectField
+          placeholder="Select Category"
+          name="category"
+          error={errors.category}
+          control={control}
+          options={
+            <>
+              <option value="1">Select Category</option>
+              {data?.categories?.map(
+                ({ category, id }: { category: string; id: number }) => (
+                  <option key={id} value={id}>
+                    {category}
+                  </option>
+                )
+              )}
+            </>
+          }
         />
-        <TextField
-          {...register("description", { required: true })}
-          id="description"
-          label="Description"
+        <LabelledFormField
           type="text"
-          className="rounded-md"
+          placeholder="Service Name"
+          name="name"
+          register={register}
+          error={errors.name}
         />
 
-        <TextField
-          {...register("estimatedTime", { required: true })}
-          id="time"
-          label="Estimated Service Duration (in hrs)"
-          type="number"
-          className="rounded-md"
+        <LabelledFormField
+          type="text"
+          placeholder="Description"
+          name="description"
+          register={register}
+          error={errors.description}
         />
-        <TextField
-          {...register("price", { required: true })}
-          id="price"
-          label="Price"
-          type="number"
-          className="rounded-md"
+
+        <LabelledFormField
+          type="text"
+          placeholder="Estimated Service Duration (in hrs)"
+          name="estimatedTime"
+          register={register}
+          error={errors.estimatedTime}
         />
+
+        <LabelledFormField
+          type="text"
+          placeholder="Price"
+          name="price"
+          register={register}
+          error={errors.price}
+        />
+
         <div
           className={`w-full h-16 flex items-center overflow-hidden p-1 rounded-md border border-dashed ${
             newImage
@@ -140,15 +147,26 @@ export default function AddServicesForm({ data }: { data: any }) {
             )}
           />
         </div>
-        <p className="font-semibold text-sm text-primary">
-          ** Service image is required**
-        </p>
-        <button
-          className="py-3 px-10 bg-secondary hover:scale-105 transition-all ease-in-out text-white h-max rounded-md"
-          type="submit"
-        >
-          Add
-        </button>
+        {errors.imageURL && (
+          <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+            {errors.imageURL.message}
+          </span>
+        )}
+        <div className="flex gap-8 ml-auto">
+          <Button
+            variant="outline"
+            onClick={() => {
+              reset();
+              setImage(null);
+              onSubmitSuccess();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" variant="primary" disabled={isPending}>
+            Submit
+          </Button>
+        </div>
       </form>
     </div>
   );

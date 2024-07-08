@@ -48,7 +48,7 @@ export const useUpdateProfile = () => {
       toast.success("Profile updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["singleBusiness"] });
       queryClient.setQueryData(["singleBusiness"], data);
-      updateClientInLocalStorage(data.business)
+      updateClientInLocalStorage(data.business, data.authToken);
     },
     onError: (error) => {
       toast.error(error.message);

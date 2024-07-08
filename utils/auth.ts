@@ -20,13 +20,15 @@ export const setUser = (value: any) => {
     );
 };
 
-export const updateClientInLocalStorage = (newClient: IUser) => {
+export const updateClientInLocalStorage = (newClient: IUser, authToken: string) => {
   const user = getUser();
 
   if (user) {
     user.client = newClient;
+    user.authToken = authToken;
     const updatedAuthData = JSON.stringify(user);
     window.localStorage.setItem("authToken", updatedAuthData);
+    console.log(updatedAuthData, "updatedAuthData");
   }
 };
 
