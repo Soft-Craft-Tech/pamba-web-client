@@ -1,14 +1,26 @@
 import { Expense } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
-import { setMessage } from "@/store/toastSlice";
-import { apiCall } from "@/utils/apiRequest";
+import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
+// Fetch Expense Accounts
+export const useGetExpenseAccounts = () => {
+  return useQuery({
+    queryKey: ["expenseAccounts"],
+    queryFn: async () => {
+      const response = await privateApiCall("GET", endpoints.fetchExpenseAccounts);
+      return response;
+    },
+  });
+};
 
 // Create Expense Accounts
 export const useCreateExpenseAccounts = (step: number) => {
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (accounts: { accounts: Expense[] }) => {
@@ -16,21 +28,22 @@ export const useCreateExpenseAccounts = (step: number) => {
         throw new Error("Accounts data is undefined");
       }
 
-      const response = await apiCall("POST", endpoints.createAccount, accounts);
-      dispatch(setMessage(response.message));
+      const response = await privateApiCall(
+        "POST",
+        endpoints.createAccount,
+        accounts
+      );
       dispatch(setStep(step + 1));
       return response;
+    },
+    onSuccess: () => {
+      toast.success("Expense Account created successfully!");
+      queryClient.invalidateQueries({queryKey: ["expenseAccounts"]});
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
-// Fetch Expense Accounts
-export const useGetExpenseAccounts = () => {
-  return useQuery({
-    queryKey: ["expenseAccounts"],
-    queryFn: async () => {
-      const response = await apiCall("GET", endpoints.fetchExpenseAccounts);
-      return response;
-    },
-  });
-};
+

@@ -1,4 +1,4 @@
-import { apiCall } from "@/utils/apiRequest";
+import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -7,7 +7,7 @@ export const useGetAllStaff = (slug: string) => {
   return useQuery({
     queryKey: ["getAllStaff"],
     queryFn: async () => {
-      const response = await apiCall("GET", `${endpoints.getStaff}${slug}`);
+      const response = await publicApiCall("GET", `${endpoints.getStaff}${slug}`);
       return response || {};
     },
   });
@@ -26,7 +26,7 @@ export const useCreateStaff = () => {
       phone: string;
       role: string;
     }) => {
-      const response = await apiCall("POST", `${endpoints.createStaff}`, {
+      const response = await privateApiCall("POST", `${endpoints.createStaff}`, {
         f_name,
         phone,
         role,
@@ -48,7 +48,7 @@ export const useDeleteStaff = () => {
 
   return useMutation({
     mutationFn: async (staff_id: number) => {
-      const response = await apiCall(
+      const response = await privateApiCall(
         "DELETE",
         `${endpoints.deleteStaff}${staff_id}`
       );
@@ -77,10 +77,14 @@ export const useEditStaff = () => {
       phone: string;
       role: string;
     }) => {
-      const response = await apiCall("PUT", `${endpoints.editStaff}${id}`, {
-        phone,
-        role,
-      });
+      const response = await privateApiCall(
+        "PUT",
+        `${endpoints.editStaff}${id}`,
+        {
+          phone,
+          role,
+        }
+      );
       return response;
     },
     onSuccess: () => {

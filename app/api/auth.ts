@@ -1,37 +1,45 @@
 import { DeleteFormData, DynamicObject } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { apiCall } from "@/utils/apiRequest";
+import { publicApiCall } from "@/utils/apiRequest";
 import { setUser, updateClientInLocalStorage } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 export const useSignUpMutation = () => {
-  const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async (formData: DynamicObject) => {
-      const response = await apiCall("POST", endpoints.signup, formData, {});
-      dispatch(setMessage(response.message));
+      const response = await publicApiCall(
+        "POST",
+        endpoints.signup,
+        formData,
+        {}
+      );
       return response;
+    },
+    onSuccess: () => {
+      toast.success("Sign Up successful!");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useRequestPasswordReset = () => {
-  const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async (email: string | undefined) => {
-      const response = await apiCall(
+      const response = await publicApiCall(
         "POST",
         `${endpoints.requestPasswordReset}`,
         { email }
       );
-      dispatch(setShowToast(true));
-      dispatch(setMessage(response.message));
       return response;
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
@@ -41,7 +49,11 @@ export const useUpdateProfile = () => {
 
   return useMutation({
     mutationFn: async (formData: DynamicObject) => {
-      const response = await apiCall("PUT", endpoints.updateProfile, formData);
+      const response = await publicApiCall(
+        "PUT",
+        endpoints.updateProfile,
+        formData
+      );
       return response;
     },
     onSuccess: (data) => {
@@ -57,54 +69,70 @@ export const useUpdateProfile = () => {
 };
 
 export const useChangePassword = () => {
-  const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async (formData: DynamicObject) => {
-      const response = await apiCall("PUT", endpoints.changePassword, formData);
-      dispatch(setMessage(response.message));
+      const response = await publicApiCall(
+        "PUT",
+        endpoints.changePassword,
+        formData
+      );
       return response;
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useDeleteAccountMutation = () => {
-  const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async (formData: DeleteFormData) => {
-      const response = await apiCall("POST", endpoints.deleteAccount, formData);
-      dispatch(setShowToast(true));
-      dispatch(setMessage(response.message));
+      const response = await publicApiCall(
+        "POST",
+        endpoints.deleteAccount,
+        formData
+      );
       return response;
+    },
+    onSuccess: () => {
+      toast.success("Account Deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useResetPasswordMutation = (token: string) => {
-  const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async (password: string | undefined) => {
-      const response = await apiCall(
+      const response = await publicApiCall(
         "PUT",
         `${endpoints.resetPassword}${token}`,
         { password }
       );
-      dispatch(setShowToast(true));
-      dispatch(setMessage(response.message));
       return response;
+    },
+    onSuccess: () => {
+      toast.success("Password Reset successful!");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
 
 export const useVerifyAccountMutation = (token: string) => {
-  const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async () => {
-      const response = await apiCall(
+      const response = await publicApiCall(
         "POST",
         `${endpoints.verifyAccount}${token}`
       );
-      dispatch(setMessage(response.message));
       return response.data;
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
@@ -113,7 +141,7 @@ export const useUpdateDescription = (step: number) => {
   const dispatch = useAppDispatch();
   return useMutation({
     mutationFn: async (description: string) => {
-      const response = await apiCall(
+      const response = await publicApiCall(
         "PUT",
         endpoints.updateDescription,
         { description },
@@ -121,6 +149,12 @@ export const useUpdateDescription = (step: number) => {
       );
       dispatch(setStep(step + 1));
       return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Description updated successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
