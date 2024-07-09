@@ -15,7 +15,7 @@ export default function Settings() {
       <SettingsNav />
       {activeTab === "edit" && <EditProfile />}
       {activeTab === "password" && <PasswordSecurity />}
-      {activeTab === "support" && <HelpSupport />}
+      {/* {activeTab === "support" && <HelpSupport />} */}
     </div>
   );
 }
