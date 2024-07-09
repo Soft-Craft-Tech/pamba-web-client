@@ -1,5 +1,5 @@
 import { DynamicObject } from "@/components/types";
-import { apiCall } from "@/utils/apiRequest";
+import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ export const useGetAllClients = () => {
   return useQuery({
     queryKey: ["getAllClients"],
     queryFn: async () => {
-      const response = await apiCall("GET", endpoints.getAllClients);
+      const response = await privateApiCall("GET", endpoints.getAllClients);
       return response;
     },
   });
@@ -19,7 +19,7 @@ export const useCreateClients = () => {
 
   return useMutation<void, Error, DynamicObject>({
     mutationFn: async ({ status, clientsId }) => {
-      const response = await apiCall(
+      const response = await privateApiCall(
         "POST",
         `${endpoints.editClients}${clientsId}`,
         { status }
@@ -30,8 +30,8 @@ export const useCreateClients = () => {
       toast.success("Client created successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
     },
-    onError: () => {
-      toast.error("Update failed! Please try again.");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
@@ -41,7 +41,7 @@ export const useDeleteClients = () => {
 
   return useMutation({
     mutationFn: async (clientsId: number) => {
-      const response = await apiCall(
+      const response = await privateApiCall(
         "DELETE",
         `${endpoints.deleteClients}${clientsId}`
       );
@@ -51,8 +51,8 @@ export const useDeleteClients = () => {
       toast.success("Client info deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
     },
-    onError: () => {
-      toast.error("Could not delete! Please try again.");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
@@ -62,7 +62,7 @@ export const useEditClients = () => {
 
   return useMutation<void, Error, DynamicObject>({
     mutationFn: async ({ status, clientsId }) => {
-      const response = await apiCall(
+      const response = await privateApiCall(
         "PUT",
         `${endpoints.editClients}${clientsId}`,
         { status }
@@ -73,8 +73,8 @@ export const useEditClients = () => {
       toast.success("Clients info updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
     },
-    onError: () => {
-      toast.error("Update failed! Please try again.");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 };
