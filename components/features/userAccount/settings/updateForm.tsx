@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import LabelledFormField from "@/ui/LabelledFormField";
+import Button from "@/ui/button";
 
 type FormValues = z.infer<typeof profileUpdateSchema>;
 
@@ -98,13 +99,13 @@ export default function ProfileUpdateForm({ client }: { client: IUser }) {
           * Enter your password to confirm you are the one updating details
           here.
         </p>
-        <button
+        <Button
           type="submit"
           disabled={isPending}
-          className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
+          variant="primary"
         >
           {isPending ? "Saving" : "Save Changes"}
-        </button>
+        </Button>
       </form>
     </div>
   );

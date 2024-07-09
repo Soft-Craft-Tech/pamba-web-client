@@ -228,19 +228,17 @@ const InventoryTable = () => {
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
-            <button
-              type="button"
-              className="px-10 py-2 border border-primary text-primary rounded-md font-bold"
-              onClick={() => table.setEditingRow(null)}
-            >
+            <Button type="button" onClick={() => table.setEditingRow(null)}>
               Cancel
-            </button>
+            </Button>
             <Button
               type="submit"
               label="Submit"
               variant="primary"
               disabled={editInventoryStatus === "pending"}
-            />
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </div>

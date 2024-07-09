@@ -9,6 +9,8 @@ import { RootState } from "@/store/store";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import Toast from "@/components/shared/toasts/authToast";
 import { usePathname } from "next/navigation";
+import AddProfileServicesForm from "@/components/forms/addProfileServices";
+import { ServiceType } from "@/components/types";
 // import { getUser } from "@/utils/auth";
 
 export default function AddServices() {
@@ -25,9 +27,8 @@ export default function AddServices() {
   }));
 
   // const { client } = getUser();
-
-  const { data } = useGetServiceCategories();
   // const { refetch } = useGetAllServices(client?.slug);
+  const { data } = useGetServiceCategories();
   const {
     mutate: assignServices,
     isPending: postingServices,
@@ -42,7 +43,9 @@ export default function AddServices() {
   const removeService = (itemIndex: number) => {
     dispatch(
       setQueuedServices(
-        queuedServices.filter((_, index) => index !== itemIndex)
+        queuedServices.filter(
+          (_: ServiceType, index: number) => index !== itemIndex
+        )
       )
     );
   };
@@ -64,10 +67,10 @@ export default function AddServices() {
       {errorPosting && <Toast message={toastMessage} type="error" />}
       {pathname !== "/user/services" && <ProfileProgress />}
       <div className="flex gap-10 w-full flex-col md:flex-row">
-        <AddServicesForm data={data} />
+        <AddProfileServicesForm data={data} />
         {queuedServices.length > 0 && (
           <div className="w-full h-full p-4 bg-white flex gap-3 flex-wrap lg:p-7">
-            {queuedServices.map((service, index) => {
+            {queuedServices.map((service: ServiceType, index: number) => {
               return (
                 <div
                   key={service.name} // Use UUID

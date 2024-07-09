@@ -1,25 +1,29 @@
 import { CloudinaryData } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
-import { setMessage } from "@/store/toastSlice";
 import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 export const useAssignService = () => {
-  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (services: any) => {
+    mutationFn: async (services:  {
+        name: string;
+        price: string;
+        category: string;
+        description: string;
+        estimatedTime: string;
+        imageURL: string;
+      }[]) => {
       const response = await publicApiCall("POST", endpoints.assignServices, {
         services,
       });
-      dispatch(setMessage(response.message));
       return response;
     },
     onSuccess: () => {
-      dispatch(setQueuedServices([]));
+      toast.success("Services added successfully!");
       queryClient.invalidateQueries({ queryKey: ["allServices"] });
     },
     onError: (error) => {
