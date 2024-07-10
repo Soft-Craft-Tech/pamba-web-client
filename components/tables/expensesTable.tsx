@@ -1,5 +1,6 @@
 "use client";
 import { useGetExpenseAccounts } from "@/app/api/accounts";
+import { useGetProfileCompletionStatus } from "@/app/api/businesses";
 import {
   useCreateExpense,
   useDeleteExpense,
@@ -24,8 +25,8 @@ import {
 import moment from "moment";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import * as z from "zod";
-import Toast from "../shared/toasts/authToast";
 
 type Expense = {
   expense_account: number;
@@ -40,7 +41,7 @@ type Expense = {
 
 type FormValues = z.infer<typeof expenseSchema>;
 
-const Table = () => {
+const Table = ({ handleModal }: { handleModal: () => void }) => {
   const {
     control,
     handleSubmit,
@@ -321,16 +322,12 @@ const Table = () => {
       <Button
         variant="primary"
         onClick={() => {
-          expenseAccountsData?.account.length > 1 ? (
-            table.setCreatingRow(true)
-          ) : (
-            <Toast
-              message={
-                "Complete your profile setup first before creating expense"
-              }
-              type="error"
-            />
-          );
+          if (expenseAccountsData?.account.length > 0) {
+            table.setCreatingRow(true);
+          } else {
+            toast.error("You need atleast one Expense Account");
+            handleModal();
+          }
         }}
       >
         Create Expense
@@ -347,9 +344,9 @@ const Table = () => {
   return <MaterialReactTable table={table} />;
 };
 
-const ExpensesTable = () => (
+const ExpensesTable = ({ handleModal }: { handleModal: () => void }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Table />
+    <Table handleModal={handleModal} />
   </LocalizationProvider>
 );
 

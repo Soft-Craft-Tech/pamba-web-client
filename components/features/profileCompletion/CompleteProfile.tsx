@@ -1,15 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
+import { useGetProfileCompletionStatus } from "@/app/api/businesses";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
+import { useEffect } from "react";
 import BusinessDescription from "./addDescription";
-import AddExpenseAccounts from "./addExpenseAccounts";
 import AddServices from "./addServices";
 import ProfileComplete from "./completed";
-import UploadProfileImg from "./profileImageUpload";
 import OpenCloseTimes from "./openingClosingTime";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { RootState } from "@/store/store";
-import { useGetProfileCompletionStatus } from "@/app/api/businesses";
-import { setStep } from "@/store/completeProfileSlice";
+import UploadProfileImg from "./profileImageUpload";
 
 const CompleteProfileComponent = () => {
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
@@ -17,23 +16,9 @@ const CompleteProfileComponent = () => {
   const dispatch = useAppDispatch();
 
   const getNextStep = () => {
-    const {
-      description,
-      profileImg,
-      services,
-      expenseAccounts,
-      openingAndClosing,
-    } = data || {};
-    if (
-      openingAndClosing &&
-      expenseAccounts &&
-      services &&
-      profileImg &&
-      description
-    ) {
+    const { description, profileImg, services, openingAndClosing } = data || {};
+    if (openingAndClosing && services && profileImg && description) {
       return 6;
-    } else if (expenseAccounts && services && profileImg && description) {
-      return 5;
     } else if (services && profileImg && description) {
       return 4;
     } else if (profileImg && description) {
@@ -81,9 +66,8 @@ const CompleteProfileComponent = () => {
       {step === 1 && <BusinessDescription />}
       {step === 2 && <UploadProfileImg />}
       {step === 3 && <AddServices />}
-      {step === 4 && <AddExpenseAccounts />}
-      {step === 5 && <OpenCloseTimes />}
-      {step === 6 && <ProfileComplete />}
+      {step === 4 && <OpenCloseTimes />}
+      {step === 5 && <ProfileComplete />}
     </div>
   );
 };
