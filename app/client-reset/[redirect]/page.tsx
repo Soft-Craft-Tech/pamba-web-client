@@ -8,6 +8,7 @@ const Redirect = ({ params }: { params: any }) => {
 
   useEffect(() => {
     router.replace(`pamba://reset-password/${params.redirect}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

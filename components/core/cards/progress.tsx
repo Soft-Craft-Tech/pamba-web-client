@@ -11,7 +11,6 @@ export default function ProfileProgress() {
     "Business Description",
     "Upload Profile Image",
     "Add Services",
-    "Create Expense Accounts",
     "Opening Hours"
   ];
   return (

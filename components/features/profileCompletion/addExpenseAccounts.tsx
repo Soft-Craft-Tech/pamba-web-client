@@ -1,44 +1,33 @@
 import { useCreateExpenseAccounts } from "@/app/api/accounts";
-import ProfileProgress from "@/components/core/cards/progress";
 import Toast from "@/components/shared/toasts/authToast";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setStep } from "@/store/completeProfileSlice";
+import { Expense } from "@/components/types";
+import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
-import { setMessage, setShowToast } from "@/store/toastSlice";
+import Button from "@/ui/button";
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
-import { Expense } from "@/components/types";
+import { IoClose } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
+export default function AddExpenseAccounts({
+  onSubmitSuccess,
+}: {
+  onSubmitSuccess?: () => void;
+}) {
+  const pathname = usePathname();
 
-export default function AddExpenseAccounts() {
-  const dispatch = useAppDispatch();
   const { register, handleSubmit, reset } = useForm();
 
-  const {
-    toast: { toastMessage },
-  } = useAppSelector((state: RootState) => state);
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { mutateAsync, isPending, isError, isSuccess } =
-    useCreateExpenseAccounts(step);
+  const { mutateAsync, isPending } = useCreateExpenseAccounts(step);
 
   const [queuedExpenses, setQueuedExpenses] = useState<Expense[]>([]);
 
   const onSubmit = async (data: any) => {
     setQueuedExpenses((prevState) => [...prevState, data]);
     reset();
-  };
-
-  const handleNext = () => {
-    dispatch(setStep(step + 1));
   };
 
   const onDeleteClick = (indexToDelete: number) => {
@@ -48,24 +37,34 @@ export default function AddExpenseAccounts() {
   };
 
   const handleSubmitData = () => {
-    try {
-      mutateAsync({ accounts: queuedExpenses });
-      dispatch(setShowToast(true));
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-      dispatch(setShowToast(true));
+    mutateAsync({ accounts: queuedExpenses });
+    reset();
+    if (onSubmitSuccess) {
+      onSubmitSuccess();
     }
   };
 
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10 sm:px-10 lg:px-20">
-      {isError && <Toast message={toastMessage} type="error" />}
-      {isSuccess && <Toast message={toastMessage} type="success" />}
-      <ProfileProgress />
+    <div className="relative w-1/2 h-auto flex flex-col gap-5 px-5 py-5 bg-white mx-auto mt-40 rounded-2xl">
+      {pathname === "/user/dashboard" && (
+        <Button
+          className="absolute right-14 top-16"
+          onClick={() => onSubmitSuccess && onSubmitSuccess()}
+        >
+          <IoClose className="size-8" />
+        </Button>
+      )}
+
       <div className="flex gap-10 w-full flex-col md:flex-row">
-        <div className="flex flex-col gap-5 w-full max-h-96 p-5 border bg-white lg:p-10 lg:min-w-96">
-          <h3>Create your Business&apos;s Expense Accounts</h3>
+        <div className="flex flex-col gap-5 w-full max-h-96 p-5 bg-white lg:p-10 lg:min-w-96">
+          <div>
+            <h3 className="text-[#4F5253] text-lg" id="expense-modal-title">
+              Create your Business&apos;s Expense Accounts
+            </h3>
+            <p className="bold text-sm text-red-600">
+              You need atleast one expense account!
+            </p>
+          </div>
           <form
             className="flex flex-col gap-3"
             onSubmit={handleSubmit(onSubmit)}
@@ -117,14 +116,14 @@ export default function AddExpenseAccounts() {
         )}
       </div>
       <div className="w-full h-10 flex justify-end">
-        <button
+        <Button
           disabled={isPending || queuedExpenses.length === 0}
           type="button"
           onClick={handleSubmitData}
-          className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          variant="primary"
         >
-          {isPending ? "Loading" : "Next"}
-        </button>
+          {isPending ? "Loading" : "Submit"}
+        </Button>
       </div>
     </div>
   );
