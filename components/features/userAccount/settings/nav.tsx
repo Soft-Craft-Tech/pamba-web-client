@@ -3,7 +3,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setActiveTab } from "@/store/settingsTabSlice";
 import { RootState } from "@/store/store";
-import React from "react";
 
 export default function SettingsNav() {
   const {
