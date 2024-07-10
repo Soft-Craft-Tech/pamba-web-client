@@ -1,5 +1,6 @@
+"use client";
 import axios from "axios";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 import { logoutUser } from "./auth";
 
 const privateAxios = axios.create({
@@ -15,9 +16,10 @@ const privateAxios = axios.create({
 privateAxios.interceptors.response.use(
   (response) => response,
   (error) => {
+    const router = useRouter();
     if (error.response.status === 401) {
-      logoutUser()
-      Router.push("/login");
+      logoutUser();
+      router.push("/login");
     }
     return Promise.reject(error);
   }
