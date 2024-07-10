@@ -3,7 +3,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setActiveTab } from "@/store/settingsTabSlice";
 import { RootState } from "@/store/store";
-import React from "react";
 
 export default function SettingsNav() {
   const {
@@ -16,7 +15,7 @@ export default function SettingsNav() {
   };
 
   return (
-    <div className="flex gap-1 text-xs w-full h-14 items-center justify-between shadow-sm lg:justify-normal lg:gap-20  lg:text-base">
+    <div className="flex gap-1 text-xs w-full h-14 items-center justify-between shadow-sm lg:justify-normal lg:gap-10 lg:text-base">
       <h2
         onClick={() => {
           changeTab("edit");
@@ -41,7 +40,7 @@ export default function SettingsNav() {
       >
         Password and Security
       </h2>
-      <h2
+      {/* <h2
         // onClick={() => {
         //   changeTab("support");
         // }}
@@ -52,7 +51,7 @@ export default function SettingsNav() {
         } hover:scale-105`}
       >
         Help and Support
-      </h2>
+      </h2> */}
     </div>
   );
 }

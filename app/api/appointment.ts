@@ -8,7 +8,10 @@ export const useAllAppointments = () => {
   return useQuery({
     queryKey: ["allAppointments"],
     queryFn: async () => {
-      const response = await publicApiCall("GET", endpoints.fetchAllAppointments);
+      const response = await publicApiCall(
+        "GET",
+        endpoints.fetchAllAppointments
+      );
       return response;
     },
   });
@@ -18,7 +21,9 @@ export const useBookAppointments = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (formData: DynamicObject | WebApppointmentBookingType) => {
+    mutationFn: async (
+      formData: DynamicObject | WebApppointmentBookingType
+    ) => {
       const response = await publicApiCall(
         "POST",
         endpoints.bookAppointments,

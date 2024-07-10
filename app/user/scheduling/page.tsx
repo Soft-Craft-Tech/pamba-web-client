@@ -1,10 +1,18 @@
+"use client";
+import { useAllAppointments } from "@/app/api/appointment";
 import Timeslots from "@/components/calendar/TimeSlots";
-// import * as React from "react";
+import Loader from "@/components/loader";
 
 const Page = () => {
+  const { data, isPending } = useAllAppointments();
+
+  if (isPending) return <Loader />;
+
   return (
     <div>
-      <Timeslots />
+      {data?.appointments.length > 0 && (
+        <Timeslots events={data.appointments} />
+      )}
     </div>
   );
 };

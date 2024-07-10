@@ -68,3 +68,9 @@ export const serviceSchema = z.object({
   price: z.string().min(1, "Price is required"),
   imageURL: z.string().min(1, "Image is required"),
 });
+
+export const changePasswordSchema = z.object({
+  oldPassword: z.string().min(1, "Old password is required"),
+  newPassword: z.string().min(1, "New password is required"),
+  confirmPassword: z.string().min(1, "Confirm password is required"),
+});

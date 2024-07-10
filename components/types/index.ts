@@ -108,6 +108,7 @@ export type AppointmentType = {
   start: string;
   time: string;
   title: string;
+  people: string[] | null;
 };
 
 export type WebApppointmentBookingType = {

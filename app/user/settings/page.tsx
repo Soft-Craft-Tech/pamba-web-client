@@ -1,5 +1,4 @@
 "use client";
-import HelpSupport from "@/components/features/userAccount/settings/help_and_support";
 import SettingsNav from "@/components/features/userAccount/settings/nav";
 import PasswordSecurity from "@/components/features/userAccount/settings/password_and_security";
 import EditProfile from "@/components/features/userAccount/settings/profileUpdate";
@@ -15,7 +14,7 @@ export default function Settings() {
       <SettingsNav />
       {activeTab === "edit" && <EditProfile />}
       {activeTab === "password" && <PasswordSecurity />}
-      {activeTab === "support" && <HelpSupport />}
+      {/* {activeTab === "support" && <HelpSupport />} */}
     </div>
   );
 }
