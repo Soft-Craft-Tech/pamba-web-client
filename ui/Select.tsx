@@ -10,6 +10,7 @@ import { clsx } from "clsx";
 import CreatableSelect from "react-select/creatable";
 import { FaChevronDown, FaTimes } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 const DropdownIndicator = (props: DropdownIndicatorProps) => {
   return (
@@ -55,10 +56,10 @@ const MultiValueRemove = (props: MultiValueRemoveProps) => {
 };
 
 const controlStyles = {
-  base: "border border-[#8C8C8C] text-sm bg-neutral-white placeholder:text-neutral-gray rounded-[8px] w-full text-neutral-dark focus:outline-neutral-purple transition-colors ease-in-out focus:border-2 focus:border-neutral-purple focus:shadow-lg",
-  focus: "border-2 border-neutral-purple",
+  base: "h-14 px-2 py-1 lg:h-12 border border-[#8C8C8C] text-sm bg-neutral-white placeholder:text-neutral-gray rounded-md w-full text-neutral-dark focus:outline-neutral-purple transition-colors ease-in-out focus:border-2 focus:border-neutral-purple focus:shadow-lg",
+  focus: "border-2 border-transparent",
 };
-const placeholderStyles = "text-neutral-gray pl-1 py-0.5";
+const placeholderStyles = "text-tryGray text-base pl-1 py-0.5";
 const selectInputStyles = "p-1";
 const valueContainerStyles = "p-1 gap-1";
 const singleValueStyles = "leading-7 ml-1";
@@ -86,6 +87,7 @@ const noOptionsMessageStyles =
 
 type ReactSelectProps = Props & {
   type?: "creatable" | "timezone";
+  error?: Merge<FieldError, FieldErrorsImpl<{ label: string; value: number }>>;
 };
 
 const ReactSelectCreatable = ({
@@ -207,17 +209,33 @@ const ReactSelect = ({ type, value, options, ...props }: ReactSelectProps) => {
   );
 };
 
-const ReactSelectComponent = ({ type, ...props }: ReactSelectProps) => {
+const ReactSelectComponent = ({ type, error, ...props }: ReactSelectProps) => {
   if (type === "creatable") {
     return (
-      <ReactSelectCreatable
-        {...props}
-        menuPlacement="bottom"
-        maxMenuHeight={250}
-      />
+      <>
+        <ReactSelectCreatable
+          {...props}
+          menuPlacement="bottom"
+          maxMenuHeight={250}
+        />
+        {error && (
+          <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+            {error.message}
+          </span>
+        )}
+      </>
     );
   }
-  return <ReactSelect {...props} menuPlacement="bottom" maxMenuHeight={250} />;
+  return (
+    <>
+      <ReactSelect {...props} menuPlacement="bottom" maxMenuHeight={250} />
+      {error && (
+        <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+          {error.message}
+        </span>
+      )}
+    </>
+  );
 };
 
 export default ReactSelectComponent;

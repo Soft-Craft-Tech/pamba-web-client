@@ -30,7 +30,11 @@ export const expenseSchema = z.object({
 
 export const revenueSchema = z.object({
   // customer: z.string().min(1,"Name is required"),
-  serviceId: z.number().min(1, "Service is required"),
+  // serviceId: z.string().min(1, "Service is required"),
+  serviceId: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Service is required"),
+  }),
   description: z.string().min(1, "Description is required"),
   paymentMethod: z.string().min(1, "Payment method is required"),
 });

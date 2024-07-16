@@ -9,12 +9,11 @@ import {
 } from "@/app/api/revenue";
 import Button from "@/ui/button";
 import FormField from "@/ui/FormField";
+import ReactSelectComponent from "@/ui/Select";
+import SelectField from "@/ui/SelectField";
 import { getUser } from "@/utils/auth";
 import { revenueSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import {
   MRT_Row,
   MaterialReactTable,
@@ -29,12 +28,12 @@ import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import { BusinessServiceType } from "../types";
-import SelectField from "@/ui/SelectField";
 
 type RevenueType = {
   id: number;
   date_created: string;
   service: string;
+  service_id: number;
   description: string;
   payment_method: string;
 };
@@ -72,7 +71,7 @@ const RevenueTable = () => {
     await editSale({
       paymentmethod: paymentMethod,
       description,
-      service_id: serviceId,
+      service_id: serviceId.value,
       sale_id,
     });
     reset();
@@ -80,8 +79,15 @@ const RevenueTable = () => {
   };
 
   const submitRevenue = async (formData: FormValues) => {
-    await mutateAsync(formData);
+    const data = {
+      serviceId: formData.serviceId.value,
+      description: formData.description,
+      paymentMethod: formData.paymentMethod,
+    };
+
+    await mutateAsync(data);
     reset();
+
     table.setCreatingRow(null);
   };
 
@@ -112,6 +118,13 @@ const RevenueTable = () => {
         header: "Service",
       },
       {
+        accessorKey: "service_id",
+        header: "Service ID",
+        disableFilters: true,
+        enableEditing: false,
+        enableGlobalFilter: false,
+      },
+      {
         accessorKey: "description",
         header: "Description",
       },
@@ -128,7 +141,7 @@ const RevenueTable = () => {
     data: isPending ? [] : data?.sales ?? [],
     initialState: {
       showGlobalFilter: true,
-      columnVisibility: { id: false },
+      columnVisibility: { id: false, service_id: false },
     },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
@@ -187,7 +200,7 @@ const RevenueTable = () => {
               )}
             />
           </FormControl> */}
-          <SelectField
+          {/* <SelectField
             placeholder="Select Service"
             name="serviceId"
             error={errors.serviceId}
@@ -201,8 +214,56 @@ const RevenueTable = () => {
               ))
             }
             defaultValue={row.original.service}
+          /> */}
+          <Controller
+            control={control}
+            name="serviceId"
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                defaultValue={{ value: row.original.service_id, label: row.original.service }}
+                onChange={onChange}
+                options={
+                  allServices &&
+                  allServices.services.map((service: BusinessServiceType) => ({
+                    value: service?.id,
+                    label: service?.service,
+                  }))
+                }
+                name="serviceId"
+                placeholder="Select Service"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.serviceId}
+              />
+            )}
           />
 
+          {/* <FormControl sx={{ minWidth: 120 }}>
+            <Controller
+              control={control}
+              name="serviceId"
+              render={({ field: { onChange, value } }) => (
+                <ReactSelectComponent
+                  options={
+                    allServices &&
+                    allServices.services.map(
+                      (service: BusinessServiceType) => ({
+                        value: service?.id,
+                        label: service?.service,
+                      })
+                    )
+                  }
+                  name="serviceId"
+                  defaultValue={row.original.service}
+                />
+              )}
+            />
+          </FormControl>
+          {errors.serviceId && (
+            <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+              {errors.serviceId.message}
+            </span>
+          )} */}
           <FormField
             type="text"
             placeholder="Description"
@@ -246,27 +307,28 @@ const RevenueTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(submitRevenue)}
         >
-          {/* <FormField
-            type="text"
-            placeholder="Customer Name"
-            name="customer"
-            register={register}
-            error={errors.customer}
-          /> */}
-          <SelectField
-            placeholder="Select Service"
-            name="serviceId"
-            error={errors.serviceId}
+          <Controller
             control={control}
-            options={
-              allServices &&
-              allServices.services.map((service: BusinessServiceType) => (
-                <option key={service?.id} value={service?.id}>
-                  {service?.service}
-                </option>
-              ))
-            }
+            name="serviceId"
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={
+                  allServices &&
+                  allServices.services.map((service: BusinessServiceType) => ({
+                    value: service?.id,
+                    label: service?.service,
+                  }))
+                }
+                name="serviceId"
+                placeholder="Select Service"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.serviceId}
+              />
+            )}
           />
+
           <FormField
             type="text"
             placeholder="Description"
