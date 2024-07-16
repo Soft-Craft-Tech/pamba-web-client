@@ -3,6 +3,31 @@ import * as z from "zod";
 
 const toDate = z.coerce.date();
 
+export const signUpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+  acceptedTerms: z.boolean().refine((val) => val === true, {
+    message: "Please accept terms and conditions",
+  }),
+});
+
+export const businessInfoSchema = z.object({
+  name: z.string().min(1, "Business name is required"),
+  category:z.object({
+    label: z.string(),
+    value: z.number().min(1, "Category is required"),
+  }),
+  phone: z.string().min(1, "Phone number is required"),
+  city: z.string().min(1, "City is required"),
+  location: z.string().min(1, "Location is required"),
+  mapUrl: z.string().min(1, "Map Url is required"),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
 export const profileUpdateSchema = z.object({
   name: z.string().min(1, "Business name is required"),
   email: z.string().email("Invalid email address"),

@@ -28,7 +28,6 @@ export const updateClientInLocalStorage = (newClient: IUser, authToken: string) 
     user.authToken = authToken;
     const updatedAuthData = JSON.stringify(user);
     window.localStorage.setItem("authToken", updatedAuthData);
-    console.log(updatedAuthData, "updatedAuthData");
   }
 };
 
