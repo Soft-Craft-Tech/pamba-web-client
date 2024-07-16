@@ -10,7 +10,6 @@ import {
 import Button from "@/ui/button";
 import FormField from "@/ui/FormField";
 import ReactSelectComponent from "@/ui/Select";
-import SelectField from "@/ui/SelectField";
 import { getUser } from "@/utils/auth";
 import { revenueSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -178,49 +177,15 @@ const RevenueTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) => editRevenue(data, row.original.id))}
         >
-          {/* <FormControl sx={{ minWidth: 120 }}>
-            <Controller
-              control={control}
-              name="serviceId"
-              render={({ field: { onChange, value } }) => (
-                <Select
-                  value={value}
-                  onChange={onChange}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Select service" }}
-                  placeholder="Select Service"
-                >
-                  {allServices &&
-                    allServices.services.map((service: BusinessServiceType) => (
-                      <MenuItem key={service?.id} value={service?.id}>
-                        {service?.service}
-                      </MenuItem>
-                    ))}
-                </Select>
-              )}
-            />
-          </FormControl> */}
-          {/* <SelectField
-            placeholder="Select Service"
-            name="serviceId"
-            error={errors.serviceId}
-            control={control}
-            options={
-              allServices &&
-              allServices.services.map((service: BusinessServiceType) => (
-                <option key={service?.id} value={service?.id}>
-                  {service?.service}
-                </option>
-              ))
-            }
-            defaultValue={row.original.service}
-          /> */}
           <Controller
             control={control}
             name="serviceId"
             render={({ field: { onChange, value } }) => (
               <ReactSelectComponent
-                defaultValue={{ value: row.original.service_id, label: row.original.service }}
+                defaultValue={{
+                  value: row.original.service_id,
+                  label: row.original.service,
+                }}
                 onChange={onChange}
                 options={
                   allServices &&
@@ -237,33 +202,6 @@ const RevenueTable = () => {
               />
             )}
           />
-
-          {/* <FormControl sx={{ minWidth: 120 }}>
-            <Controller
-              control={control}
-              name="serviceId"
-              render={({ field: { onChange, value } }) => (
-                <ReactSelectComponent
-                  options={
-                    allServices &&
-                    allServices.services.map(
-                      (service: BusinessServiceType) => ({
-                        value: service?.id,
-                        label: service?.service,
-                      })
-                    )
-                  }
-                  name="serviceId"
-                  defaultValue={row.original.service}
-                />
-              )}
-            />
-          </FormControl>
-          {errors.serviceId && (
-            <span className="bg-red-100 text-red-700 p-4 rounded-lg">
-              {errors.serviceId.message}
-            </span>
-          )} */}
           <FormField
             type="text"
             placeholder="Description"

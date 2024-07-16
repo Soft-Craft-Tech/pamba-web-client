@@ -27,7 +27,7 @@ const AllShops: React.FC = () => {
     service: string;
   }>({ location: "", service: "" });
   const handleSearch = (service: string, shop: string) => {
-    console.log(`Logs from handleSearch: ${service}, ${shop}`);
+
     const filtered = data?.services?.filter(
       ({ businessInfo }: any) =>
         businessInfo?.business_name
@@ -41,8 +41,6 @@ const AllShops: React.FC = () => {
     };
     setSearchString(searchTextResponse);
     setFilteredServices(filtered);
-    console.log(`Logs from filtered services: ${filteredServices}`);
-    console.log(`Log for search query: ${searchQuery}`);
 
     setSearch(true);
   };

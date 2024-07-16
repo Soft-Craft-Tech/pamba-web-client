@@ -28,7 +28,6 @@ export const useCreateExpense = () => {
       description: string;
       accountID: string;
     }) => {
-      console.log(expenseTitle, amount, description, accountID);
 
       const response = await privateApiCall("POST", endpoints.addExpense, {
         expenseTitle,

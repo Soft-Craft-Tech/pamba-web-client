@@ -56,9 +56,9 @@ const MultiValueRemove = (props: MultiValueRemoveProps) => {
 };
 
 const controlStyles = {
-  base: "h-14 px-2 py-1 lg:h-12 border border-[#8C8C8C] text-sm bg-neutral-white placeholder:text-neutral-gray rounded-md w-full text-neutral-dark focus:outline-neutral-purple transition-colors ease-in-out focus:border-2 focus:border-neutral-purple focus:shadow-lg",
+  base: "z-10 h-14 px-2 py-1 lg:h-12 border border-[#8C8C8C] text-sm bg-neutral-white placeholder:text-neutral-gray rounded-md w-full text-neutral-dark focus:outline-neutral-purple transition-colors ease-in-out focus:border-2 focus:border-neutral-purple focus:shadow-lg",
   focus: "border-2 border-transparent",
-};
+};1
 const placeholderStyles = "text-tryGray text-base pl-1 py-0.5";
 const selectInputStyles = "p-1";
 const valueContainerStyles = "p-1 gap-1";
@@ -74,7 +74,7 @@ const clearIndicatorStyles =
 const indicatorSeparatorStyles = "hidden";
 const dropdownIndicatorStyles =
   "p-1 hover:bg-gray-100 text-gray-500 rounded-md hover:text-black";
-const menuStyles = "p-1 mt-2 border border-gray-200 bg-white rounded-lg";
+const menuStyles = "z-20 p-1 mt-2 border border-gray-200 bg-white rounded-lg";
 const groupHeadingStyles = "ml-3 mt-2 mb-1 text-gray-500 text-sm";
 const optionStyles = {
   base: "hover:cursor-pointer px-3 py-2 rounded",
