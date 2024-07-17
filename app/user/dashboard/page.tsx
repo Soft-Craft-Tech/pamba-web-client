@@ -8,7 +8,7 @@ import AppointmentsTable from "@/components/charts/appointments";
 import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
 import Overview from "@/components/features/userAccount/dashboard/overview";
-import AddProfileExpenses from "@/components/forms/addExpenses";
+import AddProfileExpensesModal from "@/components/forms/addExpenses";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -18,7 +18,7 @@ export default function DashboardPage() {
 
   return (
     <div className="w-full flex flex-col gap-5">
-      <AddProfileExpenses />
+      <AddProfileExpensesModal/>
       {!data?.openingAndClosing && (
         <div className="flex flex-row justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
           <p>Your profile is incomplete</p>

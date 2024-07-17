@@ -9,14 +9,16 @@ import { toast } from "react-toastify";
 export const useAssignService = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (services:  {
+    mutationFn: async (
+      services: {
         name: string;
         price: string;
         category: string;
         description: string;
         estimatedTime: string;
         imageURL: string;
-      }[]) => {
+      }[]
+    ) => {
       const response = await publicApiCall("POST", endpoints.assignServices, {
         services,
       });
@@ -104,7 +106,8 @@ export const useGetProfileCompletionStatus = () => {
     queryKey: ["profileCompletionStatus"],
     queryFn: async () => {
       const response = await privateApiCall("GET", endpoints.profileCompletion);
-      return response || {};
+      console.log(response);
+      return response;
     },
   });
 };

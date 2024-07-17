@@ -1,4 +1,9 @@
-import { CustomError, DeleteFormData, DynamicObject, SignUpFormData } from "@/components/types";
+import {
+  CustomError,
+  DeleteFormData,
+  DynamicObject,
+  SignUpFormData,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { publicApiCall } from "@/utils/apiRequest";
@@ -218,8 +223,8 @@ export const useLoginUser = () => {
     },
     onError: (error) => {
       const customError = error as CustomError;
-      customError?.message
-        ? toast.error(customError?.message)
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
         : toast.error(error.message);
     },
   });
