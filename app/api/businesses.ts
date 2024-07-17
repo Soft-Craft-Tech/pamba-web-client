@@ -106,7 +106,6 @@ export const useGetProfileCompletionStatus = () => {
     queryKey: ["profileCompletionStatus"],
     queryFn: async () => {
       const response = await privateApiCall("GET", endpoints.profileCompletion);
-      console.log(response);
       return response;
     },
   });

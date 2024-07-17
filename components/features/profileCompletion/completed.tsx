@@ -1,5 +1,6 @@
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import Link from "next/link";
+
 export default function ProfileComplete() {
   return (
     <div className="w-full h-full bg-background flex items-center justify-center">

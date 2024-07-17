@@ -6,9 +6,9 @@ import PlusIcon from "@/ui/icons/plus-icon";
 import { getUser } from "@/utils/auth";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
-import AddServicesForm from "./forms/addServicesForm";
-import Loader from "./loader";
-import { DynamicObject } from "./types";
+import AddServicesForm from "../../forms/addServicesForm";
+import Loader from "../../loader";
+import { DynamicObject } from "../../types";
 
 const AddServicesBox = () => {
   const { client } = getUser();
@@ -55,7 +55,7 @@ const AddServicesBox = () => {
                     alt={service}
                   />
                 </div>
-                <div className="flex flex-col gap-y-4 font-bold">
+                <div className="flex flex-col gap-y-3 font-bold">
                   <p>{service}</p>
                   <p className="text-lg">Ksh {price}</p>
                 </div>
