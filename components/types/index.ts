@@ -230,6 +230,13 @@ export type ExpensesType = {
   id: number;
 };
 
+export type ExpenseAccountType = {
+  account_name: string;
+  business_id: number;
+  description: string;
+  id: number;
+};
+
 export type ServiceType = {
   name: string;
   price: string;

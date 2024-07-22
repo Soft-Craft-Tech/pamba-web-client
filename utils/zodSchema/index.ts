@@ -65,7 +65,11 @@ export const revenueSchema = z.object({
     value: z.number().min(1, "Service is required"),
   }),
   description: z.string().min(1, "Description is required"),
-  paymentMethod: z.string().min(1, "Payment method is required"),
+  // paymentMethod: z.string().min(1, "Payment method is required"),
+  paymentMethod: z.object({
+    label: z.string(),
+    value: z.string().min(1, "Payment method is required"),
+  }),
 });
 
 export const clientSchema = z.object({

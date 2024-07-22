@@ -183,95 +183,92 @@ const Table = ({ handleModal }: { handleModal: () => void }) => {
         </p>
       </div>
     ),
-    renderEditRowDialogContent: ({ table, row }) => {
-      console.log("row", row);
-      return (
-        <div className="p-10">
-          <p className="mb-2">Update Expense</p>
-          <form
-            className="flex flex-col gap-2"
-            onSubmit={handleSubmit((data) =>
-              editExpenseRow(row.original.id ?? 0, data)
-            )}
-          >
-            <FormField
-              type="text"
-              placeholder="Expense"
-              defaultValue={row.original.expense}
-              name="expenseTitle"
-              register={register}
-              error={errors.expenseTitle}
-            />
+    renderEditRowDialogContent: ({ table, row }) => (
+      <div className="p-10">
+        <p className="mb-2">Update Expense</p>
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={handleSubmit((data) =>
+            editExpenseRow(row.original.id ?? 0, data)
+          )}
+        >
+          <FormField
+            type="text"
+            placeholder="Expense"
+            defaultValue={row.original.expense}
+            name="expenseTitle"
+            register={register}
+            error={errors.expenseTitle}
+          />
 
-            <FormField
-              type="number"
-              placeholder="Amount"
-              defaultValue={row.original.amount.toString()}
-              name="amount"
-              register={register}
-              error={errors.amount}
-            />
+          <FormField
+            type="number"
+            placeholder="Amount"
+            defaultValue={row.original.amount.toString()}
+            name="amount"
+            register={register}
+            error={errors.amount}
+          />
 
-            <FormField
-              type="text"
-              placeholder="Description"
-              defaultValue={row.original.description}
-              name="description"
-              register={register}
-              error={errors.description}
-            />
+          <FormField
+            type="text"
+            placeholder="Description"
+            defaultValue={row.original.description}
+            name="description"
+            register={register}
+            error={errors.description}
+          />
 
-            {/* TODO: API side expense name isn't updating */}
-            <Controller
-              control={control}
-              name="accountID"
-              render={({ field: { onChange, value } }) => (
-                <ReactSelectComponent
-                  defaultValue={{
-                    value: row.original.expense_account.toString(),
-                    label: row.original.category,
-                  }}
-                  onChange={onChange}
-                  options={
-                    expenseAccountsData &&
-                    expenseAccountsData.account.map(
-                      (account: ExpenseAccountType) => ({
-                        value: account?.id,
-                        label: account?.account_name,
-                      })
-                    )
-                  }
-                  name="accountID"
-                  placeholder="Select Account"
-                  value={value}
-                  closeMenuOnSelect={true}
-                  error={errors.accountID}
-                />
-              )}
-            />
-
-            <div className="flex h-auto w-full gap-5 justify-end mt-4">
-              <button
-                type="button"
-                className="px-12 py-2 border border-gray-400 rounded-md"
-                onClick={() => {
-                  table.setEditingRow(null);
-                  // reset();
+          {/* TODO: API side expense name isn't updating */}
+          <Controller
+            control={control}
+            name="accountID"
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                defaultValue={{
+                  value: row.original.expense_account.toString(),
+                  label: row.original.category,
                 }}
-              >
-                Cancel
-              </button>
-              <Button
-                type="submit"
-                label="Save Expense"
-                variant="primary"
-                disabled={editExpenseStatus === "pending"}
+                onChange={onChange}
+                options={
+                  expenseAccountsData &&
+                  expenseAccountsData.account.map(
+                    (account: ExpenseAccountType) => ({
+                      value: account?.id,
+                      label: account?.account_name,
+                    })
+                  )
+                }
+                name="accountID"
+                placeholder="Select Account"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.accountID}
               />
-            </div>
-          </form>
-        </div>
-      );
-    },
+            )}
+          />
+
+          <div className="flex h-auto w-full gap-5 justify-end mt-4">
+            <button
+              type="button"
+              className="px-12 py-2 border border-gray-400 rounded-md"
+              onClick={() => {
+                table.setEditingRow(null);
+                // reset();
+              }}
+            >
+              Cancel
+            </button>
+            <Button
+              type="submit"
+              label="Save Expense"
+              variant="primary"
+              disabled={editExpenseStatus === "pending"}
+            />
+          </div>
+        </form>
+      </div>
+    ),
     renderCreateRowDialogContent: () => (
       <div className="p-10">
         <p className="mb-2">Create New Expense</p>

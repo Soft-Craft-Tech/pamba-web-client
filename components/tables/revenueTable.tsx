@@ -68,7 +68,7 @@ const RevenueTable = () => {
   const editRevenue = async (formData: FormValues, sale_id: number) => {
     const { serviceId, description, paymentMethod } = formData;
     await editSale({
-      paymentmethod: paymentMethod,
+      paymentmethod: paymentMethod.value,
       description,
       service_id: serviceId.value,
       sale_id,
@@ -81,7 +81,7 @@ const RevenueTable = () => {
     const data = {
       serviceId: formData.serviceId.value,
       description: formData.description,
-      paymentMethod: formData.paymentMethod,
+      paymentMethod: formData.paymentMethod.value,
     };
 
     await mutateAsync(data);
@@ -180,21 +180,20 @@ const RevenueTable = () => {
           <Controller
             control={control}
             name="serviceId"
+            defaultValue={{
+              value: row.original.service_id,
+              label: row.original.service,
+            }}
             render={({ field: { onChange, value } }) => (
               <ReactSelectComponent
-                defaultValue={{
-                  value: row.original.service_id,
-                  label: row.original.service,
-                }}
                 onChange={onChange}
                 options={
                   allServices &&
                   allServices.services.map((service: BusinessServiceType) => ({
-                    value: service?.id,
+                    value: service?.service_category,
                     label: service?.service,
                   }))
                 }
-                name="serviceId"
                 placeholder="Select Service"
                 value={value}
                 closeMenuOnSelect={true}
@@ -210,13 +209,30 @@ const RevenueTable = () => {
             defaultValue={row.original.description}
             error={errors.description}
           />
-          <FormField
-            type="text"
-            placeholder="Payment Method"
+
+          <Controller
+            control={control}
             name="paymentMethod"
-            register={register}
-            defaultValue={row.original.payment_method}
-            error={errors.paymentMethod}
+            defaultValue={{
+              value: row.original.payment_method,
+              label: row.original.payment_method,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={[
+                  { value: "Cash", label: "Cash" },
+                  { value: "POS", label: "POS" },
+                  { value: "Bank Transfer", label: "Bank Transfer" },
+                  { value: "Cheque", label: "Cheque" },
+                ]}
+                name="paymentMethod"
+                placeholder="Select Payment Method"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.paymentMethod}
+              />
+            )}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
@@ -274,12 +290,26 @@ const RevenueTable = () => {
             register={register}
             error={errors.description}
           />
-          <FormField
-            type="text"
-            placeholder="Payment Method"
+
+          <Controller
+            control={control}
             name="paymentMethod"
-            register={register}
-            error={errors.paymentMethod}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={[
+                  { value: "Cash", label: "Cash" },
+                  { value: "POS", label: "POS" },
+                  { value: "Bank Transfer", label: "Bank Transfer" },
+                  { value: "Cheque", label: "Cheque" },
+                ]}
+                name="paymentMethod"
+                placeholder="Select Payment Method"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.paymentMethod}
+              />
+            )}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
