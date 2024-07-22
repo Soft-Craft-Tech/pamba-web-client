@@ -152,9 +152,6 @@ export const useVerifyAccountMutation = (token: string) => {
         "POST",
         `${endpoints.verifyAccount}${token}`
       );
-      if (response.data.message) {
-        toast.error(response.data.message);
-      }
       return response.data;
     },
     onError: (error) => {

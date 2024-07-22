@@ -60,7 +60,9 @@ export const useRecordSale = () => {
     },
     onError: (error) => {
       const customError = error as CustomError;
-      toast.error(customError.response?.data.message);
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -97,7 +99,9 @@ export const useEditSale = () => {
     },
     onError: (error) => {
       const customError = error as CustomError;
-      toast.error(customError.response?.data.message);
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -119,7 +123,9 @@ export const useDeleteSale = () => {
     },
     onError: (error) => {
       const customError = error as CustomError;
-      toast.error(customError.response?.data.message);
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };

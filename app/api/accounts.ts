@@ -1,4 +1,4 @@
-import { Expense } from "@/components/types";
+import { CustomError, Expense } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { privateApiCall } from "@/utils/apiRequest";
@@ -38,10 +38,13 @@ export const useCreateExpenseAccounts = (step: number) => {
     },
     onSuccess: () => {
       toast.success("Expense Account created successfully!");
-      queryClient.invalidateQueries({queryKey: ["expenseAccounts"]});
+      queryClient.invalidateQueries({ queryKey: ["expenseAccounts"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };

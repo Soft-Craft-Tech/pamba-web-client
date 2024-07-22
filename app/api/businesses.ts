@@ -1,4 +1,4 @@
-import { CloudinaryData } from "@/components/types";
+import { CloudinaryData, CustomError, ServiceInfoType } from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
@@ -29,7 +29,10 @@ export const useAssignService = () => {
       queryClient.invalidateQueries({ queryKey: ["allServices"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -53,7 +56,10 @@ export const useAddOpeningClosingHours = (step: number) => {
       queryClient.invalidateQueries({ queryKey: ["allServices"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -96,7 +102,10 @@ export const useChangeImageMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["allServices"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -115,10 +124,8 @@ export const useGetAllServices = (business_id: string) => {
   return useQuery({
     queryKey: ["allServices"],
     queryFn: async () => {
-      const response = await publicApiCall(
-        "GET",
-        `${endpoints.fetchServices}/${business_id}`
-      );
+      const response: { message: string; services: ServiceInfoType[] } =
+        await publicApiCall("GET", `${endpoints.fetchServices}/${business_id}`);
       return response;
     },
   });

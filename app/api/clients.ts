@@ -1,4 +1,4 @@
-import { DynamicObject } from "@/components/types";
+import { CustomError, DynamicObject } from "@/components/types";
 import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -31,7 +31,10 @@ export const useCreateClients = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -52,7 +55,10 @@ export const useDeleteClients = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -74,7 +80,10 @@ export const useEditClients = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllClients"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
