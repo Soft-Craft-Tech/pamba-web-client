@@ -24,14 +24,13 @@ export const useCreateExpense = () => {
       accountID,
     }: {
       expenseTitle: string;
-      amount: string;
+      amount: number;
       description: string;
       accountID: string;
     }) => {
-
       const response = await privateApiCall("POST", endpoints.addExpense, {
         expenseTitle,
-        expenseAmount: Number(amount),
+        expenseAmount: amount,
         description,
         accountID: Number(accountID),
       });
@@ -40,7 +39,7 @@ export const useCreateExpense = () => {
     },
     onSuccess: () => {
       toast.success("Expense created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllExpenses", "analysis"] });
     },
     onError: (error) => {
       toast.error(error.message);
@@ -81,7 +80,7 @@ export const useEditExpense = () => {
       accountID,
     }: {
       expenseId: number;
-      expenseAmount: string;
+      expenseAmount: number;
       expenseTitle: string;
       description: string;
       accountID: string;

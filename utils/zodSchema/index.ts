@@ -48,7 +48,7 @@ export const inventorySchema = z.object({
 
 export const expenseSchema = z.object({
   expenseTitle: z.string().min(1, "Expense title is required"),
-  amount: z.string().min(1, "Expense amount is required"),
+  amount: z.number().min(1, "Expense amount is required"),
   description: z.string().min(1, "Expense description is required"),
   accountID: z.string().min(1, "Expense account is required"),
 });
@@ -70,7 +70,10 @@ export const clientSchema = z.object({
   phone: z.string().min(1, "Phone number is required"),
   appointmentDate: z.string().date(),
 
-  service: z.number().min(1, "Service is required"),
+  service: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Service is required"),
+  }),
 });
 
 export const appointmentSchema = z.object({

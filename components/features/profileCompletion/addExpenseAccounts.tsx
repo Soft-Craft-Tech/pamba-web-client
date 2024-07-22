@@ -1,5 +1,4 @@
 import { useCreateExpenseAccounts } from "@/app/api/accounts";
-import Toast from "@/components/shared/toasts/authToast";
 import { Expense } from "@/components/types";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
