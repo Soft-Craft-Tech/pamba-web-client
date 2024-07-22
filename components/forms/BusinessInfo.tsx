@@ -67,7 +67,11 @@ const BusinessInfo = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(signUpData?.message);
-      toast.warning("Please verify your email to continue");
+      toast.warning("Please verify your email to continue", {
+        autoClose: false,
+        closeButton: true,
+        closeOnClick: false,
+      });
       setTimeout(() => {
         router.push("/login");
       }, 1000);

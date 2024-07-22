@@ -1,7 +1,7 @@
-"use client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { logoutUser } from "./auth";
+
+const getCurrentUrl = () => typeof window !== 'undefined' ? window.location.origin : '';
 
 const privateAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -16,10 +16,12 @@ const privateAxios = axios.create({
 privateAxios.interceptors.response.use(
   (response) => response,
   (error) => {
-    const router = useRouter();
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       logoutUser();
-      router.push("/login");
+
+      if (typeof window !== 'undefined') {
+        window.location.replace(`${getCurrentUrl()}/login`);
+      }
     }
     return Promise.reject(error);
   }

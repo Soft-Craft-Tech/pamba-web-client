@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import * as z from "zod";
 
 const toDate = z.coerce.date();
@@ -13,7 +13,7 @@ export const signUpSchema = z.object({
 
 export const businessInfoSchema = z.object({
   name: z.string().min(1, "Business name is required"),
-  category:z.object({
+  category: z.object({
     label: z.string(),
     value: z.number().min(1, "Category is required"),
   }),
@@ -48,9 +48,13 @@ export const inventorySchema = z.object({
 
 export const expenseSchema = z.object({
   expenseTitle: z.string().min(1, "Expense title is required"),
-  amount: z.number().min(1, "Expense amount is required"),
+  amount: z.string().min(1, "Expense amount is required"),
   description: z.string().min(1, "Expense description is required"),
-  accountID: z.string().min(1, "Expense account is required"),
+  // accountID: z.string().min(1, "Expense account is required"),
+  accountID: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Account is required"),
+  }),
 });
 
 export const revenueSchema = z.object({
@@ -65,10 +69,12 @@ export const revenueSchema = z.object({
 });
 
 export const clientSchema = z.object({
-  name: z.string().nonempty("Name is required"),
+  name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
-  appointmentDate: z.string().date(),
+  // appointmentDate: z.object({
+  //   M: z.object({ $d: z.coerce.date() }),
+  // }),
 
   service: z.object({
     label: z.string(),
