@@ -57,7 +57,9 @@ export const useAddOpeningClosingHours = (step: number) => {
     },
     onSuccess: () => {
       dispatch(setQueuedServices([]));
-      queryClient.invalidateQueries({ queryKey: ["allServices"] });
+      queryClient.invalidateQueries({
+        queryKey: ["allServices", "profileCompletionStatus"],
+      });
     },
     onError: (error) => {
       const customError = error as CustomError;

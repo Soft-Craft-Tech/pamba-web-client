@@ -8,7 +8,11 @@ export default function ProfileComplete() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/user/dashboard");
+    const timer = setTimeout(() => {
+      router.push("/user/dashboard");
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, [router]);
 
   return (

@@ -3,12 +3,13 @@ import { Controller, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setQueuedServices, setService } from "@/store/completeProfileSlice";
 import { RootState } from "@/store/store";
-import LabelledFormField from "@/ui/LabelledFormField";
+import FormField from "@/ui/FormField";
 import { serviceSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CldUploadWidget } from "next-cloudinary";
-import React from "react";
+import React, { useState } from "react";
 import * as z from "zod";
+import ReactSelectComponent from "@/ui/Select";
 
 type FormValues = z.infer<typeof serviceSchema>;
 
@@ -27,14 +28,22 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
     (state: RootState) => state.completeProfile
   );
 
-  const [newImage, setImage] = React.useState(null);
+  const [newImage, setImage] = useState(null);
 
-  const onSubmit = (formData: any) => {
+  const onSubmit = (formData: FormValues) => {
     const exists = queuedServices.some(
       (item: { name: any }) => item.name === formData.name
     );
     if (!exists) {
-      dispatch(setQueuedServices([...queuedServices, formData]));
+      dispatch(
+        setQueuedServices([
+          ...queuedServices,
+          {
+            ...formData,
+            category: formData.category.value.toString(),
+          },
+        ])
+      );
     }
     dispatch(
       setService({
@@ -57,7 +66,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 p-1"
       >
-        <Controller
+        {/* <Controller
           name="category"
           control={control}
           render={({ field }) => (
@@ -76,9 +85,30 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
             </select>
           )}
           rules={{ required: true }}
+        /> */}
+        <Controller
+          control={control}
+          name="category"
+          render={({ field: { onChange, value } }) => (
+            <ReactSelectComponent
+              onChange={onChange}
+              options={
+                data &&
+                data.categories.map(
+                  ({ category, id }: { category: string; id: number }) => ({
+                    value: id,
+                    label: category,
+                  })
+                )
+              }
+              placeholder="Select Category"
+              value={value}
+              closeMenuOnSelect={true}
+              error={errors.category}
+            />
+          )}
         />
-
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Service Name"
           name="name"
@@ -86,7 +116,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
           error={errors.name}
         />
 
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Description"
           name="description"
@@ -94,7 +124,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
           error={errors.description}
         />
 
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Estimated Service Duration (in hrs)"
           name="estimatedTime"
@@ -102,7 +132,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
           error={errors.estimatedTime}
         />
 
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Price"
           name="price"
