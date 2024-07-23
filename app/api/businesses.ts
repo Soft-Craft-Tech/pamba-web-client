@@ -1,4 +1,8 @@
-import { CloudinaryData, CustomError, ServiceInfoType } from "@/components/types";
+import {
+  CloudinaryData,
+  CustomError,
+  ServiceInfoType,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
@@ -12,7 +16,7 @@ export const useAssignService = () => {
     mutationFn: async (
       services: {
         name: string;
-        price: string;
+        price: number;
         category: string;
         description: string;
         estimatedTime: string;

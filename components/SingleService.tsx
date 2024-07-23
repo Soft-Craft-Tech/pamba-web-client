@@ -123,7 +123,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
             <img
               className="h-full w-full rounded-lg object-cover"
               src={data?.service?.service_image}
-              alt=""
+              alt={data?.service?.service}
             />
           </div>
         </div>

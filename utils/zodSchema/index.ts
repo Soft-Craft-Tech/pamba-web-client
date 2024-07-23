@@ -103,7 +103,10 @@ export const staffSchema = z.object({
 });
 
 export const serviceSchema = z.object({
-  category: z.string().min(1, "Category is required"),
+  category: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Category is required"),
+  }),
   name: z.string().min(1, "Service name is required"),
   description: z.string().min(1, "Description is required"),
   estimatedTime: z.string().min(1, "Estimated time is required"),

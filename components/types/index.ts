@@ -168,6 +168,7 @@ export type ServiceInfoType = {
   price: number;
   service: string;
   service_category: number;
+  category_name: string;
   service_image: string;
 };
 
