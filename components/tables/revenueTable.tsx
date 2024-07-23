@@ -222,10 +222,11 @@ const RevenueTable = () => {
               <ReactSelectComponent
                 onChange={onChange}
                 options={[
-                  { value: "Cash", label: "Cash" },
-                  { value: "POS", label: "POS" },
-                  { value: "Bank Transfer", label: "Bank Transfer" },
-                  { value: "Cheque", label: "Cheque" },
+                  { value: "cash", label: "Cash" },
+                  { value: "mpesa", label: "M-Pesa" },
+                  { value: "mobile-money", label: "Mobile Money" },
+                  { value: "pos", label: "POS" },
+                  { value: "bank-transfer", label: "Bank Transfer" },
                 ]}
                 name="paymentMethod"
                 placeholder="Select Payment Method"
