@@ -74,10 +74,11 @@ const clearIndicatorStyles =
 const indicatorSeparatorStyles = "hidden";
 const dropdownIndicatorStyles =
   "p-1 hover:bg-gray-100 text-gray-500 rounded-md hover:text-black";
-const menuStyles = "z-20 p-1 mt-2 border border-gray-200 bg-white rounded-lg";
+const menuStyles =
+  "!z-[999999] p-1 mt-2 border border-gray-200 bg-white rounded-lg";
 const groupHeadingStyles = "ml-3 mt-2 mb-1 text-gray-500 text-sm";
 const optionStyles = {
-  base: "hover:cursor-pointer px-3 py-2 rounded",
+  base: "hover:cursor-pointer px-3 py-2 rounded !z-[999999]",
   focus: "bg-gray-100 active:bg-gray-200",
   selected:
     "after:content-['✔'] after:ml-4 after:text-sm after:text-neutral-purple",

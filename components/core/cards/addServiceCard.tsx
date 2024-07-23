@@ -190,7 +190,7 @@ const AddServiceCard = ({
                   name="estimatedTime"
                   register={register}
                   error={errors.estimatedTime}
-                  defaultValue={estimatedTime}
+                  defaultValue={estimatedTime.toString()}
                 />
 
                 <FormField

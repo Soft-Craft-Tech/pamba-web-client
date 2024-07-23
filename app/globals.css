@@ -139,3 +139,9 @@ input[type="checkbox"].form-checkbox:checked {
 .sx__week-grid__date--is-today .sx__week-grid__day-name {
   color: #db1471 !important;
 }
+
+/* MUI input label ovarlapping with react-select options */
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root,
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+  z-index: auto !important;
+}
