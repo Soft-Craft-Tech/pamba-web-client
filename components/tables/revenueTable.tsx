@@ -28,6 +28,7 @@ import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import { BusinessServiceType } from "../types";
 
+
 type RevenueType = {
   id: number;
   date_created: string;
@@ -190,7 +191,7 @@ const RevenueTable = () => {
                 options={
                   allServices &&
                   allServices.services.map((service: BusinessServiceType) => ({
-                    value: service?.service_category,
+                    value: service?.id,
                     label: service?.service,
                   }))
                 }
