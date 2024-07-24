@@ -27,7 +27,6 @@ const AllShops: React.FC = () => {
     service: string;
   }>({ location: "", service: "" });
   const handleSearch = (service: string, shop: string) => {
-
     const filtered = data?.services?.filter(
       ({ businessInfo }: any) =>
         businessInfo?.business_name

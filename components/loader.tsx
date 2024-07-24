@@ -1,12 +1,10 @@
-import React from "react";
-
-const Loader = () => {
+const Loader = ({ className = "w-16 h-16" }: { className?: string }) => {
   return (
-    <div className="w-full flex justify-center  h-full">
+    <div className={`flex justify-center w-full h-full`}>
       <div className="mt-[20%]" role="status">
         <svg
           aria-hidden="true"
-          className="w-16 h-16  text-secondary animate-spin dark:text-gray-600 fill-primary"
+          className={`${className} text-secondary animate-spin dark:text-gray-600 fill-primary`}
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
