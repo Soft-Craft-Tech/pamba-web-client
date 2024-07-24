@@ -26,7 +26,10 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
   return (
     <div className="flex flex-col w-full gap-y-10 mt-4">
       <div className="flex flex-col gap-3">
-        <h2 className="text-3xl font-semibold"> {data?.business?.name}</h2>
+        <h2 className="text-2xl font-medium">
+          {" "}
+          {data?.business?.business_name}
+        </h2>
         <div>
           {data?.business && (
             <Link
@@ -38,7 +41,7 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
             </Link>
           )}
         </div>
-        <div className="flex flex-row gap-x-3 mt-2">
+        <div className="flex flex-row gap-x-1 items-center mt-2">
           <LocationIcon />
           <p className="text-sm font-light"> {data?.business?.location}</p>
         </div>
