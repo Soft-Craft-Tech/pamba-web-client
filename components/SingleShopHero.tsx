@@ -19,7 +19,6 @@ const SingleShopHero: React.FC<{
     setService(event.target.value);
   };
 
-  // TODO: use single business query
   const { data } = useGetSingleBusiness(slug);
 
   const { data: shopServices } = useGetAllServices(slug);
@@ -48,7 +47,7 @@ const SingleShopHero: React.FC<{
         }}
       >
         <p className="text-white text-[50px] font-bold max-w-[900px] text-center">
-          {data?.business?.name}
+          {data?.business?.business_name}
         </p>
         <div className="flex bg-white w-full cu mt-4 justify-between max-w-[940px] rounded-md px-4 py-2">
           <div className="flex flex-row w-3/4">

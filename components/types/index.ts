@@ -258,3 +258,12 @@ export type SignUpFormData = {
   mapUrl: string;
   location: string;
 };
+
+export type staffType = {
+  created_at: string;
+  f_name: string;
+  id: number;
+  phone: string;
+  public_id: string;
+  role: string;
+};

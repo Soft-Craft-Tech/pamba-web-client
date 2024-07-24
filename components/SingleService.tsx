@@ -4,7 +4,7 @@ import { useBookAppointments } from "@/app/api/appointment";
 import { useGetSingleService } from "@/app/api/services";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
-import { DynamicObject } from "@/components/types";
+import { DynamicObject, staffType } from "@/components/types";
 import { daysData } from "@/data";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
@@ -27,6 +27,7 @@ import * as React from "react";
 import Toast from "./shared/toasts/authToast";
 import { useForm } from "react-hook-form";
 import Loader from "./loader";
+import ReactSelectComponent from "@/ui/Select";
 
 dayjs.extend(isBetween);
 
@@ -45,14 +46,10 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   } = useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
-  const [staff, setAge] = React.useState<any>(0);
+  const [staff, setStaff] = React.useState({ label: "", value: 0 });
   const [selectedDay, setSelectedDay] = React.useState<any>(null);
   const [selectedTime, setSelectedTime] = React.useState<any>(null);
   const [notification, setNotificationMethod] = React.useState("whatsapp");
-
-  const handleChange = (event: SelectChangeEvent<number>) => {
-    setAge(event.target.value);
-  };
 
   const handleDaySelect = (index: number, day: dayjs.Dayjs) => {
     setActiveSelect(index);
@@ -72,14 +69,12 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   };
 
   // TODO: Implement form validation
-  // TODO: Client Name
-  // TODO: Make Book appointment card clickable
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     formData.append("service", serviceId.toString());
-    formData.append("staff", staff.toString());
+    formData.append("staff", staff.value.toString());
     formData.append("business", businessId?.toString());
     formData.append("date", dayjs(selectedDay).format("DD-MM-YYYY"));
     formData.append("time", dayjs(selectedTime).format("HH:mm"));
@@ -203,27 +198,18 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       Staff for this shop not available
                     </p>
                   )}
-                  <FormControl>
-                    <InputLabel
-                      className="text-[#0F1C35] text-lg font-bold"
-                      id="demo-simple-select-label"
-                    >
-                      Select Service Provider
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={staff}
-                      label="Select Service Provider"
-                      onChange={handleChange}
-                    >
-                      {data?.staff?.map(({ f_name, id }: DynamicObject) => (
-                        <MenuItem key={id} value={id}>
-                          {f_name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+
+                  <ReactSelectComponent
+                    placeholder="Service Provider"
+                    options={data?.staff.map(({ id, f_name }: staffType) => ({
+                      value: id,
+                      label: f_name,
+                    }))}
+                    onChange={(newValue: unknown) =>
+                      setStaff(newValue as { label: string; value: number })
+                    }
+                    closeMenuOnSelect={true}
+                  />
                 </div>
                 <div className="flex flex-row gap-x-5">
                   {daysData.map(({ day, date, slots, dateObj }, index) => (
@@ -275,27 +261,27 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 <div className="flex flex-col gap-3 lg:flex-row justify-end">
                   <Button
                     label="Cancel"
-                    className=" border border-primary rounded-sm py-1 lg:py-0 text-sm lg:text-base lg:px-6 xl:px-8 hover:bg-primary hover:text-white transition-all ease-in-out"
+                    className=" border border-primary rounded-full text-primary py-1 lg:py-0 text-sm lg:text-base lg:px-6 xl:px-8 hover:bg-primary hover:text-white transition-all ease-in-out"
                     onClick={() => {
                       handleClose();
                     }}
                   />
                   <Button
                     label="Book Appointment"
-                    className=" bg-primary rounded-sm flex items-center gap-2 py-2 lg:p-4 justify-center text-white text-sm lg:text-base"
+                    className="bg-primary hover:bg-primaryHover rounded-full flex items-center gap-2 py-1 lg:p-3 justify-center text-white text-sm lg:text-base"
                     onClick={() => {
                       setBookingFrame("finish");
                     }}
                     disabled={data?.staff?.length === 0}
                     variant="primary"
                   >
-                    <p>Confirm Appointment</p>
+                    Confirm Appointment
                     <Image
                       className="border bg-white ml-3 rounded-full"
                       src="/arrow-right.svg"
                       alt="arrow-icon"
-                      width={20}
-                      height={20}
+                      width={32}
+                      height={32}
                     />
                   </Button>
                 </div>
@@ -303,9 +289,9 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
             </div>
           )}
           {bookingFrame === "finish" && (
-            <div className="flex flex-col gap-y-6">
+            <div className="flex flex-col gap-y-6 w-full">
               <h1 className="text-2xl font-semibold">Additional information</h1>
-              <p>Haircut appointment</p>
+              <p>{data.service.business_name}</p>
               <div className="flex flex-row gap-x-2">
                 <div className="flex flex-row gap-x-1 items-center">
                   <CalendarIcon />
@@ -386,6 +372,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <div className="flex flex-row gap-x-4 justify-between">
                 <Button
                   label="Cancel"
+                  className=" border border-primary rounded-full text-primary py-1 lg:py-0 text-sm lg:text-base lg:px-6 xl:px-8 hover:bg-primary hover:text-white transition-all ease-in-out"
                   onClick={() => {
                     handleClose();
                     setBookingFrame("start");
@@ -397,10 +384,11 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   label="Book Appointment"
                   variant="primary"
                   disabled={isPendingBookAppointment}
+                  className="bg-primary hover:bg-primaryHover rounded-full flex items-center gap-2 py-1 lg:p-3 justify-center text-white text-sm lg:text-base"
                 >
-                  <p>Confirm Appointment</p>
+                  <p className="text-nowrap mr-2">Confirm Appointment</p>
                   {isPendingBookAppointment ? (
-                    <Loader />
+                    <Loader className="h-6 w-6" />
                   ) : (
                     <Image
                       className="border bg-white ml-3 rounded-full"
