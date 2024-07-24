@@ -5,7 +5,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import AddExpenseAccounts from "../features/profileCompletion/addExpenseAccounts";
 
-const AddProfileExpensesModal = ({ modalState }: { modalState?: boolean }) => {
+const AddProfileExpensesModal = ({
+  modalState,
+}: {
+  modalState?: boolean;
+}) => {
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
@@ -14,17 +18,22 @@ const AddProfileExpensesModal = ({ modalState }: { modalState?: boolean }) => {
   const { data } = useGetProfileCompletionStatus();
 
   useEffect(() => {
-    if (
-      (!data?.expenseAccounts && pathname === "/user/dashboard") ||
-      (!data?.expenseAccounts && pathname === "/user/expenses")
-    ) {
-      handleOpen();
-    }
-  }, [pathname, data]);
+    if (modalState && pathname === "/user/expenses") handleOpen();
+  }, [modalState, pathname]);
 
   useEffect(() => {
-    if (modalState) handleOpen();
-  }, [modalState]);
+    if (
+      (data?.expenseAccounts !== undefined &&
+        !data?.expenseAccounts &&
+        pathname === "/user/dashboard") ||
+      (data?.expenseAccounts !== undefined &&
+        !data?.expenseAccounts &&
+        pathname === "/user/expenses")
+    ) {
+
+      handleOpen();
+    }
+  }, [data?.expenseAccounts, pathname]);
 
   return (
     <div>

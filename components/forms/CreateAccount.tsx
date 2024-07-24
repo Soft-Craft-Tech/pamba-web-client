@@ -1,29 +1,49 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import Image from "next/image";
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
-import { nextStep } from "@/store/signUpSlice";
 import {
+  setAcceptedTerms,
   setEmail,
   setPassword,
-  setAcceptedTerms,
 } from "@/store/createAccountSlice";
+import { nextStep } from "@/store/signUpSlice";
 import { RootState } from "@/store/store";
-import { DynamicObject } from "../types";
+import FormField from "@/ui/FormField";
+import { signUpSchema } from "@/utils/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import Link from "next/link";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import * as z from "zod";
+
+type FormValues = z.infer<typeof signUpSchema>;
 
 const CreateAccount = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm<DynamicObject>();
+  } = useForm<FormValues>({ resolver: zodResolver(signUpSchema) });
   const dispatch = useDispatch();
   const { email, password, acceptedTerms } = useSelector(
     (state: RootState) => state.signUp
   );
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const onSubmit = (data: any) => {
     dispatch(setEmail(data.email));
@@ -47,80 +67,80 @@ const CreateAccount = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-5 lg:gap-5">
-          <input
-            className="border w-full h-14 py-1 px-2  lg:h-12"
+          <FormField
             type="email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: /^\S+@\S+$/i,
-            })}
-            defaultValue={email}
             placeholder="Email"
+            name="email"
+            error={errors.email}
+            register={register}
           />
-          {errors.email && (
-            <p className="text-red-500 text-xs">Email is a required field</p>
-          )}
-          <div className="border w-full h-14 flex relative  lg:h-12">
-            <input
-              className="h-full w-full  py-1 px-2"
-              type={showPassword ? "text" : "password"}
-              {...register("password", {
-                required: "Password is required",
-                minLength: 6,
-              })}
-              defaultValue={password}
-              placeholder="Password"
-            />
-            <div
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-              className="absolute flex items-center  h-full w-max right-0 px-2 cursor-pointer hover:text-gray-300"
-            >
-              {showPassword ? (
-                <Image
-                  src="/eye-open.png"
-                  alt="Toggle password visibility"
-                  width={24}
-                  height={24}
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, value } }) => (
+              <FormControl
+                variant="outlined"
+                error={errors.password !== undefined}
+              >
+                <InputLabel htmlFor="outlined-password">Password</InputLabel>
+                <OutlinedInput
+                  id="outlined-password"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  value={value}
+                  onChange={onChange}
                 />
-              ) : (
-                <Image
-                  src="/eye-closed.png"
-                  alt="Toggle password visibility"
-                  width={24}
-                  height={24}
-                />
-              )}
-            </div>
-          </div>
+              </FormControl>
+            )}
+          />
           {errors.password && (
-            <p className="text-red-500 text-xs">Password is a required field</p>
+            <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full">
+              {errors.password.message}
+            </span>
           )}
-          <div className="flex gap-4 w-full h-10 items-center">
-            <div>
-              <div className="flex w-full h-10 items-center gap-x-2">
-                <input
-                  id="termsandconditions"
-                  type="checkbox"
-                  {...register("acceptedTerms", {
-                    required: "Please accept terms and conditions",
-                  })}
-                  defaultChecked={acceptedTerms}
-                />
-                <span className="text-xs flex flex-wrap gap-x-1 font-normal sm:font-medium sm:text-sm sm:gap-x-2">
-                  Accept
-                  <Link className="text-accent font-semibold hover:underline" href="/terms-and-conditions">Terms and Conditions</Link>
-                  and
-                  <Link className="text-accent font-semibold hover:underline" href="/privacy-policy">Privacy Policy</Link>
-                </span>
-              </div>
-              {errors.acceptedTerms && (
-                <p className="text-red-500 text-xs">
-                  Please accept terms and conditions
-                </p>
-              )}
+
+          <div className="flex gap-2 flex-col">
+            <div className="flex w-full h-10 items-center gap-x-2">
+              <input
+                id="termsandconditions"
+                type="checkbox"
+                {...register("acceptedTerms")}
+                defaultChecked={acceptedTerms}
+              />
+              <span className="text-xs flex flex-wrap gap-x-1 font-normal sm:font-medium sm:text-sm sm:gap-x-2">
+                Accept
+                <Link
+                  className="text-accent font-semibold hover:underline"
+                  href="/terms-and-conditions"
+                >
+                  Terms and Conditions
+                </Link>
+                and
+                <Link
+                  className="text-accent font-semibold hover:underline"
+                  href="/privacy-policy"
+                >
+                  Privacy Policy
+                </Link>
+              </span>
             </div>
+            {errors.acceptedTerms && (
+              <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full">
+                {errors.acceptedTerms.message}
+              </span>
+            )}
           </div>
         </div>
         <div className="flex h-auto w-full">
@@ -134,7 +154,10 @@ const CreateAccount = () => {
       </form>
       <div className="flex w-full h-6 gap-2 items-center justify-center">
         <p className="text-muted text-sm">Already have an account? </p>
-        <Link className="text-accent font-bold text-sm hover:underline" href="/login">
+        <Link
+          className="text-accent font-bold text-sm hover:underline"
+          href="/login"
+        >
           Login
         </Link>
       </div>

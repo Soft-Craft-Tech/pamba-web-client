@@ -1,6 +1,8 @@
-import { FormFieldProps } from "@/components/types";
+import { LabelledFormFieldProps } from "@/components/types";
+import { TextField } from "@mui/material";
+import clsx from "clsx";
 
-const FormField: React.FC<FormFieldProps> = ({
+const FormField: React.FC<LabelledFormFieldProps> = ({
   type,
   placeholder,
   name,
@@ -8,22 +10,38 @@ const FormField: React.FC<FormFieldProps> = ({
   error,
   defaultValue = "",
   disabled,
-}) => (
-  <>
-    <input
-      className={`w-full h-14 rounded-md border px-2 py-1 lg:h-12 disabled:opacity-50 disabled:bg-gray-200 focus:outline-none ring-2 focus:ring-2 ring-primary focus:ring-primary focus:border-transparent ${
-        error ? "border-red-500" : "border-inputBorder"
-      }`}
-      type={type}
-      placeholder={placeholder}
-      {...register(name, { value: defaultValue })}
-      disabled={disabled}
-    />
-    {error && (
-      <span className="bg-red-100 text-red-700 p-4 rounded-lg">
-        {error.message}
-      </span>
-    )}
-  </>
-);
+  className,
+  multiline,
+  rows,
+}) => {
+  const combinedClassNames = clsx(
+    "w-full rounded-md disabled:opacity-50 disabled:bg-gray-200 focus:outline-none ring-2 focus:ring-2 ring-primary focus:ring-primary focus:border-transparent",
+    {
+      "border-red-500": error,
+      "border-inputBorder": !error,
+    },
+    className
+  );
+
+  return (
+    <>
+      <TextField
+        error={error !== undefined}
+        className={combinedClassNames}
+        id={name}
+        label={placeholder}
+        type={type}
+        {...register(name, { value: defaultValue })}
+        disabled={disabled}
+        multiline={multiline}
+        rows={rows}
+      />
+      {error && (
+        <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full">
+          {error.message}
+        </span>
+      )}
+    </>
+  );
+};
 export default FormField;

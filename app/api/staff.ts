@@ -1,3 +1,4 @@
+import { CustomError } from "@/components/types";
 import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -26,11 +27,15 @@ export const useCreateStaff = () => {
       phone: string;
       role: string;
     }) => {
-      const response = await privateApiCall("POST", `${endpoints.createStaff}`, {
-        f_name,
-        phone,
-        role,
-      });
+      const response = await privateApiCall(
+        "POST",
+        `${endpoints.createStaff}`,
+        {
+          f_name,
+          phone,
+          role,
+        }
+      );
       return response;
     },
     onSuccess: () => {
@@ -38,7 +43,10 @@ export const useCreateStaff = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllStaff"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -59,7 +67,10 @@ export const useDeleteStaff = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllStaff"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -92,7 +103,10 @@ export const useEditStaff = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllStaff"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };

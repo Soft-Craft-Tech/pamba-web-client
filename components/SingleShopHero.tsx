@@ -57,7 +57,7 @@ const SingleShopHero: React.FC<{
                 className="cursor-pointer"
                 onClick={() => {
                   setService("");
-                  dispatch(setFilteredServices(shopServices.services));
+                  dispatch(setFilteredServices(shopServices?.services ?? []));
                 }}
               >
                 {service === "" ? <SearchIcon /> : <CancelIcon />}

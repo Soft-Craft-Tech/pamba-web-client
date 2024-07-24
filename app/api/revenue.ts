@@ -1,3 +1,4 @@
+import { CustomError } from "@/components/types";
 import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -58,7 +59,10 @@ export const useRecordSale = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllSales"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -94,7 +98,10 @@ export const useEditSale = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllSales"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -115,7 +122,10 @@ export const useDeleteSale = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllSales"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };

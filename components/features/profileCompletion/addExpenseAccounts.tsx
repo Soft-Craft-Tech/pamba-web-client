@@ -1,5 +1,4 @@
 import { useCreateExpenseAccounts } from "@/app/api/accounts";
-import Toast from "@/components/shared/toasts/authToast";
 import { Expense } from "@/components/types";
 import { useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
@@ -45,7 +44,7 @@ export default function AddExpenseAccounts({
   };
 
   return (
-    <div className="relative w-1/2 h-auto flex flex-col gap-5 px-5 py-5 bg-white mx-auto mt-40 rounded-2xl">
+    <div className="relative w-5/6 sm:w-1/2 h-auto flex flex-col gap-5 px-5 py-5 bg-white mx-auto mt-4 sm:mt-40 rounded-2xl">
       {pathname === "/user/dashboard" && (
         <Button
           className="absolute right-14 top-16"

@@ -1,14 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useGetAllServices } from "@/app/api/businesses";
+import AddServiceCard from "@/components/core/cards/addServiceCard";
 import Button from "@/ui/button";
 import PlusIcon from "@/ui/icons/plus-icon";
 import { getUser } from "@/utils/auth";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
-import AddServicesForm from "./forms/addServicesForm";
-import Loader from "./loader";
-import { DynamicObject } from "./types";
+import AddServicesForm from "../../forms/addServicesForm";
+import Loader from "../../loader";
 
 const AddServicesBox = () => {
   const { client } = getUser();
@@ -40,26 +39,27 @@ const AddServicesBox = () => {
       <div className="flex flex-col w-full h-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4 gap-8 mt-6 w-full h-auto mx-auto lg:max-w-6xl">
           {data?.services?.map(
-            (
-              { service, price, service_image }: DynamicObject,
-              index: number
-            ) => (
-              <div
-                key={index}
-                className="flex flex-col gap-4 mx-auto rounded-xl overflow-hidden shadow-md border border-stroke bg-white w-[346px] p-6"
-              >
-                <div className="h-auto w-full overflow-hidden">
-                  <img
-                    className="h-[242px] w-full object-cover rounded-lg"
-                    src={service_image}
-                    alt={service}
-                  />
-                </div>
-                <div className="flex flex-col gap-y-4 font-bold">
-                  <p>{service}</p>
-                  <p className="text-lg">Ksh {price}</p>
-                </div>
-              </div>
+            ({
+              id,
+              service,
+              description,
+              service_category,
+              category_name,
+              estimated_service_time,
+              price,
+              service_image,
+            }) => (
+              <AddServiceCard
+                key={id}
+                serviceId={id}
+                price={price}
+                service={service}
+                serviceImage={service_image}
+                description={description}
+                serviceCategory={category_name}
+                serviceCategoryId={service_category}
+                estimatedTime={estimated_service_time}
+              />
             )
           )}
         </div>

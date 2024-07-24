@@ -39,7 +39,7 @@ const OpenCloseTimes = () => {
         isPending,
         error,
         isSuccess,
-      } = useAddOpeningClosingHours(5)
+      } = useAddOpeningClosingHours(4)
 
     const onSubmit = (data: any) => {
         const timeData = {

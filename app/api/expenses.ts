@@ -1,3 +1,4 @@
+import { CustomError } from "@/components/types";
 import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -24,15 +25,13 @@ export const useCreateExpense = () => {
       accountID,
     }: {
       expenseTitle: string;
-      amount: string;
+      amount: number;
       description: string;
       accountID: string;
     }) => {
-      console.log(expenseTitle, amount, description, accountID);
-
       const response = await privateApiCall("POST", endpoints.addExpense, {
         expenseTitle,
-        expenseAmount: Number(amount),
+        expenseAmount: amount,
         description,
         accountID: Number(accountID),
       });
@@ -41,10 +40,15 @@ export const useCreateExpense = () => {
     },
     onSuccess: () => {
       toast.success("Expense created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
+      queryClient.invalidateQueries({
+        queryKey: ["getAllExpenses", "analysis"],
+      });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -65,7 +69,10 @@ export const useDeleteExpense = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -82,7 +89,7 @@ export const useEditExpense = () => {
       accountID,
     }: {
       expenseId: number;
-      expenseAmount: string;
+      expenseAmount: number;
       expenseTitle: string;
       description: string;
       accountID: string;
@@ -99,7 +106,10 @@ export const useEditExpense = () => {
       queryClient.invalidateQueries({ queryKey: ["getAllExpenses"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };

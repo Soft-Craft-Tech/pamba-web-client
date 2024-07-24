@@ -1,15 +1,15 @@
 import { useAssignService } from "@/app/api/businesses";
 import { useGetServiceCategories } from "@/app/api/services";
 import Button from "@/ui/button";
-import LabelledFormField from "@/ui/LabelledFormField";
-import SelectField from "@/ui/SelectField";
+import FormField from "@/ui/FormField";
+import ReactSelectComponent from "@/ui/Select";
 import { serviceSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CldUploadWidget } from "next-cloudinary";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import * as z from "zod";
 import { IoClose } from "react-icons/io5";
+import * as z from "zod";
 
 type FormValues = z.infer<typeof serviceSchema>;
 
@@ -33,7 +33,18 @@ export default function AddServicesForm({
   const [newImage, setImage] = useState(null);
 
   const onSubmit = async (formData: FormValues) => {
-    const data = [formData];
+    const { name, description, price, estimatedTime, category, imageURL } =
+      formData;
+    const data = [
+      {
+        name,
+        description,
+        price: Number(price),
+        estimatedTime,
+        category: category.value.toString(),
+        imageURL,
+      },
+    ];
     await mutateAsync(data);
 
     setImage(null);
@@ -57,25 +68,30 @@ export default function AddServicesForm({
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 p-1"
       >
-        <SelectField
-          placeholder="Select Category"
-          name="category"
-          error={errors.category}
+        <Controller
           control={control}
-          options={
-            <>
-              <option value="1">Select Category</option>
-              {data?.categories?.map(
-                ({ category, id }: { category: string; id: number }) => (
-                  <option key={id} value={id}>
-                    {category}
-                  </option>
+          name="category"
+          render={({ field: { onChange, value } }) => (
+            <ReactSelectComponent
+              onChange={onChange}
+              options={
+                data &&
+                data.categories.map(
+                  ({ category, id }: { category: string; id: number }) => ({
+                    value: id,
+                    label: category,
+                  })
                 )
-              )}
-            </>
-          }
+              }
+              placeholder="Select Service Category"
+              value={value}
+              closeMenuOnSelect={true}
+              error={errors.category}
+            />
+          )}
         />
-        <LabelledFormField
+
+        <FormField
           type="text"
           placeholder="Service Name"
           name="name"
@@ -83,7 +99,7 @@ export default function AddServicesForm({
           error={errors.name}
         />
 
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Description"
           name="description"
@@ -91,7 +107,7 @@ export default function AddServicesForm({
           error={errors.description}
         />
 
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Estimated Service Duration (in hrs)"
           name="estimatedTime"
@@ -99,7 +115,7 @@ export default function AddServicesForm({
           error={errors.estimatedTime}
         />
 
-        <LabelledFormField
+        <FormField
           type="text"
           placeholder="Price"
           name="price"

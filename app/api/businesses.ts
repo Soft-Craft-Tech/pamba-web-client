@@ -1,4 +1,8 @@
-import { CloudinaryData } from "@/components/types";
+import {
+  CloudinaryData,
+  CustomError,
+  ServiceInfoType,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
@@ -9,14 +13,16 @@ import { toast } from "react-toastify";
 export const useAssignService = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (services:  {
+    mutationFn: async (
+      services: {
         name: string;
-        price: string;
+        price: number;
         category: string;
         description: string;
         estimatedTime: string;
         imageURL: string;
-      }[]) => {
+      }[]
+    ) => {
       const response = await publicApiCall("POST", endpoints.assignServices, {
         services,
       });
@@ -27,7 +33,10 @@ export const useAssignService = () => {
       queryClient.invalidateQueries({ queryKey: ["allServices"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -48,10 +57,15 @@ export const useAddOpeningClosingHours = (step: number) => {
     },
     onSuccess: () => {
       dispatch(setQueuedServices([]));
-      queryClient.invalidateQueries({ queryKey: ["allServices"] });
+      queryClient.invalidateQueries({
+        queryKey: ["allServices", "profileCompletionStatus"],
+      });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -94,7 +108,10 @@ export const useChangeImageMutation = () => {
       queryClient.invalidateQueries({ queryKey: ["allServices"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -104,7 +121,7 @@ export const useGetProfileCompletionStatus = () => {
     queryKey: ["profileCompletionStatus"],
     queryFn: async () => {
       const response = await privateApiCall("GET", endpoints.profileCompletion);
-      return response || {};
+      return response;
     },
   });
 };
@@ -113,10 +130,8 @@ export const useGetAllServices = (business_id: string) => {
   return useQuery({
     queryKey: ["allServices"],
     queryFn: async () => {
-      const response = await publicApiCall(
-        "GET",
-        `${endpoints.fetchServices}/${business_id}`
-      );
+      const response: { message: string; services: ServiceInfoType[] } =
+        await publicApiCall("GET", `${endpoints.fetchServices}/${business_id}`);
       return response;
     },
   });

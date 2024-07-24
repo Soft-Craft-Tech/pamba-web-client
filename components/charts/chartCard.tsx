@@ -1,28 +1,34 @@
 import { useAllAppointments } from "@/app/api/appointment";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import ReactSelectComponent from "@/ui/Select";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppointmentType } from "../types";
 
 const AppointmentsCard = () => {
   const { data } = useAllAppointments();
 
-  const todayDate = moment().format("MMM DD, YYYY");
+  const todayDate = moment().format("YYYY-MM-DD");
 
-  const [selectedDate, setSelectedDate] = useState(todayDate);
-  const filteredAppointments =
-    (data &&
-      data.appointments
-        .filter(
-          (appointment: AppointmentType) => appointment.date === selectedDate
-        )
-        .sort((a: AppointmentType, b: AppointmentType) =>
-          a.time.localeCompare(b.time)
-        )) ||
-    [];
+  const [selectedDate, setSelectedDate] = useState({
+    label: moment(todayDate).format("MMM DD, YYYY"),
+    value: todayDate,
+  });
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
+
+  useEffect(() => {
+    setFilteredAppointments(
+      (data &&
+        data.appointments
+          .filter(
+            (appointment: AppointmentType) =>
+              appointment.date === selectedDate.value
+          )
+          .sort((a: AppointmentType, b: AppointmentType) =>
+            a.time.localeCompare(b.time)
+          )) ||
+        []
+    );
+  }, [selectedDate, data]);
 
   const AllDatesSet =
     data &&
@@ -32,7 +38,7 @@ const AppointmentsCard = () => {
           (appointment: AppointmentType) => appointment.date
         )
       )
-    ).sort((a:any, b:any) => new Date(b).getTime() - new Date(a).getTime());
+    ).sort();
 
   return (
     <div className="col-span-12 rounded-xl border border-stroke bg-white py-6 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
@@ -40,25 +46,20 @@ const AppointmentsCard = () => {
         <div className="flex justify-between items-center pb-2">
           <h2 className="text-lg font-semibold">Appointments</h2>
 
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="select-date-label">Date</InputLabel>
-            <Select
-              labelId="select-date-label"
-              id="selectedDate"
-              value={todayDate}
-              label="Date"
-              onChange={(e) => setSelectedDate(e.target.value)}
-            >
-              <MenuItem value={todayDate}>{todayDate}</MenuItem>
-              {AllDatesSet?.map((date: string, index: number) => (
-                <MenuItem key={index} value={date}>
-                  {moment(date).format("MMM DD, YYYY")}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <ReactSelectComponent
+            className="w-40"
+            options={AllDatesSet?.map((date: string) => ({
+              label: moment(date).format("MMM DD, YYYY"),
+              value: date,
+            }))}
+            value={selectedDate}
+            onChange={(newValue: unknown) => {
+              const e = newValue as { label: string; value: string };
+              setSelectedDate(e);
+            }}
+          />
         </div>
-        {filteredAppointments.length > 0 ? (
+        {filteredAppointments?.length > 0 ? (
           <div>
             <p className="text-sm font-normal text-gray-600 mb-2">Upcoming</p>
             <div className="flex flex-col gap-4 overflow-auto max-h-64">
@@ -69,10 +70,8 @@ const AppointmentsCard = () => {
                 >
                   <p className="font-normal pb-1">
                     <span className="text-primary">{appointment.title} </span>
-                    <span className="text-sm">by</span>{" "}
-                    <span className="text-grayArea">{appointment.staff}</span>
                   </p>
-                  <p className="text-xs font-normal text-gray-600">
+                  <p className="text-sm font-normal text-grayArea">
                     {moment(appointment.start).format("hh:mm A")}
                   </p>
                 </div>

@@ -1,4 +1,9 @@
-import { DeleteFormData, DynamicObject } from "@/components/types";
+import {
+  CustomError,
+  DeleteFormData,
+  DynamicObject,
+  SignUpFormData,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
 import { publicApiCall } from "@/utils/apiRequest";
@@ -10,7 +15,7 @@ import { toast } from "react-toastify";
 
 export const useSignUpMutation = () => {
   return useMutation({
-    mutationFn: async (formData: DynamicObject) => {
+    mutationFn: async (formData: SignUpFormData) => {
       const response = await publicApiCall(
         "POST",
         endpoints.signup,
@@ -19,11 +24,11 @@ export const useSignUpMutation = () => {
       );
       return response;
     },
-    onSuccess: () => {
-      toast.success("Sign Up successful!");
-    },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -39,7 +44,10 @@ export const useRequestPasswordReset = () => {
       return response;
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -63,7 +71,10 @@ export const useUpdateProfile = () => {
       updateClientInLocalStorage(data.business, data.authToken);
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -82,7 +93,10 @@ export const useChangePassword = () => {
       toast.success("Password updated successfully!");
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -101,7 +115,10 @@ export const useDeleteAccountMutation = () => {
       toast.success("Account Deleted successfully!");
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -120,7 +137,10 @@ export const useResetPasswordMutation = (token: string) => {
       toast.success("Password Reset successful!");
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -135,7 +155,10 @@ export const useVerifyAccountMutation = (token: string) => {
       return response.data;
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
@@ -157,37 +180,49 @@ export const useUpdateDescription = (step: number) => {
       toast.success("Description updated successfully");
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };
 
-// TODO: use react-query
-export const loginRequest = async (
-  email: string,
-  password: string,
-  router: any
-) => {
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/businesses/login`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-        },
-        auth: {
-          username: email,
-          password: password,
-        },
-      }
-    );
-    const data = response.data;
-    setTimeout(() => router.push(`/user/dashboard`), 500);
-    setUser(data);
-    return { response, data };
-  } catch (error) {
-    return { error };
-  }
+export const useLoginUser = () => {
+  return useMutation({
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}${endpoints.login}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          auth: {
+            username: email,
+            password,
+          },
+        }
+      );
+
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setUser(data);
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };

@@ -63,7 +63,6 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
   };
 
   const handleClick = () => {
-    console.log(service, location);
     if (onSearch) {
       onSearch(service?.value as string, location?.value as string);
     }

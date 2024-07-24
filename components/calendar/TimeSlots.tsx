@@ -31,6 +31,14 @@ const TimeSlots = ({ events }: { events: AppointmentType[] }) => {
           onContainer: "#000",
         },
       },
+      upcoming: {
+        colorName: "upcoming",
+        lightColors: {
+          main: "#027A48",
+          container: "#ECFDF3",
+          onContainer: "#000",
+        },
+      },
     },
     plugins: [createEventModalPlugin()],
   });

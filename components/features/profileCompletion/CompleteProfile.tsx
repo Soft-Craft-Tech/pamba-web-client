@@ -18,7 +18,7 @@ const CompleteProfileComponent = () => {
   const getNextStep = () => {
     const { description, profileImg, services, openingAndClosing } = data || {};
     if (openingAndClosing && services && profileImg && description) {
-      return 6;
+      return 5;
     } else if (services && profileImg && description) {
       return 4;
     } else if (profileImg && description) {

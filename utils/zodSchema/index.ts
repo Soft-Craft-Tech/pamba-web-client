@@ -1,7 +1,32 @@
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import * as z from "zod";
 
 const toDate = z.coerce.date();
+
+export const signUpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+  acceptedTerms: z.boolean().refine((val) => val === true, {
+    message: "Please accept terms and conditions",
+  }),
+});
+
+export const businessInfoSchema = z.object({
+  name: z.string().min(1, "Business name is required"),
+  category: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Category is required"),
+  }),
+  phone: z.string().min(1, "Phone number is required"),
+  city: z.string().min(1, "City is required"),
+  location: z.string().min(1, "Location is required"),
+  mapUrl: z.string().min(1, "Map Url is required"),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
 
 export const profileUpdateSchema = z.object({
   name: z.string().min(1, "Business name is required"),
@@ -25,23 +50,40 @@ export const expenseSchema = z.object({
   expenseTitle: z.string().min(1, "Expense title is required"),
   amount: z.string().min(1, "Expense amount is required"),
   description: z.string().min(1, "Expense description is required"),
-  accountID: z.string().min(1, "Expense account is required"),
+  // accountID: z.string().min(1, "Expense account is required"),
+  accountID: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Account is required"),
+  }),
 });
 
 export const revenueSchema = z.object({
   // customer: z.string().min(1,"Name is required"),
-  serviceId: z.number().min(1, "Service is required"),
+  // serviceId: z.string().min(1, "Service is required"),
+  serviceId: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Service is required"),
+  }),
   description: z.string().min(1, "Description is required"),
-  paymentMethod: z.string().min(1, "Payment method is required"),
+  // paymentMethod: z.string().min(1, "Payment method is required"),
+  paymentMethod: z.object({
+    label: z.string(),
+    value: z.string().min(1, "Payment method is required"),
+  }),
 });
 
 export const clientSchema = z.object({
-  name: z.string().nonempty("Name is required"),
+  name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
-  appointmentDate: z.string().date(),
+  // appointmentDate: z.object({
+  //   M: z.object({ $d: z.coerce.date() }),
+  // }),
 
-  service: z.number().min(1, "Service is required"),
+  service: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Service is required"),
+  }),
 });
 
 export const appointmentSchema = z.object({
@@ -61,7 +103,10 @@ export const staffSchema = z.object({
 });
 
 export const serviceSchema = z.object({
-  category: z.string().min(1, "Category is required"),
+  category: z.object({
+    label: z.string(),
+    value: z.number().min(1, "Category is required"),
+  }),
   name: z.string().min(1, "Service name is required"),
   description: z.string().min(1, "Description is required"),
   estimatedTime: z.string().min(1, "Estimated time is required"),

@@ -9,12 +9,10 @@ import {
 } from "@/app/api/revenue";
 import Button from "@/ui/button";
 import FormField from "@/ui/FormField";
+import ReactSelectComponent from "@/ui/Select";
 import { getUser } from "@/utils/auth";
 import { revenueSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import {
   MRT_Row,
   MaterialReactTable,
@@ -29,12 +27,13 @@ import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import { BusinessServiceType } from "../types";
-import SelectField from "@/ui/SelectField";
+
 
 type RevenueType = {
   id: number;
   date_created: string;
   service: string;
+  service_id: number;
   description: string;
   payment_method: string;
 };
@@ -70,9 +69,9 @@ const RevenueTable = () => {
   const editRevenue = async (formData: FormValues, sale_id: number) => {
     const { serviceId, description, paymentMethod } = formData;
     await editSale({
-      paymentmethod: paymentMethod,
+      paymentmethod: paymentMethod.value,
       description,
-      service_id: serviceId,
+      service_id: serviceId.value,
       sale_id,
     });
     reset();
@@ -80,8 +79,15 @@ const RevenueTable = () => {
   };
 
   const submitRevenue = async (formData: FormValues) => {
-    await mutateAsync(formData);
+    const data = {
+      serviceId: formData.serviceId.value,
+      description: formData.description,
+      paymentMethod: formData.paymentMethod.value,
+    };
+
+    await mutateAsync(data);
     reset();
+
     table.setCreatingRow(null);
   };
 
@@ -112,6 +118,13 @@ const RevenueTable = () => {
         header: "Service",
       },
       {
+        accessorKey: "service_id",
+        header: "Service ID",
+        disableFilters: true,
+        enableEditing: false,
+        enableGlobalFilter: false,
+      },
+      {
         accessorKey: "description",
         header: "Description",
       },
@@ -128,7 +141,7 @@ const RevenueTable = () => {
     data: isPending ? [] : data?.sales ?? [],
     initialState: {
       showGlobalFilter: true,
-      columnVisibility: { id: false },
+      columnVisibility: { id: false, service_id: false },
     },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
@@ -165,44 +178,30 @@ const RevenueTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) => editRevenue(data, row.original.id))}
         >
-          {/* <FormControl sx={{ minWidth: 120 }}>
-            <Controller
-              control={control}
-              name="serviceId"
-              render={({ field: { onChange, value } }) => (
-                <Select
-                  value={value}
-                  onChange={onChange}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Select service" }}
-                  placeholder="Select Service"
-                >
-                  {allServices &&
-                    allServices.services.map((service: BusinessServiceType) => (
-                      <MenuItem key={service?.id} value={service?.id}>
-                        {service?.service}
-                      </MenuItem>
-                    ))}
-                </Select>
-              )}
-            />
-          </FormControl> */}
-          <SelectField
-            placeholder="Select Service"
-            name="serviceId"
-            error={errors.serviceId}
+          <Controller
             control={control}
-            options={
-              allServices &&
-              allServices.services.map((service: BusinessServiceType) => (
-                <option key={service?.id} value={service?.id}>
-                  {service?.service}
-                </option>
-              ))
-            }
-            defaultValue={row.original.service}
+            name="serviceId"
+            defaultValue={{
+              value: row.original.service_id,
+              label: row.original.service,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={
+                  allServices &&
+                  allServices.services.map((service: BusinessServiceType) => ({
+                    value: service?.id,
+                    label: service?.service,
+                  }))
+                }
+                placeholder="Select Service"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.serviceId}
+              />
+            )}
           />
-
           <FormField
             type="text"
             placeholder="Description"
@@ -211,13 +210,31 @@ const RevenueTable = () => {
             defaultValue={row.original.description}
             error={errors.description}
           />
-          <FormField
-            type="text"
-            placeholder="Payment Method"
+
+          <Controller
+            control={control}
             name="paymentMethod"
-            register={register}
-            defaultValue={row.original.payment_method}
-            error={errors.paymentMethod}
+            defaultValue={{
+              value: row.original.payment_method,
+              label: row.original.payment_method,
+            }}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={[
+                  { value: "cash", label: "Cash" },
+                  { value: "mpesa", label: "M-Pesa" },
+                  { value: "mobile-money", label: "Mobile Money" },
+                  { value: "pos", label: "POS" },
+                  { value: "bank-transfer", label: "Bank Transfer" },
+                ]}
+                name="paymentMethod"
+                placeholder="Select Payment Method"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.paymentMethod}
+              />
+            )}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
@@ -246,27 +263,28 @@ const RevenueTable = () => {
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(submitRevenue)}
         >
-          {/* <FormField
-            type="text"
-            placeholder="Customer Name"
-            name="customer"
-            register={register}
-            error={errors.customer}
-          /> */}
-          <SelectField
-            placeholder="Select Service"
-            name="serviceId"
-            error={errors.serviceId}
+          <Controller
             control={control}
-            options={
-              allServices &&
-              allServices.services.map((service: BusinessServiceType) => (
-                <option key={service?.id} value={service?.id}>
-                  {service?.service}
-                </option>
-              ))
-            }
+            name="serviceId"
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={
+                  allServices &&
+                  allServices.services.map((service: BusinessServiceType) => ({
+                    value: service?.id,
+                    label: service?.service,
+                  }))
+                }
+                name="serviceId"
+                placeholder="Select Service"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.serviceId}
+              />
+            )}
           />
+
           <FormField
             type="text"
             placeholder="Description"
@@ -274,12 +292,26 @@ const RevenueTable = () => {
             register={register}
             error={errors.description}
           />
-          <FormField
-            type="text"
-            placeholder="Payment Method"
+
+          <Controller
+            control={control}
             name="paymentMethod"
-            register={register}
-            error={errors.paymentMethod}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={[
+                  { value: "Cash", label: "Cash" },
+                  { value: "POS", label: "POS" },
+                  { value: "Bank Transfer", label: "Bank Transfer" },
+                  { value: "Cheque", label: "Cheque" },
+                ]}
+                name="paymentMethod"
+                placeholder="Select Payment Method"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.paymentMethod}
+              />
+            )}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">

@@ -1,4 +1,4 @@
-import { DynamicObject, WebApppointmentBookingType } from "@/components/types";
+import { CustomError, DynamicObject, WebApppointmentBookingType } from "@/components/types";
 import { publicApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -38,7 +38,10 @@ export const useBookAppointments = () => {
       });
     },
     onError: (error) => {
-      toast.error(error.message);
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
     },
   });
 };

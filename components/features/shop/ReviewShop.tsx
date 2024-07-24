@@ -18,7 +18,6 @@ const RatingItem = ({ rating, width }: { rating: number; width: number }) => {
 
 const ReviewShop: React.FC<{ slug: string }> = ({ slug }) => {
   const { data: reviewsData } = useAllReviews(slug);
-  console.log(reviewsData?.reviews);
   const ratings = [
     { rating: 5, width: 192 },
     { rating: 4, width: 126 },

@@ -2,6 +2,14 @@ import dayjs from "dayjs";
 import { ReactNode } from "react";
 import { FieldError, UseFormRegister } from "react-hook-form";
 
+export interface CustomError extends Error {
+  response?: {
+    data: {
+      message: string;
+    };
+  };
+}
+
 export type IUser = {
   active: boolean;
   business_name: string;
@@ -32,6 +40,7 @@ export type LabelledFormFieldProps = {
   disabled?: boolean;
   multiline?: boolean;
   rows?: number;
+  className?: string;
 };
 
 export type FormFieldProps = {
@@ -42,6 +51,7 @@ export type FormFieldProps = {
   error: FieldError | undefined;
   defaultValue?: unknown;
   disabled?: boolean;
+  className?: string;
 };
 
 export type SelectFieldProps = {
@@ -56,8 +66,6 @@ export type SelectFieldProps = {
 export type FormDataType = {
   product: string;
 };
-
-export type SignUpFormData = {};
 
 export type DeleteFormData = {
   email: string;
@@ -160,6 +168,7 @@ export type ServiceInfoType = {
   price: number;
   service: string;
   service_category: number;
+  category_name: string;
   service_image: string;
 };
 
@@ -222,6 +231,13 @@ export type ExpensesType = {
   id: number;
 };
 
+export type ExpenseAccountType = {
+  account_name: string;
+  business_id: number;
+  description: string;
+  id: number;
+};
+
 export type ServiceType = {
   name: string;
   price: string;
@@ -229,4 +245,16 @@ export type ServiceType = {
   description: string;
   estimatedTime: string;
   imageURL: string;
+};
+
+export type SignUpFormData = {
+  email: string;
+  password: string;
+  acceptedTerms: boolean;
+  name: string;
+  category: number[];
+  phone: string;
+  city: string;
+  mapUrl: string;
+  location: string;
 };

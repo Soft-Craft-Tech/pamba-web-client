@@ -30,7 +30,7 @@ export default function SideNav() {
             height={20}
           />
         </Link>
-        <div className="w-auto flex h-auto items-center lg:hidden">
+        <div className="w-auto flex h-auto items-center lg:hidden ">
           {!showMenu ? (
             <RxHamburgerMenu
               size={30}
@@ -41,6 +41,7 @@ export default function SideNav() {
             />
           ) : (
             <AiOutlineClose
+              className="mr-4"
               size={30}
               onClick={() => {
                 setShowMenu(false);

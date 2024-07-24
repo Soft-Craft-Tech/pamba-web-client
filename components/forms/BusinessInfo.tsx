@@ -1,40 +1,53 @@
-import React, { useEffect } from "react";
-import Image from "next/image";
+import { useSignUpMutation } from "@/app/api/auth";
+import { useGetCategories } from "@/app/api/businesses";
 import { useAppDispatch } from "@/hooks";
 import { prevStep } from "@/store/signUpSlice";
 import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
-import { useSignUpMutation } from "@/app/api/auth";
+import Button from "@/ui/button";
+import FormField from "@/ui/FormField";
+import ReactSelectComponent from "@/ui/Select";
+import { businessInfoSchema } from "@/utils/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
-import Toast from "../shared/toasts/authToast";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { useGetCategories } from "@/app/api/businesses";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import * as z from "zod";
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
+type FormValues = z.infer<typeof businessInfoSchema>;
 
 const BusinessInfo = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { control, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(businessInfoSchema),
+  });
   const {
     signUp: { email, password, acceptedTerms },
-    toast: { toastMessage },
   } = useSelector((state: RootState) => state);
-  const { mutateAsync, isPending, isSuccess, isError } = useSignUpMutation();
+
+  const {
+    mutateAsync,
+    isPending,
+    isSuccess,
+    data: signUpData,
+  } = useSignUpMutation();
 
   const { data } = useGetCategories();
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: FormValues) => {
     const { name, category, phone, city, mapUrl, location } = formData;
 
-    const categories = Array.isArray(category) ? category : [category];
+    const categories = Array.isArray(category.value)
+      ? category.value
+      : [category.value];
 
     const businessData = {
       email,
@@ -48,27 +61,25 @@ const BusinessInfo = () => {
       location,
     };
 
-    try {
-      await mutateAsync(businessData);
-      dispatch(setShowToast(true));
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-      dispatch(setShowToast(true));
-    }
+    await mutateAsync(businessData);
   };
 
   useEffect(() => {
     if (isSuccess) {
+      toast.success(signUpData?.message);
+      toast.warning("Please verify your email to continue", {
+        autoClose: false,
+        closeButton: true,
+        closeOnClick: false,
+      });
       setTimeout(() => {
         router.push("/login");
       }, 1000);
     }
-  }, [dispatch, isSuccess, router]);
+  }, [isSuccess, router, signUpData?.message]);
+
   return (
     <div className="w-full flex flex-col items-center gap-8 lg:gap-5 ">
-      {isError && <Toast message={toastMessage} type="error" />}
-      {isSuccess && <Toast message={toastMessage} type="success" />}
       <h3 className="font-medium w-full text-lg text-center">
         Business Information
       </h3>
@@ -84,111 +95,66 @@ const BusinessInfo = () => {
         className="p-3 w-full flex flex-col gap-4"
       >
         <div className="flex flex-col gap-5 lg:gap-4">
-          <>
-            <Controller
-              name="name"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  className="border w-full h-14 py-1 px-2 lg:h-12"
-                  type="text"
-                  placeholder="Business Name"
-                />
-              )}
-              rules={{ required: true }}
-            />
-
-            <Controller
-              name="category"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
-                  name="Business Category"
-                >
-                  <option value="">Select Category</option>
-                  {data?.categories?.map(
-                    ({
-                      category_name,
-                      id,
-                    }: {
-                      category_name: string;
-                      id: number;
-                    }) => (
-                      <option key={id} value={id}>
-                        {category_name}
-                      </option>
-                    )
-                  )}
-                </select>
-              )}
-              rules={{ required: true }}
-            />
-
-            <Controller
-              name="phone"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  className="border w-full h-14 py-1 px-2  lg:h-12"
-                  type="text"
-                  placeholder="Phone Number"
-                />
-              )}
-              rules={{ required: true }}
-            />
-
-            <Controller
-              name="city"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  className="border w-full h-14 py-1 px-2  lg:h-12"
-                  type="text"
-                  placeholder="City"
-                />
-              )}
-              rules={{ required: true }}
-            />
-
-            <Controller
-              name="mapUrl"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <input
-                  {...field}
-                  className="border w-full h-14 py-1 px-2  lg:h-12"
-                  type="url"
-                  placeholder="Map URL"
-                />
-              )}
-              rules={{ required: true }}
-            />
-
-            <Controller
-              name="location"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <textarea
-                  {...field}
-                  className="border w-full h-14 py-1 px-2 resize-none rows-2  lg:h-12"
-                  placeholder="Describe location"
-                />
-              )}
-              rules={{ required: true }}
-            />
-          </>
+          <FormField
+            type="text"
+            placeholder="Business Name"
+            name="name"
+            error={errors.name}
+            register={register}
+          />
+          <Controller
+            name="category"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={data?.categories?.map(
+                  ({
+                    category_name,
+                    id,
+                  }: {
+                    category_name: string;
+                    id: number;
+                  }) => ({ value: id, label: category_name })
+                )}
+                placeholder="Business Category"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.category}
+              />
+            )}
+          />
+          <FormField
+            type="phone"
+            placeholder="Phone Number"
+            name="phone"
+            error={errors.phone}
+            register={register}
+          />
+          <FormField
+            type="text"
+            placeholder="City"
+            name="city"
+            error={errors.city}
+            register={register}
+          />
+          <FormField
+            type="url"
+            placeholder="Map URL"
+            name="mapUrl"
+            error={errors.mapUrl}
+            register={register}
+          />
+          <FormField
+            type="textarea"
+            placeholder="Location"
+            name="location"
+            error={errors.location}
+            register={register}
+            multiline={true}
+          />
         </div>
+
         <div className="flex h-auto w-full items-center">
           <div
             onClick={() => {
@@ -196,16 +162,17 @@ const BusinessInfo = () => {
             }}
             className="h-full w-full flex items-center py-2 text-primary gap-1 cursor-pointer delay-75 duration-75 hover:text-primaryHover"
           >
-            <Image src="/arrow-left.svg" alt="" width={20} height={20} />
+            <Image
+              src="/arrow-left.svg"
+              alt="left arrow"
+              width={20}
+              height={20}
+            />
             <h2 className="text-sm font-semibold">Back</h2>
           </div>
-          <button
-            type="submit"
-            className="bg-primary flex items-center justify-center w-full h-10 py-4 rounded-md text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed duration-75 delay-75 hover:bg-primaryHover"
-            disabled={isPending}
-          >
+          <Button variant="primary" type="submit" disabled={isPending}>
             {isPending ? "Submitting" : "Submit"}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

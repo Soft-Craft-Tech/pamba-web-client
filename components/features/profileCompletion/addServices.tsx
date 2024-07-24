@@ -1,17 +1,15 @@
 "use client";
-import { useSelector, useDispatch } from "react-redux";
-import { AiOutlineClose } from "react-icons/ai";
-import AddServicesForm from "../../forms/addServicesForm";
-import ProfileProgress from "@/components/core/cards/progress";
 import { useAssignService } from "@/app/api/businesses";
 import { useGetServiceCategories } from "@/app/api/services";
-import { RootState } from "@/store/store";
-import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
-import Toast from "@/components/shared/toasts/authToast";
-import { usePathname } from "next/navigation";
+import ProfileProgress from "@/components/core/cards/progress";
 import AddProfileServicesForm from "@/components/forms/addProfileServices";
+import Toast from "@/components/shared/toasts/authToast";
 import { ServiceType } from "@/components/types";
-// import { getUser } from "@/utils/auth";
+import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
+import { usePathname } from "next/navigation";
+import { AiOutlineClose } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AddServices() {
   const dispatch = useDispatch();
@@ -26,8 +24,6 @@ export default function AddServices() {
     toastMessage: state.toast.toastMessage,
   }));
 
-  // const { client } = getUser();
-  // const { refetch } = useGetAllServices(client?.slug);
   const { data } = useGetServiceCategories();
   const {
     mutate: assignServices,
@@ -52,7 +48,11 @@ export default function AddServices() {
 
   const handleSubmitServices = () => {
     if (queuedServices.length !== 0) {
-      assignServices(queuedServices);
+      const formattedServices = queuedServices.map((service) => ({
+        ...service,
+        price: Number(service.price),
+      }));
+      assignServices(formattedServices);
     }
     handleNext();
   };

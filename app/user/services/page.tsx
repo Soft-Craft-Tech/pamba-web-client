@@ -1,4 +1,4 @@
-import AddServicesBox from "@/components/AddServices";
+import AddServicesBox from "@/components/features/services/AddServices";
 
 const Page = () => {
   return <AddServicesBox />;
