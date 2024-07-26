@@ -11,39 +11,30 @@ import { RootState } from "@/store/store";
 import Button from "@/ui/button";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import TimeIcon from "@/ui/icons/time-icon";
-import { FormControl } from "@mui/material";
+import ReactSelectComponent from "@/ui/Select";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import moment from "moment";
 import Image from "next/image";
 import * as React from "react";
-import Toast from "./shared/toasts/authToast";
-import { useForm } from "react-hook-form";
 import Loader from "./loader";
-import ReactSelectComponent from "@/ui/Select";
 
 dayjs.extend(isBetween);
 
 const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   const {
     filteredServices: { filteredServices },
-    toast: { toastMessage },
   } = useAppSelector((state: RootState) => state);
   const { data } = useGetSingleService(serviceId);
 
-  const {
-    mutateAsync,
-    isSuccess,
-    isError,
-    isPending: isPendingBookAppointment,
-  } = useBookAppointments();
+  const { mutateAsync, isPending: isPendingBookAppointment } =
+    useBookAppointments();
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
   const [staff, setStaff] = React.useState({ label: "", value: 0 });
@@ -108,10 +99,12 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     setOpen(false);
   };
 
+  const formatTime = (time: string) => {
+    return time ? moment(time, "HH:mm").format("hh:mm A") : "";
+  };
+
   return (
     <div>
-      {isError && <Toast message={toastMessage} type="error" />}
-      {isSuccess && <Toast message={toastMessage} type="success" />}
       <div className="flex flex-col w-full h-auto gap-5">
         <div className="parent h-auto">
           <div className="w-full h-72">
@@ -122,27 +115,50 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
             />
           </div>
         </div>
-        <div className="flex flex-col mb-10 gap-y-2 md:gap-y-1">
-          <h1 className="text-2xl font-medium">{data?.service?.service}</h1>
-          <p className="font-light text-[#323232]">
-            {data?.service?.estimated_time_string}
-          </p>
-          <p className="text-xl text-[#323232]">Ksh {data?.service?.price}</p>
-          <button
-            onClick={() => {
-              handleClickOpen();
-            }}
-            className="bg-primary flex items-center w-max py-2 px-4 mt-2 text-white font-medium rounded-full gap-2 hover:bg-primaryHover hover:scale-[1.02] duration-100 delay-75 sm:px-8 lg:px-5"
-          >
-            Book Appointment
-            <Image
-              className="border bg-white rounded-full"
-              src="/arrow-right.svg"
-              alt="arrow-icon"
-              width={20}
-              height={20}
-            />
-          </button>
+        <div className="flex justify-between flex-col sm:flex-row">
+          <div className="flex flex-col mb-4 sm:mb-10 gap-y-4 md:gap-y-5">
+            <h1 className="text-2xl sm:text-4xl font-semibold text-[#0F1C35]">
+              {data?.service?.service}
+            </h1>
+            <p className="font-normal text-[#323232] text-xl">
+              {data?.service?.estimated_time_string}
+            </p>
+
+            <p className="text-3xl text-[#323232]">
+              Ksh {data?.service?.price}
+            </p>
+            <p className="font-normal text-lg">{data?.service?.description}</p>
+
+            <button
+              onClick={() => {
+                handleClickOpen();
+              }}
+              className="bg-primary flex items-center w-max py-2 px-4 mt-2 text-white font-medium rounded-full gap-2 hover:bg-primaryHover hover:scale-[1.02] duration-100 delay-75 sm:px-8 lg:px-5"
+            >
+              Book Appointment
+              <Image
+                className="border bg-white rounded-full"
+                src="/arrow-right.svg"
+                alt="arrow-icon"
+                width={20}
+                height={20}
+              />
+            </button>
+          </div>
+
+          <div className="space-y-2 mb-4 sm:mt-12 sm:mr-20">
+            <h3 className="text-lg font-semibold">Working Hours</h3>
+            <p className="text-[#323232]">
+              <span className="text-medium text-primary">Weekdays: </span>
+              {formatTime(data?.service?.weekdayOpening)} -{" "}
+              {formatTime(data?.service?.weekdayClosing)}
+            </p>
+            <p>
+              <span className="text-medium text-primary">Weekends: </span>
+              {formatTime(data?.service?.weekendOpening)} -{" "}
+              {formatTime(data?.service?.weekendClosing)}
+            </p>
+          </div>
         </div>
       </div>
       {filteredServices.length > 0 && (
