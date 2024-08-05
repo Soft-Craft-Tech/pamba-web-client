@@ -146,6 +146,6 @@ input[type="checkbox"].form-checkbox:checked {
   z-index: auto !important;
 } */
 
-.MuiFormLabel-root .MuiInputLabel-root {
+/* .MuiFormLabel-root .MuiInputLabel-root {
   z-index: auto !important;
-}
+} */

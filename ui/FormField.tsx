@@ -1,5 +1,6 @@
 import { LabelledFormFieldProps } from "@/components/types";
 import { TextField } from "@mui/material";
+import zIndex from "@mui/material/styles/zIndex";
 import clsx from "clsx";
 
 const FormField: React.FC<LabelledFormFieldProps> = ({
@@ -15,7 +16,7 @@ const FormField: React.FC<LabelledFormFieldProps> = ({
   rows,
 }) => {
   const combinedClassNames = clsx(
-    "!z-auto w-full rounded-md disabled:opacity-50 disabled:bg-gray-200 focus:outline-none ring-2 focus:ring-2 ring-primary focus:ring-primary focus:border-transparent",
+    "w-full rounded-md disabled:opacity-50 disabled:bg-gray-200 focus:outline-none ring-2 focus:ring-2 ring-primary focus:ring-primary focus:border-transparent",
     {
       "border-red-500": error,
       "border-inputBorder": !error,
@@ -35,6 +36,10 @@ const FormField: React.FC<LabelledFormFieldProps> = ({
         disabled={disabled}
         multiline={multiline}
         rows={rows}
+        sx={{
+          "& .MuiFormLabel-root": { zIndex: "auto" },
+          "& .MuiInputLabel-root": { zIndex: "auto" },
+        }}
       />
       {error && (
         <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full z-auto">
