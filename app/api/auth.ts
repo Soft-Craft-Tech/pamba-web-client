@@ -43,6 +43,9 @@ export const useRequestPasswordReset = () => {
       );
       return response;
     },
+    onSuccess: (res) => {
+      toast.success(res.message, { closeOnClick: true, autoClose: false });
+    },
     onError: (error) => {
       const customError = error as CustomError;
       customError.response?.data.message
