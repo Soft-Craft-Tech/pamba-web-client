@@ -9,7 +9,7 @@ export const metadata = {
 export default function LoginLayout({ children }: { children: ReactNode }) {
   return (
     <main className="w-full h-screen overflow-hidden flex justify-center items-center bg-background">
-      <div className="w-full h-screen flex justify-center items-center border rounded-xl overflow-hidden bg-white lg:w-3/4 lg:h-5/6 lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-5 2xl:w-full">
+      <div className="container w-full h-screen flex justify-center items-center border-r bg-white lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-5">
         <div className="relative w-full h-full hidden lg:flex">
           <Image
             className="object-cover"
@@ -22,7 +22,7 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
           <div className="flex flex-col items-center w-full h-auto">
             <Link href="/">
               <Image
-                className="w-36 h-auto"
+                className="w-36 h-auto hover:scale-105 duration-100 delay-100"
                 src="/logo.svg"
                 alt="pamba logo"
                 priority={true}
@@ -30,12 +30,12 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
                 height={20}
               />
             </Link>
-            <h3 className="font-medium w-max">Welcome back</h3>
+            <h3 className="font-medium w-max">Welcome Back</h3>
           </div>
           {children}
           <div className="flex w-full h-6 gap-2 items-center justify-center">
-            <p className="text-muted text-sm">Don &apos; t have an account? </p>
-            <Link className="text-secondary font-bold text-sm" href="/signup">
+            <p className="text-secondary text-sm">Don&apos;t have an account?</p>
+            <Link className="text-accent font-bold text-sm delay-75 duration-75 hover:underline" href="/signup">
               Signup
             </Link>
           </div>

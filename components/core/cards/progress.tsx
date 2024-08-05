@@ -11,7 +11,7 @@ export default function ProfileProgress() {
     "Business Description",
     "Upload Profile Image",
     "Add Services",
-    "Create Expense Accounts",
+    "Opening Hours"
   ];
   return (
     <div className="flex flex-col gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
@@ -56,7 +56,7 @@ export default function ProfileProgress() {
                       <AiOutlineMinusCircle className="h-5 w-5 text-[#DB1471]" />
                     )}
                   </div>
-                  <span className="text-xs mt-1 text-muted md:text-sm">
+                  <span className="text-xs mt-1 text-muted">
                     {description}
                   </span>
                 </div>

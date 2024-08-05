@@ -10,5 +10,5 @@ export default function AllServicesLayout({
 }: {
   children: ReactNode;
 }) {
-  return <>{children}</>;
+  return <div className="container">{children}</div>;
 }

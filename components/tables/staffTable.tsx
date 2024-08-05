@@ -1,29 +1,27 @@
 "use client";
-import { useMemo, useState } from "react";
+import {
+  useCreateStaff,
+  useDeleteStaff,
+  useEditStaff,
+  useGetAllStaff,
+} from "@/app/api/staff";
+import Button from "@/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import FormField from "@/ui/FormField";
+import { getUser } from "@/utils/auth";
+import { staffSchema } from "@/utils/zodSchema";
 import {
   MRT_Row,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import Button from "@/ui/button";
-import {
-  useCreateStaff,
-  useDeleteStaff,
-  useEditExpense,
-  useGetAllStaff,
-} from "@/app/api/requests";
-import { Controller, useForm } from "react-hook-form";
-import { DynamicObject } from "../types";
-import { useAppDispatch } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import Toast from "../shared/toasts/authToast";
-import { getUser } from "@/utils/auth";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 type Staff = {
   f_name: string;
@@ -32,26 +30,17 @@ type Staff = {
   id?: number;
 };
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
+type FormValues = z.infer<typeof staffSchema>;
 
 const StaffManagementTable = () => {
-  const dispatch = useAppDispatch();
-  const { toastMessage } = useSelector((state: RootState) => ({
-    toastMessage: state.toast.toastMessage,
-  }));
-  const { showToast } = useSelector((state: RootState) => ({
-    showToast: state.toast.showToast,
-  }));
-  const { control, handleSubmit, reset } = useForm<DynamicObject>();
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+  const {
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(staffSchema),
+  });
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -64,57 +53,41 @@ const StaffManagementTable = () => {
 
   const {
     data: allStaffData,
-    isLoading,
+    isPending,
     isError,
-    isRefetching,
-    refetch: refetchAllStaff,
   } = useGetAllStaff(client?.slug);
-  const { mutateAsync, isSuccess, isError: addExpenseError } = useCreateStaff();
 
-  const { mutateAsync: editExpense } = useEditExpense();
+  const { mutateAsync, status: createStuffStatus } = useCreateStaff();
 
-  const {
-    mutateAsync: deleteUser,
-    isSuccess: isDeleteSuccess,
-    isError: isDeleteError,
-  } = useDeleteStaff();
+  const { mutateAsync: editStaff, status: editStuffStatus } = useEditStaff();
 
-  const editExpenseRow = async (formData: any) => {
-    try {
-      await editExpense(formData?.id, formData);
-      reset({
-        formData: {},
-      });
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-    }
+  const { mutateAsync: deleteUser } = useDeleteStaff();
+
+  const editStaffRow = async (id: number, formData: FormValues) => {
+    const data = {
+      ...formData,
+      id,
+    };
+
+    await editStaff(data);
+    reset();
+    table.setEditingRow(null);
   };
 
-  const submitExpense = async (formData: any) => {
-    try {
-      await mutateAsync(formData);
-      refetchAllStaff();
-      reset({
-        formData: {},
-      });
-      table.setCreatingRow(null);
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-    }
+  const submitStuffDetails = async (formData: FormValues) => {
+    await mutateAsync(formData);
+    reset();
+    table.setCreatingRow(null);
   };
-
-  if (isSuccess || addExpenseError) {
-    dispatch(setShowToast(true));
-    setTimeout(() => {
-      dispatch(setShowToast(false));
-      // table.setEditingRow(null);
-    }, 3000);
-  }
 
   const columns = useMemo<MRT_ColumnDef<Staff>[]>(
     () => [
+      {
+        accessorKey: "id",
+        header: "Id",
+        enableEditing: false,
+        enableGlobalFilter: false,
+      },
       {
         accessorKey: "f_name",
         header: "First Name",
@@ -132,17 +105,23 @@ const StaffManagementTable = () => {
   );
 
   const openDeleteConfirmModal = (row: MRT_Row<Staff>) => {
-    deleteUser(row.original.id);
-    refetchAllStaff();
+    if (row.original.id) deleteUser(row.original.id);
   };
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : allStaffData?.staff ?? [],
-    initialState: { showColumnFilters: true, showGlobalFilter: true },
+    data: isPending ? [] : allStaffData?.staff ?? [],
+    initialState: {
+      showColumnFilters: false,
+      showGlobalFilter: true,
+      columnVisibility: { id: false },
+    },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    onColumnFiltersChange: setColumnFilters,
+    muiSearchTextFieldProps: {
+      placeholder: "Search by Name, Phone, Role",
+      sx: { minWidth: "400px" },
+    },
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -167,146 +146,94 @@ const StaffManagementTable = () => {
         </p>
       </div>
     ),
-    renderEditRowDialogContent: () => (
+    renderEditRowDialogContent: ({ table, row }) => (
       <div className="p-10">
-        {showToast && (
-          <p
-            className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${
-              addExpenseError
-                ? "bg-red-100 text-red-700"
-                : isSuccess
-                ? "bg-green-100 text-green-700"
-                : ""
-            }`}
-          >
-            {toastMessage}
-          </p>
-        )}
-        <p className="mb-2">Update Expense</p>
+        <p className="mb-2">Staff Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(editExpenseRow)}
+          onSubmit={handleSubmit((data) =>
+            editStaffRow(row.original.id ?? 0, data)
+          )}
         >
-          <Controller
-            name="expenseTitle"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="text"
-                {...field}
-                placeholder="Expense"
-              />
-            )}
-            rules={{ required: true }}
+          <FormField
+            type="text"
+            placeholder="Staff Name"
+            name="f_name"
+            register={register}
+            defaultValue={row.original.f_name}
+            error={errors.f_name}
+            disabled={true}
           />
-          <Controller
-            name="expenseAmount"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="number"
-                {...field}
-                placeholder="Amount"
-              />
-            )}
-            rules={{ required: true }}
+          <FormField
+            type="text"
+            placeholder="Phone Number"
+            name="phone"
+            register={register}
+            defaultValue={row.original.phone}
+            error={errors.phone}
           />
-          <Controller
-            name="description"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
-                type="text"
-                {...field}
-                placeholder="Description"
-              />
-            )}
-            rules={{ required: true }}
+          <FormField
+            type="text"
+            placeholder="Role"
+            name="role"
+            register={register}
+            defaultValue={row.original.role}
+            error={errors.role}
           />
+
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
-              onClick={() => table.setEditingRow(null)}
+              onClick={() => {
+                table.setEditingRow(null);
+                reset();
+              }}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              type="submit"
+              label="Save"
+              variant="primary"
+              disabled={editStuffStatus === "pending"}
+            />
           </div>
         </form>
       </div>
     ),
     renderCreateRowDialogContent: () => (
       <div className="p-10">
-        {showToast && (
-          <p
-            className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${
-              addExpenseError
-                ? "bg-red-100 text-red-700"
-                : isSuccess
-                ? "bg-green-100 text-green-700"
-                : ""
-            }`}
-          >
-            {toastMessage}
-          </p>
-        )}
         <p className="mb-2">Create Staff Details</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(submitExpense)}
+          onSubmit={handleSubmit(submitStuffDetails)}
         >
-          <Controller
+          <FormField
+            type="text"
+            placeholder="Staff Name"
             name="f_name"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="text"
-                {...field}
-                placeholder="Staff Name"
-              />
-            )}
-            rules={{ required: true }}
+            register={register}
+            error={errors.f_name}
           />
-          <Controller
+          <FormField
+            type="text"
+            placeholder="Phone Number"
             name="phone"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="number"
-                {...field}
-                placeholder="Phone Number"
-              />
-            )}
-            rules={{ required: true }}
+            register={register}
+            error={errors.phone}
           />
-          <Controller
+          <FormField
+            type="text"
+            placeholder="Role"
             name="role"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
-                type="text"
-                {...field}
-                placeholder="Role"
-              />
-            )}
-            rules={{ required: true }}
+            register={register}
+            error={errors.role}
           />
+
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
               onClick={() => {
                 table.setCreatingRow(null);
@@ -314,7 +241,12 @@ const StaffManagementTable = () => {
             >
               Cancel
             </button>
-            <Button label="Save Staff" variant="primary" />
+            <Button
+              type="submit"
+              label="Save Staff"
+              variant="primary"
+              disabled={createStuffStatus === "pending"}
+            />
           </div>
         </form>
       </div>
@@ -330,23 +262,15 @@ const StaffManagementTable = () => {
       </Button>
     ),
     state: {
-      columnFilters,
       globalFilter,
-      isLoading,
+      isLoading: isPending,
       pagination,
       showAlertBanner: isError,
-      showProgressBars: isRefetching,
       sorting,
     },
   });
 
-  return (
-    <>
-      {isDeleteError && <Toast message={toastMessage} type="error" />}
-      {isDeleteSuccess && <Toast message={toastMessage} type="success" />}
-      <MaterialReactTable table={table} />
-    </>
-  );
+  return <MaterialReactTable table={table} />;
 };
 
 export default StaffManagementTable;

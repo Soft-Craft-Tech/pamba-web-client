@@ -1,48 +1,35 @@
 "use client";
-import { useState } from "react";
-import TextField from "@mui/material/TextField";
-import { useForm } from "react-hook-form";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useChangePassword } from "@/app/api/auth";
-import Toast from "@/components/shared/toasts/authToast";
-import { RootState } from "@/store/store";
+import Button from "@/ui/button";
+import FormField from "@/ui/FormField";
 import { logoutUser } from "@/utils/auth";
+import { changePasswordSchema } from "@/utils/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import * as z from "zod";
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
+type FormValues = z.infer<typeof changePasswordSchema>;
 
 export default function ChangePassword() {
-  const dispatch = useAppDispatch();
-  const {
-    toast: { toastMessage },
-  } = useAppSelector((state: RootState) => state);
-
   const router = useRouter();
 
-  const { mutateAsync, isLoading, isSuccess, isError } = useChangePassword();
+  const { mutateAsync, isPending, isSuccess } = useChangePassword();
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(changePasswordSchema),
+  });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormValues) => {
     if (data?.newPassword !== data?.confirmPassword) {
-      dispatch(setMessage("Passwords do not match"));
-      dispatch(setShowToast(true));
+      toast.warning("Passwords do not match");
     } else {
-      try {
-        await mutateAsync(data);
-        dispatch(setShowToast(true));
-      } catch (error) {
-        const customError = error as CustomError;
-        dispatch(setMessage(customError?.response?.data?.message));
-        dispatch(setShowToast(true));
-      }
+      await mutateAsync(data);
     }
   };
 
@@ -53,36 +40,30 @@ export default function ChangePassword() {
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
-      {isError && <Toast message={toastMessage} type="error" />}
-      {isSuccess && <Toast message={toastMessage} type="success" />}
-      <TextField
-        required
-        id="oldpassword"
-        label="Old Password"
+      <FormField
         type="password"
-        {...register("oldPassword", { required: true })}
+        placeholder="Old Password"
+        name="oldPassword"
+        register={register}
+        error={errors.oldPassword}
       />
-      <TextField
-        required
-        id="newpassword"
-        label="New Password"
+      <FormField
         type="password"
-        {...register("newPassword", { required: true })}
+        placeholder="New Password"
+        name="newPassword"
+        register={register}
+        error={errors.newPassword}
       />
-      <TextField
-        required
-        id="confirmpassword"
-        label="Confirm Password"
+      <FormField
         type="password"
-        {...register("confirmPassword", { required: true })}
+        placeholder="Confirm Password"
+        name="confirmPassword"
+        register={register}
+        error={errors.confirmPassword}
       />
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md disabled:cursor-not-allowed disabled:bg-opacity-20"
-      >
-        {isLoading ? "Submitting" : "Save Changes"}
-      </button>
+      <Button type="submit" disabled={isPending} variant="primary">
+        {isPending ? "Submitting" : "Save Changes"}
+      </Button>
     </form>
   );
 }

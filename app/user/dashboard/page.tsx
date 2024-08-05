@@ -1,17 +1,25 @@
 "use client";
-import { useGetProfileCompletionStatus } from "@/app/api/requests";
+import {
+  useGetBusinessesAnalysis,
+  useGetProfileCompletionStatus,
+} from "@/app/api/businesses";
+import { useGetSalesAnalysis } from "@/app/api/revenue";
 import AppointmentsTable from "@/components/charts/appointments";
 import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
 import Overview from "@/components/features/userAccount/dashboard/overview";
+import AddProfileExpensesModal from "@/components/forms/addExpenses";
 import Link from "next/link";
 
 export default function DashboardPage() {
   const { data } = useGetProfileCompletionStatus();
+  const { data: businessAnalysis } = useGetBusinessesAnalysis();
+  const { data: revenueData } = useGetSalesAnalysis();
 
   return (
     <div className="w-full flex flex-col gap-5">
-      {!data?.expenseAccounts && (
+      <AddProfileExpensesModal/>
+      {!data?.openingAndClosing && (
         <div className="flex flex-row justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
           <p>Your profile is incomplete</p>
           <Link
@@ -22,11 +30,14 @@ export default function DashboardPage() {
           </Link>
         </div>
       )}
-      <Overview />
-      <FinancialSummary />
+      <Overview {...businessAnalysis} />
+      <FinancialSummary
+        lifetime_expenses={businessAnalysis?.lifetime_expenses}
+        lifetime_sales={revenueData?.lifetime_sales}
+      />
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <div className="col-span-12 xl:col-span-8">
-          <AppointmentsTable />
+          <AppointmentsTable {...businessAnalysis} />
         </div>
         <AppointmentsCard />
       </div>

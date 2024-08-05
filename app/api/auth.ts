@@ -1,160 +1,228 @@
-import { DeleteFormData, DynamicObject } from "@/components/types";
+import {
+  CustomError,
+  DeleteFormData,
+  DynamicObject,
+  SignUpFormData,
+} from "@/components/types";
 import { useAppDispatch } from "@/hooks";
 import { setStep } from "@/store/completeProfileSlice";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { apiCall } from "@/utils/apiRequest";
-import { setUser } from "@/utils/auth";
+import { publicApiCall } from "@/utils/apiRequest";
+import { setUser, updateClientInLocalStorage } from "@/utils/auth";
 import endpoints from "@/utils/endpoints";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useMutation } from "react-query";
+import { toast } from "react-toastify";
 
 export const useSignUpMutation = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
-      const response = await apiCall("POST", endpoints.signup, formData, {});
-      dispatch(setMessage(response.message));
+  return useMutation({
+    mutationFn: async (formData: SignUpFormData) => {
+      const response = await publicApiCall(
+        "POST",
+        endpoints.signup,
+        formData,
+        {}
+      );
       return response;
-    }
-  );
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };
 
 export const useRequestPasswordReset = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, string | undefined>(
-    async (email: string | undefined) => {
-      const response = await apiCall(
+  return useMutation({
+    mutationFn: async (email: string | undefined) => {
+      const response = await publicApiCall(
         "POST",
         `${endpoints.requestPasswordReset}`,
-        { email },
-        {}
+        { email }
       );
-      dispatch(setShowToast(true));
-      dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };
 
 export const useUpdateProfile = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
-      const response = await apiCall(
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (formData: DynamicObject) => {
+      const response = await publicApiCall(
         "PUT",
         endpoints.updateProfile,
-        formData,
-        {}
+        formData
       );
-      dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+    onSuccess: (data) => {
+      toast.success("Profile updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["singleBusiness"] });
+      queryClient.setQueryData(["singleBusiness"], data);
+      updateClientInLocalStorage(data.business, data.authToken);
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };
 
 export const useChangePassword = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, DynamicObject>(
-    async (formData: DynamicObject) => {
-      const response = await apiCall(
+  return useMutation({
+    mutationFn: async (formData: DynamicObject) => {
+      const response = await publicApiCall(
         "PUT",
         endpoints.changePassword,
-        formData,
-        {}
+        formData
       );
-      dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+    onSuccess: () => {
+      toast.success("Password updated successfully!");
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };
 
 export const useDeleteAccountMutation = () => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, DeleteFormData>(
-    async (formData: DeleteFormData) => {
-      const response = await apiCall(
+  return useMutation({
+    mutationFn: async (formData: DeleteFormData) => {
+      const response = await publicApiCall(
         "POST",
         endpoints.deleteAccount,
-        formData,
-        {}
+        formData
       );
-      dispatch(setShowToast(true));
-      dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+    onSuccess: () => {
+      toast.success("Account Deleted successfully!");
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };
 
 export const useResetPasswordMutation = (token: string) => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error, string | undefined>(
-    async (password: string | undefined) => {
-      const response = await apiCall(
+  return useMutation({
+    mutationFn: async (password: string | undefined) => {
+      const response = await publicApiCall(
         "PUT",
         `${endpoints.resetPassword}${token}`,
-        { password },
-        {}
+        { password }
       );
-      dispatch(setShowToast(true));
-      dispatch(setMessage(response.message));
       return response;
-    }
-  );
+    },
+    onSuccess: () => {
+      toast.success("Password Reset successful!");
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };
 
 export const useVerifyAccountMutation = (token: string) => {
-  const dispatch = useAppDispatch();
-  return useMutation<void, Error>(async () => {
-    const response = await apiCall(
-      "POST",
-      `${endpoints.verifyAccount}${token}`,
-      {},
-      {}
-    );
-    dispatch(setMessage(response.message));
-    return response.data;
+  return useMutation({
+    mutationFn: async () => {
+      const response = await publicApiCall(
+        "POST",
+        `${endpoints.verifyAccount}${token}`
+      );
+      return response.data;
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
   });
 };
 
 export const useUpdateDescription = (step: number) => {
   const dispatch = useAppDispatch();
-  return useMutation<void, Error, string>(async (description: string) => {
-    const response = await apiCall(
-      "PUT",
-      endpoints.updateDescription,
-      { description },
-      {}
-    );
-    dispatch(setStep(step + 1));
-    return response.data;
+  return useMutation({
+    mutationFn: async (description: string) => {
+      const response = await publicApiCall(
+        "PUT",
+        endpoints.updateDescription,
+        { description },
+        {}
+      );
+      dispatch(setStep(step + 1));
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Description updated successfully");
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
   });
 };
 
-export const loginRequest = async (
-  email: string,
-  password: string,
-  router: any
-) => {
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/businesses/login`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
-        },
-        auth: {
-          username: email,
-          password: password,
-        },
-      }
-    );
-    const data = response.data;
-    setTimeout(() => router.push(`/user/dashboard`), 500);
-    setUser(data);
-    return { response, data };
-  } catch (error) {
-    return { error };
-  }
+export const useLoginUser = () => {
+  return useMutation({
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}${endpoints.login}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          auth: {
+            username: email,
+            password,
+          },
+        }
+      );
+
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setUser(data);
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
 };

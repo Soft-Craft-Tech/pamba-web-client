@@ -20,7 +20,7 @@ export default function AppSection() {
         <div className="flex gap-5 justify-center lg:justify-start">
           <Link href="">
             <Image
-              className="w-24"
+              className="w-24 delay-75 duration-100 hover:scale-105"
               src="/app-store-badge.svg"
               alt="pamba app"
               width={50}
@@ -29,7 +29,7 @@ export default function AppSection() {
           </Link>
           <Link href="">
             <Image
-              className="w-24"
+              className="w-24 delay-75 duration-100 hover:scale-105"
               src="/play-store-badge.svg"
               alt="pamba app"
               width={50}

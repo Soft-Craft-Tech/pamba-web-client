@@ -1,36 +1,33 @@
 "use client";
-import React, { useEffect } from "react";
+import { useGetProfileCompletionStatus } from "@/app/api/businesses";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setStep } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
+import { useEffect } from "react";
 import BusinessDescription from "./addDescription";
-import AddExpenseAccounts from "./addExpenseAccounts";
 import AddServices from "./addServices";
 import ProfileComplete from "./completed";
+import OpenCloseTimes from "./openingClosingTime";
 import UploadProfileImg from "./profileImageUpload";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { RootState } from "@/store/store";
-import { useGetProfileCompletionStatus } from "@/app/api/requests";
-import { setStep } from "@/store/completeProfileSlice";
 
 const CompleteProfileComponent = () => {
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
-  const { data, isLoading } = useGetProfileCompletionStatus();
+  const { data, isPending } = useGetProfileCompletionStatus();
   const dispatch = useAppDispatch();
 
   const getNextStep = () => {
-    if (
-      data?.description &&
-      data?.profileImg &&
-      data?.services &&
-      data?.expenseAccounts
-    ) {
+    const { description, profileImg, services, openingAndClosing } = data || {};
+    if (openingAndClosing && services && profileImg && description) {
       return 5;
-    } else if (data?.description && data?.profileImg && data?.services) {
+    } else if (services && profileImg && description) {
       return 4;
-    } else if (data?.description && data?.profileImg) {
+    } else if (profileImg && description) {
       return 3;
-    } else if (data?.description) {
+    } else if (description) {
       return 2;
+    } else {
+      return 1;
     }
-    return 1;
   };
 
   useEffect(() => {
@@ -39,7 +36,7 @@ const CompleteProfileComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  if (isLoading)
+  if (isPending)
     return (
       <div className="w-full flex justify-center  h-full">
         <div className="mt-[20%]" role="status">
@@ -69,7 +66,7 @@ const CompleteProfileComponent = () => {
       {step === 1 && <BusinessDescription />}
       {step === 2 && <UploadProfileImg />}
       {step === 3 && <AddServices />}
-      {step === 4 && <AddExpenseAccounts />}
+      {step === 4 && <OpenCloseTimes />}
       {step === 5 && <ProfileComplete />}
     </div>
   );

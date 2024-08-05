@@ -32,14 +32,14 @@ export default function ServiceCard({
           {text}
         </p>
         <Link
-          className="flex items-center w-max h-max gap-2 px-5 py-2 border border-primary rounded-full text-primary font-medium md:px-7 md:py-3"
+          className="flex items-center w-max h-max gap-2 px-5 py-2 border border-primary rounded-full text-primary font-medium duration-100 group hover:border-primaryHover hover:text-primaryHover hover:scale-[1.02] md:px-7 md:py-3"
           href={url}
         >
           Learn more
           <Image
             src="/arrow-right-white.svg"
             alt="pamba-arrow"
-            className="border bg-primary rounded-full p-1 w-5 h-5 md:w-7 md:h-7"
+            className="border bg-primary group-hover:bg-primaryHover rounded-full p-1 w-5 h-5 md:w-7 md:h-7"
             width={20}
             height={20}
           />

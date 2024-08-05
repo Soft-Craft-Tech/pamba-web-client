@@ -12,7 +12,7 @@ export default function ContactCTA() {
                     We understand that businesses are different and you may need a more personalized solution. 
                     Let&apos;s work with you to curate the ideal solution for your current and future needs.
                 </p>
-                <Link className="border border-primary text-primary text-lg rounded-full py-2 px-5 w-max sm:py-4 sm:px-8 lg:py-3 lg:px-5" href="#">Contact us</Link>
+                <Link className="border border-primary text-primary text-lg rounded-full py-2 px-5 w-max delay-75 duration-100 hover:border-primaryHover hover:text-primaryHover hover:scale-105 sm:py-4 sm:px-8 lg:py-3 lg:px-5" href="#">Contact us</Link>
             </div>
             <div className="w-full h-auto text-gray-400  lg:flex lg:justify-end">
                 <Image className="w-full rounded-lg lg:w-72" src="/phone-call.svg" alt="" width={200} height={300} />

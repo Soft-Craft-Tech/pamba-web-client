@@ -8,22 +8,24 @@ export default function UserTopBar() {
   const lastIndex = pathname.lastIndexOf("/");
   const currentPage = pathname.slice(lastIndex + 1);
   return (
-    <div className="w-full h-10 bg-background flex justify-between items-center">
-      <h2 className="capitalize text-lg font-bold">{currentPage}</h2>
-      <div className="flex h-full items-center gap-10">
-        <Image
-          src="/user-icons/notifications-icon.svg"
-          alt=""
-          width={20}
-          height={20}
-        />
-        <Link href={`/user/settings`}>
+    <div className="w-full h-10 bg-background flex justify-between items-center mt-0 lg:mt-3">
+      <h2 className="capitalize text-2xl font-semibold">{currentPage}</h2>
+      <div className="flex h-full items-center gap-5">
+        <Link className="hover:animate-bounce hover:scale-[1.02] delay-75 duration-100" href={`#`}>
+          <Image
+            src="/user-icons/notifications-icon.svg"
+            alt=""
+            width={25}
+            height={25}
+          />
+        </Link>
+        <Link className="hover:rotate-180 hover:scale-[1.02] delay-75 duration-100" href={`/user/settings`}>
           <Image
             className=""
-            src="/user-icons/profile-icon.svg"
+            src="/user-icons/settings.svg"
             alt=""
-            width={35}
-            height={35}
+            width={25}
+            height={25}
           />
         </Link>
       </div>

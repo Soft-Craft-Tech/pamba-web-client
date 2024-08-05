@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function PasswordReset({ children }: { children: ReactNode }) {
   return (
-    <main className="w-full h-screen overflow-hidden relative flex justify-center items-center">
+    <main className="container w-full h-screen overflow-hidden relative flex justify-center items-center">
       <Image
         className="absolute object-cover top-0 left-0 -z-20"
         src="/passwordResetBg.svg"
@@ -21,7 +21,7 @@ export default function PasswordReset({ children }: { children: ReactNode }) {
         <div className="flex flex-col items-center gap-1 w-full h-auto">
           <Link href="/">
             <Image
-              className="w-36 h-auto"
+              className="w-36 h-auto hover:scale-105 duration-100 delay-100"
               src="/logo.svg"
               alt="pamba logo"
               priority={true}

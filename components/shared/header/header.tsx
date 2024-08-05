@@ -20,7 +20,10 @@ export default function Header({ page }: { page: string }) {
   return (
     <header className="fixed top-0 left-0 w-full h-20 flex items-center justify-center border-b-[0.5px] border-borders z-20">
       <div className="relative border shadow-sm w-full h-full flex justify-between items-center font-medium text-gray-800 text-base bg-white z-30 px-5 sm:px-10 lg:px-20">
-        <Link className="h-full w-auto" href="/">
+        <Link
+          className="h-full w-auto duration-200 delay-100 hover:scale-105"
+          href="/"
+        >
           <Image
             className="h-full w-28 lg:w-40"
             src="/logo.svg"
@@ -37,18 +40,18 @@ export default function Header({ page }: { page: string }) {
               : "hidden lg:flex"
           }`}
         >
-          <div className="h-full flex flex-col text-2xl gap-5  lg:flex-row lg:items-center lg:gap-10 lg:text-base font-semibold tracking-wide ">
+          <div className="h-full flex gap-4 flex-col text-xl lg:flex-row lg:items-center lg:gap-10 lg:text-base font-semibold tracking-wide ">
             <Link
-              className={`py-3 flex h-full items-center ${
-                page === "home" ? "text-primary" : undefined
+              className={` flex h-full items-center ${
+                page === "home" && "text-primary"
               }`}
               href="/"
             >
               Home
             </Link>
             <Link
-              className={`py-3 flex h-full items-center ${
-                page === "about" ? "text-primary" : undefined
+              className={` flex h-full items-center ${
+                page === "about" && "text-primary"
               }`}
               href="/about"
             >
@@ -58,18 +61,25 @@ export default function Header({ page }: { page: string }) {
               onClick={() => {
                 setToggleServices((prev) => !prev);
               }}
-              className={`relative py-3 flex justify-between h-full items-center lg:gap-1 lg:justify-normal ${
-                ["reporting", "scheduling", "business"].includes(page)
-                  ? "text-primary"
-                  : undefined
+              className={`relative  flex justify-between h-full items-center lg:gap-1 lg:justify-normal ${
+                ["reporting", "scheduling", "business"].includes(page) &&
+                "text-primary"
               }`}
             >
-              <p className="cursor-pointer">Services</p>
+              <p
+                className={`flex h-full items-center cursor-pointer hover:border-b-2 ${
+                  ["reporting", "scheduling", "business"].includes(page)
+                    ? "text-primary hover:border-primary"
+                    : "hover:border-secondary hover:text-gray-700"
+                }`}
+              >
+                Services
+              </p>
               <RxCaretDown size={22} />
               {toggleServices && (
-                <div className="dropdown-nav absolute flex flex-col items-center px-2 py-4 gap-1 top-full left-0 w-full rounded-sm h-auto bg-white z-20 lg:w-48">
+                <div className="dropdown-nav absolute shadow-xl flex flex-col items-center p-2 gap-1 top-full left-0 w-full rounded-sm h-auto bg-white z-20 lg:w-48">
                   <Link
-                    className={`text-sm font-light border-b w-full text-center py-2 lg:py-[5px] ${
+                    className={`text-sm font-light border-b w-full hover:text-primary transition-all ease-in-out  py-2 lg:py-[5px] ${
                       page === "business" ? "text-primary" : "text-secondary"
                     }`}
                     href="/services/business-management"
@@ -77,7 +87,7 @@ export default function Header({ page }: { page: string }) {
                     Business Management
                   </Link>
                   <Link
-                    className={`text-sm font-light border-b w-full text-center py-2 lg:py-[5px] ${
+                    className={`text-sm font-light border-b hover:text-primary transition-all ease-in-out w-full  py-2 lg:py-[5px] ${
                       page === "scheduling" ? "text-primary" : "text-secondary"
                     }`}
                     href="/services/scheduling"
@@ -85,7 +95,7 @@ export default function Header({ page }: { page: string }) {
                     Appointment Scheduling
                   </Link>
                   <Link
-                    className={`text-sm font-light border-b w-full text-center py-2 lg:py-[5px] ${
+                    className={`text-sm font-light border-b w-full hover:text-primary transition-all ease-in-out  py-2 lg:py-[5px] ${
                       page === "reporting" ? "text-primary" : "text-secondary"
                     }`}
                     href="/services/reporting"
@@ -100,13 +110,13 @@ export default function Header({ page }: { page: string }) {
             {!isAuthenticated() ? (
               <>
                 <Link
-                  className="border-[0.1px] border-primary text-primary px-5 py-2 rounded-lg lg:border-none lg:text-secondary"
+                  className="border-[0.1px] border-primary text-primary px-5 py-2 rounded-lg lg:border-none lg:text-secondary hover:underline"
                   href="/login"
                 >
                   Login
                 </Link>
                 <Link
-                  className="bg-primary text-white px-5 py-2 rounded-lg"
+                  className="bg-primary text-white px-5 py-2 rounded-lg hover:bg-primaryHover delay-75 duration-75"
                   href="/signup"
                 >
                   Sign Up
@@ -134,14 +144,14 @@ export default function Header({ page }: { page: string }) {
         <div className="h-full flex items-center text-secondary lg:hidden">
           {navExpanded ? (
             <AiOutlineClose
-              size={30}
+              size={25}
               onClick={() => {
                 setNavExpanded(false);
               }}
             />
           ) : (
             <RxHamburgerMenu
-              size={30}
+              size={25}
               onClick={() => {
                 setNavExpanded(true);
               }}

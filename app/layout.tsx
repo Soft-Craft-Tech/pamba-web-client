@@ -1,9 +1,10 @@
+import FloaterAppoitment from "@/components/FloaterAppointment";
+import QueryProvider from "@/utils/providers/QueryProvider";
+import StoreProvider from "@/utils/providers/StoreProvider";
 import type { Metadata } from "next";
+import { Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import QueryProvider from "./QueryProvider";
-import StoreProvider from "./StoreProvider";
-
-import FloaterAppoitment from "@/components/FloaterAppoitment";
 
 export const metadata: Metadata = {
   title: "Pamba App",
@@ -21,6 +22,19 @@ export default function RootLayout({
         <StoreProvider>
           <QueryProvider>{children}</QueryProvider>
         </StoreProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
         <FloaterAppoitment />
       </body>
     </html>

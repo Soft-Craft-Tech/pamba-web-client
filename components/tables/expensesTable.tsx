@@ -1,62 +1,57 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useGetExpenseAccounts } from "@/app/api/accounts";
+import {
+  useCreateExpense,
+  useDeleteExpense,
+  useEditExpense,
+  useGetExpenses,
+} from "@/app/api/expenses";
+import Button from "@/ui/button";
+import FormField from "@/ui/FormField";
+import ReactSelectComponent from "@/ui/Select";
+import { expenseSchema } from "@/utils/zodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import {
   MRT_Row,
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_ColumnFiltersState,
   type MRT_PaginationState,
   type MRT_SortingState,
 } from "material-react-table";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import Button from "@/ui/button";
-import {
-  useCreateExpense,
-  useDeleteExpense,
-  useEditExpense,
-  useGetExpenseAccounts,
-  useGetExpenses,
-} from "@/app/api/requests";
 import moment from "moment";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { DynamicObject } from "../types";
-import { useAppDispatch } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import Toast from "../shared/toasts/authToast";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { toast } from "react-toastify";
+import * as z from "zod";
+import { ExpenseAccountType } from "../types";
 
 type Expense = {
+  expense_account: number;
   created_at: Date;
   category: string;
   expense: string;
   amount: string;
+  description: string;
+  account_id: string;
+  account_name: string;
   id: number;
 };
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
+type FormValues = z.infer<typeof expenseSchema>;
 
-const Table = () => {
-  const dispatch = useAppDispatch();
-  const { toastMessage } = useSelector((state: RootState) => ({
-    toastMessage: state.toast.toastMessage,
-  }));
-  const { showToast } = useSelector((state: RootState) => ({
-    showToast: state.toast.showToast,
-  }));
-  const { control, handleSubmit, reset } = useForm<DynamicObject>();
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
-    []
-  );
+const Table = ({ handleModal }: { handleModal: () => void }) => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(expenseSchema),
+  });
 
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
@@ -65,62 +60,43 @@ const Table = () => {
     pageSize: 10,
   });
 
-  const {
-    data,
-    isLoading,
-    isError,
-    isRefetching,
-    refetch: refetchExpenses,
-  } = useGetExpenses();
-  const { data: expenseAccountsData, isLoading: isLoadingAccounts } =
+  const { data, isPending, refetch: refetchExpenses } = useGetExpenses();
+
+  const { data: expenseAccountsData, isPending: isLoadingAccounts } =
     useGetExpenseAccounts();
-  const {
-    mutateAsync,
-    isSuccess,
-    isError: addExpenseError,
-  } = useCreateExpense();
 
-  const {
-    mutateAsync: deleteUser,
-    isSuccess: isDeleteSuccess,
-    isError: isDeleteError,
-  } = useDeleteExpense();
+  const { mutateAsync, status: createExpenseStatus } = useCreateExpense();
 
-  const { mutateAsync: editExpense } = useEditExpense();
+  const { mutateAsync: deleteUser } = useDeleteExpense();
 
-  const editExpenseRow = async (formData: any) => {
-    try {
-      await editExpense(formData?.id, formData);
-      reset({
-        formData: {},
-      });
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-    }
+  const { mutateAsync: editExpense, status: editExpenseStatus } =
+    useEditExpense();
+
+  const editExpenseRow = async (expenseId: number, formData: FormValues) => {
+    let data = {
+      expenseId,
+      expenseTitle: formData?.expenseTitle,
+      expenseAmount: Number(formData?.amount),
+      description: formData?.description,
+      accountID: formData?.accountID.value.toString(),
+    };
+
+    await editExpense(data);
+    reset();
+    table.setEditingRow(null);
   };
 
-  const submitExpense = async (formData: any) => {
-    try {
-      await mutateAsync(formData);
-      refetchExpenses();
-      reset({
-        formData: {},
-      });
-      table.setCreatingRow(null);
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-    }
+  const submitExpense = async (formData: FormValues) => {
+    let data = {
+      ...formData,
+      amount: Number(formData.amount),
+      accountID: formData.accountID.value.toString(),
+    };
+    await mutateAsync(data);
+    refetchExpenses();
+    reset();
+    table.setCreatingRow(null);
   };
-
-  if (isSuccess || addExpenseError) {
-    dispatch(setShowToast(true));
-    setTimeout(() => {
-      dispatch(setShowToast(false));
-      // table.setEditingRow(null);
-    }, 3000);
-  }
 
   const columns = useMemo<MRT_ColumnDef<Expense>[]>(
     () => [
@@ -145,6 +121,25 @@ const Table = () => {
         accessorKey: "amount",
         header: "Amount",
       },
+      {
+        accessorKey: "description",
+        header: "Description",
+        disableFilters: true,
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: "id",
+        header: "Expense ID",
+        disableFilters: true,
+        enableEditing: false,
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: "account_id",
+        header: "Expense Account",
+        disableFilters: true,
+        enableGlobalFilter: false,
+      },
     ],
     []
   );
@@ -156,11 +151,13 @@ const Table = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: isLoading ? [] : data?.expenses ?? [],
-    initialState: { showColumnFilters: true, showGlobalFilter: true },
+    data: isPending ? [] : data?.expenses ?? [],
+    initialState: {
+      showGlobalFilter: true,
+      columnVisibility: { description: false, account_id: false, id: false },
+    },
     positionGlobalFilter: "left",
     positionActionsColumn: "last",
-    onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -186,200 +183,160 @@ const Table = () => {
         </p>
       </div>
     ),
-    renderEditRowDialogContent: () => (
+    renderEditRowDialogContent: ({ table, row }) => (
       <div className="p-10">
-        {showToast && (
-          <p
-            className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${
-              addExpenseError
-                ? "bg-red-100 text-red-700"
-                : isSuccess
-                ? "bg-green-100 text-green-700"
-                : ""
-            }`}
-          >
-            {toastMessage}
-          </p>
-        )}
         <p className="mb-2">Update Expense</p>
         <form
           className="flex flex-col gap-2"
-          onSubmit={handleSubmit(editExpenseRow)}
+          onSubmit={handleSubmit((data) =>
+            editExpenseRow(row.original.id ?? 0, data)
+          )}
         >
-          <Controller
+          <FormField
+            type="text"
+            placeholder="Expense"
+            defaultValue={row.original.expense}
             name="expenseTitle"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="text"
-                {...field}
-                placeholder="Expense"
-              />
-            )}
-            rules={{ required: true }}
+            register={register}
+            error={errors.expenseTitle}
           />
-          <Controller
-            name="expenseAmount"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="number"
-                {...field}
-                placeholder="Amount"
-              />
-            )}
-            rules={{ required: true }}
+
+          <FormField
+            type="number"
+            placeholder="Amount"
+            defaultValue={row.original.amount.toString()}
+            name="amount"
+            register={register}
+            error={errors.amount}
           />
-          <Controller
+
+          <FormField
+            type="text"
+            placeholder="Description"
+            defaultValue={row.original.description}
             name="description"
+            register={register}
+            error={errors.description}
+          />
+
+          {/* TODO: API side expense name isn't updating */}
+          <Controller
             control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
-                type="text"
-                {...field}
-                placeholder="Description"
+            name="accountID"
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                defaultValue={{
+                  value: row.original.expense_account.toString(),
+                  label: row.original.category,
+                }}
+                onChange={onChange}
+                options={
+                  expenseAccountsData &&
+                  expenseAccountsData.account.map(
+                    (account: ExpenseAccountType) => ({
+                      value: account?.id,
+                      label: account?.account_name,
+                    })
+                  )
+                }
+                name="accountID"
+                placeholder="Select Account"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.accountID}
               />
             )}
-            rules={{ required: true }}
           />
-          <Controller
-            name="accountID"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <select
-                {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
-                name=""
-              >
-                <option value="">--Add Expense Account--</option>
-                {!isLoadingAccounts &&
-                  expenseAccountsData?.account?.map(
-                    (account: { id: string; account_name: string }) => (
-                      <option key={account?.id} value={account?.id}>
-                        {account?.account_name}
-                      </option>
-                    )
-                  )}
-              </select>
-            )}
-            rules={{ required: true }}
-          />
+
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
+              type="button"
               className="px-12 py-2 border border-gray-400 rounded-md"
-              onClick={() => table.setEditingRow(null)}
+              onClick={() => {
+                table.setEditingRow(null);
+                // reset();
+              }}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              type="submit"
+              label="Save Expense"
+              variant="primary"
+              disabled={editExpenseStatus === "pending"}
+            />
           </div>
         </form>
       </div>
     ),
     renderCreateRowDialogContent: () => (
       <div className="p-10">
-        {showToast && (
-          <p
-            className={`w-full  p-2 text-center rounded-md mb-3 font-medium ${
-              addExpenseError
-                ? "bg-red-100 text-red-700"
-                : isSuccess
-                ? "bg-green-100 text-green-700"
-                : ""
-            }`}
-          >
-            {toastMessage}
-          </p>
-        )}
         <p className="mb-2">Create New Expense</p>
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(submitExpense)}
         >
-          <Controller
+          <FormField
+            type="text"
+            placeholder="Expense"
             name="expenseTitle"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="text"
-                {...field}
-                placeholder="Expense"
-              />
-            )}
-            rules={{ required: true }}
+            register={register}
+            error={errors.expenseTitle}
           />
-          <Controller
-            name="expenseAmount"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                type="number"
-                {...field}
-                placeholder="Amount"
-              />
-            )}
-            rules={{ required: true }}
+
+          <FormField
+            type="number"
+            placeholder="Amount"
+            name="amount"
+            register={register}
+            error={errors.amount}
           />
-          <Controller
+
+          <FormField
+            type="text"
+            placeholder="Description"
             name="description"
+            register={register}
+            error={errors.description}
+          />
+
+          <Controller
             control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                className="w-full h-14 rounded-md border border-gray-200 px-2 py-1 lg:h-12"
-                defaultValue=""
-                type="text"
-                {...field}
-                placeholder="Description"
+            name="accountID"
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={
+                  expenseAccountsData &&
+                  expenseAccountsData.account.map(
+                    (account: { id: number; account_name: string }) => ({
+                      value: account.id,
+                      label: account.account_name,
+                    })
+                  )
+                }
+                placeholder="Select Account"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.accountID}
               />
             )}
-            rules={{ required: true }}
-          />
-          <Controller
-            name="accountID"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <select
-                {...field}
-                className="text-gray-400 border w-full h-14 py-1 px-2  lg:h-12"
-                name=""
-              >
-                <option value="">--Add Expense Account--</option>
-                {!isLoadingAccounts &&
-                  expenseAccountsData?.account?.map(
-                    (account: { id: string; account_name: string }) => (
-                      <option key={account?.id} value={account?.id}>
-                        {account?.account_name}
-                      </option>
-                    )
-                  )}
-              </select>
-            )}
-            rules={{ required: true }}
           />
           <div className="flex h-auto w-full gap-5 justify-end mt-4">
             <button
-              className="px-12 py-2 border border-gray-400 rounded-md"
+              className="px-8 py-2 border border-gray-400 rounded-md lg:px-12"
               onClick={() => {
                 table.setCreatingRow(null);
               }}
             >
               Cancel
             </button>
-            <Button label="Save Expense" variant="primary" />
+            <Button
+              type="submit"
+              label="Save Expense"
+              variant="primary"
+              disabled={createExpenseStatus === "pending"}
+            />
           </div>
         </form>
       </div>
@@ -388,40 +345,32 @@ const Table = () => {
       <Button
         variant="primary"
         onClick={() => {
-          table.setCreatingRow(true);
+          if (expenseAccountsData?.account.length > 0) {
+            table.setCreatingRow(true);
+          } else {
+            toast.error("You need atleast one Expense Account");
+            handleModal();
+          }
         }}
       >
         Create Expense
       </Button>
     ),
     state: {
-      columnFilters,
       globalFilter,
-      isLoading,
+      isLoading: isPending,
       pagination,
-      showAlertBanner: isError,
-      showProgressBars: isRefetching,
       sorting,
     },
   });
 
-  return (
-    <>
-      {isDeleteError && <Toast message={toastMessage} type="error" />}
-      {isDeleteSuccess && <Toast message={toastMessage} type="success" />}
-      <MaterialReactTable table={table} />
-    </>
-  );
+  return <MaterialReactTable table={table} />;
 };
 
-const queryClient = new QueryClient();
-
-const ExpensesTable = () => (
-  <QueryClientProvider client={queryClient}>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Table />
-    </LocalizationProvider>
-  </QueryClientProvider>
+const ExpensesTable = ({ handleModal }: { handleModal: () => void }) => (
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Table handleModal={handleModal} />
+  </LocalizationProvider>
 );
 
 export default ExpensesTable;

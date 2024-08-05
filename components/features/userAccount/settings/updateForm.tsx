@@ -1,119 +1,111 @@
-import { useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
 import { useUpdateProfile } from "@/app/api/auth";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { setMessage, setShowToast } from "@/store/toastSlice";
-import Toast from "@/components/shared/toasts/authToast";
-import { RootState } from "@/store/store";
+import { IUser } from "@/components/types";
+import { profileUpdateSchema } from "@/utils/zodSchema/index";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import LabelledFormField from "@/ui/LabelledFormField";
+import Button from "@/ui/button";
 
-interface CustomError extends Error {
-  response?: {
-    data: {
-      message: string;
-    };
-  };
-}
+type FormValues = z.infer<typeof profileUpdateSchema>;
 
-export default function ProfileUpdateForm({ client }: any) {
+export default function ProfileUpdateForm({ client }: { client: IUser }) {
   const {
-    toast: { toastMessage },
-  } = useAppSelector((state: RootState) => state);
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(profileUpdateSchema),
+  });
 
-  const { mutateAsync, isLoading, isSuccess, isError } = useUpdateProfile();
+  const { mutateAsync, isPending } = useUpdateProfile();
 
-  const dispatch = useAppDispatch();
-
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = async (data: any) => {
-    try {
-      await mutateAsync(data);
-      dispatch(setShowToast(true));
-    } catch (error) {
-      const customError = error as CustomError;
-      dispatch(setMessage(customError?.response?.data?.message));
-      dispatch(setShowToast(true));
-    }
+  const onSubmit = async (data: FormValues) => {
+    await mutateAsync(data);
+    reset()
   };
 
   return (
     <div className="w-full h-auto">
-      {isError && <Toast message={toastMessage} type="error" />}
-      {isSuccess && <Toast message={toastMessage} type="success" />}
       <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          required
-          id="business_name"
-          label="Business Name"
+        <LabelledFormField
           type="text"
-          {...register("name", { required: true })}
+          placeholder="Business Name"
+          name="name"
+          register={register}
           defaultValue={client?.business_name}
+          error={errors.name}
         />
-        <TextField
-          required
-          id="email"
-          label="Email"
-          type="text"
-          {...register("email", { required: true })}
+        <LabelledFormField
+          type="email"
+          placeholder="Email"
+          name="email"
+          register={register}
           defaultValue={client?.email}
+          error={errors.email}
         />
-        <TextField
-          required
-          id="phone"
-          label="Phone Number"
+        <LabelledFormField
           type="text"
-          {...register("phone", { required: true })}
+          placeholder="Phone Number"
+          name="phone"
+          register={register}
+          error={errors.phone}
           defaultValue={client?.phone}
         />
-        <TextField
-          required
-          id="city"
-          label="City"
+        <LabelledFormField
           type="text"
-          {...register("city", { required: true })}
+          placeholder="City"
+          name="city"
+          register={register}
+          error={errors.city}
           defaultValue={client?.city}
         />
-        <TextField
-          required
-          id="location"
-          label="Location"
+        <LabelledFormField
           type="text"
-          {...register("location", { required: true })}
+          placeholder="Location"
+          name="location"
+          register={register}
+          error={errors.location}
           defaultValue={client?.location}
         />
-        <TextField
-          required
-          id="mapUrl"
-          label="Map Url"
+
+        <LabelledFormField
           type="text"
-          {...register("mapUrl", { required: true })}
+          placeholder="Map Url"
+          name={"mapUrl"}
+          register={register}
+          error={errors.mapUrl}
           defaultValue={client?.google_map}
         />
-        <TextField
-          required
-          id="description"
-          label="Business Description"
+
+        <LabelledFormField
           type="text"
-          {...register("description", { required: true })}
+          placeholder="Description"
+          name="description"
+          register={register}
+          error={errors.description}
           defaultValue={client?.description}
-          multiline
-          rows={3}
         />
-        <TextField
-          required
-          id="password"
-          label="Enter your Password"
-          type="password"
-          {...register("password", { required: true })}
+        <LabelledFormField
+          type="text"
+          placeholder="Enter your Password"
+          name="password"
+          register={register}
+          error={errors.password}
         />
-        <p>Enter password to confirm you are the one updating details here</p>
-        <button
+
+        <p className="text-xs text-secondary">
+          * Enter your password to confirm you are the one updating details
+          here.
+        </p>
+        <Button
           type="submit"
-          disabled={isLoading}
-          className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
+          disabled={isPending}
+          variant="primary"
         >
-          {isLoading ? "Saving" : "Save Changes"}
-        </button>
+          {isPending ? "Saving" : "Save Changes"}
+        </Button>
       </form>
     </div>
   );

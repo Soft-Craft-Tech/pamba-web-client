@@ -1,17 +1,15 @@
 "use client";
-import { useSelector, useDispatch } from "react-redux";
-import { AiOutlineClose } from "react-icons/ai";
-import AddServicesForm from "../../forms/addServicesForm";
+import { useAssignService } from "@/app/api/businesses";
+import { useGetServiceCategories } from "@/app/api/services";
 import ProfileProgress from "@/components/core/cards/progress";
-import {
-  useAssignService,
-  useGetAllServices,
-  useGetServices,
-} from "@/app/api/requests";
-import { RootState } from "@/store/store";
-import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
+import AddProfileServicesForm from "@/components/forms/addProfileServices";
 import Toast from "@/components/shared/toasts/authToast";
+import { ServiceType } from "@/components/types";
+import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
+import { RootState } from "@/store/store";
 import { usePathname } from "next/navigation";
+import { AiOutlineClose } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AddServices() {
   const dispatch = useDispatch();
@@ -26,13 +24,12 @@ export default function AddServices() {
     toastMessage: state.toast.toastMessage,
   }));
 
-  const { data } = useGetServices();
-  const { refetch } = useGetAllServices();
-
+  const { data } = useGetServiceCategories();
   const {
     mutate: assignServices,
-    isLoading: postingServices,
+    isPending: postingServices,
     error: errorPosting,
+    isSuccess: successPosting,
   } = useAssignService();
 
   const handleNext = () => {
@@ -42,28 +39,38 @@ export default function AddServices() {
   const removeService = (itemIndex: number) => {
     dispatch(
       setQueuedServices(
-        queuedServices.filter((_, index) => index !== itemIndex)
+        queuedServices.filter(
+          (_: ServiceType, index: number) => index !== itemIndex
+        )
       )
     );
   };
 
   const handleSubmitServices = () => {
     if (queuedServices.length !== 0) {
-      assignServices(queuedServices);
-      refetch();
+      const formattedServices = queuedServices.map((service) => ({
+        ...service,
+        price: Number(service.price),
+      }));
+      assignServices(formattedServices);
     }
     handleNext();
   };
 
+  // if (successPosting) {
+  //   // refetch();
+  // }
+
   return (
-    <div className="w-full h-auto flex flex-col gap-5 px-5 py-10">
+    <div className="w-full h-auto flex flex-col gap-5 py-10">
+      {successPosting && <Toast message={toastMessage} type="success" />}
       {errorPosting && <Toast message={toastMessage} type="error" />}
       {pathname !== "/user/services" && <ProfileProgress />}
       <div className="flex gap-10 w-full flex-col md:flex-row">
-        <AddServicesForm data={data} />
+        <AddProfileServicesForm data={data} />
         {queuedServices.length > 0 && (
           <div className="w-full h-full p-4 bg-white flex gap-3 flex-wrap lg:p-7">
-            {queuedServices.map((service, index) => {
+            {queuedServices.map((service: ServiceType, index: number) => {
               return (
                 <div
                   key={service.name} // Use UUID

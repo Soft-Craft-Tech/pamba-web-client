@@ -2,7 +2,7 @@ import ProfileProgress from "../../core/cards/progress";
 import { useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import Toast from "../../shared/toasts/genToast";
-import { useChangeImageMutation } from "@/app/api/requests";
+import { useChangeImageMutation } from "@/app/api/businesses";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { RootState } from "@/store/store";
 import { setStep } from "@/store/completeProfileSlice";
@@ -11,7 +11,7 @@ export default function UploadProfileImg() {
   const [imgUrl, setImgUrl] = useState<any>("");
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
   const dispatch = useAppDispatch();
-  const { mutate, isLoading, isSuccess, error } = useChangeImageMutation();
+  const { mutate, isPending, isSuccess, error } = useChangeImageMutation();
   const submitImg = () => {
     if (imgUrl) {
       mutate(imgUrl);
@@ -53,11 +53,11 @@ export default function UploadProfileImg() {
       </div>
       <div className="w-full h-10 flex justify-end">
         <button
-          disabled={isLoading || !imgUrl}
+          disabled={isPending || !imgUrl}
           onClick={submitImg}
           className="w-max px-7 py-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? <>Loading</> : <>Next</>}
+          {isPending ? <>Loading</> : <>Next</>}
         </button>
       </div>
     </div>
