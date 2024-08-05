@@ -15,7 +15,7 @@ const FormField: React.FC<LabelledFormFieldProps> = ({
   rows,
 }) => {
   const combinedClassNames = clsx(
-    "w-full rounded-md disabled:opacity-50 disabled:bg-gray-200 focus:outline-none ring-2 focus:ring-2 ring-primary focus:ring-primary focus:border-transparent",
+    "!z-auto w-full rounded-md disabled:opacity-50 disabled:bg-gray-200 focus:outline-none ring-2 focus:ring-2 ring-primary focus:ring-primary focus:border-transparent",
     {
       "border-red-500": error,
       "border-inputBorder": !error,
@@ -37,7 +37,7 @@ const FormField: React.FC<LabelledFormFieldProps> = ({
         rows={rows}
       />
       {error && (
-        <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full">
+        <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full z-auto">
           {error.message}
         </span>
       )}
