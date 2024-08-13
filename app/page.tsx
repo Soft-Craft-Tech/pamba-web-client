@@ -2,7 +2,7 @@ import AppSection from "@/components/features/home/appSection";
 import CategoriesSection from "@/components/features/home/categoriesSection";
 import CTA from "@/components/features/home/ctaSection";
 import Hero from "@/components/features/home/hero";
-import OurStats from "@/components/features/home/ourStats";
+// import OurStats from "@/components/features/home/ourStats";
 import Services from "@/components/features/home/services";
 import Footer from "@/components/shared/footer/footer";
 import Header from "@/components/shared/header/header";
@@ -24,7 +24,7 @@ export default function Home() {
       />
       <CategoriesSection />
       <AppSection />
-      <OurStats />
+      {/* <OurStats /> */}
       <CTA />
       <Footer />
     </main>

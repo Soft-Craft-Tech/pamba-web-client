@@ -15,7 +15,7 @@ export default function ContactCTA() {
                 <Link className="border border-primary text-primary text-lg rounded-full py-2 px-5 w-max delay-75 duration-100 hover:border-primaryHover hover:text-primaryHover hover:scale-105 sm:py-4 sm:px-8 lg:py-3 lg:px-5" href="#">Contact us</Link>
             </div>
             <div className="w-full h-auto text-gray-400  lg:flex lg:justify-end">
-                <Image className="w-full rounded-lg lg:w-72" src="/phone-call.svg" alt="" width={200} height={300} />
+                <Image className="w-full rounded-lg lg:w-72" src="/phone-call.svg" alt="phone call" width={200} height={300} />
             </div>
         </div>
     )

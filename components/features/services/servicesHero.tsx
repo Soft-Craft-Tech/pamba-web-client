@@ -19,15 +19,13 @@ export default function ServicesHero({
         <p className="text-center text-gray-400 lg:w-[50ch]">{text}</p>
         <StartTrial />
       </div>
-      <div className="relative w-full h-48 pb-20 md:h-96">
-        <Image
-          className="shadow-lg w-11/12 h-auto rounded-md object-contain absolute -top-14 left-1/2 transform -translate-x-1/2 lg:-top-20 lg:w-1/2 lg:h-96"
-          src={image}
-          alt="pamba"
-          width={300}
-          height={250}
-        />
-      </div>
+      <Image
+        className="w-11/12 lg:w-1/2 h-full md:h-96 object-cover transform mx-auto -translate-y-1/4 rounded-md shadow-xl"
+        src={image}
+        alt="pamba"
+        width={300}
+        height={250}
+      />
     </div>
   );
 }

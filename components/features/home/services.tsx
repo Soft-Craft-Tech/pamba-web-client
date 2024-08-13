@@ -13,8 +13,8 @@ export default function Services() {
             <ServiceCard
                 bgWhite={false}
                 img={"/screenshots/book-keeping.svg"}
-                title="Book keeping"
-                text="Streamline your business's financial management with our comprehensive Bookkeeping and Financial Management service. 
+                title="Book Keeping and Financial Management"
+                text="Streamline your business's financial management with our comprehensive Book Keeping and Financial Management service. 
                 Effortlessly handle revenue, and reporting in one intuitive platform. 
                 Simplify your finances and focus on growing your business with ease."
                 url="/services/business-management"
