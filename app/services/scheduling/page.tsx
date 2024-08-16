@@ -31,7 +31,7 @@ const Scheduling = () => {
           <ValuePrepositionCard
             title="Instant Notifications"
             text="Experience instant notification functionality within Pamba, ensuring you receive immediate alerts as soon as appointments are booked. "
-            image="/notification-icon.svg"
+            image="/notification.svg"
           />
         </div>
       </div>
