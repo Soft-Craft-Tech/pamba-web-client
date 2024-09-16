@@ -14,7 +14,7 @@ export default function BusinessManagement() {
       <ServicesHero
         title=" Business Management"
         text="Leave behind manual bookeeping and embrace a more organized business management approach with everything online. "
-        image="/pamba-dashboard.svg"
+        image="/screenshots/dashboard-page.svg"
       />
       <div className="w-full h-auto bg-white p-5 flex flex-col items-center gap-16 sm:p-10 lg:p-20">
         <h2 className="font-bold text-center text-3xl lg:w-max">

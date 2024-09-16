@@ -24,7 +24,7 @@ const ServiceInfoCard: React.FC<IServiceCardProps> = ({
       >
         <div className="relative w-full h-full">
           <Image
-            className="absolute rounded-md left-0 top-0 w-full h-full object-contain"
+            className="absolute rounded-md left-0 top-0 w-full h-full object-cover"
             src={image}
             alt=""
             width={150}
