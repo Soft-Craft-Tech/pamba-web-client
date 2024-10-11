@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
+
 export const metadata = {
   title: "Login - Pamba App",
   description: "Simplify Your Operations With Effortless Business Management",
@@ -10,6 +11,7 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
   return (
     <main className="w-full h-screen overflow-hidden flex justify-center items-center bg-background">
       <div className="container w-full h-screen flex justify-center items-center border-r bg-white lg:grid lg:grid-cols-2 lg:grid-rows-1 lg:gap-5">
+        
         <div className="relative w-full h-full hidden lg:flex">
           <Image
             className="object-cover"
