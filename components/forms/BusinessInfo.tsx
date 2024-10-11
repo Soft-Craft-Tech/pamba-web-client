@@ -17,11 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as z from "zod";
-const categories = [
-  { value: "Technology", label: "Technology" },
-  { value: "Health", label: "Health" },
-  { value: "Finance", label: "Finance" },
-];
+
 type FormValues = z.infer<typeof businessInfoSchema>;
 
 const BusinessInfo = () => {
@@ -31,7 +27,6 @@ const BusinessInfo = () => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     control,
     formState: { errors },
   } = useForm<FormValues>({
