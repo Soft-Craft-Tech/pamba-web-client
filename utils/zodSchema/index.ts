@@ -1,13 +1,14 @@
 // import dayjs from "dayjs";
-import * as z from "zod";
 import {
   isPossiblePhoneNumber,
   isValidPhoneNumber,
-  parsePhoneNumber,
   validatePhoneNumberLength,
 } from "libphonenumber-js";
+import * as z from "zod";
 
 const toDate = z.coerce.date();
+const googleMapsUrlRegex =
+  "^(https://www.google.com/maps?[^&]+(&[^&]+)*|https://g.co/kgs/[A-Za-z0-9]+)$";
 
 export const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -43,10 +44,8 @@ export const businessInfoSchema = z.object({
   mapUrl: z
     .string()
     .min(1, "Map Url is required")
-    .regex(
-      new RegExp("^https?://(www.google.com/maps|maps.app.goo.gl)/.+"),
-      "Invalid map URL"
-    ),
+    // .regex(new RegExp(googleMapsUrlRegex), "Invalid Google maps URL"),
+    .url("Invalid maps URL"),
 });
 
 export const loginSchema = z.object({
