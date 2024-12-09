@@ -1,5 +1,6 @@
 import { useSignUpMutation } from "@/app/api/auth";
 import { useGetCategories } from "@/app/api/businesses";
+import { cities } from "@/data/cities";
 import { useAppDispatch } from "@/hooks";
 import { prevStep } from "@/store/signUpSlice";
 import { RootState } from "@/store/store";
@@ -8,6 +9,7 @@ import FormField from "@/ui/FormField";
 import ReactSelectComponent from "@/ui/Select";
 import { businessInfoSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { parsePhoneNumber } from "libphonenumber-js";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -24,6 +26,7 @@ const BusinessInfo = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = useForm<FormValues>({
@@ -45,18 +48,14 @@ const BusinessInfo = () => {
   const onSubmit = async (formData: FormValues) => {
     const { name, category, phone, city, mapUrl, location } = formData;
 
-    const categories = Array.isArray(category.value)
-      ? category.value
-      : [category.value];
-
     const businessData = {
       email,
       password,
       acceptedTerms,
       name,
-      category: categories,
-      phone,
-      city,
+      category: category.value,
+      phone: parsePhoneNumber(phone, "KE").number,
+      city: city.value,
       mapUrl,
       location,
     };
@@ -93,6 +92,7 @@ const BusinessInfo = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="p-3 w-full flex flex-col gap-4"
+        noValidate
       >
         <div className="flex flex-col gap-5 lg:gap-4">
           <FormField
@@ -107,15 +107,22 @@ const BusinessInfo = () => {
             control={control}
             render={({ field: { onChange, value } }) => (
               <ReactSelectComponent
-                onChange={onChange}
+                type="creatable"
+                isClearable
+                onChange={(selectedOption) => {
+                  setValue(
+                    "category",
+                    selectedOption as { value: string; label: string }
+                  );
+                }}
                 options={data?.categories?.map(
                   ({
                     category_name,
                     id,
                   }: {
                     category_name: string;
-                    id: number;
-                  }) => ({ value: id, label: category_name })
+                    id: string;
+                  }) => ({ value: String(id), label: category_name })
                 )}
                 placeholder="Business Category"
                 value={value}
@@ -131,13 +138,25 @@ const BusinessInfo = () => {
             error={errors.phone}
             register={register}
           />
-          <FormField
-            type="text"
-            placeholder="City"
+
+          <Controller
             name="city"
-            error={errors.city}
-            register={register}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <ReactSelectComponent
+                onChange={onChange}
+                options={cities?.map(({ name }: { name: string }) => ({
+                  value: name,
+                  label: name,
+                }))}
+                placeholder="City"
+                value={value}
+                closeMenuOnSelect={true}
+                error={errors.city}
+              />
+            )}
           />
+
           <FormField
             type="url"
             placeholder="Map URL"

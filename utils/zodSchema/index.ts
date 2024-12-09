@@ -1,7 +1,14 @@
 // import dayjs from "dayjs";
+import {
+  isPossiblePhoneNumber,
+  isValidPhoneNumber,
+  validatePhoneNumberLength,
+} from "libphonenumber-js";
 import * as z from "zod";
 
 const toDate = z.coerce.date();
+const googleMapsUrlRegex =
+  "^(https://www.google.com/maps?[^&]+(&[^&]+)*|https://g.co/kgs/[A-Za-z0-9]+)$";
 
 export const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -15,12 +22,30 @@ export const businessInfoSchema = z.object({
   name: z.string().min(1, "Business name is required"),
   category: z.object({
     label: z.string(),
-    value: z.number().min(1, "Category is required"),
+    value: z.string(),
   }),
-  phone: z.string().min(1, "Phone number is required"),
-  city: z.string().min(1, "City is required"),
+  phone: z
+    .string()
+    .min(1, "Phone number is required")
+    .refine((value) => isPossiblePhoneNumber(value, "KE"), {
+      message: "Phone number is not valid in Kenya.",
+    })
+    .refine((value) => isValidPhoneNumber(value, "KE"), {
+      message: "Phone number is not valid.",
+    })
+    .refine((value) => validatePhoneNumberLength(value, "KE") === undefined, {
+      message: "Phone number length is incorrect.",
+    }),
+  city: z.object({
+    label: z.string(),
+    value: z.string().min(1, "City is required"),
+  }),
   location: z.string().min(1, "Location is required"),
-  mapUrl: z.string().min(1, "Map Url is required"),
+  mapUrl: z
+    .string()
+    .min(1, "Map Url is required")
+    // .regex(new RegExp(googleMapsUrlRegex), "Invalid Google maps URL"),
+    .url("Invalid maps URL"),
 });
 
 export const loginSchema = z.object({

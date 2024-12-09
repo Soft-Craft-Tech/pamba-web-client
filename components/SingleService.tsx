@@ -201,7 +201,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
         PaperProps={{
           component: "form",
           onSubmit: handleSubmit,
-        }}
+        } as any}
       >
         <DialogContent style={{ padding: "20px" }}>
           {bookingFrame === "start" && (
