@@ -1,7 +1,7 @@
 "use client";
 import SideNav from "@/components/features/userAccount/shared/sideNavigation";
 import UserTopBar from "@/components/features/userAccount/shared/userTopBar";
-import { NewProvider } from "@/utils/providers/NewProvider";
+import { AuthProvider } from "@/utils/providers/AuthProvider";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -13,7 +13,7 @@ export default function UserAccountLayout({
   const pathname = usePathname();
 
   return (
-    <NewProvider>
+    <AuthProvider>
       <main
         className={`mx-auto ${
           !pathname.includes("booking") &&
@@ -30,6 +30,6 @@ export default function UserAccountLayout({
           </div>
         </div>
       </main>
-    </NewProvider>
+    </AuthProvider>
   );
 }
