@@ -61,7 +61,7 @@ export default function AddExpenseAccounts({
               Create your Business&apos;s Expense Accounts
             </h3>
             <p className="bold text-sm text-red-600">
-              You need atleast one expense account!
+              You need atleast one expense account e.g Equity Bank, KCB, Mpesa etc
             </p>
           </div>
           <form
