@@ -7,7 +7,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 
 dayjs.extend(isSameOrAfter);
 
-export function NewProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   if (!isAuthenticated() && dayjs().isSameOrAfter(dayjs(getUser()?.expires))) {
     logoutUser();
     redirect("/login");

@@ -1,7 +1,7 @@
 "use client";
 import { useAllAppointments } from "@/app/api/appointment";
 import Timeslots from "@/components/calendar/TimeSlots";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 
 const Page = () => {
   const { data, isPending } = useAllAppointments();
