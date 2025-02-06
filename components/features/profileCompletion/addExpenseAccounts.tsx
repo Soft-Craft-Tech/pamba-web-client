@@ -62,8 +62,8 @@ export default function AddExpenseAccounts({
             </h3>
             <p className="bold text-sm text-red-600">
               You need to set up at least one expense account to help you track
-              and categorize your business expenditures accurately e.g Equity
-              Bank, KCB, Mpesa etc
+              and categorize your business expenditures accurately e.g Rent
+              Account, Salaries account etc
             </p>
           </div>
           <form
