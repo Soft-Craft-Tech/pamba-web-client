@@ -7,7 +7,6 @@ import { getUser } from "@/utils/auth";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import AddServicesForm from "../../forms/addServicesForm";
-import Loader from "@/components/Loader";
 
 const AddServicesBox = () => {
   const { client } = getUser();
@@ -16,7 +15,7 @@ const AddServicesBox = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  if (isPending) return <Loader />;
+  if (isPending) return <p>Loading...</p>;
 
   return (
     <>

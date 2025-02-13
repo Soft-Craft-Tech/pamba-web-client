@@ -23,7 +23,6 @@ import isBetween from "dayjs/plugin/isBetween";
 import moment from "moment";
 import Image from "next/image";
 import * as React from "react";
-import Loader from "./Loader";
 
 dayjs.extend(isBetween);
 
@@ -406,7 +405,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 >
                   <p className="text-nowrap mr-2">Confirm Appointment</p>
                   {isPendingBookAppointment ? (
-                    <Loader className="h-6 w-6" />
+                    <p className="h-6 w-6">Loading...</p>
                   ) : (
                     <Image
                       className="border bg-white ml-3 rounded-full"
