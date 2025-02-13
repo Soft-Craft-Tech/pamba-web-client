@@ -23,7 +23,6 @@ import isBetween from "dayjs/plugin/isBetween";
 import moment from "moment";
 import Image from "next/image";
 import * as React from "react";
-import Loader from "./loader";
 
 dayjs.extend(isBetween);
 
@@ -198,10 +197,12 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
         maxWidth="lg"
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: handleSubmit,
-        } as any}
+        PaperProps={
+          {
+            component: "form",
+            onSubmit: handleSubmit,
+          } as any
+        }
       >
         <DialogContent style={{ padding: "20px" }}>
           {bookingFrame === "start" && (
@@ -404,7 +405,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 >
                   <p className="text-nowrap mr-2">Confirm Appointment</p>
                   {isPendingBookAppointment ? (
-                    <Loader className="h-6 w-6" />
+                    <p className="h-6 w-6">Loading...</p>
                   ) : (
                     <Image
                       className="border bg-white ml-3 rounded-full"

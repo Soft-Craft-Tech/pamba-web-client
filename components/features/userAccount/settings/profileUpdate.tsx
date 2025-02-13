@@ -7,9 +7,10 @@ import { useGetSingleBusiness } from "@/app/api/businesses";
 const EditProfile = () => {
   const { client } = getUser();
   // const client = user ? user.client : null;
+  console.log(client);
   const { data } = useGetSingleBusiness(client?.slug);
 
-  return (
+  return client?.active ? (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col items-center gap-3">
         {data?.business && (
@@ -29,6 +30,24 @@ const EditProfile = () => {
         )}
       </div>
       {data?.business && <ProfileUpdateForm client={data.business} />}
+    </div>
+  ) : (
+    <div className="flex flex-col items-center justify-center p-6 bg-red-100 border border-red-400 rounded-md w-2/3 mx-auto">
+      <p className="text-lg font-semibold text-red-700">
+        Your business isn't verified
+      </p>
+      <p className="text-sm text-red-600">
+        Please contact{" "}
+        <a
+          href="mailto:info@pamba.africa"
+          className="text-blue-600 underline"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          support
+        </a>{" "}
+        to verify your business and unlock all features.
+      </p>
     </div>
   );
 };

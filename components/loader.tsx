@@ -1,3 +1,5 @@
+"use client";
+
 const Loader = ({ className = "w-16 h-16" }: { className?: string }) => {
   return (
     <div className={`flex justify-center w-full h-full`}>

@@ -61,7 +61,9 @@ export default function AddExpenseAccounts({
               Create your Business&apos;s Expense Accounts
             </h3>
             <p className="bold text-sm text-red-600">
-              You need atleast one expense account!
+              You need to set up at least one expense account to help you track
+              and categorize your business expenditures accurately e.g Rent
+              Account, Salaries account etc
             </p>
           </div>
           <form
