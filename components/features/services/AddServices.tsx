@@ -7,7 +7,7 @@ import { getUser } from "@/utils/auth";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import AddServicesForm from "../../forms/addServicesForm";
-import Loader from "../../Loader";
+import Loader from "@/components/Loader";
 
 const AddServicesBox = () => {
   const { client } = getUser();
