@@ -2,7 +2,7 @@
 import ProfileProgress from "../../core/cards/progress";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import { useUpdateDescription } from "@/app/api/auth";
 import Toast from "@/components/shared/toasts/authToast";

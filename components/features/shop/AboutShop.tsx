@@ -2,7 +2,7 @@ import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject } from "@/components/types";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setFilteredServices } from "@/store/filteredServicesSlice";
 import { RootState } from "@/store/store";
 import LocationIcon from "@/ui/icons/location";

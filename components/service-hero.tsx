@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setSearchQuery } from "@/store/searchSlice";
 import LocationIcon from "@/ui/icons/location";
 import SearchIcon from "@/ui/icons/search";

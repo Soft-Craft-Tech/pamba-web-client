@@ -5,7 +5,7 @@ import AllShopsHero from "@/components/AllShopsHero";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject } from "@/components/types";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import ArrowBack from "@/ui/icons/arrow-back";
 import * as React from "react";

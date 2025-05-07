@@ -6,7 +6,7 @@ import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject, staffType } from "@/components/types";
 import { daysData } from "@/data";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import Button from "@/ui/button";
 import CalendarIcon from "@/ui/icons/calendar-con";

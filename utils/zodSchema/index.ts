@@ -7,18 +7,47 @@ import {
 import * as z from "zod";
 
 const toDate = z.coerce.date();
-const googleMapsUrlRegex =
-  "^(https://www.google.com/maps?[^&]+(&[^&]+)*|https://g.co/kgs/[A-Za-z0-9]+)$";
 
-export const signUpSchema = z.object({
+const googleLocationSchema = z
+  .object({
+    formattedAddress: z.string(),
+    id: z.string(),
+    addressComponents: z
+      .array(
+        z.object({
+          longText: z.string(),
+          shortText: z.string(),
+          types: z.array(z.string()),
+        })
+      )
+      .min(1, { message: "At least one address component is required" }),
+    location: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }),
+  })
+  .refine((value) => value.formattedAddress, {
+    message: "Location is required",
+  });
+
+const jsonLocationSchema = z.preprocess((value) => {
+  if (typeof value === "object" && value !== null) {
+    if (typeof (value as { toJSON?: () => unknown }).toJSON === "function") {
+      return (value as { toJSON: () => unknown }).toJSON();
+    }
+    return null;
+  }
+
+  return null;
+}, googleLocationSchema);
+
+export const fullSignUpSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
   acceptedTerms: z.boolean().refine((val) => val === true, {
     message: "Please accept terms and conditions",
   }),
-});
 
-export const businessInfoSchema = z.object({
   name: z.string().min(1, "Business name is required"),
   category: z.object({
     label: z.string(),
@@ -36,16 +65,7 @@ export const businessInfoSchema = z.object({
     .refine((value) => validatePhoneNumberLength(value, "KE") === undefined, {
       message: "Phone number length is incorrect.",
     }),
-  city: z.object({
-    label: z.string(),
-    value: z.string().min(1, "City is required"),
-  }),
-  location: z.string().min(1, "Location is required"),
-  mapUrl: z
-    .string()
-    .min(1, "Map Url is required")
-    // .regex(new RegExp(googleMapsUrlRegex), "Invalid Google maps URL"),
-    .url("Invalid maps URL"),
+  location: jsonLocationSchema,
 });
 
 export const loginSchema = z.object({

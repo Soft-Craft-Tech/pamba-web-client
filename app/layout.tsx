@@ -6,6 +6,7 @@ import { Bounce, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import HydrationProvider from "@/utils/providers/HydrationProvider";
+import GMapsProvider from "@/utils/providers/GMapsProvider";
 
 export const metadata: Metadata = {
   title: "Pamba App",
@@ -20,25 +21,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-manrope bg-background flex flex-col items-center">
-        <HydrationProvider>
-          <StoreProvider>
-            <QueryProvider>{children}</QueryProvider>
-          </StoreProvider>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            transition={Bounce}
-          />
-          <FloaterAppoitment />
-        </HydrationProvider>
+        <GMapsProvider>
+          <HydrationProvider>
+            <StoreProvider>
+              <QueryProvider>{children}</QueryProvider>
+            </StoreProvider>
+
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              transition={Bounce}
+            />
+            <FloaterAppoitment />
+          </HydrationProvider>
+        </GMapsProvider>
       </body>
     </html>
   );
