@@ -1,6 +1,6 @@
 "use client";
 import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   clearFilteredServices,
   setFilteredServices,

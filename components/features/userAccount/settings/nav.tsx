@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setActiveTab } from "@/store/settingsTabSlice";
 import { RootState } from "@/store/store";
 

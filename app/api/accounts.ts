@@ -1,5 +1,5 @@
 import { CustomError, Expense } from "@/components/types";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch } from "@/hooks/redux";
 import { setStep } from "@/store/completeProfileSlice";
 import { privateApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";
@@ -11,7 +11,10 @@ export const useGetExpenseAccounts = () => {
   return useQuery({
     queryKey: ["expenseAccounts"],
     queryFn: async () => {
-      const response = await privateApiCall("GET", endpoints.fetchExpenseAccounts);
+      const response = await privateApiCall(
+        "GET",
+        endpoints.fetchExpenseAccounts
+      );
       return response;
     },
   });
@@ -48,5 +51,3 @@ export const useCreateExpenseAccounts = (step: number) => {
     },
   });
 };
-
-

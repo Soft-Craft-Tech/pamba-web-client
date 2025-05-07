@@ -2,7 +2,7 @@
 import SettingsNav from "@/components/features/userAccount/settings/nav";
 import PasswordSecurity from "@/components/features/userAccount/settings/password_and_security";
 import EditProfile from "@/components/features/userAccount/settings/profileUpdate";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 
 export default function Settings() {

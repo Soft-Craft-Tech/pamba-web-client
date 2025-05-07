@@ -1,6 +1,6 @@
 "use client";
 import { useGetProfileCompletionStatus } from "@/app/api/businesses";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setStep } from "@/store/completeProfileSlice";
 import { RootState } from "@/store/store";
 import { useEffect } from "react";
