@@ -50,3 +50,12 @@ export const isAuthenticated = () => {
   }
   return isAuthenticated;
 };
+
+export const isTokenExpired = () => {
+  const user = getUser();
+  if (user) {
+    const expires = dayjs(user.expires);
+    return dayjs().isAfter(expires);
+  }
+  return true;
+}

@@ -9,19 +9,34 @@ import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
 import Overview from "@/components/features/userAccount/dashboard/overview";
 import AddProfileExpensesModal from "@/components/forms/addExpenses";
+import { getUser } from "@/utils/auth";
 import Link from "next/link";
 
 export default function DashboardPage() {
   const { data } = useGetProfileCompletionStatus();
   const { data: businessAnalysis } = useGetBusinessesAnalysis();
   const { data: revenueData } = useGetSalesAnalysis();
+  const { client } = getUser();
 
   return (
     <div className="w-full flex flex-col gap-5">
-      <AddProfileExpensesModal/>
-      {!data?.openingAndClosing && (
-        <div className="flex flex-row justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
-          <p>Your profile is incomplete</p>
+      <AddProfileExpensesModal />
+
+      {/* {!client?.verified && (
+        <div className="flex flex-row items-center justify-between bg-orange-100 border border-orange-500 text-orange-700 p-5 rounded">
+          <p>Please verify your email address before you proceed!</p>
+          <Link
+            href="/user/complete-profile"
+            className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
+          >
+            Send Verification Email
+          </Link>
+        </div>
+      )} */}
+
+      {(!data?.openingAndClosing || !client?.weekday_opening) && (
+        <div className="flex flex-row items-center justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
+          <p>Please complete your profile to unlock all features.</p>
           <Link
             href="/user/complete-profile"
             className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
