@@ -79,11 +79,11 @@ const AllShops: React.FC = () => {
   return (
     <div>
       <AllShopsHero onSearch={handleSearch} />
-      <div className="px-5 sm:px-10 lg:px-20 2xl:px-0">
-        <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+      <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
+        <div className=" w-full mt-10">
           <ShopSepartor header="Popular Shops" />
         </div>
-        <section className="mx-auto max-w-screen-xl w-full mt-10 relative">
+        <section className="w-full mt-10">
           <div className="w-full flex flex-wrap gap-10">
             {allBusinessesData?.businesses
               ?.slice(0, 9)
@@ -111,12 +111,12 @@ const AllShops: React.FC = () => {
           </div>
         </section>
       </div>
-      <div className="px-5 sm:px-10 lg:px-20 2xl:px-0">
-        <div className="mx-auto max-w-screen-xl w-full mt-10 relative">
+      <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
+        <div className=" w-full mt-10">
           <ShopSepartor header="Recommended Services" />
         </div>
-        <section className="mx-auto max-w-screen-xl w-full my-10 relative">
-          <div className="w-full flex flex-wrap gap-10 ">
+        <section className="w-full my-10">
+          <div className="w-full flex flex-wrap gap-10">
             {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
               <Explorer
                 key={serviceInfo?.id}
