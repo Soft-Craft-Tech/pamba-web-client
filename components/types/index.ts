@@ -252,7 +252,7 @@ export type SignUpFormData = {
   password: string;
   acceptedTerms: boolean;
   name: string;
-  category: number; //{ label: string; value: string };| number
+  category: number | string; //{ label: string; value: string };| number
   phone: string;
   city: string;
   location: {

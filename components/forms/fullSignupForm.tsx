@@ -91,7 +91,7 @@ export default function SignupForm() {
       password,
       acceptedTerms,
       name,
-      category: Number(category.value),
+      category: category.value,
       phone: parsePhoneNumber(phone, "KE").number,
       location: formattedLocation,
       city: cityArea?.longText || "",
@@ -126,68 +126,28 @@ export default function SignupForm() {
         >
           <div className="flex flex-col gap-5 lg:gap-5">
             <FormField
-              type="email"
-              placeholder="Email"
-              name="email"
-              error={errors.email}
-              register={register}
-            />
-            <Controller
-              control={control}
-              name="password"
-              render={({ field: { onChange, value } }) => (
-                <FormControl
-                  variant="outlined"
-                  error={errors.password !== undefined}
-                >
-                  <InputLabel htmlFor="outlined-password">Password</InputLabel>
-                  <OutlinedInput
-                    id="outlined-password"
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? (
-                            <MdVisibilityOff />
-                          ) : (
-                            <MdVisibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                    value={value}
-                    onChange={onChange}
-                  />
-                </FormControl>
-              )}
-            />
-            {errors.password && (
-              <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-5 lg:gap-4">
-            <FormField
               type="text"
               placeholder="Business Name"
               name="name"
               error={errors.name}
               register={register}
             />
+            <FormField
+              type="email"
+              placeholder="Email"
+              name="email"
+              error={errors.email}
+              register={register}
+            />
+          </div>
+
+          <div className="flex flex-col gap-5 lg:gap-4">
             <Controller
               name="category"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <ReactSelectComponent
-                  // type="creatable"
+                  type="creatable"
                   isClearable
                   onChange={(selectedOption) => {
                     setValue(
@@ -231,6 +191,47 @@ export default function SignupForm() {
                 {errors.location.message}
               </span>
             )}
+
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <FormControl
+                  variant="outlined"
+                  error={errors.password !== undefined}
+                >
+                  <InputLabel htmlFor="outlined-password">Password</InputLabel>
+                  <OutlinedInput
+                    id="outlined-password"
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <MdVisibilityOff />
+                          ) : (
+                            <MdVisibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                    value={value}
+                    onChange={onChange}
+                  />
+                </FormControl>
+              )}
+            />
+            {errors.password && (
+              <span className="bg-red-100 text-red-700 p-4 rounded-lg w-full">
+                {errors.password.message}
+              </span>
+            )}
           </div>
 
           <div className="flex gap-2 flex-col">
@@ -265,9 +266,13 @@ export default function SignupForm() {
             )}
           </div>
 
-          <Button variant="primary" type="submit" disabled={isPending}>
-            {isPending ? "Submitting" : "Submit"}
-          </Button>
+          <button
+            type="submit"
+            disabled={isPending}
+            className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed delay-75 duration-75 hover:bg-primaryHover"
+          >
+            {isPending ? "Submitting..." : "Submit"}
+          </button>
         </form>
       </div>
 
