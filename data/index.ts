@@ -37,11 +37,11 @@ const sidebarData: ISidebarData[] = [
     name: "Expenses",
     imageUrl: "/user-icons/expenses.svg",
   },
-  {
-    link: "/user/inventory",
-    name: "Inventory",
-    imageUrl: "/user-icons/inventory.svg",
-  },
+  // {
+  //   link: "/user/inventory",
+  //   name: "Inventory",
+  //   imageUrl: "/user-icons/inventory.svg",
+  // },
   // {
   //   link: "/user/reviews",
   //   name: "Reviews",
