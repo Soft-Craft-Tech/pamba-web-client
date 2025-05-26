@@ -9,7 +9,7 @@ import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import Explorer from "@/components/Explorer";
 import Image from "next/image";
 import { useGetClientServices } from "@/app/api/services";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import { useGetAllBusinesses } from "@/app/api/businesses";
 import { DynamicObject } from "@/components/types";

@@ -3,7 +3,7 @@ import {
   CustomError,
   ServiceInfoType,
 } from "@/components/types";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch } from "@/hooks/redux";
 import { setQueuedServices, setStep } from "@/store/completeProfileSlice";
 import { privateApiCall, publicApiCall } from "@/utils/apiRequest";
 import endpoints from "@/utils/endpoints";

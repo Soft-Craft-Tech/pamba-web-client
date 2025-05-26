@@ -252,11 +252,19 @@ export type SignUpFormData = {
   password: string;
   acceptedTerms: boolean;
   name: string;
-  category: string;
+  category: number | string; //{ label: string; value: string };| number
   phone: string;
   city: string;
-  mapUrl: string;
-  location: string;
+  location: {
+    place_id: string;
+    formatted_address: string;
+    geometry: {
+      location: {
+        lat: number;
+        lng: number;
+      };
+    };
+  };
 };
 
 export type staffType = {

@@ -12,7 +12,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateValidationError } from "@mui/x-date-pickers/models";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -25,6 +25,9 @@ import { Controller, useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import { WebApppointmentBookingType } from "../types";
+import { TimePicker, TimeValidationError } from "@mui/x-date-pickers";
+import { formatTime } from "@/utils/formatTime";
+import { shouldDisableTime } from "@/utils/disableTime";
 
 type ClientsType = {
   id: number;
@@ -47,21 +50,20 @@ const ClientsTable = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(clientSchema),
   });
-
-  const todaysDate = new Date().toUTCString();
-
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<MRT_SortingState>([]);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
   const { client } = getUser();
   const { data, isPending, isError } = useGetAllClients();
   const { mutateAsync, status: createClientStatus } = useBookAppointments();
   const { data: allServices } = useGetAllServices(client?.slug);
-  const [dateError, setDateError] = useState<DateValidationError | null>(null);
+  const [dateError, setDateError] = useState<DateValidationError>(null);
+  const [timeError, setTimeError] = useState<TimeValidationError>(null);
 
   const errorMessage = useMemo(() => {
     switch (dateError) {
@@ -75,12 +77,10 @@ const ClientsTable = () => {
   }, [dateError]);
 
   const submitClient = async (formData: FormValues) => {
-    const now = dayjs().format("HH:mm");
-
     const data: WebApppointmentBookingType = {
       name: formData.name,
       date: dayjs(selectedDate).format("DD-MM-YYYY"),
-      time: now,
+      time: dayjs(selectedTime).format("HH:mm"),
       comment: "",
       staff: "",
       business: client?.id,
@@ -92,6 +92,8 @@ const ClientsTable = () => {
 
     await mutateAsync(data);
     reset();
+    setSelectedTime(null);
+    setSelectedDate(null);
     table.setCreatingRow(null);
   };
 
@@ -139,6 +141,7 @@ const ClientsTable = () => {
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit(submitClient)}
+          noValidate
         >
           <FormField
             type="text"
@@ -161,19 +164,19 @@ const ClientsTable = () => {
             register={register}
             error={errors.phone}
           />
-     
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Appointment Date"
               value={selectedDate}
               onChange={(e) => {
                 let val = e as any;
-                setSelectedDate(val?.M?.$d);
+                setSelectedDate(val);
               }}
+              disablePast
               onError={(newError) => setDateError(newError)}
             />
-          </LocalizationProvider>
-    
+
           {(errorMessage !== "" && (
             <span className="bg-red-100 text-red-700 p-4 rounded-lg">
               {errorMessage}
@@ -185,20 +188,37 @@ const ClientsTable = () => {
               </span>
             ))}
 
-          {/* <Controller
-            control={control}
-            name="appointmentTime.$d"
-            render={({ field: { onChange, value } }) => (
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <TimePicker value={value ?? null} onChange={onChange} />
-              </LocalizationProvider>
+            <TimePicker
+              label="Appointment Time"
+              value={selectedTime}
+              onChange={(e) => {
+                setSelectedTime(e);
+              }}
+              shouldDisableTime={(timeValue, clockType) =>
+                shouldDisableTime(timeValue, clockType, selectedDate, client)
+              }
+              onError={(newError) => {
+                setTimeError(newError);
+              }}
+            />
+            {timeError !== null && (
+              <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+                Please select a time between{" "}
+                {selectedDate &&
+                (selectedDate.day() === 0 || selectedDate.day() === 6) ? (
+                  <>
+                    {formatTime(client?.weekend_opening)} and{" "}
+                    {formatTime(client?.weekend_closing)} (Weekend hours)
+                  </>
+                ) : (
+                  <>
+                    {formatTime(client?.weekday_opening)} and{" "}
+                    {formatTime(client?.weekday_closing)} (Weekday hours)
+                  </>
+                )}
+              </span>
             )}
-          />
-          {errors.appointmentTime?.$d && (
-            <span className="bg-red-100 text-red-700 p-4 rounded-lg">
-              {errors.appointmentTime?.$d.message}
-            </span>
-          )} */}
+          </LocalizationProvider>
 
           <Controller
             name="service"

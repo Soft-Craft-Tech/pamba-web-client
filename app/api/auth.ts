@@ -4,7 +4,7 @@ import {
   DynamicObject,
   SignUpFormData,
 } from "@/components/types";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch } from "@/hooks/redux";
 import { setStep } from "@/store/completeProfileSlice";
 import { publicApiCall } from "@/utils/apiRequest";
 import { setUser, updateClientInLocalStorage } from "@/utils/auth";

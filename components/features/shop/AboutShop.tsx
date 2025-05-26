@@ -2,13 +2,14 @@ import { useGetAllServices, useGetSingleBusiness } from "@/app/api/businesses";
 import Explorer from "@/components/Explorer";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject } from "@/components/types";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setFilteredServices } from "@/store/filteredServicesSlice";
 import { RootState } from "@/store/store";
 import LocationIcon from "@/ui/icons/location";
 import RatingIcon from "@/ui/icons/rating";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import { HiOutlineExternalLink } from "react-icons/hi";
 
 const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
   const filteredServices = useAppSelector(
@@ -30,21 +31,28 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
           {" "}
           {data?.business?.business_name}
         </h2>
-        <div>
-          {data?.business && (
+        {data?.business.placeId && (
+          <div>
             <Link
               target="_blank"
-              className="text-primary border-[0.1px] border-primary py-1 px-3 hover:bg-primary hover:text-white transition-all ease-in-out rounded-full text-sm duration-100 delay-75 "
-              href={data?.business?.google_map && data?.business?.google_map}
+              className="flex items-center gap-2 w-fit text-primary border-[0.1px] border-primary py-1 px-3 hover:bg-primary hover:text-white transition-all ease-in-out rounded-full text-sm duration-100 delay-75 "
+              href={`https://www.google.com/maps/place/?q=place_id:${data?.business.placeId}`}
+              rel="noopener noreferrer"
             >
               Directions
+              <HiOutlineExternalLink className="w-4 h-4" />
             </Link>
-          )}
-        </div>
-        <div className="flex flex-row gap-x-1 items-center mt-2">
-          <LocationIcon />
-          <p className="text-sm font-light"> {data?.business?.location}</p>
-        </div>
+          </div>
+        )}
+        {data?.business?.formatted_address && (
+          <div className="flex flex-row gap-x-1 items-center mt-2">
+            <LocationIcon />
+            <p className="text-sm font-light">
+              {" "}
+              {data?.business?.formatted_address}
+            </p>
+          </div>
+        )}
         {/* <div className="flex flex-row items-center gap-x-2">
           <p className="font-semibold text-xl">{data?.business?.rating}</p>
           <div className="flex gap-1">

@@ -107,7 +107,7 @@ export default function LoginForm() {
           disabled={isPending}
           className="text-white bg-primary rounded-md py-3 font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed delay-75 duration-75 hover:bg-primaryHover"
         >
-          {isPending ? "Loading..." : "Login"}
+          {isPending ? "Submitting..." : "Login"}
         </button>
       </form>
     </div>

@@ -4,7 +4,7 @@ import Toast from "../shared/toasts/authToast";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as React from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setShowToast } from "@/store/toastSlice";
 import { useResetPasswordMutation } from "@/app/api/auth";
 import { RootState } from "@/store/store";

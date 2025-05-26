@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setQueuedServices, setService } from "@/store/completeProfileSlice";
 import { RootState } from "@/store/store";
 import FormField from "@/ui/FormField";
@@ -40,6 +40,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
           ...queuedServices,
           {
             ...formData,
+            description: formData.description ?? "",
             category: formData.category.value.toString(),
           },
         ])

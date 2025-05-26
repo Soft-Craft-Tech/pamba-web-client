@@ -1,6 +1,6 @@
 import { useCreateExpenseAccounts } from "@/app/api/accounts";
 import { Expense } from "@/components/types";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import Button from "@/ui/button";
 import { TextField } from "@mui/material";
