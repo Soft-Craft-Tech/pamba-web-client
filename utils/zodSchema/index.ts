@@ -42,7 +42,7 @@ const jsonLocationSchema = z.preprocess((value) => {
 }, googleLocationSchema);
 
 export const fullSignUpSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
   acceptedTerms: z.boolean().refine((val) => val === true, {
     message: "Please accept terms and conditions",
@@ -69,13 +69,13 @@ export const fullSignUpSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
 export const profileUpdateSchema = z.object({
   name: z.string().min(1, "Business name is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
   city: z.string().min(1, "City is required"),
   location: z.string().min(1, "Location is required"),
@@ -94,7 +94,7 @@ export const inventorySchema = z.object({
 export const expenseSchema = z.object({
   expenseTitle: z.string().min(1, "Expense title is required"),
   amount: z.string().min(1, "Expense amount is required"),
-  description: z.string().min(1, "Expense description is required"),
+  description: z.string().optional(),
   // accountID: z.string().min(1, "Expense account is required"),
   accountID: z.object({
     label: z.string(),
@@ -109,7 +109,7 @@ export const revenueSchema = z.object({
     label: z.string(),
     value: z.number().min(1, "Service is required"),
   }),
-  description: z.string().min(1, "Description is required"),
+  description: z.string().optional(),
   // paymentMethod: z.string().min(1, "Payment method is required"),
   paymentMethod: z.object({
     label: z.string(),
@@ -119,7 +119,7 @@ export const revenueSchema = z.object({
 
 export const clientSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
   // appointmentDate: z.object({
   //   M: z.object({ $d: z.coerce.date() }),
@@ -133,7 +133,7 @@ export const clientSchema = z.object({
 
 export const appointmentSchema = z.object({
   customerName: z.string().min(1, "Customer Name is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
   date: z.string().min(1, "Date is required"),
   time: z.string().min(1, "Time is required"),
@@ -153,7 +153,7 @@ export const serviceSchema = z.object({
     value: z.number().min(1, "Category is required"),
   }),
   name: z.string().min(1, "Service name is required"),
-  description: z.string().min(1, "Description is required"),
+  description: z.string().optional(),
   estimatedTime: z.string().min(1, "Estimated time is required"),
   price: z.string().min(1, "Price is required"),
   imageURL: z.string().min(1, "Image is required"),

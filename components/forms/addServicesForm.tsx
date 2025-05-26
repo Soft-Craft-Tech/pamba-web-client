@@ -38,10 +38,10 @@ export default function AddServicesForm({
     const data = [
       {
         name,
-        description,
+        description: description ?? "",
         price: Number(price),
         estimatedTime,
-        category: category.value.toString(),
+        category: String(category.value),
         imageURL,
       },
     ];

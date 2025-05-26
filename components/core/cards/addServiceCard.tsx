@@ -71,7 +71,7 @@ const AddServiceCard = ({
     const data = {
       serviceId,
       name,
-      description,
+      description: description || "",
       category: category.value,
       price: Number(price),
       imageURL,

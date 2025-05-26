@@ -28,7 +28,6 @@ import { FaPlus } from "react-icons/fa";
 import * as z from "zod";
 import { BusinessServiceType } from "../types";
 
-
 type RevenueType = {
   id: number;
   date_created: string;
@@ -70,7 +69,7 @@ const RevenueTable = () => {
     const { serviceId, description, paymentMethod } = formData;
     await editSale({
       paymentmethod: paymentMethod.value,
-      description,
+      description: description ?? "",
       service_id: serviceId.value,
       sale_id,
     });
@@ -81,7 +80,7 @@ const RevenueTable = () => {
   const submitRevenue = async (formData: FormValues) => {
     const data = {
       serviceId: formData.serviceId.value,
-      description: formData.description,
+      description: formData.description ?? "",
       paymentMethod: formData.paymentMethod.value,
     };
 
