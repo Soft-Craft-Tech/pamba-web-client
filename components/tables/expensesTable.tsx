@@ -77,7 +77,7 @@ const Table = ({ handleModal }: { handleModal: () => void }) => {
       expenseId,
       expenseTitle: formData?.expenseTitle,
       expenseAmount: Number(formData?.amount),
-      description: formData?.description,
+      description: formData?.description ?? "",
       accountID: formData?.accountID.value.toString(),
     };
 
@@ -89,6 +89,7 @@ const Table = ({ handleModal }: { handleModal: () => void }) => {
   const submitExpense = async (formData: FormValues) => {
     let data = {
       ...formData,
+      description: formData.description ?? "",
       amount: Number(formData.amount),
       accountID: formData.accountID.value.toString(),
     };

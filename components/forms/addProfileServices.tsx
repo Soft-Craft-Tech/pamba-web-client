@@ -40,6 +40,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
           ...queuedServices,
           {
             ...formData,
+            description: formData.description ?? "",
             category: formData.category.value.toString(),
           },
         ])

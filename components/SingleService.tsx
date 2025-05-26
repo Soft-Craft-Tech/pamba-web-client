@@ -12,15 +12,17 @@ import Button from "@/ui/button";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import TimeIcon from "@/ui/icons/time-icon";
 import ReactSelectComponent from "@/ui/Select";
+import { shouldDisableTime } from "@/utils/disableTime";
+import { formatTime } from "@/utils/formatTime";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import InputLabel from "@mui/material/InputLabel";
+import { TimeValidationError } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import moment from "moment";
 import Image from "next/image";
 import * as React from "react";
 
@@ -37,9 +39,10 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   const [bookingFrame, setBookingFrame] = React.useState("start");
   const [activeSelect, setActiveSelect] = React.useState<string | any>(null);
   const [staff, setStaff] = React.useState({ label: "", value: 0 });
-  const [selectedDay, setSelectedDay] = React.useState<any>(null);
-  const [selectedTime, setSelectedTime] = React.useState<any>(null);
+  const [selectedDay, setSelectedDay] = React.useState<Dayjs | null>(null);
+  const [selectedTime, setSelectedTime] = React.useState<Dayjs | null>(null);
   const [notification, setNotificationMethod] = React.useState("whatsapp");
+  const [timeError, setTimeError] = React.useState<TimeValidationError>(null);
 
   const handleDaySelect = (index: number, day: dayjs.Dayjs) => {
     setActiveSelect(index);
@@ -69,7 +72,6 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
     formData.append("date", dayjs(selectedDay).format("DD-MM-YYYY"));
     formData.append("time", dayjs(selectedTime).format("HH:mm"));
     formData.append("notification", notification);
-    // //@ts-expect-error:Type error
     // formData.append("name", name);
 
     const formJson = Object.fromEntries(formData.entries());
@@ -95,11 +97,8 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   };
 
   const handleClose = () => {
+    setTimeError(null);
     setOpen(false);
-  };
-
-  const formatTime = (time: string) => {
-    return time ? moment(time, "HH:mm").format("hh:mm A") : "";
   };
 
   return (
@@ -210,23 +209,19 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
               <h1 className="text-xl font-semibold">Book Appointment</h1>
               <div className="gap-y-10 flex flex-col">
                 <div className="flex-col flex max-w-[336px] gap-y-3">
-                  {data?.staff?.length === 0 && (
-                    <p className="text-lg text-red-300">
-                      Staff for this shop not available
-                    </p>
+                  {data?.staff?.length > 0 && (
+                    <ReactSelectComponent
+                      placeholder="Service Provider"
+                      options={data?.staff.map(({ id, f_name }: staffType) => ({
+                        value: id,
+                        label: f_name,
+                      }))}
+                      onChange={(newValue: unknown) =>
+                        setStaff(newValue as { label: string; value: number })
+                      }
+                      closeMenuOnSelect={true}
+                    />
                   )}
-
-                  <ReactSelectComponent
-                    placeholder="Service Provider"
-                    options={data?.staff.map(({ id, f_name }: staffType) => ({
-                      value: id,
-                      label: f_name,
-                    }))}
-                    onChange={(newValue: unknown) =>
-                      setStaff(newValue as { label: string; value: number })
-                    }
-                    closeMenuOnSelect={true}
-                  />
                 </div>
                 <div className="flex flex-row gap-x-5">
                   {daysData.map(({ day, date, slots, dateObj }, index) => (
@@ -271,8 +266,39 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                       label="Select Time"
                       value={selectedTime}
                       onChange={handleTimeChange}
-                      // shouldDisableTime={shouldDisableTime}
+                      shouldDisableTime={(timeValue, clockType) =>
+                        shouldDisableTime(
+                          timeValue,
+                          clockType,
+                          activeSelect !== null
+                            ? daysData[activeSelect]?.dateObj
+                            : null,
+                          data?.service
+                        )
+                      }
+                      onError={(error) => {
+                        setTimeError(error);
+                      }}
                     />
+                    {timeError !== null && (
+                      <span className="bg-red-100 text-red-700 p-4 rounded-lg">
+                        Please select a time between{" "}
+                        {selectedDay &&
+                        (selectedDay.day() === 0 || selectedDay.day() === 6) ? (
+                          <>
+                            {formatTime(data?.service.weekendOpening)} and{" "}
+                            {formatTime(data?.service.weekendClosing)} (Weekend
+                            hours)
+                          </>
+                        ) : (
+                          <>
+                            {formatTime(data?.service.weekdayOpening)} and{" "}
+                            {formatTime(data?.service.weekdayClosing)} (Weekday
+                            hours)
+                          </>
+                        )}
+                      </span>
+                    )}
                   </LocalizationProvider>
                 </div>
                 <div className="flex flex-col gap-3 lg:flex-row justify-end">
@@ -285,12 +311,14 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                   />
                   <Button
                     label="Book Appointment"
-                    className="bg-primary hover:bg-primaryHover rounded-full flex items-center gap-2 py-1 lg:p-3 justify-center text-white text-sm lg:text-base"
+                    className="bg-primary hover:bg-primaryHover rounded-full flex items-center gap-2 py-1 lg:p-3 justify-center text-white text-sm lg:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primaryHover"
                     onClick={() => {
-                      setBookingFrame("finish");
+                      if (!timeError) {
+                        setBookingFrame("finish");
+                      }
                     }}
-                    disabled={data?.staff?.length === 0}
                     variant="primary"
+                    disabled={timeError !== null}
                   >
                     Confirm Appointment
                     <Image
@@ -313,13 +341,13 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 <div className="flex flex-row gap-x-1 items-center">
                   <CalendarIcon />
                   <p className="text-sm">
-                    {dayjs(new Date(selectedDay)).format("MMM D")}
+                    {selectedDay && dayjs(selectedDay).format("MMM D")}
                   </p>
                 </div>
                 <div className="flex flex-row gap-x-1 items-center">
                   <TimeIcon />
                   <p className="text-sm">
-                    {dayjs(new Date(selectedTime)).format("LT")}
+                    {selectedTime && selectedTime.format("LT")}
                   </p>
                 </div>
               </div>
@@ -353,7 +381,6 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
                 name="comment"
                 className="border-[#D9D9D9] border bg-[#FAFDFF] text-gray-900 text-sm rounded-lg h-[96px] block w-full p-2"
                 placeholder="Additional information"
-                required
               />
               {/* <p>How do you want to be notified?</p>
               <div className="flex flex-row items-center gap-x-3">
