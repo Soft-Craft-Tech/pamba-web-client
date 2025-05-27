@@ -4,6 +4,7 @@ import { RootState } from "@/store/store";
 import { AiOutlineCheckCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { LuCircleDot } from "react-icons/lu";
 
+
 export default function ProfileProgress() {
   const step = useAppSelector((state: RootState) => state.completeProfile.step);
 
@@ -24,42 +25,41 @@ export default function ProfileProgress() {
           to offer.
         </p>
       </div>
-      <div className="">
-        <div className="flex flex-col items-center">
-          <div className="w-full mb-4">
-            <div className="flex gap-5 relative whitespace-nowrap overflow-x-auto pb-5 lg:pb-0">
-              {stepDescriptions.map((description, index) => (
+
+      <div className="flex flex-col items-center">
+        <div className="w-full mb-4">
+          <div className="flex gap-5 relative whitespace-nowrap overflow-x-auto pb-5 lg:pb-0">
+            {stepDescriptions.map((description, index) => (
+              <div
+                key={index}
+                className={`flex flex-col items-center relative w-full pb-5 border-b-[2px] ${
+                  step === index + 1
+                    ? "border-primary"
+                    : step < index + 1
+                    ? "border-gray-300"
+                    : "border-green-500"
+                }`}
+              >
                 <div
-                  key={index}
-                  className={`flex flex-col items-center relative w-full pb-5 border-b-[2px] ${
+                  className={`flex items-center justify-center border ${
                     step === index + 1
-                      ? "border-primary"
-                      : step < index + 1
-                      ? "border-gray-300"
-                      : "border-green-500"
-                  }`}
+                      ? "bg-primary border-primary"
+                      : step > index + 1
+                      ? "bg-green-500 border-green-500"
+                      : "bg-[#f89dc8] opacity-50"
+                  } w-8 h-8 rounded-full`}
                 >
-                  <div
-                    className={`flex items-center justify-center border ${
-                      step === index + 1
-                        ? "bg-primary border-primary"
-                        : step > index + 1
-                        ? "bg-green-500 border-green-500"
-                        : "bg-[#f89dc8] opacity-50"
-                    } w-8 h-8 rounded-full`}
-                  >
-                    {step === index + 1 ? (
-                      <LuCircleDot className="h-5 w-5 text-white" />
-                    ) : step > index + 1 ? (
-                      <AiOutlineCheckCircle className="h-5 w-5 text-white" />
-                    ) : (
-                      <AiOutlineMinusCircle className="h-5 w-5 text-[#DB1471]" />
-                    )}
-                  </div>
-                  <span className="text-xs mt-1 text-muted">{description}</span>
+                  {step === index + 1 ? (
+                    <LuCircleDot className="h-5 w-5 text-white" />
+                  ) : step > index + 1 ? (
+                    <AiOutlineCheckCircle className="h-5 w-5 text-white" />
+                  ) : (
+                    <AiOutlineMinusCircle className="h-5 w-5 text-[#DB1471]" />
+                  )}
                 </div>
-              ))}
-            </div>
+                <span className="text-xs mt-1 text-muted">{description}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
