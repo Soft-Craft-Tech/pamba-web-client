@@ -172,3 +172,29 @@ export const useGetBusinessService = (business_id: string) => {
     },
   });
 };
+
+export const useResendVerificationToken = () => {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      const response = await publicApiCall(
+        "POST",
+        endpoints.resendVerificationToken,
+        { email }
+      );
+      return response;
+    },
+    onSuccess: () => {
+      toast.warning("A verification link has been sent to your email.", {
+        autoClose: false,
+        closeButton: true,
+        closeOnClick: false,
+      });
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
+};
