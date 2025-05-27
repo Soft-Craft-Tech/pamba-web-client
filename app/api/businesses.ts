@@ -123,6 +123,7 @@ export const useGetProfileCompletionStatus = () => {
       const response = await privateApiCall("GET", endpoints.profileCompletion);
       return response;
     },
+    refetchOnWindowFocus: false,
   });
 };
 
