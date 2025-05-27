@@ -7,7 +7,8 @@ const businessesEndpoints: { [key: string]: string } = {
   fetchServices: "/businesses/business-services",
   getAllBusinesses: "/businesses/all-businesses",
   getBusinessesAnalysis: "/businesses/analysis",
-  businessOpeningClosing: "/businesses/business-hours"
+  businessOpeningClosing: "/businesses/business-hours",
+  resendVerificationToken: "/businesses/resend-verification-token",
 };
 
 export default businessesEndpoints;

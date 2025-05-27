@@ -2,6 +2,7 @@
 import {
   useGetBusinessesAnalysis,
   useGetProfileCompletionStatus,
+  useResendVerificationToken,
 } from "@/app/api/businesses";
 import { useGetSalesAnalysis } from "@/app/api/revenue";
 import AppointmentsTable from "@/components/charts/appointments";
@@ -11,28 +12,42 @@ import Overview from "@/components/features/userAccount/dashboard/overview";
 import AddProfileExpensesModal from "@/components/forms/addExpenses";
 import { getUser } from "@/utils/auth";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
+  const [verify, setVerify] = useState(false);
+
+  const { mutateAsync: resendVerificationEmail } = useResendVerificationToken();
   const { data } = useGetProfileCompletionStatus();
   const { data: businessAnalysis } = useGetBusinessesAnalysis();
   const { data: revenueData } = useGetSalesAnalysis();
   const { client } = getUser();
 
+  useEffect(() => {
+    const sendVerificationEmail = async () => {
+      if (verify) {
+        await resendVerificationEmail(client?.email);
+        setVerify(false);
+      }
+    };
+    sendVerificationEmail();
+  }, [verify]);
+
   return (
     <div className="w-full flex flex-col gap-5">
       <AddProfileExpensesModal />
 
-      {/* {!client?.verified && (
+      {!client?.verified && (
         <div className="flex flex-row items-center justify-between bg-orange-100 border border-orange-500 text-orange-700 p-5 rounded">
           <p>Please verify your email address before you proceed!</p>
-          <Link
-            href="/user/complete-profile"
-            className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md"
+          <button
+            onClick={() => setVerify(true)}
+            className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md capitalize "
           >
             Send Verification Email
-          </Link>
+          </button>
         </div>
-      )} */}
+      )}
 
       {(!data?.openingAndClosing || !client?.weekday_opening) && (
         <div className="flex flex-row items-center justify-between gap-7 w-full h-auto bg-white p-5 rounded-md shadow-sm ">
