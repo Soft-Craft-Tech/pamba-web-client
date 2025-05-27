@@ -184,11 +184,28 @@ export const useResendVerificationToken = () => {
       return response;
     },
     onSuccess: () => {
-      toast.warning("A verification link has been sent to your email.", {
+      toast.warning("A verification email has been sent to your inbox.", {
         autoClose: false,
         closeButton: true,
         closeOnClick: false,
       });
+    },
+    onError: (error) => {
+      const customError = error as CustomError;
+      customError.response?.data.message
+        ? toast.error(customError.response?.data.message)
+        : toast.error(error.message);
+    },
+  });
+};
+
+export const useCheckTokenExpiry = () => {
+  return useMutation({
+    mutationFn: async (token: string) => {
+      const response = await publicApiCall("POST", endpoints.checkTokenExpiry, {
+        token,
+      });
+      return response;
     },
     onError: (error) => {
       const customError = error as CustomError;
