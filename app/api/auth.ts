@@ -24,6 +24,9 @@ export const useSignUpMutation = () => {
       );
       return response;
     },
+    onSuccess: (data) => {
+      setUser(data);
+    },
     onError: (error) => {
       const customError = error as CustomError;
       customError.response?.data.message
