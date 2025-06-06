@@ -91,7 +91,7 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
           Discover Your Perfect Look: Explore Services Near You
         </p>
         <div className="flex bg-white w-full mt-4 gap-2 justify-between max-w-[940px] rounded-md px-4 py-2">
-          <div className="flex flex-col lg:flex-row w-full gap-3">
+          <div className="flex flex-col items-center lg:flex-row w-full gap-3">
             <div className="flex flex-row items-center gap-1 w-full">
               <SearchIcon />
               <ReactSelectComponent
@@ -134,7 +134,7 @@ const AllShopsHero: React.FC<ServiceHeroProps> = ({ onSearch }) => {
               onClick={() => {
                 handleClick();
               }}
-              className="bg-primary text-white font-bold py-2 px-4 rounded-md w-full lg:w-max duration-100 hover:bg-primaryHover"
+              className="bg-primary text-white font-bold py-2 px-4 rounded-md w-full lg:w-max duration-100 hover:bg-primaryHover h-full max-h-14"
             >
               Search
             </button>
