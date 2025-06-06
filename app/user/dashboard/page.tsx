@@ -17,16 +17,16 @@ import { useEffect, useState } from "react";
 export default function DashboardPage() {
   const [verify, setVerify] = useState(false);
 
-  const { mutateAsync: resendVerificationEmail } = useResendVerificationToken();
+  const { mutateAsync: resendVerificationEmail, isPending } = useResendVerificationToken();
   const { data } = useGetProfileCompletionStatus();
   const { data: businessAnalysis } = useGetBusinessesAnalysis();
   const { data: revenueData } = useGetSalesAnalysis();
-  const { client } = getUser();
+  const { client, business } = getUser();
 
   useEffect(() => {
     const sendVerificationEmail = async () => {
       if (verify) {
-        await resendVerificationEmail(client?.email);
+        await resendVerificationEmail(client? client?.email : business?.email);
         setVerify(false);
       }
     };
@@ -37,12 +37,14 @@ export default function DashboardPage() {
     <div className="w-full flex flex-col gap-5">
       <AddProfileExpensesModal />
 
-      {!client?.verified && (
+      {client?.verified && (
         <div className="flex flex-row items-center justify-between bg-orange-100 border border-orange-500 text-orange-700 p-5 rounded">
           <p>Please verify your email address before you proceed!</p>
           <button
+            type="button"
             onClick={() => setVerify(true)}
-            className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md capitalize "
+            className="w-max py-2 px-5 bg-primary text-white font-semibold rounded-md capitalize disabled:opacity-50 disabled:cursor-wait"
+            disabled={isPending}
           >
             Send Verification Email
           </button>

@@ -92,7 +92,7 @@ const AllShops: React.FC = () => {
                   profile_img,
                   business_name,
                   id,
-                  location,
+                  formatted_address,
                   slug,
                   reviews,
                   rating,
@@ -101,7 +101,7 @@ const AllShops: React.FC = () => {
                     key={id}
                     imageUrl={profile_img}
                     shopName={business_name}
-                    location={location}
+                    location={formatted_address}
                     href={slug}
                     rating={rating}
                     reviews={reviews}
