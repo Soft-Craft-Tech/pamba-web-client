@@ -1,4 +1,5 @@
 "use client";
+
 import {
   useGetBusinessesAnalysis,
   useGetProfileCompletionStatus,
@@ -37,7 +38,7 @@ export default function DashboardPage() {
     <div className="w-full flex flex-col gap-5">
       <AddProfileExpensesModal />
 
-      {client?.verified && (
+      {!client?.active && (
         <div className="flex flex-row items-center justify-between bg-orange-100 border border-orange-500 text-orange-700 p-5 rounded">
           <p>Please verify your email address before you proceed!</p>
           <button
