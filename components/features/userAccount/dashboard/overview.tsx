@@ -52,10 +52,10 @@ export default function Overview({
             <Image
               src={client?.profile_img}
               alt={client?.business_name}
-              className="shadow-xl rounded-full object-cover"
+              className="rounded-full object-cover shadow-2xl max-h-[200px] max-w-[200px]"
               priority
-              width={300}
-              height={300}
+              width={200}
+              height={200}
             />
           )}
         </div>
