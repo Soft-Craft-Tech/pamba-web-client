@@ -10,7 +10,6 @@ import AppointmentsTable from "@/components/charts/appointments";
 import AppointmentsCard from "@/components/charts/chartCard";
 import FinancialSummary from "@/components/charts/financialsummary";
 import Overview from "@/components/features/userAccount/dashboard/overview";
-import AddProfileExpensesModal from "@/components/forms/addExpenses";
 import { getUser } from "@/utils/auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,7 +17,8 @@ import { useEffect, useState } from "react";
 export default function DashboardPage() {
   const [verify, setVerify] = useState(false);
 
-  const { mutateAsync: resendVerificationEmail, isPending } = useResendVerificationToken();
+  const { mutateAsync: resendVerificationEmail, isPending } =
+    useResendVerificationToken();
   const { data } = useGetProfileCompletionStatus();
   const { data: businessAnalysis } = useGetBusinessesAnalysis();
   const { data: revenueData } = useGetSalesAnalysis();
@@ -27,7 +27,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const sendVerificationEmail = async () => {
       if (verify) {
-        await resendVerificationEmail(client? client?.email : business?.email);
+        await resendVerificationEmail(client ? client?.email : business?.email);
         setVerify(false);
       }
     };
@@ -36,8 +36,6 @@ export default function DashboardPage() {
 
   return (
     <div className="w-full flex flex-col gap-5">
-      <AddProfileExpensesModal />
-
       {!client?.active && (
         <div className="flex flex-row items-center justify-between bg-orange-100 border border-orange-500 text-orange-700 p-5 rounded">
           <p>Please verify your email address before you proceed!</p>
