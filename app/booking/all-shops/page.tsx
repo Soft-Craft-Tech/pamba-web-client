@@ -1,4 +1,5 @@
 "use client";
+
 import { useGetAllBusinesses } from "@/app/api/businesses";
 import { useGetClientServices } from "@/app/api/services";
 import AllShopsHero from "@/components/AllShopsHero";
@@ -79,61 +80,65 @@ const AllShops: React.FC = () => {
   return (
     <div>
       <AllShopsHero onSearch={handleSearch} />
-      <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
-        <div className=" w-full mt-10">
-          <ShopSepartor header="Popular Shops" />
-        </div>
-        <section className="w-full mt-10">
-          <div className="w-full flex flex-wrap gap-10">
-            {allBusinessesData?.businesses
-              ?.slice(0, 9)
-              ?.map(
-                ({
-                  profile_img,
-                  business_name,
-                  id,
-                  formatted_address,
-                  slug,
-                  reviews,
-                  rating,
-                }: DynamicObject) => (
+      {allBusinessesData?.businesses.length > 0 && (
+        <>
+          <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
+            <div className=" w-full mt-10">
+              <ShopSepartor header="Popular Shops" />
+            </div>
+            <section className="w-full mt-10">
+              <div className="w-full flex flex-wrap gap-10">
+                {allBusinessesData?.businesses
+                  ?.slice(0, 9)
+                  ?.map(
+                    ({
+                      profile_img,
+                      business_name,
+                      id,
+                      formatted_address,
+                      slug,
+                      reviews,
+                      rating,
+                    }: DynamicObject) => (
+                      <Explorer
+                        key={id}
+                        imageUrl={profile_img}
+                        shopName={business_name}
+                        location={formatted_address}
+                        href={slug}
+                        rating={rating}
+                        reviews={reviews}
+                      />
+                    )
+                  )}
+              </div>
+            </section>
+          </div>
+          <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
+            <div className=" w-full mt-10">
+              <ShopSepartor header="Recommended Services" />
+            </div>
+            <section className="w-full my-10">
+              <div className="w-full flex flex-wrap gap-10">
+                {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
                   <Explorer
-                    key={id}
-                    imageUrl={profile_img}
-                    shopName={business_name}
-                    location={formatted_address}
-                    href={slug}
-                    rating={rating}
-                    reviews={reviews}
+                    key={serviceInfo?.id}
+                    service={serviceInfo?.service}
+                    imageUrl={serviceInfo?.service_image}
+                    shopName={businessInfo?.business_name}
+                    price={serviceInfo?.price}
+                    rating={businessInfo?.rating}
+                    btnText="Book Appointment"
+                    booking={true}
+                    href={serviceInfo?.id}
+                    shopImage={businessInfo?.profile_img}
                   />
-                )
-              )}
+                ))}
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
-      <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
-        <div className=" w-full mt-10">
-          <ShopSepartor header="Recommended Services" />
-        </div>
-        <section className="w-full my-10">
-          <div className="w-full flex flex-wrap gap-10">
-            {data?.services?.map(({ businessInfo, serviceInfo }: any) => (
-              <Explorer
-                key={serviceInfo?.id}
-                service={serviceInfo?.service}
-                imageUrl={serviceInfo?.service_image}
-                shopName={businessInfo?.business_name}
-                price={serviceInfo?.price}
-                rating={businessInfo?.rating}
-                btnText="Book Appointment"
-                booking={true}
-                href={serviceInfo?.id}
-                shopImage={businessInfo?.profile_img}
-              />
-            ))}
-          </div>
-        </section>
-      </div>
+        </>
+      )}
     </div>
   );
 };
