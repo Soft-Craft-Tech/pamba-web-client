@@ -4,9 +4,9 @@ import Carousel from "../../core/cards/imageCarousel";
 // import { motion } from "framer-motion";
 import StartTrial from "../../core/buttons/startTrial";
 import { carouselImages } from "@/ui/carouselImages";
+import Link from "next/link";
+import Image from "next/image";
 export default function Hero() {
-  
-
   return (
     <section className="px-5 h-auto flex flex-col gap-6 py-10 mt-20 mb-10 sm:mb-20 sm:px-10 sm:gap-10 lg:h-screen lg:px-20 lg:grid lg:grid-cols-9 xl:h-auto xl:py-20 xl:mt-24">
       <div className="flex flex-col justify-center gap-6 sm:gap-4 lg:col-span-5">
@@ -19,7 +19,22 @@ export default function Hero() {
           wellness software. Streamline your operations by effortlessly managing
           bookings, inventory, and cash flow - all in one powerful solution.
         </p>
+        <div className="flex gap-3">
         <StartTrial />
+        <Link
+          href="/booking/all-shops"
+          className="border border-primary bg-white flex items-center w-max py-2 px-4 text-primary font-medium rounded-full gap-2 duration-100 delay-75 hover:scale-[1.02] hover:text-white hover:bg-primaryHover sm:py-4 sm:px-8 lg:py-3 lg:px-5 z-10"
+        >
+          Book Appointment
+          <Image
+            className="border border-primary bg-white rounded-full"
+            src="/arrow-right.svg"
+            alt="arrow-icon"
+            width={20}
+            height={20}
+          />
+        </Link>
+        </div>
       </div>
       <div className="col-span-4 w-full h-full relative items-center justify-center flex">
         {/* Borders */}
