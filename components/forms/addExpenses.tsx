@@ -1,39 +1,31 @@
 "use client";
-import { useGetProfileCompletionStatus } from "@/app/api/businesses";
+
+// import { useGetProfileCompletionStatus } from "@/app/api/businesses";
 import Modal from "@mui/material/Modal";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import AddExpenseAccounts from "../features/profileCompletion/addExpenseAccounts";
 
 const AddProfileExpensesModal = ({
   modalState,
+  btnClicked,
 }: {
-  modalState?: boolean;
+  modalState: boolean;
+  btnClicked: boolean;
 }) => {
-  const pathname = usePathname();
-
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { data } = useGetProfileCompletionStatus();
+  const handleOpen = () => setOpen(true);
+  // const { data } = useGetProfileCompletionStatus();
+
+  // useEffect(() => {
+  //   if (!data?.expenseAccounts) {
+  //     handleOpen();
+  //   }
+  // }, [data]);
 
   useEffect(() => {
-    if (modalState && pathname === "/user/expenses") handleOpen();
-  }, [modalState, pathname]);
-
-  useEffect(() => {
-    if (
-      (data?.expenseAccounts !== undefined &&
-        !data?.expenseAccounts &&
-        pathname === "/user/dashboard") ||
-      (data?.expenseAccounts !== undefined &&
-        !data?.expenseAccounts &&
-        pathname === "/user/expenses")
-    ) {
-
-      handleOpen();
-    }
-  }, [data?.expenseAccounts, pathname]);
+    if (modalState) handleOpen();
+  }, [btnClicked, modalState]);
 
   return (
     <div>
