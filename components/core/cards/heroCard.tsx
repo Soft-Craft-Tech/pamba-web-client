@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { motion } from "framer-motion";
+
 export default function HeroCard() {
     return(
-        <div className="bg-secondary absolute text-white w-11/12 p-3 rounded-lg -bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col gap-3 sm:-bottom-14 opacity-9 sm:p-5 sm:w-2/3 lg:gap-2 lg:bottom-3">
+        <div className="z-10 bg-secondary absolute text-white w-11/12 p-3 rounded-lg -bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col gap-3 sm:-bottom-14 opacity-9 sm:p-5 sm:w-2/3 lg:gap-2 lg:bottom-3">
             <div>
                 <h3 className="font-extrabold text-lg sm:text-2xl lg:text-lg">Kwetu SPA</h3>
                 <p className="text-xs font-light sm:text-base lg:text-xs">2<sup>nd</sup> St, Kilimani Drive.</p>
