@@ -34,7 +34,7 @@ const ClientInfoPage = () => {
   const router = useRouter();
 
   // Get business data from the first service in cartServices
-  const { data: businessData } = useGetSingleBusiness(cartInfo?.business_slug);
+  const { data: businessData } = useGetSingleBusiness(cartInfo?.business_slug || "");
   const { mutate: bookAppointment, isSuccess } = useBookAppointments();
 
   const {

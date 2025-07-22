@@ -32,6 +32,7 @@ export default function DashboardPage() {
       }
     };
     sendVerificationEmail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verify]);
 
   return (
