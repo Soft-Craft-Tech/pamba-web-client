@@ -10,7 +10,7 @@ import { FaUsers } from "react-icons/fa";
 
 const SelectProvider = ({ businessSlug }: { businessSlug: string }) => {
   const { cartInfo, cartServices, updateCartProvider } = useBookingCart();
-  console.log(cartServices);
+
   const router = useRouter();
   const [selectedProvider, setSelectedProvider] = useState<number | null>(null);
 
@@ -18,7 +18,6 @@ const SelectProvider = ({ businessSlug }: { businessSlug: string }) => {
   const { data: serviceData } = useGetSingleService(
     cartServices[0]?.id.toString()
   );
-  console.log(businessData);
 
   // Initialize selectedProvider from cartServices data
   useEffect(() => {

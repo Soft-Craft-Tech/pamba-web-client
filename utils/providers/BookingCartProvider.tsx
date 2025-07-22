@@ -1,7 +1,7 @@
 "use client";
 
 import { CartItem } from "@/components/types";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type CartInfo = {
   provider_id?: number | null;
@@ -61,6 +61,7 @@ export default function BookingCartProvider({
 }) {
   const [cartInfo, setCartInfo] = useState<CartInfo>({});
   const [cartServices, setCartServices] = useState<CartItem[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -77,19 +78,24 @@ export default function BookingCartProvider({
           }
         } catch (error) {
           console.error("Error loading cart from localStorage:", error);
-          // localStorage.removeItem(CART_STORAGE_KEY);
+          localStorage.removeItem(CART_STORAGE_KEY);
         }
       }
+      setIsLoaded(true);
     }
   }, []);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const cartData = { cartInfo, cartServices };
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartData));
+    if (typeof window !== "undefined" && isLoaded) {
+      // Only save if we have actual cart data (not just empty initial state)
+      const hasCartData = Object.keys(cartInfo).length > 0 || cartServices.length > 0;
+      if (hasCartData) {
+        const cartData = { cartInfo, cartServices };
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartData));
+      }
     }
-  }, [cartInfo, cartServices]);
+  }, [cartInfo, cartServices, isLoaded]);
 
   const addService = (service: CartItem) => {
     setCartServices((prev) =>
@@ -137,7 +143,19 @@ export default function BookingCartProvider({
     weekendClosing?: string,
     weekendOpening?: string
   ) => {
+    
+    // Only clear the cart if we're switching to a different business (not on initial load)
+    if (cartInfo.business_id && cartInfo.business_id !== businessId) {
+      setCartInfo({});
+      setCartServices([]);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(CART_STORAGE_KEY);
+      }
+      return; // Exit early to avoid setting cartInfo again
+    }
+    
     setCartInfo({
+      ...cartInfo,
       business_id: businessId,
       business_name: businessName,
       business_slug: businessSlug,

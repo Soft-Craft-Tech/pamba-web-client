@@ -6,8 +6,6 @@ import { useGetSingleBusiness } from "@/app/api/businesses";
 
 const EditProfile = () => {
   const { client } = getUser();
-  // const client = user ? user.client : null;
-  console.log(client);
   const { data } = useGetSingleBusiness(client?.slug);
 
   return client?.active ? (

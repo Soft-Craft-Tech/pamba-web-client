@@ -2,19 +2,17 @@
 import { useGetSingleBusiness } from "@/app/api/businesses";
 import { useGetSingleService } from "@/app/api/services";
 import ServiceCard from "@/components/ServiceCard";
-import { useBookingCart } from "@/utils/providers/BookingCartProvider";
-import * as React from "react";
 import BookingCartSidebar from "@/components/singleService/BookingCartSidebar";
+import { useBookingCart } from "@/utils/providers/BookingCartProvider";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 import { CartItem } from "../types";
 
 const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   const {
-    cartInfo,
     cartServices,
     addService,
     removeService,
-    updateCartBusiness,
   } = useBookingCart();
   const { data: businessData } = useGetSingleBusiness(serviceId);
   const { data: serviceData } = useGetSingleService(
@@ -22,12 +20,7 @@ const SingleService: React.FC<{ serviceId: string }> = ({ serviceId }) => {
   );
 
   const router = useRouter();
-
-  console.log(serviceId);
-
-  console.log(cartServices);
-  console.log(cartInfo);
-  console.log(serviceData);
+  
   const isInCart = (id: number) => cartServices.some((s) => s.id === id);
 
   const handleContinue = () => {

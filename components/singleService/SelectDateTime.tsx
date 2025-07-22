@@ -14,7 +14,8 @@ import { useEffect, useState } from "react";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 const SelectDateTime = ({ businessSlug }: { businessSlug: string }) => {
-  const { cartInfo, cartServices, updateCartDateTime, updateCartBusiness } = useBookingCart();
+  const { cartInfo, cartServices, updateCartDateTime, updateCartBusiness } =
+    useBookingCart();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<string>(
     dayjs().format("YYYY-MM-DD")
@@ -27,19 +28,18 @@ const SelectDateTime = ({ businessSlug }: { businessSlug: string }) => {
   const { data: serviceData } = useGetSingleService(
     cartServices[0]?.id.toString() || ""
   );
-  console.log(serviceData);
 
   useEffect(() => {
-    if (serviceData?.service) {
-        updateCartBusiness(
-            businessData?.business?.id,
-            businessData?.business?.business_name,
-            businessSlug,
-            serviceData?.service?.weekdayClosing,
-            serviceData?.service?.weekdayOpening,
-            serviceData?.service?.weekendClosing,
-            serviceData?.service?.weekendOpening
-          );
+    if (serviceData?.service && businessData?.business) {
+      updateCartBusiness(
+        businessData.business.id,
+        businessData.business.business_name,
+        businessSlug,
+        serviceData.service.weekdayClosing,
+        serviceData.service.weekdayOpening,
+        serviceData.service.weekendClosing,
+        serviceData.service.weekendOpening
+      );
     }
     if (cartInfo.date) {
       setSelectedDate(cartInfo.date);
@@ -49,7 +49,7 @@ const SelectDateTime = ({ businessSlug }: { businessSlug: string }) => {
       setSelectedTime(cartInfo.time);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartServices]);
+  }, [serviceData]);
 
   const handleContinue = () => {
     if (selectedDate && selectedTime) {

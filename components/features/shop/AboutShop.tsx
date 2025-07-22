@@ -14,15 +14,13 @@ import { useGetSingleService } from "@/app/api/services";
 const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
   const router = useRouter();
   const [filteredServices, setFilteredServices] = useState<CartItem[]>([]);
-  console.log(filteredServices);
   const { data } = useGetSingleBusiness(slug);
 
   const { data: shopServices } = useGetAllServices(slug);
-  console.log(shopServices);
   const { data: serviceData } = useGetSingleService(
     shopServices?.services[0]?.id.toString() || ""
   );
-  console.log(serviceData?.service);
+
   const { addService, removeService, updateCartBusiness, cartServices } =
     useBookingCart();
 

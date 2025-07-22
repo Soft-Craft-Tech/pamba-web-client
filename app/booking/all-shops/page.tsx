@@ -10,15 +10,24 @@ import { DynamicObject } from "@/components/types";
 import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import ArrowBack from "@/ui/icons/arrow-back";
+import { useBookingCart } from "@/utils/providers/BookingCartProvider";
 import * as React from "react";
+import { useEffect } from "react";
 
 const AllShops: React.FC = () => {
   const { data } = useGetClientServices();
   const { data: allBusinessesData } = useGetAllBusinesses();
+  const { cartInfo, cartServices, clearCart } = useBookingCart();
 
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
   );
+
+  useEffect(() => {
+    if (cartInfo || cartServices.length > 0) {
+      clearCart();
+    }
+  }, []);
 
   const {
     search: { searchQuery },

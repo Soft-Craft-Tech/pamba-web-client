@@ -34,7 +34,9 @@ const ClientInfoPage = () => {
   const router = useRouter();
 
   // Get business data from the first service in cartServices
-  const { data: businessData } = useGetSingleBusiness(cartInfo?.business_slug || "");
+  const { data: businessData } = useGetSingleBusiness(
+    cartInfo?.business_slug || ""
+  );
   const { mutate: bookAppointment, isSuccess } = useBookAppointments();
 
   const {
@@ -73,9 +75,7 @@ const ClientInfoPage = () => {
 
   // Clear all data on successful submission
   useEffect(() => {
-    if (isSuccess) {
-      clearAllBookingData();
-      clearCart();
+    if (isSuccess && cartServices.length > 0) {
       router.push("/booking/confirmation");
     }
   }, [isSuccess, clearCart, router]);
@@ -96,11 +96,6 @@ const ClientInfoPage = () => {
 
     bookAppointment(data);
   };
-
-  if (cartServices.length === 0) {
-    router.push("/confirmation");
-    return null;
-  }
 
   return (
     <div className="mx-auto max-w-screen-2xl px-4 w-full mt-5 relative">
