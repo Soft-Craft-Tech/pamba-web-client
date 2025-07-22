@@ -20,7 +20,7 @@ const AboutShop: React.FC<{ slug: string }> = ({ slug }) => {
   const { data: shopServices } = useGetAllServices(slug);
   console.log(shopServices);
   const { data: serviceData } = useGetSingleService(
-    shopServices?.services[0]?.id.toString()
+    shopServices?.services[0]?.id.toString() || ""
   );
   console.log(serviceData?.service);
   const { addService, removeService, updateCartBusiness, cartServices } =

@@ -16,7 +16,7 @@ const BookingCartSidebar = ({
   onContinue,
   canContinue = true,
 }: BookingCartSidebarProps) => {
-  const { cartServices, removeService, total } = useBookingCart();
+  const { cartInfo,cartServices, removeService, total } = useBookingCart();
 
   const getStepButtonText = () => {
     switch (currentStep) {
@@ -56,20 +56,20 @@ const BookingCartSidebar = ({
         </div>
       </div>
 
-      {cartServices[0]?.date && cartServices[0]?.time && (
+      {cartInfo.date && cartInfo.time && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <FaCalendarAlt className="text-primary text-xl" />
             <p className="text-xs text-gray-500">
-              {formatDate(cartServices[0].date)}
+              {formatDate(cartInfo.date)}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <FaClock className="text-primary text-xl" />
             <p className="text-xs text-gray-500">
               {formatTimeRange(
-                cartServices[0].time, 
-                calculateEndTime(cartServices[0].time, cartServices[0].estimated_service_time || 1)
+                cartInfo.time, 
+                calculateEndTime(cartInfo.time, cartServices[0]?.estimated_service_time || 1)
               )}
             </p>
           </div>

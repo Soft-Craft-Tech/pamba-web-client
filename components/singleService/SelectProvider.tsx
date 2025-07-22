@@ -25,6 +25,7 @@ const SelectProvider = ({ businessSlug }: { businessSlug: string }) => {
     if (cartInfo.provider_id !== undefined) {
       setSelectedProvider(cartInfo.provider_id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartServices]);
 
   const handleProviderSelect = (

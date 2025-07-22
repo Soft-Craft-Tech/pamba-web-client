@@ -72,7 +72,7 @@ export default function DashboardPage() {
           <Overview {...businessAnalysis} />
 
           <div className="mt-4">
-          <AppointmentsTable {...businessAnalysis} />
+            <AppointmentsTable {...businessAnalysis} />
           </div>
         </div>
         <div className="col-span-4">

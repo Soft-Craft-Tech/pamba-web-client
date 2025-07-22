@@ -217,7 +217,7 @@ const AppointmentTable = () => {
             placeholder="Customer Name"
             name="name"
             register={register}
-            defaultValue={row.original.name}
+            defaultValue={row.original.people[0]}
             error={errors.name}
           />
           <FormField
@@ -225,7 +225,7 @@ const AppointmentTable = () => {
             placeholder="Email"
             name="email"
             register={register}
-            defaultValue={row.original.email}
+            defaultValue={row.original.people[1]}
             error={errors.email}
           />
           <FormField
@@ -233,7 +233,7 @@ const AppointmentTable = () => {
             placeholder="Phone Number"
             name="phone"
             register={register}
-            defaultValue={row.original.phone}
+            defaultValue={row.original.people[2]}
             error={errors.phone}
           />
 
@@ -245,7 +245,7 @@ const AppointmentTable = () => {
                 let val = e as any;
                 setSelectedDate(val);
               }}
-              defaultValue={row.original.date}
+              defaultValue={dayjs(row.original.date)}
               disablePast
               onError={(newError) => setDateError(newError)}
             />
@@ -267,7 +267,7 @@ const AppointmentTable = () => {
               onChange={(e) => {
                 setSelectedTime(e);
               }}
-              defaultValue={row.original.time}
+              defaultValue={dayjs(row.original.time)}
               shouldDisableTime={(timeValue, clockType) =>
                 shouldDisableTime(timeValue, clockType, selectedDate, client)
               }

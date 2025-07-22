@@ -132,6 +132,8 @@ export type WebApppointmentBookingType = {
   notification: string;
 };
 
+
+
 export type AllAppointementsType = {
   all_appointments: AllAppointmentType[];
   all_clients: AllClientsType[];

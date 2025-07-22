@@ -33,6 +33,7 @@ const SelectDateTime = ({ businessSlug }: { businessSlug: string }) => {
     if (cartInfo.time) {
       setSelectedTime(cartInfo.time);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartServices]);
 
   const handleContinue = () => {

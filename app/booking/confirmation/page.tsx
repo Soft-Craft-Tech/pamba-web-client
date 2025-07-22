@@ -51,7 +51,7 @@ const ConfirmationPage = () => {
                   <div>
                     <span className="font-medium">{service.service}</span>
                     <span className="text-sm text-gray-500 ml-2">
-                      ({service.estimated_time_string})
+                      ({service.estimated_service_time})
                     </span>
                   </div>
                   <span className="font-semibold">Ksh {service.price}</span>

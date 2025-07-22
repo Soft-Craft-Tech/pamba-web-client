@@ -37,6 +37,7 @@ type ClientsType = {
   phone: string;
   lastApppointment: Date | null;
   service: string;
+  gender: string;
 };
 
 type FormValues = z.infer<typeof clientSchema>;
@@ -82,14 +83,14 @@ const ClientsTable = () => {
   };
 
   const submitClient = async (formData: FormValues) => {
-    const data: WebApppointmentBookingType = {
+    const data: any = { //use appropriate type
       name: formData.name,
       date: dayjs(selectedDate).format("DD-MM-YYYY"),
       time: dayjs(selectedTime).format("HH:mm"),
       comment: "",
       staff: "",
+      service: "",
       business: client?.id,
-      service: formData.service.value,
       email: formData.email,
       phone: formData.phone,
       notification: "email",
@@ -178,7 +179,7 @@ const ClientsTable = () => {
             type="text"
             placeholder="Customer Name"
             name="name"
-            defaultValue={row.original.name}
+            defaultValue={row.original.customer}
             register={register}
             error={errors.name}
           />
