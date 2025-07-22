@@ -70,6 +70,7 @@ const FindServices: React.FC = () => {
               btnText="Book Appointment"
               booking={true}
               href={serviceInfo?.id}
+              serviceObj={serviceInfo}
             />
           ))}
         </div>

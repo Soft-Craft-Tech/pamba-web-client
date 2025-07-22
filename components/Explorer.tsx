@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import LocationIcon from "@/ui/icons/location";
 import RatingIcon from "@/ui/icons/rating";
+import { useBookingCart } from "@/utils/providers/BookingCartProvider";
+import { useRouter } from "next/navigation";
 
 const Explorer: React.FC<{
   imageUrl: string;
@@ -17,6 +19,7 @@ const Explorer: React.FC<{
   reviews?: string;
   service?: string;
   shopImage?: string;
+  serviceObj?: any; // <-- add this prop for service data
 }> = ({
   imageUrl,
   shopName,
@@ -29,7 +32,21 @@ const Explorer: React.FC<{
   reviews,
   service,
   shopImage,
+  serviceObj,
 }) => {
+  const { addService } = useBookingCart();
+  const router = useRouter();
+
+  const handleAddAndGo = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (booking && serviceObj) {
+      addService(serviceObj);
+      router.push(`/booking/find-services/${serviceObj.id}`);
+    } else {
+      router.push(booking ? `/booking/find-services/${href}` : `/booking/all-shops/${href}`);
+    }
+  };
+
   return (
     <div className=" bg-white border rounded-lg w-full border-gray-200  shadow md:max-w-[20rem] md:w-[19.5rem]">
       <img
@@ -84,17 +101,12 @@ const Explorer: React.FC<{
             </div> */}
           </div>
         )}
-        <Link
-          href={
-            booking
-              ? `/booking/find-services/${href}`
-              : `/booking/all-shops/${href}`
-          }
+        <button
+          className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium duration-100 delay-75 hover:bg-primary hover:text-white hover:scale-[1.02] md:px-7 md:py-3 hover:font-semibold"
+          onClick={handleAddAndGo}
         >
-          <button className="w-full px-5 mt-3 py-2 border border-primary rounded-full text-primary font-medium duration-100 delay-75 hover:bg-primary hover:text-white hover:scale-[1.02] md:px-7 md:py-3 hover:font-semibold">
-            {btnText}
-          </button>
-        </Link>
+          {btnText}
+        </button>
       </div>
     </div>
   );

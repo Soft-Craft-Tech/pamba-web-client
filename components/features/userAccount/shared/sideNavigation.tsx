@@ -18,7 +18,7 @@ export default function SideNav() {
   };
 
   return (
-    <div className="w-screen lg:min-h-screen ">
+    <div className="w-screen lg:h-screen lg:flex lg:flex-col">
       <div className="w-full bg-white px-1 flex justify-between h-auto items-center py-6">
         <Link href="/">
           <Image
@@ -30,7 +30,7 @@ export default function SideNav() {
             height={20}
           />
         </Link>
-        <div className="w-auto flex h-auto items-center lg:hidden ">
+        <div className="w-auto flex h-auto items-center lg:hidden">
           {!showMenu ? (
             <RxHamburgerMenu
               size={30}
@@ -51,6 +51,7 @@ export default function SideNav() {
           )}
         </div>
       </div>
+      
       {/* Mobile sidelinks */}
       {showMenu && (
         <div className="flex-col gap-1 w-full flex lg:hidden bg-white">
@@ -72,19 +73,25 @@ export default function SideNav() {
       )}
 
       {/* Desktop sidelinks */}
-      <div className="flex-col gap-1 w-full hidden lg:flex">
-        {sidebarData?.map(({ link, name, imageUrl }: DynamicObject, index) => {
-          return (
-            <SideBarLink
-              key={index}
-              link={link}
-              name={name}
-              image={imageUrl}
-              onClick={handleLinkClick}
-            />
-          );
-        })}
-        <Logout />
+      <div className="w-full flex flex-col justify-between flex-1 hidden lg:flex">
+        <div className="flex-col gap-1 w-full">
+          {sidebarData?.map(
+            ({ link, name, imageUrl }: DynamicObject, index) => {
+              return (
+                <SideBarLink
+                  key={index}
+                  link={link}
+                  name={name}
+                  image={imageUrl}
+                  onClick={handleLinkClick}
+                />
+              );
+            }
+          )}
+        </div>
+        <div className="flex-col gap-1 w-full">
+          <Logout />
+        </div>
       </div>
     </div>
   );

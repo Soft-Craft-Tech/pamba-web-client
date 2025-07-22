@@ -1,22 +1,34 @@
 "use client";
-import { useRef } from "react";
-import Toast from "../shared/toasts/authToast";
+import { useResetPasswordMutation } from "@/app/api/auth";
+import Button from "@/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as React from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setShowToast } from "@/store/toastSlice";
-import { useResetPasswordMutation } from "@/app/api/auth";
-import { RootState } from "@/store/store";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import Toast from "../shared/toasts/authToast";
+
+const resetPasswordSchema = z.object({
+  password: z.string().min(8, "Password must be at least 8 characters"),
+})
+
+type FormValues = z.infer<typeof resetPasswordSchema>;
 
 export default function PasswordResetForm({ token }: { token: string }) {
-  const {
-    toast: { toastMessage },
-  } = useAppSelector((state: RootState) => state);
   const [showPassword, setShowPassword] = React.useState(false);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [toastMessage, setToastMessage] = useState("");
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
   const {
     mutate: resetPassword,
     isPending,
@@ -24,65 +36,61 @@ export default function PasswordResetForm({ token }: { token: string }) {
     isSuccess,
   } = useResetPasswordMutation(token);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    resetPassword(passwordRef?.current?.value);
+  const onSubmit = (formData: FormValues) => {
+    resetPassword(formData.password, {
+      onSuccess: () => {
+        setToastMessage("Password reset successfully");
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
+      },
+      onError: (error: any) => {
+        setToastMessage(error?.message || "Failed to reset password");
+      },
+    });
   };
 
-  if (isSuccess) {
-    setTimeout(() => {
-      router.push("/login");
-    }, 3000);
-  }
-
   return (
-    <>
+    <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+      <h3 className="text-[#4F5253] text-lg">Reset Password</h3>
+      
       {error && <Toast message={toastMessage} type="error" />}
       {isSuccess && <Toast message={toastMessage} type="success" />}
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="w-full h-10 rounded-md border border-borders relative">
-          <div className="absolute flex items-center  h-full w-max right-0 px-2 hover:text-gray-300">
-            {!showPassword ? (
-              <Image
-                onClick={() => {
-                  setShowPassword((prev) => !prev);
-                }}
-                className="w-[20px] cursor-pointer"
-                src="/eye-open.png"
-                alt="hide password"
-                width={24}
-                height={24}
-              />
-            ) : (
-              <Image
-                onClick={() => {
-                  setShowPassword((prev) => !prev);
-                }}
-                className="w-[20px] cursor-pointer"
-                src="/eye-closed.png"
-                alt="show password"
-                width={24}
-                height={24}
-              />
-            )}
-          </div>
+      
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <div className="relative">
           <input
-            ref={passwordRef}
-            className="h-full w-full px-2 py-1"
+            {...register("password")}
+            className={`w-full h-12 px-4 pr-12 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
             type={showPassword ? "text" : "password"}
-            required
-            name="password"
-            placeholder="Password"
+            placeholder="New Password"
           />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <Image
+              onClick={() => setShowPassword(!showPassword)}
+              className="w-5 h-5 cursor-pointer"
+              src={showPassword ? "/eye-closed.png" : "/eye-open.png"}
+              alt={showPassword ? "hide password" : "show password"}
+              width={20}
+              height={20}
+            />
+          </div>
         </div>
-        <button
-          disabled={isPending}
+        {errors.password && (
+          <span className="text-red-500 text-sm">{errors.password.message}</span>
+        )}
+        
+        <Button
           type="submit"
-          className="bg-primary text-white w-full h-10 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primaryHover delay-75 duration-100"
+          variant="primary"
+          disabled={isPending}
+          className="w-full h-12"
         >
-          {isPending ? "Loading..." : "Submit"}
-        </button>
+          {isPending ? "Resetting..." : "Reset Password"}
+        </Button>
       </form>
-    </>
+    </div>
   );
 }

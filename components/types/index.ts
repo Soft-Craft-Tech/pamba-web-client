@@ -275,3 +275,14 @@ export type staffType = {
   public_id: string;
   role: string;
 };
+
+export type CartItem = {
+  business_id: number;
+  category_name: string;
+  description: string;
+  estimated_service_time: number;
+  id: number;
+  price: number;
+  service: string;
+  service_category: number;
+};

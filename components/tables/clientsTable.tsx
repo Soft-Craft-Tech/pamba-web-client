@@ -15,6 +15,7 @@ import { DateValidationError } from "@mui/x-date-pickers/models";
 import dayjs, { Dayjs } from "dayjs";
 import {
   MaterialReactTable,
+  MRT_Row,
   useMaterialReactTable,
   type MRT_ColumnDef,
   type MRT_PaginationState,
@@ -76,6 +77,10 @@ const ClientsTable = () => {
     }
   }, [dateError]);
 
+  const openDeleteConfirmModal = (row: MRT_Row<ClientsType>) => {
+    console.log(row);
+  };
+
   const submitClient = async (formData: FormValues) => {
     const data: WebApppointmentBookingType = {
       name: formData.name,
@@ -118,6 +123,10 @@ const ClientsTable = () => {
         accessorKey: "phone",
         header: "Phone Number",
       },
+      {
+        accessorKey: "gender",
+        header: "Gender",
+      },
     ],
     []
   );
@@ -134,7 +143,88 @@ const ClientsTable = () => {
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    // enableRowActions: true,
+    enableRowActions: true,
+    renderRowActions: ({ row }) => (
+      <div className="flex flex-row gap-x-3 items-center">
+        <p
+          onClick={() => {
+            reset();
+            table.setEditingRow(row);
+          }}
+          className="cursor-pointer font-bold"
+        >
+          Edit
+        </p>
+
+        <p
+          onClick={() => {
+            openDeleteConfirmModal(row);
+          }}
+          className="cursor-pointer text-[#007B99] font-bold"
+        >
+          Delete
+        </p>
+      </div>
+    ),
+    renderEditRowDialogContent: ({ table, row }) => (
+      <div className="p-10">
+        <p className="mb-2">Client Details</p>
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={handleSubmit(submitClient)}
+          noValidate
+        >
+          <FormField
+            type="text"
+            placeholder="Customer Name"
+            name="name"
+            defaultValue={row.original.name}
+            register={register}
+            error={errors.name}
+          />
+          <FormField
+            type="text"
+            placeholder="Email"
+            name="email"
+            defaultValue={row.original.email}
+            register={register}
+            error={errors.email}
+          />
+          <FormField
+            type="tel"
+            placeholder="Phone Number"
+            name="phone"
+            defaultValue={row.original.phone}
+            register={register}
+            error={errors.phone}
+          />
+          <FormField
+            type="text"
+            placeholder="Gender"
+            name="gender"
+            defaultValue={row.original.gender}
+            register={register}
+            error={errors.gender}
+          />
+          <div className="flex h-auto w-full gap-5 justify-end mt-4">
+            <button
+              className="px-10 py-2 border border-primary text-primary rounded-md font-bold"
+              onClick={() => {
+                table.setEditingRow(null);
+              }}
+            >
+              Cancel
+            </button>
+            <Button
+              type="submit"
+              label="Submit"
+              variant="primary"
+              disabled={createClientStatus === "pending"}
+            />
+          </div>
+        </form>
+      </div>
+    ),
     renderCreateRowDialogContent: () => (
       <div className="p-10">
         <p className="mb-2">Client Details</p>
@@ -164,83 +254,12 @@ const ClientsTable = () => {
             register={register}
             error={errors.phone}
           />
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Appointment Date"
-              value={selectedDate}
-              onChange={(e) => {
-                let val = e as any;
-                setSelectedDate(val);
-              }}
-              disablePast
-              onError={(newError) => setDateError(newError)}
-            />
-
-          {(errorMessage !== "" && (
-            <span className="bg-red-100 text-red-700 p-4 rounded-lg">
-              {errorMessage}
-            </span>
-          )) ||
-            (selectedDate === null && isSubmitted && (
-              <span className="bg-red-100 text-red-700 p-4 rounded-lg">
-                Date is required!
-              </span>
-            ))}
-
-            <TimePicker
-              label="Appointment Time"
-              value={selectedTime}
-              onChange={(e) => {
-                setSelectedTime(e);
-              }}
-              shouldDisableTime={(timeValue, clockType) =>
-                shouldDisableTime(timeValue, clockType, selectedDate, client)
-              }
-              onError={(newError) => {
-                setTimeError(newError);
-              }}
-            />
-            {timeError !== null && (
-              <span className="bg-red-100 text-red-700 p-4 rounded-lg">
-                Please select a time between{" "}
-                {selectedDate &&
-                (selectedDate.day() === 0 || selectedDate.day() === 6) ? (
-                  <>
-                    {formatTime(client?.weekend_opening)} and{" "}
-                    {formatTime(client?.weekend_closing)} (Weekend hours)
-                  </>
-                ) : (
-                  <>
-                    {formatTime(client?.weekday_opening)} and{" "}
-                    {formatTime(client?.weekday_closing)} (Weekday hours)
-                  </>
-                )}
-              </span>
-            )}
-          </LocalizationProvider>
-
-          <Controller
-            name="service"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <ReactSelectComponent
-                onChange={onChange}
-                options={
-                  allServices &&
-                  allServices.services.map(
-                    ({ service, id }: { service: string; id: number }) => ({
-                      value: id,
-                      label: service,
-                    })
-                  )
-                }
-                placeholder="Select Service"
-                value={value}
-                closeMenuOnSelect={true}
-                error={errors.service}
-              />
-            )}
+          <FormField
+            type="text"
+            placeholder="Gender"
+            name="gender"
+            register={register}
+            error={errors.gender}
           />
 
           <div className="flex h-auto w-full gap-5 justify-end mt-4">

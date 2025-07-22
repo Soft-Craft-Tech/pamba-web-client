@@ -1,16 +1,30 @@
 "use client";
-import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useDeleteAccountMutation } from "@/app/api/auth";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import FormField from "@/ui/FormField";
+import Button from "@/ui/button";
 import Toast from "../shared/toasts/authToast";
 
+const deletionSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  reason: z.string().min(1, "Reason is required").min(10, "Please provide a detailed reason (at least 10 characters)"),
+});
+
+type FormValues = z.infer<typeof deletionSchema>;
+
 export default function RequestDeletionForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    reason: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>({
+    resolver: zodResolver(deletionSchema),
   });
+
   const {
     mutate: deleteAccount,
     isPending,
@@ -18,51 +32,69 @@ export default function RequestDeletionForm() {
     isSuccess,
   } = useDeleteAccountMutation();
 
-  const {
-    toast: { toastMessage },
-  } = useSelector((state: RootState) => state);
+  const [toastMessage, setToastMessage] = useState("");
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setFormData((prev) => {
-      return { ...prev, [name]: value };
+  const onSubmit = (formData: FormValues) => {
+    deleteAccount(formData, {
+      onSuccess: () => {
+        setToastMessage("Account deletion request submitted successfully");
+        reset();
+      },
+      onError: (error: any) => {
+        setToastMessage(error?.message || "Failed to submit deletion request");
+      },
     });
   };
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    deleteAccount(formData);
-  };
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
+      <h3 className="text-[#4F5253] text-lg">Request Account Deletion</h3>
+      
       {isSuccess && <Toast message={toastMessage} type="success" />}
       {error && <Toast message={toastMessage} type="error" />}
-      <TextField
-        value={formData.email}
-        onChange={handleChange}
-        required
-        id="email"
-        label="Email"
+      
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <FormField
         type="email"
+          placeholder="Email Address"
         name="email"
-      />
-      <TextField
-        value={formData.reason}
-        onChange={handleChange}
-        required
-        id="reason"
-        label="Reason For Leaving"
-        type="text"
-        name="reason"
-        multiline
-        rows={3}
-      />
-      <button
+          register={register}
+          error={errors.email}
+        />
+        
+        <div className="flex flex-col gap-2">
+          <textarea
+            {...register("reason")}
+            placeholder="Reason for leaving (minimum 10 characters)"
+            className={`w-full p-3 border rounded-md resize-none ${
+              errors.reason ? "border-red-500" : "border-gray-300"
+            } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent`}
+            rows={4}
+          />
+          {errors.reason && (
+            <span className="text-red-500 text-sm">{errors.reason.message}</span>
+          )}
+        </div>
+        
+        <div className="flex gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => reset()}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
         disabled={isPending}
-        className="bg-secondary text-white w-max px-10 py-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1"
       >
-        Submit
-        {isPending ? "Loading" : "Submit"}
-      </button>
+            {isPending ? "Submitting..." : "Submit Request"}
+          </Button>
+        </div>
     </form>
+    </div>
   );
 }

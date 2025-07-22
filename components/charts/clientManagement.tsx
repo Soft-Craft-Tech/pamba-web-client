@@ -142,8 +142,8 @@ const ClientSummary = () => {
 
   return (
     <ChartSummary
-      title="Client Management"
-      line1="Pamba Clients"
+      title="Appointment Management"
+      line1="Pamba Appointments"
       options={options}
       series={series}
     />

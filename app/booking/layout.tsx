@@ -3,6 +3,7 @@ import RevampedHeader from "@/components/shared/header/revampedHeader";
 import CTA from "@/components/features/home/ctaSection";
 import BookingsFooter from "@/components/features/shop/BookingsFooter";
 import { ReactNode } from "react";
+
 export const metadata = {
   title: "Book your Appointment",
   description: "Simplify Your Operations With Effortless Business Management",

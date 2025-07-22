@@ -1,30 +1,45 @@
 import { useCreateExpenseAccounts } from "@/app/api/accounts";
 import { Expense } from "@/components/types";
-import { useAppSelector } from "@/hooks/redux";
-import { RootState } from "@/store/store";
 import Button from "@/ui/button";
-import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { usePathname } from "next/navigation";
+import FormField from "@/ui/FormField";
+
+const expenseAccountSchema = z.object({
+  accountName: z.string().min(1, "Account name is required"),
+  description: z.string().min(1, "Description is required"),
+});
+
+type FormValues = z.infer<typeof expenseAccountSchema>;
 
 export default function AddExpenseAccounts({
   onSubmitSuccess,
+  step = 1,
 }: {
   onSubmitSuccess?: () => void;
+  step?: number;
 }) {
   const pathname = usePathname();
 
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(expenseAccountSchema),
+  });
 
-  const step = useAppSelector((state: RootState) => state.completeProfile.step);
   const { mutateAsync, isPending } = useCreateExpenseAccounts(step);
 
   const [queuedExpenses, setQueuedExpenses] = useState<Expense[]>([]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormValues) => {
     setQueuedExpenses((prevState) => [...prevState, data]);
     reset();
   };
@@ -70,26 +85,27 @@ export default function AddExpenseAccounts({
             className="flex flex-col gap-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <TextField
-              required
-              id="outlined-required"
-              label="Expense Account"
+            <FormField
               type="text"
-              {...register("accountName", { required: true })}
+              placeholder="Expense Account"
+              name="accountName"
+              register={register}
+              error={errors.accountName}
             />
-            <TextField
-              required
-              id="outlined-required"
-              label="Description"
+            <FormField
               type="text"
-              {...register("description", { required: true })}
+              placeholder="Description"
+              name="description"
+              register={register}
+              error={errors.description}
             />
-            <button
+            <Button
               type="submit"
-              className="py-3 px-10 bg-secondary text-white h-max rounded-md"
+              variant="primary"
+              className="py-3 px-10 h-max"
             >
-              Add
-            </button>
+              Add Account
+            </Button>
           </form>
         </div>
         {queuedExpenses.length > 0 && (
