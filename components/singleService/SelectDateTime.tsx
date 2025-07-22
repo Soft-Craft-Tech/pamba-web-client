@@ -1,5 +1,6 @@
 "use client";
 import { useGetSingleBusiness } from "@/app/api/businesses";
+import { useGetSingleService } from "@/app/api/services";
 import BookingCartSidebar from "@/components/singleService/BookingCartSidebar";
 import CalendarIcon from "@/ui/icons/calendar-con";
 import { useBookingCart } from "@/utils/providers/BookingCartProvider";
@@ -13,7 +14,7 @@ import { useEffect, useState } from "react";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 const SelectDateTime = ({ businessSlug }: { businessSlug: string }) => {
-  const { cartInfo, cartServices, updateCartDateTime } = useBookingCart();
+  const { cartInfo, cartServices, updateCartDateTime, updateCartBusiness } = useBookingCart();
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<string>(
     dayjs().format("YYYY-MM-DD")
@@ -23,9 +24,23 @@ const SelectDateTime = ({ businessSlug }: { businessSlug: string }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const { data: businessData } = useGetSingleBusiness(businessSlug);
-  console.log(cartServices);
+  const { data: serviceData } = useGetSingleService(
+    cartServices[0]?.id.toString() || ""
+  );
+  console.log(serviceData);
 
   useEffect(() => {
+    if (serviceData?.service) {
+        updateCartBusiness(
+            businessData?.business?.id,
+            businessData?.business?.business_name,
+            businessSlug,
+            serviceData?.service?.weekdayClosing,
+            serviceData?.service?.weekdayOpening,
+            serviceData?.service?.weekendClosing,
+            serviceData?.service?.weekendOpening
+          );
+    }
     if (cartInfo.date) {
       setSelectedDate(cartInfo.date);
       setDateCardsStart(dayjs(cartInfo.date).startOf("week"));

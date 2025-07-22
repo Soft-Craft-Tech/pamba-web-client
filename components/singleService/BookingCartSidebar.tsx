@@ -69,7 +69,10 @@ const BookingCartSidebar = ({
             <p className="text-xs text-gray-500">
               {formatTimeRange(
                 cartInfo.time, 
-                calculateEndTime(cartInfo.time, cartServices[0]?.estimated_service_time || 1)
+                calculateEndTime(
+                  cartInfo.time, 
+                  cartServices.reduce((total, service) => total + (service.estimated_service_time || 0), 0)
+                )
               )}
             </p>
           </div>
