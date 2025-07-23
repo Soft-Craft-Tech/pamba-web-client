@@ -9,22 +9,27 @@ const sidebarData: ISidebarData[] = [
   },
   {
     link: "/user/scheduling",
-    name: "Scheduling",
+    name: "Calendar",
     imageUrl: "/user-icons/calendar.svg",
   },
-  {
-    link: "/user/revenue",
-    name: "Revenue",
-    imageUrl: "/user-icons/revenue.svg",
-  },
+  // {
+  //   link: "/user/revenue",
+  //   name: "Revenue",
+  //   imageUrl: "/user-icons/revenue.svg",
+  // },
   {
     link: "/user/clients",
     name: "Clients",
     imageUrl: "/user-icons/client.svg",
   },
   {
+    link: "/user/appointments",
+    name: "Appointments",
+    imageUrl: "/user-icons/client.svg",
+  },
+  {
     link: "/user/staff-management",
-    name: "Staff Management",
+    name: "Team",
     imageUrl: "/user-icons/staff.svg",
   },
   {
@@ -32,11 +37,16 @@ const sidebarData: ISidebarData[] = [
     name: "Services",
     imageUrl: "/user-icons/services.svg",
   },
-  {
-    link: "/user/expenses",
-    name: "Expenses",
-    imageUrl: "/user-icons/expenses.svg",
-  },
+  // {
+  //   link: "/user/services",
+  //   name: "Marketing",
+  //   imageUrl: "/user-icons/services.svg",
+  // },
+  // {
+  //   link: "/user/expenses",
+  //   name: "Expenses",
+  //   imageUrl: "/user-icons/expenses.svg",
+  // },
   // {
   //   link: "/user/inventory",
   //   name: "Inventory",

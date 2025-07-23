@@ -4,20 +4,30 @@ import { useGetAllBusinesses } from "@/app/api/businesses";
 import { useGetClientServices } from "@/app/api/services";
 import AllShopsHero from "@/components/AllShopsHero";
 import Explorer from "@/components/Explorer";
+import ServiceCard from "@/components/ServiceCard";
 import ShopSepartor from "@/components/shared/sectionSeparators/shopsSeparator";
 import { DynamicObject } from "@/components/types";
 import { useAppSelector } from "@/hooks/redux";
 import { RootState } from "@/store/store";
 import ArrowBack from "@/ui/icons/arrow-back";
+import { useBookingCart } from "@/utils/providers/BookingCartProvider";
 import * as React from "react";
+import { useEffect } from "react";
 
 const AllShops: React.FC = () => {
   const { data } = useGetClientServices();
   const { data: allBusinessesData } = useGetAllBusinesses();
+  const { cartInfo, cartServices, clearCart } = useBookingCart();
 
   const [filteredServices, setFilteredServices] = React.useState(
     data?.services
   );
+
+  useEffect(() => {
+    if (cartInfo || cartServices.length > 0) {
+      clearCart();
+    }
+  }, []);
 
   const {
     search: { searchQuery },
@@ -86,7 +96,7 @@ const AllShops: React.FC = () => {
             <div className=" w-full mt-10">
               <ShopSepartor header="Popular Shops" />
             </div>
-            <section className="w-full mt-10">
+            <section className="w-full my-10">
               <div className="w-full flex flex-wrap gap-10">
                 {allBusinessesData?.businesses
                   ?.slice(0, 9)
@@ -114,7 +124,7 @@ const AllShops: React.FC = () => {
               </div>
             </section>
           </div>
-          <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
+          {/* <div className="mx-auto max-w-screen-lg px-5 sm:px-10 lg:px-20 2xl:px-0">
             <div className=" w-full mt-10">
               <ShopSepartor header="Recommended Services" />
             </div>
@@ -134,9 +144,10 @@ const AllShops: React.FC = () => {
                     shopImage={businessInfo?.profile_img}
                   />
                 ))}
+
               </div>
             </section>
-          </div>
+          </div> */}
         </>
       )}
     </div>

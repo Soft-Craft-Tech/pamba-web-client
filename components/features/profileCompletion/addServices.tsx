@@ -73,7 +73,7 @@ export default function AddServices() {
             {queuedServices.map((service: ServiceType, index: number) => {
               return (
                 <div
-                  key={service.name} // Use UUID
+                  key={service.name}
                   className="rounded-md bg-secondary px-4 py-2 text-white w-max h-auto flex flex-col gap-1"
                 >
                   <div className="flex gap-3 items-center font-semibold">

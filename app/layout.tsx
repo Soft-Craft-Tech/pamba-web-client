@@ -1,4 +1,4 @@
-import FloaterAppoitment from "@/components/FloaterAppointment";
+import FloaterAppointment from "@/components/FloaterAppointment";
 import QueryProvider from "@/utils/providers/QueryProvider";
 import StoreProvider from "@/utils/providers/StoreProvider";
 import type { Metadata } from "next";
@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import HydrationProvider from "@/utils/providers/HydrationProvider";
 import GMapsProvider from "@/utils/providers/GMapsProvider";
+import BookingCartProvider from "@/utils/providers/BookingCartProvider";
 
 export const metadata: Metadata = {
   title: "Pamba App",
@@ -24,7 +25,9 @@ export default function RootLayout({
         <GMapsProvider>
           <HydrationProvider>
             <StoreProvider>
-              <QueryProvider>{children}</QueryProvider>
+              <QueryProvider>
+                <BookingCartProvider>{children}</BookingCartProvider>
+              </QueryProvider>
             </StoreProvider>
 
             <ToastContainer
@@ -40,7 +43,7 @@ export default function RootLayout({
               theme="light"
               transition={Bounce}
             />
-            <FloaterAppoitment />
+            <FloaterAppointment />
           </HydrationProvider>
         </GMapsProvider>
       </body>

@@ -7,6 +7,7 @@ interface KPIProps {
   change: number;
   positiveChange: boolean;
   financial: boolean;
+  className?: string;
 }
 
 const KPI: React.FC<KPIProps> = ({
@@ -15,9 +16,10 @@ const KPI: React.FC<KPIProps> = ({
   change,
   positiveChange,
   financial,
+  className,
 }: KPIProps) => {
   return (
-    <div className="max-h-56 px-6 py-3 rounded-lg flex flex-col justify-between bg-white shadow-sm border">
+    <div className={`max-h-60 px-6 py-3 rounded-lg flex flex-col justify-between bg-white shadow-sm border ${className}`}>
       <h3 className="text-xs text-muted font-light">{title}</h3>
       <div className="flex flex-col sm:flex-row gap-2 h-max items-start sm:items-center">
         <h3 className="text-secondary text-xl font-bold">

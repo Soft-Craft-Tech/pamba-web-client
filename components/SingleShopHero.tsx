@@ -41,7 +41,7 @@ const SingleShopHero: React.FC<{
         className="w-full px-10 flex flex-col items-center h-[60vh] justify-center"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/singe-shop.png')",
+            `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${data?.business?.imageUrl})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}

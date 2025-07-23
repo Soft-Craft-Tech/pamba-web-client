@@ -1,29 +1,16 @@
 "use client";
-import React, { useState } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-const FloaterAppoitment = () => {
-  const [showFloater, setShowFloater] = useState(false);
+const FloaterAppointment = () => {
   const pathname = usePathname();
-  React.useEffect(() => {
-    function handleScroll() {
-      if (window.scrollY > 100) {
-        setShowFloater(true);
-      } else {
-        setShowFloater(false);
-      }
-    }
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
-  if (pathname !== "/" || !showFloater) {
+  if (pathname !== "/") {
     return null;
   }
+  
   return (
     <div className="fixed bottom-[calc(4rem+1.6rem)] z-50 right-0 mr-4 bg-white p-8 rounded-xl border border-[#e5e7eb]">
       <p className="text-[16px] font-bold max-w-[316px]">
@@ -46,4 +33,4 @@ const FloaterAppoitment = () => {
   );
 };
 
-export default FloaterAppoitment;
+export default FloaterAppointment;

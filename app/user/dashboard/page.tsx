@@ -32,6 +32,7 @@ export default function DashboardPage() {
       }
     };
     sendVerificationEmail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verify]);
 
   return (
@@ -61,16 +62,22 @@ export default function DashboardPage() {
           </Link>
         </div>
       )}
-      <Overview {...businessAnalysis} />
-      <FinancialSummary
+
+      {/* <FinancialSummary
         lifetime_expenses={businessAnalysis?.lifetime_expenses}
         lifetime_sales={revenueData?.lifetime_sales}
-      />
-      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <div className="col-span-12 xl:col-span-8">
-          <AppointmentsTable {...businessAnalysis} />
+        /> */}
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12 lg:col-span-8">
+          <Overview {...businessAnalysis} />
+
+          <div className="mt-4">
+            <AppointmentsTable {...businessAnalysis} />
+          </div>
         </div>
-        <AppointmentsCard />
+        <div className="col-span-4">
+          <AppointmentsCard />
+        </div>
       </div>
     </div>
   );

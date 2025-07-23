@@ -117,7 +117,7 @@ export const revenueSchema = z.object({
   }),
 });
 
-export const clientSchema = z.object({
+export const appointmentListSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
@@ -129,6 +129,13 @@ export const clientSchema = z.object({
     label: z.string(),
     value: z.number().min(1, "Service is required"),
   }),
+});
+
+export const clientSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  gender: z.string().min(1, "Gender is required"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  phone: z.string().min(1, "Phone number is required"),
 });
 
 export const appointmentSchema = z.object({

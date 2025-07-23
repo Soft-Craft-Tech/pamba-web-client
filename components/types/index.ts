@@ -132,6 +132,8 @@ export type WebApppointmentBookingType = {
   notification: string;
 };
 
+
+
 export type AllAppointementsType = {
   all_appointments: AllAppointmentType[];
   all_clients: AllClientsType[];
@@ -274,4 +276,15 @@ export type staffType = {
   phone: string;
   public_id: string;
   role: string;
+};
+
+export type CartItem = {
+  business_id: number;
+  category_name: string;
+  description: string;
+  estimated_service_time: number;
+  id: number;
+  price: number;
+  service: string;
+  service_category: number;
 };

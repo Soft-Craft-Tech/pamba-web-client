@@ -22,10 +22,10 @@ export default function Overview({
   const { client } = getUser();
 
   return (
-    <div className="flex flex-col sm:flex-row w-full sm:h-60 gap-5">
+    <div className="">
       <div className="bg-white rounded-xl h-full w-full p-5 text-secondary border flex flex-col sm:flex-row items-center gap-5">
         <div className="flex flex-col justify-between h-full w-full gap-5 sm:gap-0">
-          <div>
+          <div className="flex flex-col gap-2">
             <h2 className="text-primary font-semibold text-lg">
               Welcome back{" "}
               {client?.business_name ? `, ${client.business_name}` : ""}!
@@ -34,17 +34,32 @@ export default function Overview({
               Here&apos;s what happening in your business today
             </p>
           </div>
-          <div className="font-semibold">
-            <h4>
-              Ksh <span className="text-xl font-bold">{today_revenue}</span>
-            </h4>
-            <p className="text-sm text-tryGray">Today&apos;s revenue</p>
-          </div>
-          <div className="font-semibold">
-            <h4 className="font-bold text-xl">
-              {today_appointments ? today_appointments.length : 0}
-            </h4>
-            <p className="text-sm text-tryGray">Scheduled appointments</p>
+          {/* <div className="font-semibold">
+              <h4>
+                Ksh <span className="text-xl font-bold">{today_revenue}</span>
+              </h4>
+              <p className="text-sm text-tryGray">Today&apos;s revenue</p>
+            </div> */}
+          <div className="font-semibold mt-6">
+            <div className="flex flex-col gap-2">
+              <h4 className="font-bold text-2xl">
+                {/* {today_appointments ? today_appointments.length : 0} */}
+                {all_appointments ? all_appointments.length : 0}
+              </h4>
+              {/* <p
+                className={`flex gap-1 h-max items-center text-xs font-semibold ${
+                  positiveChange ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {!positiveChange ? (
+                  <AiOutlineArrowDown />
+                ) : (
+                  <AiOutlineArrowUp />
+                )}
+                {change}%
+              </p> */}
+            </div>
+            <p className="text-sm text-tryGray">Monthly appointments</p>
           </div>
         </div>
         <div className="mr-auto hidden lg:block">
@@ -60,7 +75,8 @@ export default function Overview({
           )}
         </div>
       </div>
-      <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-5">
+
+      {/* <div className="h-full w-full grid grid-cols-2 grid-rows-2 gap-5">
         <KPI
           title="This month Revenue"
           value={current_month_revenue}
@@ -82,7 +98,7 @@ export default function Overview({
           positiveChange={true}
           financial={true}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

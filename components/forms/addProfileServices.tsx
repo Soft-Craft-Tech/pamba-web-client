@@ -1,8 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setQueuedServices, setService } from "@/store/completeProfileSlice";
-import { RootState } from "@/store/store";
 import FormField from "@/ui/FormField";
 import { serviceSchema } from "@/utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,10 +7,26 @@ import { CldUploadWidget } from "next-cloudinary";
 import React, { useState } from "react";
 import * as z from "zod";
 import ReactSelectComponent from "@/ui/Select";
+import Button from "@/ui/button";
 
 type FormValues = z.infer<typeof serviceSchema>;
 
-export default function AddProfileServicesForm({ data }: { data: any }) {
+interface Service {
+  name: string;
+  description: string;
+  estimatedTime: string;
+  price: string;
+  category: string;
+  imageURL: string;
+}
+
+export default function AddProfileServicesForm({ 
+  data, 
+  onSubmitSuccess 
+}: { 
+  data: any;
+  onSubmitSuccess?: (services: Service[]) => void;
+}) {
   const {
     control,
     handleSubmit,
@@ -23,11 +36,8 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
   } = useForm<FormValues>({
     resolver: zodResolver(serviceSchema),
   });
-  const dispatch = useAppDispatch();
-  const { queuedServices } = useAppSelector(
-    (state: RootState) => state.completeProfile
-  );
 
+  const [queuedServices, setQueuedServices] = useState<Service[]>([]);
   const [newImage, setImage] = useState(null);
 
   const onSubmit = (formData: FormValues) => {
@@ -35,58 +45,37 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
       (item: { name: any }) => item.name === formData.name
     );
     if (!exists) {
-      dispatch(
-        setQueuedServices([
-          ...queuedServices,
-          {
+      const newService = {
             ...formData,
             description: formData.description ?? "",
             category: formData.category.value.toString(),
-          },
-        ])
-      );
+      };
+      const updatedServices = [...queuedServices, newService];
+      setQueuedServices(updatedServices);
+      
+      if (onSubmitSuccess) {
+        onSubmitSuccess(updatedServices);
+      }
     }
-    dispatch(
-      setService({
-        category: "",
-        price: "",
-        description: "",
-        estimatedTime: "",
-        name: "",
-        imageURL: "",
-      })
-    );
     setImage(null);
     reset();
   };
 
   return (
     <div className="flex flex-col gap-5 w-full p-5 border bg-white shadow-sm lg:p-10 lg:min-w-96">
-      <h3>What Services do you offer?</h3>
+      <div className="flex justify-between items-center">
+        <h3 className="text-[#4F5253] text-lg">What Services do you offer?</h3>
+        {queuedServices.length > 0 && (
+          <span className="text-sm text-gray-500">
+            {queuedServices.length} service(s) added
+          </span>
+        )}
+      </div>
+      
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 p-1"
       >
-        {/* <Controller
-          name="category"
-          control={control}
-          render={({ field }) => (
-            <select
-              {...field}
-              className="text-gray-400 rounded-md border border-gray-400 w-full h-14 py-1 px-2 lg:h-14"
-            >
-              <option value="1">Select Category</option>
-              {data?.categories?.map(
-                ({ category, id }: { category: string; id: number }) => (
-                  <option key={id} value={id}>
-                    {category}
-                  </option>
-                )
-              )}
-            </select>
-          )}
-          rules={{ required: true }}
-        /> */}
         <Controller
           control={control}
           name="category"
@@ -109,6 +98,7 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
             />
           )}
         />
+        
         <FormField
           type="text"
           placeholder="Service Name"
@@ -188,13 +178,29 @@ export default function AddProfileServicesForm({ data }: { data: any }) {
             {errors.imageURL.message}
           </span>
         )}
-        <button
-          className="py-3 px-10 bg-secondary hover:scale-105 transition-all ease-in-out text-white h-max rounded-md"
+        
+        <Button
           type="submit"
+          variant="primary"
+          className="py-3 px-10 h-max"
         >
-          Add
-        </button>
+          Add Service
+        </Button>
       </form>
+      
+      {queuedServices.length > 0 && (
+        <div className="mt-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Added Services:</h4>
+          <div className="space-y-2">
+            {queuedServices.map((service, index) => (
+              <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                <span className="text-sm">{service.name}</span>
+                <span className="text-xs text-gray-500">${service.price}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
